@@ -1,20 +1,19 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>
-      Blank
+      QR Code Generator
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label position="floating">Daten für QR Code:</ion-label>
+    <ion-textarea [autoGrow]="true" #qrData (ionChange)="generateQRCode(qrData.value)" placeholder="Zeilenumbruch mittels enter"></ion-textarea>
+  </ion-item>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+    <qrcode [qrdata]="myAngularxQrCode" [width]="256" [errorCorrectionLevel]="'M'" (qrCodeURL)="onChangeURL($event)"></qrcode>
+
+  <ion-button expand="block" [href]="qrCodeDownloadLink" download="qrcode.png">QR Code downloaden</ion-button>
+  <ion-button expand="block" (click)="printQRCode()">QR Code drucken</ion-button>
 </ion-content>
