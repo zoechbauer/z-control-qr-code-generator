@@ -1,19 +1,33 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      QR Code Generator
-    </ion-title>
+    <ion-title> QR Code Generator </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   <ion-item>
     <ion-label position="floating">Daten für QR Code:</ion-label>
-    <ion-textarea [autoGrow]="true" #qrData (ionChange)="generateQRCode(qrData.value)" placeholder="Zeilenumbruch mittels enter"></ion-textarea>
+    <ion-textarea
+      [autoGrow]="true"
+      #qrData
+      (ionChange)="generateQRCode(qrData.value)"
+      placeholder="Zeilenumbruch mittels enter"
+    ></ion-textarea>
   </ion-item>
 
-    <qrcode [qrdata]="myAngularxQrCode" [width]="256" [errorCorrectionLevel]="'M'" (qrCodeURL)="onChangeURL($event)"></qrcode>
+  <qrcode 
+  id="qrcode"
+  [qrdata]="myAngularxQrCode" 
+  [width]="256" 
+  [errorCorrectionLevel]="'M'"
+  (qrCodeURL)="onChangeURL($event)"
+  [allowEmptyString]="true"
+></qrcode>
 
-  <ion-button expand="block" [href]="qrCodeDownloadLink" download="qrcode.png">QR Code downloaden</ion-button>
-  <ion-button expand="block" (click)="printQRCode()">QR Code drucken</ion-button>
+  <ion-button expand="block" (click)="downloadQRCode()"
+    >QR Code downloaden</ion-button
+  >
+  <ion-button expand="block" (click)="printQRCode()"
+    >QR Code drucken</ion-button
+  >
 </ion-content>

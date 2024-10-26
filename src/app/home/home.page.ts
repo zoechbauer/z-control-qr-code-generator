@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { SafeUrl } from '@angular/platform-browser';
+import { Component, SecurityContext } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -8,30 +8,77 @@ import { SafeUrl } from '@angular/platform-browser';
 })
 export class HomePage {
   myAngularxQrCode: string = '';
-  qrCodeDownloadLink: SafeUrl = '';
+  qrCodeDownloadLink: string = '';
 
-  constructor() {
-    this.myAngularxQrCode = 'Your initial QR code data';
-  }
+  constructor(private sanitizer: DomSanitizer) {}
 
-  // TODO change type any
-  generateQRCode(data: any) {
-    this.myAngularxQrCode = data;
+  generateQRCode(data: string | null | undefined) {
+    this.myAngularxQrCode = data || ' ';
+    console.log('QR Code data:', this.myAngularxQrCode);
   }
 
   onChangeURL(url: SafeUrl) {
-    this.qrCodeDownloadLink = url;
+    this.qrCodeDownloadLink =
+      this.sanitizer.sanitize(SecurityContext.URL, url) || '';
+    console.log('QR Code URL:', this.qrCodeDownloadLink);
+  }
+
+  downloadQRCode() {
+    if (this.qrCodeDownloadLink) {
+      const link = document.createElement('a');
+      link.href = this.qrCodeDownloadLink;
+      link.download = 'qrcode.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      console.error('QR Code URL is not available');
+    }
   }
 
   printQRCode() {
     const printContent = document.getElementById('qrcode');
-    const windowPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
-    if (windowPrint && printContent) {
-      windowPrint.document.write(printContent.innerHTML);
-      windowPrint.document.close();
-      windowPrint.focus();
-      windowPrint.print();
-      windowPrint.close();
+    if (printContent) {
+      const canvas = printContent.querySelector('canvas');
+      if (canvas) {
+        const dataUrl = canvas.toDataURL('image/png');
+        const windowContent = `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Print QR Code</title>
+            <style>
+              body {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+              }
+              img {
+                max-width: 80%;
+                max-height: 80%;
+              }
+            </style>
+          </head>
+          <body>
+            <img src="${dataUrl}" alt="QR Code">
+          </body>
+          </html>
+        `;
+        const printWindow = window.open('', '_blank');
+        if (printWindow) {
+          printWindow.document.open();
+          printWindow.document.write(windowContent);
+          printWindow.document.close();
+          printWindow.focus();
+          setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+          }, 250);
+        }
+      }
     }
   }
 }
