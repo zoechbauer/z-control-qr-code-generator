@@ -18,13 +18,13 @@
 
     <ion-card-content>
       <ion-item>
-        <ion-label position="floating">Daten für QR Code:</ion-label>
+        <ion-label position="stacked">Daten für QR Code:</ion-label>
         <ion-textarea
           [autoGrow]="true"
           #qrDataInput
           (ionChange)="generateQRCode(qrDataInput.value)"
           placeholder="bitte Text eingeben. Neue Zeilen durch Eingabe-Taste ..."
-          [rows]="4"
+          [rows]="3"
         ></ion-textarea>
       </ion-item>
 
