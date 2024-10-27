@@ -13,16 +13,15 @@
 <ion-content class="ion-padding">
   <ion-card>
     <ion-card-header>
-      <ion-card-title>QR Code erstellen</ion-card-title>
+      <ion-card-title class="ion-text-center">QR Code erstellen</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
       <ion-item>
-        <ion-label position="stacked">Daten für QR Code:</ion-label>
+        <ion-label position="stacked">QR Code Text {{textLengthInfo}}</ion-label>
         <ion-textarea
           [autoGrow]="true"
           #qrDataInput
-          (ionChange)="generateQRCode(qrDataInput.value)"
           placeholder="bitte Text eingeben. Neue Zeilen durch Eingabe-Taste ..."
           [rows]="3"
         ></ion-textarea>
@@ -40,15 +39,15 @@
       </ion-item>
     </ion-card-content>
 
-    <ion-button expand="block" (click)="generateQRCode(qrDataInput.value)"
+    <ion-button expand="block" (click)="generateQRCode(qrDataInput.value)" [disabled]="qrDataInput.value === ''"
       >generieren</ion-button
     >
-    <div>
-      <ion-button fill="clear" (click)="downloadQRCode()"
-        >QR als PNG</ion-button
+    <div class="buttons-no-generation">
+      <ion-button fill="clear" (click)="downloadQRCode()" [disabled]="qrCodeDownloadLink === ''"
+        >QR PNG</ion-button
       >
-      <ion-button fill="clear" (click)="printQRCode()">QR als PDF</ion-button>
-      <ion-button fill="clear" (click)="clearInputField()"
+      <ion-button fill="clear" (click)="printQRCode()" [disabled]="qrCodeDownloadLink === ''">QR PDF</ion-button>
+      <ion-button fill="clear" (click)="clearInputField()" [disabled]="qrCodeDownloadLink === ''"
         >QR löschen</ion-button
       >
     </div>

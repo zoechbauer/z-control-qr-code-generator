@@ -13,9 +13,12 @@ import { HelpModalComponent } from '../help-modal/help-modal.component';
 })
 export class HomePage {
   @ViewChild('qrDataInput') qrDataInput!: IonTextarea;
+  MAX_INPUT_LENGTH = 2953; // Maximale Kapazität für QR-Code Version 40 mit Fehlerkorrektur-Level L lt. Perplexity KI
+
   myAngularxQrCode: string = '';
   qrCodeDownloadLink: string = '';
   qrCodeIsGenerated = false;
+  textLengthInfo: string = "";
 
   constructor(private sanitizer: DomSanitizer, private modalController: ModalController) {}
 
@@ -33,7 +36,8 @@ export class HomePage {
   clearInputField(): void {
     this.qrCodeIsGenerated = false;
     this.qrCodeDownloadLink = "";
-    this.myAngularxQrCode = " ";
+    this.myAngularxQrCode = "";
+    this.textLengthInfo = "";
 
     if (this.qrDataInput) {
       this.qrDataInput.value = '';
@@ -43,7 +47,13 @@ export class HomePage {
   generateQRCode(data: string | null | undefined) {
     this.myAngularxQrCode = data && data.trim() ? data : ' ';
     this.qrCodeIsGenerated = true;
+
+    this.setTextLengthInfo();
     console.log('QR Code data:', this.myAngularxQrCode);
+  }
+
+  private setTextLengthInfo() {
+    this.textLengthInfo = ` [${this.myAngularxQrCode.length} / ${this.MAX_INPUT_LENGTH}]`;
   }
 
   onChangeURL(url: SafeUrl) {
