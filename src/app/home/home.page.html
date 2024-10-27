@@ -1,44 +1,56 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title> QR Code Generator </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="openModal()">
+        Infos
+        <ion-icon slot="end" name="help-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title><b>z-control</b></ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-item>
-    <ion-label style="font-size:11px;"
-      >Es können mehrzeilige Texte erfasst werden. Sobald das Feld verlassen
-      wird, wird der QR Code generiert.</ion-label
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>QR Code erstellen</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Daten für QR Code:</ion-label>
+        <ion-textarea
+          [autoGrow]="true"
+          #qrDataInput
+          (ionChange)="generateQRCode(qrDataInput.value)"
+          placeholder="bitte Text eingeben. Neue Zeilen durch Eingabe-Taste ..."
+          [rows]="4"
+        ></ion-textarea>
+      </ion-item>
+
+      <ion-item *ngIf="qrCodeIsGenerated">
+        <qrcode
+          id="qrcode"
+          [qrdata]="myAngularxQrCode"
+          [width]="256"
+          [errorCorrectionLevel]="'M'"
+          (qrCodeURL)="onChangeURL($event)"
+          [allowEmptyString]="true"
+        ></qrcode>
+      </ion-item>
+    </ion-card-content>
+
+    <ion-button expand="block" (click)="generateQRCode(qrDataInput.value)"
+      >generieren</ion-button
     >
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Daten für QR Code:</ion-label>
-    <ion-textarea
-      [autoGrow]="true"
-      #qrDataInput
-      (ionChange)="generateQRCode(qrDataInput.value)"
-      placeholder="Zeilenumbruch mittels enter"
-    ></ion-textarea>
-  </ion-item>
-
-  <div *ngIf="qrCodeIsGenerated">
-    <qrcode
-      id="qrcode"
-      [qrdata]="myAngularxQrCode"
-      [width]="256"
-      [errorCorrectionLevel]="'M'"
-      (qrCodeURL)="onChangeURL($event)"
-      [allowEmptyString]="true"
-    ></qrcode>
-  </div>
-
-  <ion-button expand="block" (click)="clearInputField()"
-    >QR Code Daten löschen</ion-button
-  >
-  <ion-button expand="block" (click)="downloadQRCode()"
-    >QR Code als PNG downloaden</ion-button
-  >
-  <ion-button expand="block" (click)="printQRCode()"
-    >QR Code als PDF ablegen</ion-button
-  >
+    <div>
+      <ion-button fill="clear" (click)="downloadQRCode()"
+        >QR als PNG</ion-button
+      >
+      <ion-button fill="clear" (click)="printQRCode()">QR als PDF</ion-button>
+      <ion-button fill="clear" (click)="clearInputField()"
+        >QR löschen</ion-button
+      >
+    </div>
+  </ion-card>
 </ion-content>

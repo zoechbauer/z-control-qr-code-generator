@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { HomePage } from './home.page';
+import { QRCodeModule } from 'angularx-qrcode';
 
 import { HomePageRoutingModule } from './home-routing.module';
-import { QRCodeModule } from 'angularx-qrcode';
+import { HomePage } from './home.page';
+import { HelpModalComponent } from '../help-modal/help-modal.component';
 
 
 @NgModule({
@@ -14,6 +15,6 @@ import { QRCodeModule } from 'angularx-qrcode';
     HomePageRoutingModule,
     QRCodeModule
   ],
-  declarations: [HomePage]
+  declarations: [HomePage, HelpModalComponent]
 })
 export class HomePageModule {}

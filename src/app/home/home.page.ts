@@ -2,8 +2,9 @@ import { Component, SecurityContext, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
-import { IonTextarea } from '@ionic/angular';
+import { IonTextarea, ModalController } from '@ionic/angular';
 import jsPDF from 'jspdf';
+import { HelpModalComponent } from '../help-modal/help-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +17,18 @@ export class HomePage {
   qrCodeDownloadLink: string = '';
   qrCodeIsGenerated = false;
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private sanitizer: DomSanitizer, private modalController: ModalController) {}
+
+  async openModal() {
+    const modal = await this.modalController.create({
+      component: HelpModalComponent,
+      componentProps: {
+        fileName: this.getFileName(true, undefined),
+        folderName: this.folderName
+      }
+    });
+    return await modal.present();
+  }
 
   clearInputField(): void {
     this.qrCodeIsGenerated = false;
@@ -39,6 +51,7 @@ export class HomePage {
       this.sanitizer.sanitize(SecurityContext.URL, url) || '';
     console.log('QR Code URL:', this.qrCodeDownloadLink);
   }
+
 
   async saveFile(fileName: string, data: string) {
     if (Capacitor.isNativePlatform()) {
@@ -104,6 +117,14 @@ export class HomePage {
 
   get folderName() {
     return Capacitor.isNativePlatform()  ? "Dokumentenordner" : "Downloadordner";
+  }
+
+  getFileName(getBothNames: boolean, isPdf: boolean | undefined) {
+    const name = "qrcode";
+    if (getBothNames) {
+      return `${name}.pgn / ${name}.pdf` ;
+    }
+    return isPdf ? `${name}.pdf` : `${name}.pgn`;
   }
 
   async printQRCode() {

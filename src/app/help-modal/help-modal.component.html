@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Infos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Zurück</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <h3>Was kann die App?</h3>
+  <p>Es wird aus dem erfassten Text ein QR-Code erstellt.</p>
+  <p>
+    Dieser QR Code kann als Bild (PNG-Format) und/oder PDF am Handy gespeichert
+    werden und wird im <b>{{ folderName }}</b> als
+    <b>{{ fileName }}</b> abgelegt.
+  </p>
+
+  <h3>Wie bediene ich die App?</h3>
+  <ol>
+    <li>
+      ein- oder mehrzeilige <b>Texte erfassen</b>.<br />Eine neue Zeile oder
+      Leerzeilen können durch Drücken der Eingabetaste eingefügt werden.
+    </li>
+    <br />
+    <li>
+      Schaltfläche <i><b>generieren</b></i> drücken.<br />Es wird dann der
+      genertierte QR-Code angezeigt.
+    </li>
+    <br />
+    <li>
+      Soll der <b>QR Code als Bild</b> gespeichert werden, dann die Schaltfläche
+      <i>QR als PNG</i> drücken.<br />Es wird dann eine Nachricht angezeigt, wo
+      die Datei gespeichert wurde. Bitte auf <i>OK</i> klicken.<br />
+    </li>
+    <br />
+    <li>
+      Soll der <b>QR Code als PDF</b> gespeichert werden, dann die Schaltfläche
+      <i>QR als PNG</i> drücken.<br />Es wird dann eine Nachricht angezeigt, wo
+      die Datei gespeichert wurde. Bitte auf <i>OK</i> klicken.<br />
+    </li>
+    <br />
+    <li>
+      Text <b>ändern oder löschen</b>.<br />Der Text kann jederzeit geändert
+      werden, es muss aber nach einer Textänderung wieder die Schaltfläche
+      <i>generieren</i> gedrückt werden.<br />
+      Der Text kann mittels Schaltfläche <i>QR löschen</i>gelöscht werden.
+    </li>
+    <br />
+  </ol>
+</ion-content>
