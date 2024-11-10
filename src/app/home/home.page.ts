@@ -5,6 +5,7 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
 import { IonTextarea, ModalController } from '@ionic/angular';
 import jsPDF from 'jspdf';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
+import { Attachment, EmailComposer } from 'capacitor-email-composer';
 
 @Component({
   selector: 'app-home',
@@ -13,31 +14,35 @@ import { HelpModalComponent } from '../help-modal/help-modal.component';
 })
 export class HomePage {
   @ViewChild('qrDataInput') qrDataInput!: IonTextarea;
-  MAX_INPUT_LENGTH = 2953; // Maximale Kapazität für QR-Code Version 40 mit Fehlerkorrektur-Level L lt. Perplexity KI
+  MAX_INPUT_LENGTH = 1000; // 2953 = Maximale Kapazität für QR-Code Version 40 mit Fehlerkorrektur-Level L lt. Perplexity KI,
+  // aber scannen funktioniert dann nicht mehr, deshalb 1000 - ermittelt durch Tests
 
   myAngularxQrCode: string = '';
   qrCodeDownloadLink: string = '';
   qrCodeIsGenerated = false;
-  textLengthInfo: string = "";
+  textLengthInfo: string = '';
 
-  constructor(private sanitizer: DomSanitizer, private modalController: ModalController) {}
+  constructor(
+    private sanitizer: DomSanitizer,
+    private modalController: ModalController
+  ) {}
 
   async openModal() {
     const modal = await this.modalController.create({
       component: HelpModalComponent,
       componentProps: {
-        fileName: this.getFileName(true, undefined),
-        folderName: this.folderName
-      }
+        fileName: this.getBothFileNames(),
+        folderName: this.folderName,
+      },
     });
     return await modal.present();
   }
 
   clearInputField(): void {
     this.qrCodeIsGenerated = false;
-    this.qrCodeDownloadLink = "";
-    this.myAngularxQrCode = "";
-    this.textLengthInfo = "";
+    this.qrCodeDownloadLink = '';
+    this.myAngularxQrCode = '';
+    this.textLengthInfo = '';
 
     if (this.qrDataInput) {
       this.qrDataInput.value = '';
@@ -62,14 +67,13 @@ export class HomePage {
     console.log('QR Code URL:', this.qrCodeDownloadLink);
   }
 
-
   async saveFile(fileName: string, data: string) {
     if (Capacitor.isNativePlatform()) {
       // use Capacitor Filesystem API for mobiles
       await Filesystem.writeFile({
         path: fileName,
         data: data,
-        directory: Directory.Documents
+        directory: Directory.Documents,
       });
     } else {
       // for Desktop: create a download link
@@ -84,7 +88,7 @@ export class HomePage {
 
     alert(`${fileName} wurde im ${this.folderName} gespeichert.`);
   }
-  
+
   private base64ToBlob(base64: string): Blob {
     const byteCharacters = atob(base64.split(',')[1]);
     const byteNumbers = new Array(byteCharacters.length);
@@ -92,11 +96,11 @@ export class HomePage {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
     const byteArray = new Uint8Array(byteNumbers);
-    return new Blob([byteArray], {type: 'application/octet-stream'});
+    return new Blob([byteArray], { type: 'application/octet-stream' });
   }
 
   async downloadQRCode() {
-    const fileName = "qrcode.png";
+    const fileName = 'qrcode.png';
 
     if (this.qrCodeDownloadLink) {
       try {
@@ -126,19 +130,31 @@ export class HomePage {
   }
 
   get folderName() {
-    return Capacitor.isNativePlatform()  ? "Dokumentenordner" : "Downloadordner";
+    return Capacitor.isNativePlatform() ? 'Dokumentenordner' : 'Downloadordner';
   }
 
-  getFileName(getBothNames: boolean, isPdf: boolean | undefined) {
-    const name = "qrcode";
+  getFileNamePng(): string {
+    return this.getFileName(false, false);
+  }
+
+  getFileNamePdf(): string {
+    return this.getFileName(false, true);
+  }
+
+  getBothFileNames(): string {
+    return this.getFileName(true, undefined);
+  }
+
+  getFileName(getBothNames: boolean, isPdf: boolean | undefined): string {
+    const name = 'qrcode';
     if (getBothNames) {
-      return `${name}.pgn / ${name}.pdf` ;
+      return `${name}.png / ${name}.pdf`;
     }
-    return isPdf ? `${name}.pdf` : `${name}.pgn`;
+    return isPdf ? `${name}.pdf` : `${name}.png`;
   }
 
   async printQRCode() {
-    const fileName = "qrcode.pdf";
+    const fileName = 'qrcode.pdf';
 
     const printContent = document.getElementById('qrcode');
     if (printContent) {
@@ -165,8 +181,7 @@ export class HomePage {
           await this.saveFile(fileName, base64Data);
           console.log('PDF saved:', fileName);
 
-          // Optional: PDF öffnen (dies könnte je nach Plattform unterschiedlich sein)
-          // Hier ein Beispiel für Android:
+          // Optional: open PDF  - example for android
           // await Plugins.FileOpener.open({ filePath: result.uri, contentType: 'application/pdf' });
         } catch (error) {
           console.error('Error saving PDF:', error);
@@ -178,5 +193,51 @@ export class HomePage {
     } else {
       console.error('Print content not found');
     }
+  }
+
+  async sendEmail() {
+    const sendTo = 'hans.zoechbauer@gmail.com; hans.zoechbauer@aon.at';
+    const filePathPng = await this.getDocumentsPath(false);
+    const filePathPdf = await this.getDocumentsPath(true);
+
+    const attachmentPng: Attachment = {
+      path: filePathPng,
+      type: 'absolute',
+    };
+
+    const attachmentPdf: Attachment = {
+      path: filePathPdf,
+      type: 'absolute',
+    };
+
+    const available = await EmailComposer.hasAccount();
+    if (available.hasAccount) {
+      try {
+        await EmailComposer.open({
+          to: [sendTo],
+          subject: 'QR Code mit Textlänge: ' + this.myAngularxQrCode.length,
+          body: this.myAngularxQrCode,
+          attachments: [attachmentPng, attachmentPdf],
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      console.log('Email account is not available');
+    }
+  }
+
+  private async getDocumentsPath(isPdf: boolean): Promise<string> {
+    const result = await Filesystem.getUri({
+      path: isPdf ? this.getFileNamePdf() : this.getFileNamePng(),
+      directory: Directory.Documents,
+    });
+
+    // Remove the "file://" prefix
+    let path = result.uri;
+    if (path.startsWith('file://')) {
+      path = path.slice(7);
+    }
+    return path;
   }
 }

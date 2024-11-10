@@ -24,6 +24,7 @@
           #qrDataInput
           placeholder="bitte Text eingeben. Neue Zeilen durch Eingabe-Taste ..."
           [rows]="3"
+          maxlength="{{MAX_INPUT_LENGTH}}"
         ></ion-textarea>
       </ion-item>
 
@@ -47,6 +48,7 @@
         >QR PNG</ion-button
       >
       <ion-button fill="clear" (click)="printQRCode()" [disabled]="qrCodeDownloadLink === ''">QR PDF</ion-button>
+      <ion-button fill="clear" (click)="sendEmail()" [disabled]="qrCodeDownloadLink === ''">QR mail</ion-button>
       <ion-button fill="clear" (click)="clearInputField()" [disabled]="qrCodeDownloadLink === ''"
         >QR löschen</ion-button
       >
