@@ -1,11 +1,12 @@
 import { Component, SecurityContext, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Capacitor } from '@capacitor/core';
+import { IonText, IonTextarea, ModalController } from '@ionic/angular';
+import { Storage } from '@ionic/storage-angular';
 import { Filesystem, Directory } from '@capacitor/filesystem';
-import { IonTextarea, ModalController } from '@ionic/angular';
+import { Attachment, EmailComposer } from 'capacitor-email-composer';
 import jsPDF from 'jspdf';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
-import { Attachment, EmailComposer } from 'capacitor-email-composer';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +15,7 @@ import { Attachment, EmailComposer } from 'capacitor-email-composer';
 })
 export class HomePage {
   @ViewChild('qrDataInput') qrDataInput!: IonTextarea;
+  @ViewChild('emailInput') emailInput!: IonText;
   MAX_INPUT_LENGTH = 1000; // 2953 = Maximale Kapazität für QR-Code Version 40 mit Fehlerkorrektur-Level L lt. Perplexity KI,
   // aber scannen funktioniert dann nicht mehr, deshalb 1000 - ermittelt durch Tests
 
@@ -21,18 +23,40 @@ export class HomePage {
   qrCodeDownloadLink: string = '';
   qrCodeIsGenerated = false;
   textLengthInfo: string = '';
+  toggleAddress: boolean = false;
+
+  savedEmails: string[] = [];
 
   constructor(
     private sanitizer: DomSanitizer,
-    private modalController: ModalController
-  ) {}
+    private modalController: ModalController,
+    private storage: Storage
+  ) {
+    this.initStorage();
+  }
+
+  async initStorage() {
+    await this.storage.create();
+  }
+
+  toggleShowAddress() {
+    this.toggleAddress = !this.toggleAddress;
+  }
+
+  async loadSavedEmails() {
+    const emails = await this.storage.get('savedEmails');
+    if (emails) {
+      this.savedEmails = JSON.parse(emails);
+    }
+  }
 
   async openModal() {
     const modal = await this.modalController.create({
       component: HelpModalComponent,
       componentProps: {
-        fileName: this.getBothFileNames(),
         folderName: this.folderName,
+        fileNamePng: this.getFileNamePng(),
+        fileNamePdf: this.getFileNamePdf(),
       },
     });
     return await modal.present();
@@ -86,7 +110,7 @@ export class HomePage {
       window.URL.revokeObjectURL(url);
     }
 
-    alert(`${fileName} wurde im ${this.folderName} gespeichert.`);
+    //alert(`${fileName} wurde im ${this.folderName} gespeichert.`);
   }
 
   private base64ToBlob(base64: string): Blob {
@@ -99,6 +123,12 @@ export class HomePage {
     return new Blob([byteArray], { type: 'application/octet-stream' });
   }
 
+  async storeAndMailQRCode() {
+    await this.downloadQRCode();
+    await this.printQRCode();
+    await this.sendEmail();
+  }
+
   async downloadQRCode() {
     const fileName = 'qrcode.png';
 
@@ -109,7 +139,6 @@ export class HomePage {
         const base64Data = await this.blobToBase64(blob);
 
         await this.saveFile(fileName, base64Data);
-        console.log('Image saved:', fileName);
       } catch (error) {
         console.error('Error saving file:', error);
         alert('Fehler beim Speichern des QR-Codes.');
@@ -134,22 +163,15 @@ export class HomePage {
   }
 
   getFileNamePng(): string {
-    return this.getFileName(false, false);
+    return this.getFileName(false);
   }
 
   getFileNamePdf(): string {
-    return this.getFileName(false, true);
+    return this.getFileName(false);
   }
 
-  getBothFileNames(): string {
-    return this.getFileName(true, undefined);
-  }
-
-  getFileName(getBothNames: boolean, isPdf: boolean | undefined): string {
+  getFileName(isPdf: boolean | undefined): string {
     const name = 'qrcode';
-    if (getBothNames) {
-      return `${name}.png / ${name}.pdf`;
-    }
     return isPdf ? `${name}.pdf` : `${name}.png`;
   }
 
@@ -196,7 +218,9 @@ export class HomePage {
   }
 
   async sendEmail() {
-    const sendTo = 'hans.zoechbauer@gmail.com; hans.zoechbauer@aon.at';
+    await this.loadSavedEmails();
+
+    const sendTo = this.savedEmails.join(",");
     const filePathPng = await this.getDocumentsPath(false);
     const filePathPdf = await this.getDocumentsPath(true);
 
@@ -219,11 +243,28 @@ export class HomePage {
           body: this.myAngularxQrCode,
           attachments: [attachmentPng, attachmentPdf],
         });
+
+        for (const email of sendTo.split(',')) {
+          await this.saveEmail(email.trim());
+        }
       } catch (error) {
         console.error(error);
       }
     } else {
       console.log('Email account is not available');
+    }
+  }
+
+  async saveEmail(email: string) {
+    if (email && !this.savedEmails.includes(email)) {
+      this.savedEmails.push(email);
+      await this.storage.set('savedEmails', JSON.stringify(this.savedEmails));
+    }
+  }
+
+  async addEmail(newEmail: string | undefined | null | number) {
+    if (typeof newEmail === 'string') {
+      await this.saveEmail(newEmail);
     }
   }
 
@@ -239,5 +280,13 @@ export class HomePage {
       path = path.slice(7);
     }
     return path;
+  }
+
+  isValidEmail(email: string | number): boolean {
+    if (typeof email !== 'string') {
+      return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
 }

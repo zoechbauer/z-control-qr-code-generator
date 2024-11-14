@@ -7,8 +7,9 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./help-modal.component.scss'],
 })
 export class HelpModalComponent {
-  @Input() fileName!: string;
   @Input() folderName!: string;
+  @Input() fileNamePng!: string;
+  @Input() fileNamePdf!: string;
 
   constructor(private modalController: ModalController) { }
 
