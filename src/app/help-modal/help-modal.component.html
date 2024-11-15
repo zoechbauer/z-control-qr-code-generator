@@ -11,11 +11,19 @@
   <p>Es wird aus dem erfassten Text ein QR-Code erstellt und per Mail versendet.</p>
   <p>
     Dieser QR Code wird als Bild und PDF dem Mail als Anhang mitgegeben und der erfasste Text
-    wird im Mail angeführt. Dadurch sieht man sofort welche QR Codes im Mail enthalten sind.
+    wird im Mail angeführt. Dadurch sieht man sofort welcher Text in den QR Codes enthalten ist.
   </p>
-  <p>Damit beim Mailversand nicht immer die Mailadresse erfasst werden muss, kann sie auch bei den Mail-Adressen hinterlegt werden</p>
+  <p>Damit beim Mailversand nicht immer die Mailadresse erfasst werden muss, können Mail-Adressen verwaltet werden.</p>
 
   <h3>Wie bediene ich die App?</h3>
+  <h5>Überblick</h5>
+  <ol>
+    <li>Text erfassen</li>
+    <li>QR Code generieren</li>
+    <li>QR Code mailen</li>
+    <li>Optional Mailadresse(n) erfassen</li>
+  </ol>
+  <h5>Detail-Informationen QR Code generieren</h5>
   <ol>
     <li>
       Ein- oder mehrzeilige <b>Texte erfassen</b>.<br />Eine neue Zeile oder
@@ -32,10 +40,9 @@
     <li>
       Mittels Schaltfläche <i>QR Code speichern und mailen</i> werde die <i>QR Codes dem Mail angehängt</i>.<br /><br />
       Das Mail kann abgeändert werden und wird mit dem <b>Pfeil rechts in der rechten Kopfzeile versendet</b>.<br /><br />
-      Wurde der <b>QR-Code per Mail versendet</b>, wird der Empfänger unterhalb der Schaltflächen angezeigt.<br /><br />
       <ul><b>Inhalt der Mail</b>
         <li><i>Betreff: </i>QR Code mit Angabe der Textlänge des erfassten Textes.<br />z.B. QR Code mit Textlänge 512</li><br />
-        <li><i>Text: </i>Der erfasste Text der als QR Code generiert wurde.</li><br />
+        <li><i>Text: </i>Der in den QR Codes enthaltene erfasste Text.</li><br />
         <li><i>Empfänger: </i>Der oder die Empfänger werden automatisch vorbelegt, wenn sie mittels <b>MAIL ADR</b> angelegt wurden.
           Sonst müssen sie erfasst werden.
       </ul>
@@ -49,15 +56,16 @@
     </li>
     <br />
   </ol>
-  <h3>Mail Adressen anlegen</h3>
+  <h5>Detail-Informationen Mail Adressen verwalten</h5>
   <p>In der <b>Kopfzeile</b> gibt es die Auswahl <b>MAIL ADR</b></p>
   <p>Hier kann zwischen QR-Code Erstellung und Mail-Adressenverwaltung gewechselt werden.</p>
-  <p>Es werden alle bereits erfassten Mail-Adressen angezeigt und neue Mail-Adressen können erfasst werden.</p>
+  <p>Es werden alle bereits erfassten Mail-Adressen angezeigt und neue Mail-Adressen können erfasst 
+    und bereits erfasste Mail-Adressen können gelöscht werden.</p>
 
   <h3>Technische Informationen</h3>
-  <p>Die erfassten Mailadressen werden im Handy in local Storage gespeichert.</p>
+  <p>Die <b>erfassten Mailadressen</b> werden am Handy in local Storage (IndexedDB bzw. Local Storage) gespeichert.</p>
   <p>
-    Der generierte QR Code wird als Bild (PNG-Format) und PDF am Handy
+    Der <b>generierte QR Code</b> wird als Bild (PNG-Format) und PDF am Handy
     im <b>{{ folderName }}</b> als <b>{{ fileNamePng }}</b> und als 
     <b>{{ fileNamePdf }}</b> gespeichert.
   </p>

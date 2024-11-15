@@ -58,13 +58,13 @@
         fill="clear"
         (click)="storeAndMailQRCode()"
         [disabled]="qrCodeDownloadLink === ''"
-        >QR-Code speichern und mailen</ion-button
+        >QR-Code mailen</ion-button
       >
       <ion-button
         fill="clear"
         (click)="clearInputField()"
         [disabled]="qrCodeDownloadLink === ''"
-        >Eingabe text löschen</ion-button
+        >Eingabe löschen</ion-button
       >
     </div>
   </ion-card>
@@ -76,34 +76,37 @@
     <ion-card-header>
       <ion-card-title class="ion-text-center">Mail Adressen</ion-card-title>
     </ion-card-header>
-      <p>
-        Die hier erfassten Mail-Adressen werden beim Versand der QR Codes im
-        Mailempfänger vorbelegt.
-      </p>
-      <ion-list class="email-list" *ngIf="savedEmails.length > 0">
-        <ion-item *ngFor="let email of savedEmails">
-          <ion-label>{{ email }}</ion-label>
-        </ion-item>
-      </ion-list>
-      <p class="missing-mails ion-text-center" *ngIf="savedEmails.length === 0">
-        Es wurden noch keine Mailadressen erfasst.
-      </p>
+    <p>
+      Die hier erfassten Mail-Adressen werden beim Versand der QR Codes im
+      Mailempfänger vorbelegt.
+    </p>
+    <ion-list class="email-list" *ngIf="savedEmails.length > 0">
+      <ion-item *ngFor="let email of savedEmails; let i = index">
+        <ion-label>{{ email }}</ion-label>
+        <ion-button slot="end" fill="clear" (click)="deleteMailAddress(i)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+    <p class="missing-mails ion-text-center" *ngIf="savedEmails.length === 0">
+      Es wurden noch keine Mailadressen erfasst.
+    </p>
 
-      <div class="enter-mail-address">
-        <h6 class="ion-text-center">Neue Mail-Adresse hinzufügen</h6>
-        <ion-item>
-          <ion-label position="stacked">E-Mail</ion-label>
-          <ion-input
-            #newEmail
-            type="email"
-            placeholder="example@gmail.com"
-          ></ion-input>
-        </ion-item>
-      </div>
+    <div class="enter-mail-address">
+      <h6 class="ion-text-center">Neue Mail-Adresse hinzufügen</h6>
+      <ion-item>
+        <ion-label position="stacked">E-Mail</ion-label>
+        <ion-input
+          #newEmailAddress
+          type="email"
+          placeholder="example@gmail.com"
+        ></ion-input>
+      </ion-item>
+    </div>
     <ion-button
       expand="block"
-      (click)="addEmail(newEmail.value); newEmail.value=''"
-      [disabled]="!newEmail.value || !isValidEmail(newEmail.value)"
+      (click)="addEmailAddress(newEmailAddress.value); newEmailAddress.value=''"
+      [disabled]="!newEmailAddress.value || !isValidEmailAddress(newEmailAddress.value)"
       >Hinzufügen</ion-button
     >
   </ion-card>

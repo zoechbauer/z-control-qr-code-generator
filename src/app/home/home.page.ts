@@ -8,6 +8,10 @@ import { Attachment, EmailComposer } from 'capacitor-email-composer';
 import jsPDF from 'jspdf';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
 
+enum LocalStorage {
+  SavedEmails = "savedEmailAddress"
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -44,7 +48,7 @@ export class HomePage {
   }
 
   async loadSavedEmails() {
-    const emails = await this.storage.get('savedEmails');
+    const emails = await this.storage.get(LocalStorage.SavedEmails);
     if (emails) {
       this.savedEmails = JSON.parse(emails);
     }
@@ -258,13 +262,13 @@ export class HomePage {
   async saveEmail(email: string) {
     if (email && !this.savedEmails.includes(email)) {
       this.savedEmails.push(email);
-      await this.storage.set('savedEmails', JSON.stringify(this.savedEmails));
+      await this.storage.set(LocalStorage.SavedEmails, JSON.stringify(this.savedEmails));
     }
   }
 
-  async addEmail(newEmail: string | undefined | null | number) {
-    if (typeof newEmail === 'string') {
-      await this.saveEmail(newEmail);
+  async addEmailAddress(newEmailAddress: string | undefined | null | number) {
+    if (typeof newEmailAddress === 'string') {
+      await this.saveEmail(newEmailAddress);
     }
   }
 
@@ -282,11 +286,16 @@ export class HomePage {
     return path;
   }
 
-  isValidEmail(email: string | number): boolean {
-    if (typeof email !== 'string') {
+  isValidEmailAddress(emailAddress: string | number): boolean {
+    if (typeof emailAddress !== 'string') {
       return false;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    return emailRegex.test(emailAddress);
+  }
+
+  async deleteMailAddress(index: number) {
+    this.savedEmails.splice(index, 1);
+    await this.storage.set(LocalStorage.SavedEmails, JSON.stringify(this.savedEmails));
   }
 }
