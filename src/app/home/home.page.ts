@@ -9,7 +9,7 @@ import jsPDF from 'jspdf';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
 
 enum LocalStorage {
-  SavedEmails = "savedEmailAddress"
+  savedEmailAddresses = "savedEmailAddresses"
 }
 
 @Component({
@@ -25,11 +25,10 @@ export class HomePage {
 
   myAngularxQrCode: string = '';
   qrCodeDownloadLink: string = '';
-  qrCodeIsGenerated = false;
-  textLengthInfo: string = '';
+  isQrCodeGenerated = false;
   toggleAddress: boolean = false;
 
-  savedEmails: string[] = [];
+  savedEmailAddresses: string[] = [];
 
   constructor(
     private sanitizer: DomSanitizer,
@@ -48,9 +47,9 @@ export class HomePage {
   }
 
   async loadSavedEmails() {
-    const emails = await this.storage.get(LocalStorage.SavedEmails);
-    if (emails) {
-      this.savedEmails = JSON.parse(emails);
+    const emailAddresses = await this.storage.get(LocalStorage.savedEmailAddresses);
+    if (emailAddresses) {
+      this.savedEmailAddresses = JSON.parse(emailAddresses);
     }
   }
 
@@ -61,16 +60,16 @@ export class HomePage {
         folderName: this.folderName,
         fileNamePng: this.getFileNamePng(),
         fileNamePdf: this.getFileNamePdf(),
+        maxInputLength: this.MAX_INPUT_LENGTH
       },
     });
     return await modal.present();
   }
 
   clearInputField(): void {
-    this.qrCodeIsGenerated = false;
+    this.isQrCodeGenerated = false;
     this.qrCodeDownloadLink = '';
     this.myAngularxQrCode = '';
-    this.textLengthInfo = '';
 
     if (this.qrDataInput) {
       this.qrDataInput.value = '';
@@ -79,20 +78,12 @@ export class HomePage {
 
   generateQRCode(data: string | null | undefined) {
     this.myAngularxQrCode = data && data.trim() ? data : ' ';
-    this.qrCodeIsGenerated = true;
-
-    this.setTextLengthInfo();
-    console.log('QR Code data:', this.myAngularxQrCode);
-  }
-
-  private setTextLengthInfo() {
-    this.textLengthInfo = ` [${this.myAngularxQrCode.length} / ${this.MAX_INPUT_LENGTH}]`;
+    this.isQrCodeGenerated = true;
   }
 
   onChangeURL(url: SafeUrl) {
     this.qrCodeDownloadLink =
       this.sanitizer.sanitize(SecurityContext.URL, url) || '';
-    console.log('QR Code URL:', this.qrCodeDownloadLink);
   }
 
   async saveFile(fileName: string, data: string) {
@@ -171,7 +162,7 @@ export class HomePage {
   }
 
   getFileNamePdf(): string {
-    return this.getFileName(false);
+    return this.getFileName(true);
   }
 
   getFileName(isPdf: boolean | undefined): string {
@@ -205,7 +196,6 @@ export class HomePage {
         try {
           // store PDF on device
           await this.saveFile(fileName, base64Data);
-          console.log('PDF saved:', fileName);
 
           // Optional: open PDF  - example for android
           // await Plugins.FileOpener.open({ filePath: result.uri, contentType: 'application/pdf' });
@@ -223,10 +213,15 @@ export class HomePage {
 
   async sendEmail() {
     await this.loadSavedEmails();
+    const lineBreak = '\n';
 
-    const sendTo = this.savedEmails.join(",");
     const filePathPng = await this.getDocumentsPath(false);
     const filePathPdf = await this.getDocumentsPath(true);
+
+    const sendTo = this.savedEmailAddresses.join(",");
+    
+    const mailSubject = 'QR Code mit Textlänge: ' + this.myAngularxQrCode.length;
+    const mailBody = 'Dieser Text ist im QR Code enthalten:' + lineBreak + lineBreak + this.myAngularxQrCode;
 
     const attachmentPng: Attachment = {
       path: filePathPng,
@@ -243,8 +238,8 @@ export class HomePage {
       try {
         await EmailComposer.open({
           to: [sendTo],
-          subject: 'QR Code mit Textlänge: ' + this.myAngularxQrCode.length,
-          body: this.myAngularxQrCode,
+          subject: mailSubject,
+          body: mailBody,
           attachments: [attachmentPng, attachmentPdf],
         });
 
@@ -260,9 +255,9 @@ export class HomePage {
   }
 
   async saveEmail(email: string) {
-    if (email && !this.savedEmails.includes(email)) {
-      this.savedEmails.push(email);
-      await this.storage.set(LocalStorage.SavedEmails, JSON.stringify(this.savedEmails));
+    if (email && !this.savedEmailAddresses.includes(email)) {
+      this.savedEmailAddresses.push(email);
+      await this.storage.set(LocalStorage.savedEmailAddresses, JSON.stringify(this.savedEmailAddresses));
     }
   }
 
@@ -295,7 +290,7 @@ export class HomePage {
   }
 
   async deleteMailAddress(index: number) {
-    this.savedEmails.splice(index, 1);
-    await this.storage.set(LocalStorage.SavedEmails, JSON.stringify(this.savedEmails));
+    this.savedEmailAddresses.splice(index, 1);
+    await this.storage.set(LocalStorage.savedEmailAddresses, JSON.stringify(this.savedEmailAddresses));
   }
 }

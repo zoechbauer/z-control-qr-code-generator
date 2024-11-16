@@ -10,6 +10,7 @@ export class HelpModalComponent {
   @Input() folderName!: string;
   @Input() fileNamePng!: string;
   @Input() fileNamePdf!: string;
+  @Input() maxInputLength!: number;
 
   constructor(private modalController: ModalController) { }
 

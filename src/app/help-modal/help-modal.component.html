@@ -8,12 +8,13 @@
 </ion-header>
 <ion-content class="ion-padding">
   <h3>Was kann die App?</h3>
-  <p>Es wird aus dem erfassten Text ein QR-Code erstellt und per Mail versendet.</p>
+  <p>Es wird aus dem erfassten Text ein QR Code erstellt und per Mail versendet.
+    Der Text kann nicht formatiert werden und kann bis zu {{maxInputLength}} Zeichen lang sein.</p>
   <p>
-    Dieser QR Code wird als Bild und PDF dem Mail als Anhang mitgegeben und der erfasste Text
-    wird im Mail angeführt. Dadurch sieht man sofort welcher Text in den QR Codes enthalten ist.
+    Der QR Code wird als Bild und PDF dem Mail angehängt und der erfasste Text steht im Mail.
+    So sehen Sie sofort welcher Text im QR Code enthalten ist, falls Sie mehrere QR Codes erstellen.
   </p>
-  <p>Damit beim Mailversand nicht immer die Mailadresse erfasst werden muss, können Mail-Adressen verwaltet werden.</p>
+  <p>Damit Sie beim Mailversand nicht immer die Mailadresse erfassen müssen, können Sie Mail-Adressen anlegen.</p>
 
   <h3>Wie bediene ich die App?</h3>
   <h5>Überblick</h5>
@@ -27,19 +28,19 @@
   <ol>
     <li>
       Ein- oder mehrzeilige <b>Texte erfassen</b>.<br />Eine neue Zeile oder
-      Leerzeilen können durch ein- oder mehrmaliges Drücken der Eingabetaste eingefügt werden.
+      Leerzeilen können durch ein- oder mehrmaliges Drücken der Eingabetaste eingefügt werden. 
+      Als Formatierung wird nur die Großschreibung unterstützt. Rechts unterhalb dem Eingabefeld 
+      werden die erfasste Textlänge und die maximale Textlänge von {{maxInputLength}} Zeichen angezeigt.
     </li>
     <br />
     <li>
       Schaltfläche <i><b>generieren</b></i> drücken.<br />Es wird dann der
-      genertierte QR-Code angezeigt.<br />Neben dem Label
-      <i>QR Code Text</i> wird die Textlänge und die maximale Textlänge
-      folgendermaßen angezeigt: <b>[erfasste Textlänge/maximale Textlänge]</b>
+      genertierte QR Code angezeigt.
     </li>
     <br />
     <li>
-      Mittels Schaltfläche <i>QR Code speichern und mailen</i> werde die <i>QR Codes dem Mail angehängt</i>.<br /><br />
-      Das Mail kann abgeändert werden und wird mit dem <b>Pfeil rechts in der rechten Kopfzeile versendet</b>.<br /><br />
+      Mittels Schaltfläche <i>QR Code mailen</i> werden die <i>QR Codes dem Mail als png und pdf angehängt</i>.<br /><br />
+      Das Mail kann bei Bedarf bearbeitet werden und wird mit dem <b>Pfeil rechts in der rechten Kopfzeile versendet</b>.<br /><br />
       <ul><b>Inhalt der Mail</b>
         <li><i>Betreff: </i>QR Code mit Angabe der Textlänge des erfassten Textes.<br />z.B. QR Code mit Textlänge 512</li><br />
         <li><i>Text: </i>Der in den QR Codes enthaltene erfasste Text.</li><br />
@@ -58,15 +59,26 @@
   </ol>
   <h5>Detail-Informationen Mail Adressen verwalten</h5>
   <p>In der <b>Kopfzeile</b> gibt es die Auswahl <b>MAIL ADR</b></p>
-  <p>Hier kann zwischen QR-Code Erstellung und Mail-Adressenverwaltung gewechselt werden.</p>
+  <p>Hier kann zwischen QR Code Erstellung und Mail-Adressenverwaltung gewechselt werden.</p>
   <p>Es werden alle bereits erfassten Mail-Adressen angezeigt und neue Mail-Adressen können erfasst 
     und bereits erfasste Mail-Adressen können gelöscht werden.</p>
 
   <h3>Technische Informationen</h3>
-  <p>Die <b>erfassten Mailadressen</b> werden am Handy in local Storage (IndexedDB bzw. Local Storage) gespeichert.</p>
   <p>
-    Der <b>generierte QR Code</b> wird als Bild (PNG-Format) und PDF am Handy
-    im <b>{{ folderName }}</b> als <b>{{ fileNamePng }}</b> und als 
+    <b>Spracheingabe:</b> Wenn Sie in den Handy-Einstellungen die Spracheingabe aktivieren, erscheint im Tastaturfeld ein Mikrofon-Symbol. 
+    Durch Tippen auf dieses Symbol wechseln Sie zur Spracheingabe. Sie können flexibel zwischen Tastatur und Spracheingabe wechseln.
+    Die Bedienung entspricht der üblichen Spracheingabe-Funktion Ihres Handys.
+  </p>
+  <p>
+    <b>Scannen des generierten QR Codes:</b> Der erfasste Text kann bis zu <b>{{maxInputLength}} Zeichen</b> lang sein.
+    Beachten Sie: Je mehr Text der QR Code enthält, desto länger dauert der Scan-Vorgang. 
+    Für sehr lange Texte empfehlen wir eine spezielle Scanner-App. QR Codes mit bis zu 500 Zeichen können in der Regel 
+    problemlos mit der Kamera-App Ihres Handys gescannt werden. Bei den meisten modernen Smartphones ist die QR Code-Scan-Funktion 
+    bereits in der Standard-Kamera-App integriert.
+  </p>
+  <p><b>Erfasste Mailadressen</b> werden am Handy in local Storage (IndexedDB bzw. Local Storage) gespeichert.</p>
+  <p>
+    Der <b>generierte QR Code</b> wird am Handy im <b>{{ folderName }}</b> als <b>{{ fileNamePng }}</b> und
     <b>{{ fileNamePdf }}</b> gespeichert.
   </p>
 
