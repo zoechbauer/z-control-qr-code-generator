@@ -26,7 +26,8 @@ export class HomePage {
   myAngularxQrCode: string = '';
   qrCodeDownloadLink: string = '';
   isQrCodeGenerated = false;
-  toggleAddress: boolean = false;
+  isEmailSent = false;
+  showAddress: boolean = false;
 
   savedEmailAddresses: string[] = [];
 
@@ -40,13 +41,14 @@ export class HomePage {
 
   async initStorage() {
     await this.storage.create();
+    await this.loadSavedEmailAddresses();
   }
 
   toggleShowAddress() {
-    this.toggleAddress = !this.toggleAddress;
+    this.showAddress = !this.showAddress;
   }
 
-  async loadSavedEmails() {
+  async loadSavedEmailAddresses() {
     const emailAddresses = await this.storage.get(LocalStorage.savedEmailAddresses);
     if (emailAddresses) {
       this.savedEmailAddresses = JSON.parse(emailAddresses);
@@ -68,12 +70,25 @@ export class HomePage {
 
   clearInputField(): void {
     this.isQrCodeGenerated = false;
+    this.isEmailSent = false;
     this.qrCodeDownloadLink = '';
     this.myAngularxQrCode = '';
 
     if (this.qrDataInput) {
       this.qrDataInput.value = '';
     }
+  }
+
+  isInputChangedAfterGeneration(): boolean {
+    if (this.qrDataInput) {
+      return this.qrDataInput.value !== this.myAngularxQrCode;
+    };
+    return false;
+    
+  }
+
+  isInputFieldEmpty(): boolean {
+    return this.qrDataInput ? this.qrDataInput.value === '' : true;
   }
 
   generateQRCode(data: string | null | undefined) {
@@ -212,7 +227,7 @@ export class HomePage {
   }
 
   async sendEmail() {
-    await this.loadSavedEmails();
+    await this.loadSavedEmailAddresses();
     const lineBreak = '\n';
 
     const filePathPng = await this.getDocumentsPath(false);
@@ -246,6 +261,9 @@ export class HomePage {
         for (const email of sendTo.split(',')) {
           await this.saveEmail(email.trim());
         }
+
+        this.isEmailSent = true;
+
       } catch (error) {
         console.error(error);
       }

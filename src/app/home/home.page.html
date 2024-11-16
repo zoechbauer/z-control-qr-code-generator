@@ -1,8 +1,12 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="end">
-      <ion-button fill="clear" (click)="toggleShowAddress()">
-        {{!toggleAddress ? "Mail Adr" : "QR Code"}}
+      <ion-button
+        fill="clear"
+        (click)="toggleShowAddress()"
+        [disabled]="!isInputFieldEmpty()"
+      >
+        {{!showAddress ? "Mail Adr" : "QR Code"}}
       </ion-button>
       <ion-button fill="clear" (click)="openModal()">
         <ion-icon slot="end" name="help"></ion-icon>
@@ -13,7 +17,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-card *ngIf="!toggleAddress" class="qr-code">
+  <ion-card *ngIf="!showAddress" class="qr-code">
     <ion-card-header>
       <ion-card-title class="ion-text-center">QR Code erstellen</ion-card-title>
     </ion-card-header>
@@ -23,9 +27,7 @@
     <!-- +++++++++++++++++++++++++ -->
     <ion-card-content>
       <ion-item>
-        <ion-label position="stacked"
-          >QR Code Text</ion-label
-        >
+        <ion-label position="stacked">QR Code Text</ion-label>
         <ion-textarea
           [autoGrow]="true"
           [counter]="true"
@@ -51,20 +53,20 @@
     <ion-button
       expand="block"
       (click)="generateQRCode(qrDataInput.value)"
-      [disabled]="qrDataInput.value === ''"
+      [disabled]="(isInputFieldEmpty() || isEmailSent || isQrCodeGenerated) && !isInputChangedAfterGeneration()"
       >generieren</ion-button
     >
     <div class="buttons-no-generation">
       <ion-button
         fill="clear"
         (click)="storeAndMailQRCode()"
-        [disabled]="qrCodeDownloadLink === ''"
+        [disabled]="qrCodeDownloadLink === '' || isInputChangedAfterGeneration()"
         >QR-Code mailen</ion-button
       >
       <ion-button
         fill="clear"
         (click)="clearInputField()"
-        [disabled]="qrCodeDownloadLink === ''"
+        [disabled]="isInputFieldEmpty()"
         >Eingabe löschen</ion-button
       >
     </div>
@@ -73,7 +75,7 @@
   <!-- +++++++++++++++++++++++++ -->
   <!-- E-MAIL ADDRESSE MAINTENANCE -->
   <!-- +++++++++++++++++++++++++ -->
-  <ion-card *ngIf="toggleAddress" class="mail-address">
+  <ion-card *ngIf="showAddress" class="mail-address">
     <ion-card-header>
       <ion-card-title class="ion-text-center">Mail Adressen</ion-card-title>
     </ion-card-header>
@@ -89,7 +91,10 @@
         </ion-button>
       </ion-item>
     </ion-list>
-    <p class="missing-mails ion-text-center" *ngIf="savedEmailAddresses.length === 0">
+    <p
+      class="missing-mails ion-text-center"
+      *ngIf="savedEmailAddresses.length === 0"
+    >
       Es wurden noch keine Mailadressen erfasst.
     </p>
 
