@@ -38,10 +38,10 @@
         ></ion-textarea>
       </ion-item>
 
-      <ion-item *ngIf="isQrCodeGenerated">
+      <ion-item *ngIf="qrService.isQrCodeGenerated">
         <qrcode
           id="qrcode"
-          [qrdata]="myAngularxQrCode"
+          [qrdata]="qrService.myAngularxQrCode"
           [width]="256"
           [errorCorrectionLevel]="'M'"
           (qrCodeURL)="onChangeURL($event)"
@@ -52,15 +52,15 @@
 
     <ion-button
       expand="block"
-      (click)="generateQRCode(qrDataInput.value)"
-      [disabled]="(isInputFieldEmpty() || isEmailSent || isQrCodeGenerated) && !isInputChangedAfterGeneration()"
+      (click)="this.qrService.generateQRCode(qrDataInput.value)"
+      [disabled]="(isInputFieldEmpty() || EmailService.isEmailSent || qrService.isQrCodeGenerated) && !hasInputChangedAfterGeneration()"
       >generieren</ion-button
     >
     <div class="buttons-no-generation">
       <ion-button
         fill="clear"
         (click)="storeAndMailQRCode()"
-        [disabled]="qrCodeDownloadLink === '' || isInputChangedAfterGeneration()"
+        [disabled]="qrService.qrCodeDownloadLink === '' || hasInputChangedAfterGeneration()"
         >QR-Code mailen</ion-button
       >
       <ion-button
@@ -83,17 +83,17 @@
       Die hier erfassten Mail-Adressen werden beim Versand der QR Codes im
       Mailempfänger vorbelegt.
     </p>
-    <ion-list class="email-list" *ngIf="savedEmailAddresses.length > 0">
-      <ion-item *ngFor="let email of savedEmailAddresses; let i = index">
+    <ion-list class="email-list" *ngIf="this.localStorage.savedEmailAddresses.length > 0">
+      <ion-item *ngFor="let email of this.localStorage.savedEmailAddresses; let i = index">
         <ion-label>{{ email }}</ion-label>
-        <ion-button slot="end" fill="clear" (click)="deleteMailAddress(i)">
+        <ion-button slot="end" fill="clear" (click)="this.localStorage.deleteMailAddress(i)">
           <ion-icon name="trash-outline"></ion-icon>
         </ion-button>
       </ion-item>
     </ion-list>
     <p
       class="missing-mails ion-text-center"
-      *ngIf="savedEmailAddresses.length === 0"
+      *ngIf="this.localStorage.savedEmailAddresses.length === 0"
     >
       Es wurden noch keine Mailadressen erfasst.
     </p>
@@ -112,7 +112,7 @@
     <ion-button
       expand="block"
       (click)="addEmailAddress(newEmailAddress.value); newEmailAddress.value=''"
-      [disabled]="!newEmailAddress.value || !isValidEmailAddress(newEmailAddress.value)"
+      [disabled]="!newEmailAddress.value || !EmailService.isValidEmailAddress(newEmailAddress.value)"
       >Hinzufügen</ion-button
     >
   </ion-card>
