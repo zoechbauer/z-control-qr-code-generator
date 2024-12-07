@@ -19,5 +19,16 @@
     "EMAIL_PAGE_ADD_EMAIL_TITLE": "Neue Mail-Adresse hinzufügen",
     "EMAIL_PAGE_ADD_EMAIL_LABEL": "EMAIL",
     "EMAIL_PAGE_ADD_EMAIL_PLACEHOLDER": "Bitte Mail-Adresse eingeben",
-    "EMAIL_PAGE_ADD_BUTTON": "Hinzufügen"
+    "EMAIL_PAGE_ADD_BUTTON": "Hinzufügen",
+    
+    "------ email service": "-------",
+    "EMAIL_SERVICE_MAIL_SUBJECT_PREFIX": "QR Code mit Textlänge: ",
+    "EMAIL_SERVICE_MAIL_BODY_PREFIX": "Dieser Text ist im QR Code enthalten:",
+
+    "------ error messages": "-------",
+    "ERROR_ALERT_TITLE_ERROR": "Fehler",
+    "ERROR_ALERT_BUTTON_OK": "OK",
+    "ERROR_MESSAGE_SAVE_QR_PDF": "Fehler beim Speichern des QR-Code als PDF.",
+    "ERROR_MESSAGE_SAVE_QR": "Fehler beim Speichern des QR-Codes.",
+    "ERROR_MESSAGE_MISSING_QR_URL": "QR-Code URL nicht verfügbar."
   }

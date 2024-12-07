@@ -4,6 +4,7 @@ import { Attachment, EmailComposer } from 'capacitor-email-composer';
 import { FileUtilsService } from './file-utils.service';
 import { LocalStorageService } from './local-storage.service';
 import { QrUtilsService } from './qr-utils.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class EmailUtilsService {
   constructor(private fileService: FileUtilsService,
     private localStorage: LocalStorageService,
     private qrService: QrUtilsService,
+    private translate: TranslateService
   ) { }
 
   get isEmailSent(): boolean {
@@ -36,9 +38,12 @@ export class EmailUtilsService {
     const filePathPdf = await this.fileService.getDocumentsPath(true);
 
     const sendTo = this.localStorage.savedEmailAddresses.join(",");
+
+    const mailSubjectPrefix = this.translate.instant('EMAIL_SERVICE_MAIL_SUBJECT_PREFIX');
+    const mailBodyPrefix = this.translate.instant('EMAIL_SERVICE_MAIL_BODY_PREFIX');
     
-    const mailSubject = 'QR Code mit Textlänge: ' + this.qrService.myAngularxQrCode.length;
-    const mailBody = 'Dieser Text ist im QR Code enthalten:' + lineBreak + lineBreak + this.qrService.myAngularxQrCode;
+    const mailSubject = mailSubjectPrefix + this.qrService.myAngularxQrCode.length;
+    const mailBody = mailBodyPrefix + lineBreak + lineBreak + this.qrService.myAngularxQrCode;
 
     const attachmentPng: Attachment = {
       path: filePathPng,

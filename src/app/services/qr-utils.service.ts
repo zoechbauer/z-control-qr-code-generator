@@ -3,6 +3,8 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import jsPDF from 'jspdf';
 
 import { FileUtilsService } from './file-utils.service';
+import { TranslateService } from '@ngx-translate/core';
+import { ErrorAlertService } from './error-alert.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,9 @@ export class QrUtilsService {
   isQrCodeGenerated = false;
 
   constructor(private sanitizer: DomSanitizer,
-    private fileUtilsService: FileUtilsService ) { }
+    private fileUtilsService: FileUtilsService,
+    private translate: TranslateService, 
+    private errorService: ErrorAlertService) { }
 
   generateQRCode(data: string | null | undefined) {
     this.myAngularxQrCode = data && data.trim() ? data : ' ';
@@ -53,7 +57,7 @@ export class QrUtilsService {
           // await Plugins.FileOpener.open({ filePath: result.uri, contentType: 'application/pdf' });
         } catch (error) {
           console.error('Error saving PDF:', error);
-          alert('Fehler beim Speichern des QR-Code PDFs.');
+          this.errorService.showErrorAlert('ERROR_MESSAGE_SAVE_QR_PDF');
         }
       } else {
         console.error('Canvas not found');

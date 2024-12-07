@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 
+import { ErrorAlertService } from './error-alert.service';
+
 @Injectable({
   providedIn: 'root'
 })
 export class FileUtilsService {
 
-  constructor() { }
+  constructor(private errorService: ErrorAlertService) { }
 
   async getDocumentsPath(isPdf: boolean): Promise<string> {
     const result = await Filesystem.getUri({
@@ -74,11 +76,11 @@ export class FileUtilsService {
         await this.saveFile(fileName, base64Data);
       } catch (error) {
         console.error('Error saving file:', error);
-        alert('Fehler beim Speichern des QR-Codes.');
+        this.errorService.showErrorAlert('ERROR_MESSAGE_SAVE_QR');
       }
     } else {
       console.error('QR Code URL is not available');
-      alert('Fehler: QR-Code URL nicht verfügbar.');
+      this.errorService.showErrorAlert('ERROR_MESSAGE_MISSING_QR_URL');
     }
   }
 
