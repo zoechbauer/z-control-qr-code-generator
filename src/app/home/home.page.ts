@@ -64,6 +64,7 @@ export class HomePage {
         fileNamePng: this.fileService.fileNamePng,
         fileNamePdf: this.fileService.fileNamePdf,
         maxInputLength: this.MAX_INPUT_LENGTH,
+        selectedLanguage: this.localStorage.selectedLanguage,
       },
     });
     return await modal.present();

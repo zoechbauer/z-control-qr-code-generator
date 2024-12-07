@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -11,6 +11,9 @@ export class HelpModalComponent {
   @Input() fileNamePng!: string;
   @Input() fileNamePdf!: string;
   @Input() maxInputLength!: number;
+  @Input() selectedLanguage!: string;
+
+  templateUrl!: string;
 
   constructor(private modalController: ModalController) { }
 
