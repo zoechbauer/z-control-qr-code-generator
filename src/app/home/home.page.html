@@ -1,20 +1,20 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="end">
-      <ion-button
-        fill="clear"
-        (click)="toggleShowAddress()"
-        [disabled]="!isInputFieldEmpty()"
-      >
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="toggleShowAddress()" [disabled]="!isInputFieldEmpty()">
         {{!showAddress ? ('EMAIL_ADDRESS_BUTTON' | translate) : "QR Code"}}
       </ion-button>
+    </ion-buttons>
+    <ion-title><b>QR Code</b></ion-title>
+    <ion-buttons slot="end">
       <ion-button fill="clear" (click)="openModal()">
-        <ion-icon slot="end" name="help"></ion-icon>
+        <ion-icon slot="icon-only" name="help"></ion-icon>
       </ion-button>
-      <ion-button fill="clear" (click)="openLanguagePopover($event)">{{this.localStorage.selectedLanguage}}
+      <ion-button fill="clear" (click)="openLanguagePopover($event)">
+        <ion-icon slot="icon-only" name="language"></ion-icon>
+        {{this.localStorage.selectedLanguage}}
       </ion-button>
     </ion-buttons>
-    <ion-title><b>z-control</b></ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -58,7 +58,7 @@
       [disabled]="(isInputFieldEmpty() || EmailService.isEmailSent || qrService.isQrCodeGenerated) && !hasInputChangedAfterGeneration()"
       >{{ 'GENERATE' | translate }}</ion-button
     >
-    <div class="buttons-no-generation">
+    <div class="buttons-no-generation ion-justify-content-around">
       <ion-button
         fill="clear"
         (click)="storeAndMailQRCode()"
@@ -81,9 +81,9 @@
     <ion-card-header>
       <ion-card-title class="ion-text-center">{{'EMAIL_PAGE_TITLE' | translate}}</ion-card-title>
     </ion-card-header>
-    <p>
+    <ion-item disabled>
       {{'EMAIL_PAGE_INFOTEXT' | translate}}
-    </p>
+    </ion-item>
     <ion-list class="email-list" *ngIf="this.localStorage.savedEmailAddresses.length > 0">
       <ion-item *ngFor="let email of this.localStorage.savedEmailAddresses; let i = index">
         <ion-label>{{ email }}</ion-label>
@@ -116,5 +116,18 @@
       [disabled]="!newEmailAddress.value || !EmailService.isValidEmailAddress(newEmailAddress.value)"
       >{{'EMAIL_PAGE_ADD_BUTTON' | translate }}</ion-button
     >
+    <div class="buttons-no-add ion-justify-content-around">
+      <ion-button
+        fill="clear"
+        (click)="newEmailAddress.value = '';"
+        [disabled]="!newEmailAddress.value"
+        >{{ 'CLEAR_INPUT' | translate}}</ion-button
+      >
+      <ion-button
+        fill="clear"
+        (click)="toggleShowAddress()"
+        >{{ 'EMAIL_PAGE_BACK_BUTTON' | translate}}</ion-button
+      >
+    </div>
   </ion-card>
 </ion-content>

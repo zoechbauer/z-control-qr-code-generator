@@ -6,10 +6,10 @@
 
     "------ QR code page": "-------",
     "GENERATE": "Generate",
-    "MAIL_QR_CODE": "Mail QR Code",
+    "MAIL_QR_CODE": "Mail Code",
     "CLEAR_INPUT": "Clear Input",
     "CREATE_QR_CODE": "Create QR Code",
-    "QR_CODE_TEXT": "QR Code Text",
+    "QR_CODE_TEXT": "Text",
     "INPUT_FIELD_PLACEHOLDER": "Please enter text. Use Enter key to fill in blank lines ...",
 
     "------ email address page": "-------",
@@ -20,6 +20,7 @@
     "EMAIL_PAGE_ADD_EMAIL_LABEL": "EMAIL",
     "EMAIL_PAGE_ADD_EMAIL_PLACEHOLDER": "Please enter email address",
     "EMAIL_PAGE_ADD_BUTTON": "Add",
+    "EMAIL_PAGE_BACK_BUTTON": "Back to QR Code",
 
     "------ email service": "-------",
     "EMAIL_SERVICE_MAIL_SUBJECT_PREFIX": "QR Code with text length: ",

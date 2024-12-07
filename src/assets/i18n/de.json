@@ -9,7 +9,7 @@
     "MAIL_QR_CODE": "QR-Code mailen",
     "CLEAR_INPUT": "Eingabe löschen",
     "CREATE_QR_CODE": "QR Code erstellen",
-    "QR_CODE_TEXT": "QR Code Text",
+    "QR_CODE_TEXT": "Text",
     "INPUT_FIELD_PLACEHOLDER": "Bitte Text eingeben. Leerzeilen mittels Eingabe-Taste ...",
 
     "------ email address page": "-------",
@@ -20,6 +20,7 @@
     "EMAIL_PAGE_ADD_EMAIL_LABEL": "EMAIL",
     "EMAIL_PAGE_ADD_EMAIL_PLACEHOLDER": "Bitte Mail-Adresse eingeben",
     "EMAIL_PAGE_ADD_BUTTON": "Hinzufügen",
+    "EMAIL_PAGE_BACK_BUTTON": "Zurück zu QR Code",
     
     "------ email service": "-------",
     "EMAIL_SERVICE_MAIL_SUBJECT_PREFIX": "QR Code mit Textlänge: ",

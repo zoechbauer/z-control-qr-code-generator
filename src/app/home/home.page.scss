@@ -10,6 +10,11 @@
 
 
 .mail-address{
+  .missing-mails {
+    font-size: 18px;
+    color: var(--ion-color-primary);
+  }
+
   .email-list {
     ion-label {
       font-size: 13px;
@@ -20,7 +25,7 @@
     margin-top: 30px;
   }
   
-  .missing-mails {
-    font-size: 18px;
+  .buttons-no-add {
+    display: flex;
   }
 }

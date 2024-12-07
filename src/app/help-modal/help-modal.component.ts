@@ -13,8 +13,6 @@ export class HelpModalComponent {
   @Input() maxInputLength!: number;
   @Input() selectedLanguage!: string;
 
-  templateUrl!: string;
-
   constructor(private modalController: ModalController) { }
 
   dismissModal() {
