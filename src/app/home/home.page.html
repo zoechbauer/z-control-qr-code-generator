@@ -6,10 +6,12 @@
         (click)="toggleShowAddress()"
         [disabled]="!isInputFieldEmpty()"
       >
-        {{!showAddress ? "Mail Adr" : "QR Code"}}
+        {{!showAddress ? ('EMAIL_ADDRESS_BUTTON' | translate) : "QR Code"}}
       </ion-button>
       <ion-button fill="clear" (click)="openModal()">
         <ion-icon slot="end" name="help"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="openLanguagePopover($event)">{{this.localStorage.selectedLanguage}}
       </ion-button>
     </ion-buttons>
     <ion-title><b>z-control</b></ion-title>
@@ -19,7 +21,7 @@
 <ion-content class="ion-padding">
   <ion-card *ngIf="!showAddress" class="qr-code">
     <ion-card-header>
-      <ion-card-title class="ion-text-center">QR Code erstellen</ion-card-title>
+      <ion-card-title class="ion-text-center">{{'CREATE_QR_CODE' | translate}}</ion-card-title>
     </ion-card-header>
 
     <!-- +++++++++++++++++++++++++ -->
@@ -27,12 +29,12 @@
     <!-- +++++++++++++++++++++++++ -->
     <ion-card-content>
       <ion-item>
-        <ion-label position="stacked">QR Code Text</ion-label>
+        <ion-label position="stacked">{{ 'QR_CODE_TEXT' | translate }}</ion-label>
         <ion-textarea
           [autoGrow]="true"
           [counter]="true"
           #qrDataInput
-          placeholder="Bitte Text eingeben. Leerzeilen mittels Eingabe-Taste ..."
+          placeholder="{{'INPUT_FIELD_PLACEHOLDER' | translate}}"
           [rows]="3"
           maxlength="{{MAX_INPUT_LENGTH}}"
         ></ion-textarea>
@@ -54,20 +56,20 @@
       expand="block"
       (click)="this.qrService.generateQRCode(qrDataInput.value)"
       [disabled]="(isInputFieldEmpty() || EmailService.isEmailSent || qrService.isQrCodeGenerated) && !hasInputChangedAfterGeneration()"
-      >generieren</ion-button
+      >{{ 'GENERATE' | translate }}</ion-button
     >
     <div class="buttons-no-generation">
       <ion-button
         fill="clear"
         (click)="storeAndMailQRCode()"
         [disabled]="qrService.qrCodeDownloadLink === '' || hasInputChangedAfterGeneration()"
-        >QR-Code mailen</ion-button
+        >{{ 'MAIL_QR_CODE' | translate}}</ion-button
       >
       <ion-button
         fill="clear"
         (click)="clearInputField()"
         [disabled]="isInputFieldEmpty()"
-        >Eingabe löschen</ion-button
+        >{{ 'CLEAR_INPUT' | translate}}</ion-button
       >
     </div>
   </ion-card>
@@ -77,11 +79,10 @@
   <!-- +++++++++++++++++++++++++ -->
   <ion-card *ngIf="showAddress" class="mail-address">
     <ion-card-header>
-      <ion-card-title class="ion-text-center">Mail Adressen</ion-card-title>
+      <ion-card-title class="ion-text-center">{{'EMAIL_PAGE_TITLE' | translate}}</ion-card-title>
     </ion-card-header>
     <p>
-      Die hier erfassten Mail-Adressen werden beim Versand der QR Codes im
-      Mailempfänger vorbelegt.
+      {{'EMAIL_PAGE_INFOTEXT' | translate}}
     </p>
     <ion-list class="email-list" *ngIf="this.localStorage.savedEmailAddresses.length > 0">
       <ion-item *ngFor="let email of this.localStorage.savedEmailAddresses; let i = index">
@@ -95,17 +96,17 @@
       class="missing-mails ion-text-center"
       *ngIf="this.localStorage.savedEmailAddresses.length === 0"
     >
-      Es wurden noch keine Mailadressen erfasst.
+      {{'EMAIL_PAGE_NO_EMAIL_ADRESSES' | translate}}
     </p>
 
     <div class="enter-mail-address">
-      <h6 class="ion-text-center">Neue Mail-Adresse hinzufügen</h6>
+      <h6 class="ion-text-center">{{'EMAIL_PAGE_ADD_EMAIL_TITLE' | translate}}</h6>
       <ion-item>
-        <ion-label position="stacked">E-Mail</ion-label>
+        <ion-label position="stacked">{{'EMAIL_PAGE_ADD_EMAIL_LABEL' | translate}}</ion-label>
         <ion-input
           #newEmailAddress
           type="email"
-          placeholder="example@gmail.com"
+          placeholder="{{'EMAIL_PAGE_ADD_EMAIL_PLACEHOLDER' | translate}}"
         ></ion-input>
       </ion-item>
     </div>
@@ -113,7 +114,7 @@
       expand="block"
       (click)="addEmailAddress(newEmailAddress.value); newEmailAddress.value=''"
       [disabled]="!newEmailAddress.value || !EmailService.isValidEmailAddress(newEmailAddress.value)"
-      >Hinzufügen</ion-button
+      >{{'EMAIL_PAGE_ADD_BUTTON' | translate }}</ion-button
     >
   </ion-card>
 </ion-content>

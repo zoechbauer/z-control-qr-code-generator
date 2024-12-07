@@ -1,12 +1,19 @@
-import { EmailUtilsService } from './../services/email-utils.service';
 import { Component, ViewChild } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
-import { IonText, IonTextarea, ModalController } from '@ionic/angular';
+import {
+  IonText,
+  IonTextarea,
+  ModalController,
+  PopoverController,
+} from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
+import { EmailUtilsService } from './../services/email-utils.service';
 
 import { HelpModalComponent } from '../help-modal/help-modal.component';
-import { LocalStorageService } from '../services/local-storage.service';
 import { FileUtilsService } from '../services/file-utils.service';
+import { LocalStorageService } from '../services/local-storage.service';
 import { QrUtilsService } from '../services/qr-utils.service';
+import { LanguagePopoverComponent } from './language-popover.component';
 
 @Component({
   selector: 'app-home',
@@ -25,10 +32,24 @@ export class HomePage {
     public qrService: QrUtilsService,
     public localStorage: LocalStorageService,
     public EmailService: EmailUtilsService,
+    public translate: TranslateService,
     private modalController: ModalController,
     private fileService: FileUtilsService,
+    private popoverController: PopoverController
   ) {
-    this.localStorage.initStorage();
+    this.localStorage.loadSelectedOrDefaultLanguage().then(() => {
+      this.translate.setDefaultLang(this.localStorage.selectedLanguage);
+      this.translate.use(this.localStorage.selectedLanguage);
+    });
+  }
+
+  async openLanguagePopover(ev: any) {
+    const popover = await this.popoverController.create({
+      component: LanguagePopoverComponent,
+      event: ev,
+      translucent: true,
+    });
+    return await popover.present();
   }
 
   toggleShowAddress() {
@@ -42,7 +63,7 @@ export class HomePage {
         folderName: this.fileService.folderName,
         fileNamePng: this.fileService.fileNamePng,
         fileNamePdf: this.fileService.fileNamePdf,
-        maxInputLength: this.MAX_INPUT_LENGTH
+        maxInputLength: this.MAX_INPUT_LENGTH,
       },
     });
     return await modal.present();
@@ -60,7 +81,7 @@ export class HomePage {
   hasInputChangedAfterGeneration(): boolean {
     if (this.qrDataInput) {
       return this.qrDataInput.value !== this.qrService.myAngularxQrCode;
-    };
+    }
     return false;
   }
 
@@ -83,5 +104,4 @@ export class HomePage {
       await this.localStorage.saveEmail(newEmailAddress);
     }
   }
-  
 }

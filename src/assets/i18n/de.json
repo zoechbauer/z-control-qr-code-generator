@@ -1,0 +1,23 @@
+{
+    "------ general settings": "-------",
+    "LANGUAGE_EN": "Englisch",
+    "LANGUAGE_DE": "Deutsch",
+    "EMAIL_ADDRESS_BUTTON": "Mail Adr",
+
+    "------ QR code page": "-------",
+    "GENERATE": "Generieren",
+    "MAIL_QR_CODE": "QR-Code mailen",
+    "CLEAR_INPUT": "Eingabe löschen",
+    "CREATE_QR_CODE": "QR Code erstellen",
+    "QR_CODE_TEXT": "QR Code Text",
+    "INPUT_FIELD_PLACEHOLDER": "Bitte Text eingeben. Leerzeilen mittels Eingabe-Taste ...",
+
+    "------ email address page": "-------",
+    "EMAIL_PAGE_TITLE": "Email Adressen",
+    "EMAIL_PAGE_INFOTEXT": "Die hier erfassten Mail-Adressen werden beim Versand der QR Codes im Mailempfänger vorbelegt.",
+    "EMAIL_PAGE_NO_EMAIL_ADRESSES": "Es wurden noch keine Mailadressen erfasst.",
+    "EMAIL_PAGE_ADD_EMAIL_TITLE": "Neue Mail-Adresse hinzufügen",
+    "EMAIL_PAGE_ADD_EMAIL_LABEL": "EMAIL",
+    "EMAIL_PAGE_ADD_EMAIL_PLACEHOLDER": "Bitte Mail-Adresse eingeben",
+    "EMAIL_PAGE_ADD_BUTTON": "Hinzufügen"
+  }

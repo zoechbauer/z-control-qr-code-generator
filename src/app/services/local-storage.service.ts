@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 
 enum LocalStorage {
-  savedEmailAddresses = "savedEmailAddresses"
+  savedEmailAddresses = "savedEmailAddresses",
+  selectedLanguage = "selectedLanguage"
 }
 
 @Injectable({
@@ -10,6 +11,7 @@ enum LocalStorage {
 })
 export class LocalStorageService {
   savedEmailAddresses: string[] = [];
+  selectedLanguage: string = "";
 
   constructor(private storage: Storage) {
     this.initStorage();
@@ -18,6 +20,27 @@ export class LocalStorageService {
   async initStorage() {
     await this.storage.create();
     await this.loadSavedEmailAddresses();
+    await this.loadSelectedOrDefaultLanguage();
+  }
+
+  getMobileDefaultLanguage(): string {
+    return navigator.language.split('-')[0];  // e.g. "de-DE" -> "de"
+  }
+
+  async loadSelectedOrDefaultLanguage() {
+    const selectedLanguage = await this.storage.get(LocalStorage.selectedLanguage);
+
+    if (selectedLanguage) {
+      this.selectedLanguage = JSON.parse(selectedLanguage);
+    } else {
+      this.selectedLanguage = this.getMobileDefaultLanguage();
+      await this.saveSelectedLanguage(this.selectedLanguage); 
+    }
+  }
+
+  async saveSelectedLanguage(language: string) {
+    this.selectedLanguage = language;
+    await this.storage.set(LocalStorage.selectedLanguage, JSON.stringify(language));
   }
 
   async loadSavedEmailAddresses() {
