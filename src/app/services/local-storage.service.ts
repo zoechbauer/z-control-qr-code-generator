@@ -24,7 +24,8 @@ export class LocalStorageService {
   }
 
   getMobileDefaultLanguage(): string {
-    return navigator.language.split('-')[0];  // e.g. "de-DE" -> "de"
+    const lang = navigator.language.split('-')[0];  // e.g. "de-DE" -> "de"
+    return /(de|en)/gi.test(lang) ? lang : "en";
   }
 
   async loadSelectedOrDefaultLanguage() {
