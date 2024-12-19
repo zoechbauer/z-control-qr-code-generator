@@ -1,7 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button fill="clear" (click)="toggleShowAddress()" [disabled]="!isInputFieldEmpty()">
+      <ion-button
+        fill="clear"
+        (click)="toggleShowAddress()"
+        [disabled]="!isInputFieldEmpty()"
+      >
         {{!showAddress ? ('EMAIL_ADDRESS_BUTTON' | translate) : "QR Code"}}
       </ion-button>
     </ion-buttons>
@@ -21,7 +25,9 @@
 <ion-content class="ion-padding">
   <ion-card *ngIf="!showAddress" class="qr-code">
     <ion-card-header>
-      <ion-card-title class="ion-text-center">{{'CREATE_QR_CODE' | translate}}</ion-card-title>
+      <ion-card-title class="ion-text-center"
+        >{{'CREATE_QR_CODE' | translate}}</ion-card-title
+      >
     </ion-card-header>
 
     <!-- +++++++++++++++++++++++++ -->
@@ -29,7 +35,9 @@
     <!-- +++++++++++++++++++++++++ -->
     <ion-card-content>
       <ion-item>
-        <ion-label position="stacked">{{ 'QR_CODE_TEXT' | translate }}</ion-label>
+        <ion-label position="stacked"
+          >{{ 'QR_CODE_TEXT' | translate }}</ion-label
+        >
         <ion-textarea
           [autoGrow]="true"
           [counter]="true"
@@ -41,14 +49,16 @@
       </ion-item>
 
       <ion-item *ngIf="qrService.isQrCodeGenerated">
-        <qrcode
-          id="qrcode"
-          [qrdata]="qrService.myAngularxQrCode"
-          [width]="256"
-          [errorCorrectionLevel]="'M'"
-          (qrCodeURL)="onChangeURL($event)"
-          [allowEmptyString]="true"
-        ></qrcode>
+        <div class="center-horizontal">
+          <qrcode
+            id="qrcode"
+            [qrdata]="qrService.myAngularxQrCode"
+            [width]="256"
+            [errorCorrectionLevel]="'M'"
+            (qrCodeURL)="onChangeURL($event)"
+            [allowEmptyString]="true"
+          ></qrcode>
+        </div>
       </ion-item>
     </ion-card-content>
 
@@ -79,15 +89,24 @@
   <!-- +++++++++++++++++++++++++ -->
   <ion-card *ngIf="showAddress" class="mail-address">
     <ion-card-header>
-      <ion-card-title class="ion-text-center">{{'EMAIL_PAGE_TITLE' | translate}}</ion-card-title>
+      <ion-card-title class="ion-text-center"
+        >{{'EMAIL_PAGE_TITLE' | translate}}</ion-card-title
+      >
     </ion-card-header>
-    <ion-item disabled>
-      {{'EMAIL_PAGE_INFOTEXT' | translate}}
-    </ion-item>
-    <ion-list class="email-list" *ngIf="this.localStorage.savedEmailAddresses.length > 0">
-      <ion-item *ngFor="let email of this.localStorage.savedEmailAddresses; let i = index">
+    <ion-item disabled> {{'EMAIL_PAGE_INFOTEXT' | translate}} </ion-item>
+    <ion-list
+      class="email-list"
+      *ngIf="this.localStorage.savedEmailAddresses.length > 0"
+    >
+      <ion-item
+        *ngFor="let email of this.localStorage.savedEmailAddresses; let i = index"
+      >
         <ion-label>{{ email }}</ion-label>
-        <ion-button slot="end" fill="clear" (click)="this.localStorage.deleteMailAddress(i)">
+        <ion-button
+          slot="end"
+          fill="clear"
+          (click)="this.localStorage.deleteMailAddress(i)"
+        >
           <ion-icon name="trash-outline"></ion-icon>
         </ion-button>
       </ion-item>
@@ -100,9 +119,13 @@
     </p>
 
     <div class="enter-mail-address">
-      <h6 class="ion-text-center">{{'EMAIL_PAGE_ADD_EMAIL_TITLE' | translate}}</h6>
+      <h6 class="ion-text-center">
+        {{'EMAIL_PAGE_ADD_EMAIL_TITLE' | translate}}
+      </h6>
       <ion-item>
-        <ion-label position="stacked">{{'EMAIL_PAGE_ADD_EMAIL_LABEL' | translate}}</ion-label>
+        <ion-label position="stacked"
+          >{{'EMAIL_PAGE_ADD_EMAIL_LABEL' | translate}}</ion-label
+        >
         <ion-input
           #newEmailAddress
           type="email"
@@ -123,9 +146,7 @@
         [disabled]="!newEmailAddress.value"
         >{{ 'CLEAR_INPUT' | translate}}</ion-button
       >
-      <ion-button
-        fill="clear"
-        (click)="toggleShowAddress()"
+      <ion-button fill="clear" (click)="toggleShowAddress()"
         >{{ 'EMAIL_PAGE_BACK_BUTTON' | translate}}</ion-button
       >
     </div>

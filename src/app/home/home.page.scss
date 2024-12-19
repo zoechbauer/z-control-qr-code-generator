@@ -6,6 +6,12 @@
   .buttons-no-generation {
     display: flex;
   }
+
+  .center-horizontal {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+  }
 }
 
 
