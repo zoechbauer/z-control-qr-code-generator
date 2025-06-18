@@ -1,4 +1,4 @@
-package zoe.ionic.qrcodeapp;
+package at.zcontrol.zoe.qrcodeapp;
 
 import com.getcapacitor.BridgeActivity;
 

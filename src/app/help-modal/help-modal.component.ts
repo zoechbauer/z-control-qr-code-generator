@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -18,5 +18,6 @@ export class HelpModalComponent {
   dismissModal() {
     this.modalController.dismiss();
   }
+
 
 }

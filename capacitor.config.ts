@@ -1,9 +1,9 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'zoe.ionic.qrcodeapp',
+  appId: 'at.zcontrol.zoe.qrcodeapp',
   appName: 'qr-code',
-  webDir: 'www'
+  webDir: 'www',
 };
 
 export default config;

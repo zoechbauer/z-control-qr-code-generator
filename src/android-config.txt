@@ -1,0 +1,16 @@
+# AndroidManifest.xml custom permissions
+    <!-- camera, photos, input file  -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- Geolocation Plugin -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-feature android:name="android.hardware.location.gps" />   
+
+# build.gradle - change these values for each deployment to google play store
+versionCode 1
+versionName "1.0"
+
+# icons installation
+Android Studion: app/res -> rMT: new/image asset
