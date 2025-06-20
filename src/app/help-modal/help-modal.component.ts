@@ -7,7 +7,6 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./help-modal.component.scss'],
 })
 export class HelpModalComponent {
-  @Input() folderName!: string;
   @Input() fileNamePng!: string;
   @Input() fileNamePdf!: string;
   @Input() maxInputLength!: number;

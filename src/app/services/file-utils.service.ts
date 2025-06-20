@@ -5,11 +5,10 @@ import { Directory, Filesystem } from '@capacitor/filesystem';
 import { ErrorAlertService } from './error-alert.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FileUtilsService {
-
-  constructor(private errorService: ErrorAlertService) { }
+  constructor(private errorService: ErrorAlertService) {}
 
   async getDocumentsPath(isPdf: boolean): Promise<string> {
     const result = await Filesystem.getUri({
@@ -25,10 +24,6 @@ export class FileUtilsService {
     return path;
   }
 
-  get folderName() {
-    return Capacitor.isNativePlatform() ? 'Dokumentenordner' : 'Downloadordner';
-  }
-
   get fileNamePng(): string {
     return this.getFileName(false);
   }
@@ -37,19 +32,42 @@ export class FileUtilsService {
     return this.getFileName(true);
   }
 
+  SetNowFormatted() {
+    // Use '-' instead of ':' in time to avoid issues in filenames
+    const now = new Date();
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    const formatted = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(
+      now.getDate()
+    )}_${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+    this.nowFormatted = formatted;
+  }
+
+  ClearNowFormatted() {
+    this.nowFormatted = '';
+  }
+
+  private nowFormatted: string = '';
+
   private getFileName(isPdf: boolean | undefined): string {
     const name = 'qrcode';
-    return isPdf ? `${name}.pdf` : `${name}.png`;
+    return isPdf
+      ? `${name}_${this.nowFormatted}.pdf`
+      : `${name}_${this.nowFormatted}.png`;
   }
 
   async saveFile(fileName: string, data: string) {
     if (Capacitor.isNativePlatform()) {
       // use Capacitor Filesystem API for mobiles
-      await Filesystem.writeFile({
-        path: fileName,
-        data: data,
-        directory: Directory.Documents,
-      });
+      try {
+        await Filesystem.writeFile({
+          path: fileName,
+          data: data,
+          directory: Directory.Documents,
+        });
+      } catch (error) {
+        console.error('Error saving file:', error);
+        this.errorService.showErrorAlert('ERROR_MESSAGE_SAVE_QR');
+      }
     } else {
       // for Desktop: create a download link
       const blob = this.base64ToBlob(data);
@@ -60,12 +78,58 @@ export class FileUtilsService {
       link.click();
       window.URL.revokeObjectURL(url);
     }
+  }
 
-    //alert(`${fileName} wurde im ${this.folderName} gespeichert.`);
+  async deleteAllQrCodeFiles() {
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const files = await Filesystem.readdir({
+          directory: Directory.Documents,
+          path: '',
+        });
+
+        const qrFiles = files.files.filter((f) => f.name.startsWith('qrcode'));
+        
+        for (const file of qrFiles) {
+          await Filesystem.deleteFile({
+            path: file.name,
+            directory: Directory.Documents,
+          });
+        }
+      } catch (error) {
+        console.error('Error deleting QR code files:', error);
+      }
+    }
+  }
+
+  deleteFilesAfter30min() {
+    const fileNamePng = this.fileNamePng;
+    const fileNamePdf = this.fileNamePdf;
+    setTimeout(() => {
+      this.deleteFiles(fileNamePng, fileNamePdf);
+    }, 180 * 60 * 1000); // 180 minutes in milliseconds
+  }
+
+  private async deleteFiles(fileNamePng: string, fileNamePdf: string) {
+    if (Capacitor.isNativePlatform()) {
+      try {
+        await Filesystem.deleteFile({
+          path: fileNamePng,
+          directory: Directory.Documents,
+        });
+        await Filesystem.deleteFile({
+          path: fileNamePdf,
+          directory: Directory.Documents,
+        });
+      } catch (error) {
+        console.error('Error deleting file:', error);
+        this.errorService.showErrorAlert('ERROR_MESSAGE_DELETE_QR');
+      }
+    }
   }
 
   async downloadQRCode(qrCodeDownloadLink: string) {
-    const fileName = 'qrcode.png';
+    const fileName = this.fileNamePng;
 
     if (qrCodeDownloadLink) {
       try {
@@ -75,7 +139,7 @@ export class FileUtilsService {
 
         await this.saveFile(fileName, base64Data);
       } catch (error) {
-        console.error('Error saving file:', error);
+        console.error('Error saving file in downloadQRCode:', error);
         this.errorService.showErrorAlert('ERROR_MESSAGE_SAVE_QR');
       }
     } else {

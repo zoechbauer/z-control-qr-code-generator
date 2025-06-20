@@ -75,7 +75,7 @@ export class EmailUtilsService {
         console.error(error);
       }
     } else {
-      console.log('Email account is not available');
+      console.error('Email account is not available');
     }
   }
 

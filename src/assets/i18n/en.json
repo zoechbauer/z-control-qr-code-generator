@@ -31,5 +31,6 @@
     "ERROR_ALERT_BUTTON_OK": "OK",
     "ERROR_MESSAGE_SAVE_QR_PDF": "Error saving QR code as PDF.",
     "ERROR_MESSAGE_SAVE_QR": "Error saving QR code.",
+    "ERROR_MESSAGE_DELETE_QR": "Error deleting QR code.",
     "ERROR_MESSAGE_MISSING_QR_URL": "QR code URL not available."
   }

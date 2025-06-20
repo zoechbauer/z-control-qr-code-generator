@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import {
   IonText,
@@ -20,7 +20,7 @@ import { LanguagePopoverComponent } from './language-popover.component';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
   @ViewChild('qrDataInput') qrDataInput!: IonTextarea;
   @ViewChild('emailInput') emailInput!: IonText;
   MAX_INPUT_LENGTH = 1000; // 2953 = Maximale Kapazität für QR-Code Version 40 mit Fehlerkorrektur-Level L lt. Perplexity KI,
@@ -36,11 +36,15 @@ export class HomePage {
     private modalController: ModalController,
     private fileService: FileUtilsService,
     private popoverController: PopoverController
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.localStorage.loadSelectedOrDefaultLanguage().then(() => {
       this.translate.setDefaultLang(this.localStorage.selectedLanguage);
       this.translate.use(this.localStorage.selectedLanguage);
     });
+
+    this.fileService.deleteAllQrCodeFiles();
   }
 
   async openLanguagePopover(ev: any) {
@@ -60,7 +64,6 @@ export class HomePage {
     const modal = await this.modalController.create({
       component: HelpModalComponent,
       componentProps: {
-        folderName: this.fileService.folderName,
         fileNamePng: this.fileService.fileNamePng,
         fileNamePdf: this.fileService.fileNamePdf,
         maxInputLength: this.MAX_INPUT_LENGTH,
@@ -94,10 +97,13 @@ export class HomePage {
     this.qrService.setDownloadLink(url);
   }
 
-  async storeAndMailQRCode() {
+  async storeMailAndDeleteQRCode() {
+    this.fileService.SetNowFormatted();
     await this.fileService.downloadQRCode(this.qrService.qrCodeDownloadLink);
     await this.qrService.printQRCode();
     await this.EmailService.sendEmail();
+    this.fileService.deleteFilesAfter30min();
+    this.fileService.ClearNowFormatted();
   }
 
   async addEmailAddress(newEmailAddress: string | undefined | null | number) {

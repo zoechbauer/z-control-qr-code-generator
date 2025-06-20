@@ -71,7 +71,7 @@
     <div class="buttons-no-generation ion-justify-content-around">
       <ion-button
         fill="clear"
-        (click)="storeAndMailQRCode()"
+        (click)="storeMailAndDeleteQRCode()"
         [disabled]="qrService.qrCodeDownloadLink === '' || hasInputChangedAfterGeneration()"
         >{{ 'MAIL_QR_CODE' | translate}}</ion-button
       >

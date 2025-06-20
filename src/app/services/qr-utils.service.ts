@@ -27,7 +27,7 @@ export class QrUtilsService {
   }
 
   async printQRCode() {
-    const fileName = 'qrcode.pdf';
+    const fileName = this.fileUtilsService.fileNamePdf;
 
     const printContent = document.getElementById('qrcode');
     if (printContent) {

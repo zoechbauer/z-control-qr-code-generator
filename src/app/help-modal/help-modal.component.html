@@ -20,7 +20,8 @@
     <p>
       A QR code is created from the entered text and sent by email. The text
       cannot be formatted and can be up to
-      {{ maxInputLength }} characters long. Text or a link to a web page can be entered.
+      {{ maxInputLength }} characters long. Text or a link to a web page can be
+      entered.
     </p>
     <p>
       The QR code is attached to the email as an image and PDF, and the entered
@@ -44,12 +45,12 @@
     <h5>Details on generating QR code</h5>
     <ol>
       <li>
-        Enter single or multi-line <b>text or link</b> to a web page 
-        (e.g. https://de.wikipedia.org).<br />A new line or blank lines
-        can be inserted by pressing the Enter key one or more times. Only
-        uppercase formatting is supported. The length of the entered text and
-        the maximum text length of {{ maxInputLength }} characters are displayed
-        below the input field.
+        Enter single or multi-line <b>text or link</b> to a web page (e.g.
+        https://de.wikipedia.org).<br />A new line or blank lines can be
+        inserted by pressing the Enter key one or more times. Only uppercase
+        formatting is supported. The length of the entered text and the maximum
+        text length of {{ maxInputLength }} characters are displayed below the
+        input field.
       </li>
       <br />
       <li>
@@ -145,10 +146,15 @@
       (IndexedDB or Local Storage).
     </p>
     <p>
-      The <b>generated QR code</b> is saved on the phone in the
-      <b>{{ folderName }}</b> as <b>{{ fileNamePng }}</b> and
-      <b>{{ fileNamePdf }}</b
-      >.
+      The <b>generated QR code files</b> are attached to the email and are
+      stored on the phone in the documents folder. After 3 hours or if you
+      restart the app the files are deleted automatically.
+    </p>
+    <p>
+      The <b>QR code file names</b> contain the text <i>qrcode</i> and the
+      timestamp of generation and have the following format:
+      <i>qrcode_YYYYMMDD_HHMMSS.png</i>
+      <i>qrcode_YYYYMMDD_HHMMSS.pdf</i>
     </p>
   </ion-content>
 </ng-template>
@@ -171,8 +177,8 @@
     <p>
       Es wird aus dem erfassten Text ein QR Code erstellt und per Mail
       versendet. Der Text kann nicht formatiert werden und kann bis zu
-      {{ maxInputLength }} Zeichen lang sein. Es kann ein Text oder der 
-      Link zu einer Web Site erfasst werden.
+      {{ maxInputLength }} Zeichen lang sein. Es kann ein Text oder der Link zu
+      einer Web Site erfasst werden.
     </p>
     <p>
       Der QR Code wird als Bild und PDF dem Mail angehängt und der erfasste Text
@@ -196,13 +202,12 @@
     <h5>Detail-Informationen QR Code generieren</h5>
     <ol>
       <li>
-        Ein- oder mehrzeilige <b>Texte oder Link</b> zu einer Web Seite 
-        (z.B. https://de.wikipedia.org) erfassen.<br />Eine neue Zeile oder
-        Leerzeilen können durch ein- oder mehrmaliges Drücken der Eingabetaste
-        eingefügt werden. Als Formatierung wird nur die Großschreibung
-        unterstützt. Rechts unterhalb dem Eingabefeld werden die erfasste
-        Textlänge und die maximale Textlänge von {{ maxInputLength }} Zeichen
-        angezeigt.
+        Ein- oder mehrzeilige <b>Texte oder Link</b> zu einer Web Seite (z.B.
+        https://de.wikipedia.org) erfassen.<br />Eine neue Zeile oder Leerzeilen
+        können durch ein- oder mehrmaliges Drücken der Eingabetaste eingefügt
+        werden. Als Formatierung wird nur die Großschreibung unterstützt. Rechts
+        unterhalb dem Eingabefeld werden die erfasste Textlänge und die maximale
+        Textlänge von {{ maxInputLength }} Zeichen angezeigt.
       </li>
       <br />
       <li>
@@ -239,7 +244,7 @@
         werden, es muss aber nach einer Textänderung wieder die Schaltfläche
         <i>generieren</i> gedrückt werden.<br /><br />
         Damit der Text auch nach dem Senden noch geändert werden kann, z.B.
-        wegen kleiner Abweichungen, im Text wird der Text nach dem Senden nicht
+        wegen kleiner Abweichungen im Text, wird der Text nach dem Senden nicht
         gelöscht.<br /><br />
         Der Text kann mittels Schaltfläche <i>Eingabe löschen</i> gelöscht
         werden. Es wird dann auch der generierte QR Code nicht mehr angezeigt.
@@ -297,12 +302,19 @@
       Code-Scan-Funktion bereits in der Standard-Kamera-App integriert.
     </p>
     <p>
-      <b>Erfasste Mailadressen</b> werden am Handy in local Storage (IndexedDB
+      <b>Erfasste Mailadressen</b> werden im Handy in local Storage (IndexedDB
       bzw. Local Storage) gespeichert.
     </p>
     <p>
-      Der <b>generierte QR Code</b> wird am Handy im <b>{{ folderName }}</b> als
-      <b>{{ fileNamePng }}</b> und <b>{{ fileNamePdf }}</b> gespeichert.
+      Die <b>generierten QR Code Dateien</b> werden dem Mail als Anhang
+      übergeben und im Handy im Documents Ornder temporär gespeichert. Nach 3
+      Stunden oder wenn Sie die App neu starten werden sie automatisch gelöscht.
+    </p>
+    <p>
+      Die <b>QR Code Datei Namen</b> enthalten den Text <i>qrcode</i>
+      und den Zeitstempel der Generierung und haben folgendes Format:
+      <i>qrcode_YYYYMMDD_HHMMSS.png</i>
+      <i>qrcode_YYYYMMDD_HHMMSS.pdf</i>
     </p>
   </ion-content>
 </ng-template>
