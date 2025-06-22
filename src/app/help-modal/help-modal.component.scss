@@ -1,0 +1,25 @@
+ol.table-of-contents {
+  list-style: none;
+  padding: 0;
+
+  li {
+    margin: 10px 0;
+    text-align: center;
+
+    a {
+      line-height: 40px !important;
+      text-decoration: none;
+      // color: var(--text-color);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.back-to-table-of-contents {
+  text-align: center;
+  margin-top: 25px;
+  // color: var(--text-color);
+}

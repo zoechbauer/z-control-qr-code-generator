@@ -2,6 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button
+        class="button-color"
         fill="clear"
         (click)="toggleShowAddress()"
         [disabled]="!isInputFieldEmpty()"
@@ -11,12 +12,16 @@
     </ion-buttons>
     <ion-title><b>QR Code</b></ion-title>
     <ion-buttons slot="end">
-      <ion-button fill="clear" (click)="openModal()">
+      <ion-button class="icon-color" fill="clear" (click)="openModal()">
         <ion-icon slot="icon-only" name="help"></ion-icon>
       </ion-button>
-      <ion-button fill="clear" (click)="openLanguagePopover($event)">
+      <ion-button
+        class="icon-color"
+        fill="clear"
+        (click)="openLanguagePopover($event)"
+      >
         <ion-icon slot="icon-only" name="language"></ion-icon>
-        {{this.localStorage.selectedLanguage}}
+        {{this.localStorage.selectedLanguage$ | async}}
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -70,12 +75,14 @@
     >
     <div class="buttons-no-generation ion-justify-content-around">
       <ion-button
+        class="button-color"
         fill="clear"
         (click)="storeMailAndDeleteQRCode()"
         [disabled]="qrService.qrCodeDownloadLink === '' || hasInputChangedAfterGeneration()"
         >{{ 'MAIL_QR_CODE' | translate}}</ion-button
       >
       <ion-button
+        class="button-color"
         fill="clear"
         (click)="clearInputField()"
         [disabled]="isInputFieldEmpty()"

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
+import { BehaviorSubject } from 'rxjs';
 
 enum LocalStorage {
   savedEmailAddresses = "savedEmailAddresses",
@@ -11,13 +12,16 @@ enum LocalStorage {
 })
 export class LocalStorageService {
   savedEmailAddresses: string[] = [];
-  selectedLanguage: string = "";
+  selectedLanguageSubj = new BehaviorSubject<string>(this.getMobileDefaultLanguage());
+  selectedLanguage$ = this.selectedLanguageSubj.asObservable();
 
-  constructor(private storage: Storage) {
-    this.initStorage();
+  constructor(private readonly storage: Storage) {}
+
+  async init() {
+    await this.initStorage();
   }
 
-  async initStorage() {
+  private async initStorage() {
     await this.storage.create();
     await this.loadSavedEmailAddresses();
     await this.loadSelectedOrDefaultLanguage();
@@ -32,16 +36,17 @@ export class LocalStorageService {
     const selectedLanguage = await this.storage.get(LocalStorage.selectedLanguage);
 
     if (selectedLanguage) {
-      this.selectedLanguage = JSON.parse(selectedLanguage);
+      this.selectedLanguageSubj.next(JSON.parse(selectedLanguage));
     } else {
-      this.selectedLanguage = this.getMobileDefaultLanguage();
-      await this.saveSelectedLanguage(this.selectedLanguage); 
+      const lang = this.getMobileDefaultLanguage()
+      await this.saveSelectedLanguage(lang); 
+      this.selectedLanguageSubj.next(lang);
     }
   }
 
   async saveSelectedLanguage(language: string) {
-    this.selectedLanguage = language;
     await this.storage.set(LocalStorage.selectedLanguage, JSON.stringify(language));
+    this.selectedLanguageSubj.next(language);
   }
 
   async loadSavedEmailAddresses() {

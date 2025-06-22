@@ -2,7 +2,7 @@
   ion-card-header {
     margin-bottom: -20px;
   }
-  
+
   .buttons-no-generation {
     display: flex;
   }
@@ -14,8 +14,7 @@
   }
 }
 
-
-.mail-address{
+.mail-address {
   .missing-mails {
     font-size: 18px;
     color: var(--ion-color-primary);
@@ -26,12 +25,13 @@
       font-size: 13px;
     }
   }
-  
+
   .enter-mail-address {
     margin-top: 30px;
   }
-  
+
   .buttons-no-add {
     display: flex;
   }
+
 }

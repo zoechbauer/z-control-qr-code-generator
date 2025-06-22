@@ -9,14 +9,41 @@
 <ng-template #englishTemplate>
   <ion-header>
     <ion-toolbar>
-      <ion-title>Infos</ion-title>
+      <ion-title>Informations</ion-title>
       <ion-buttons slot="end">
-        <ion-button (click)="dismissModal()">Back</ion-button>
+        <ion-button class="button-color" (click)="dismissModal()"
+          >Back</ion-button
+        >
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
-  <ion-content class="ion-padding">
-    <h3>What can the app do?</h3>
+  <ion-content>
+    <div id="toc" class="ion-padding">
+      <h5 class="ion-text-center">Table of Contents</h5>
+      <ol class="table-of-contents">
+        <li>
+          <a href="#" (click)="scrollTo('what-can-the-app-do', $event)"
+            >What can the app do?</a
+          >
+        </li>
+        <li>
+          <a href="#" (click)="scrollTo('how-to-use-the-app', $event)"
+            >How to use the app?</a
+          >
+        </li>
+        <li>
+          <a href="#" (click)="scrollTo('technical-info', $event)"
+            >Technical information</a
+          >
+        </li>
+        <li>
+          <a href="#" (click)="scrollTo('privacy-policy', $event)"
+            >Privacy Policy</a
+          >
+        </li>
+      </ol>
+    </div>
+    <h3 id="what-can-the-app-do">What can the app do?</h3>
     <p>
       A QR code is created from the entered text and sent by email. The text
       cannot be formatted and can be up to
@@ -33,7 +60,7 @@
       you can save email addresses.
     </p>
 
-    <h3>How to use the app?</h3>
+    <h3 id="how-to-use-the-app">How to use the app?</h3>
     <h5>Overview</h5>
     <ol>
       <li>Enter text</li>
@@ -124,7 +151,7 @@
       takes effect immediately.
     </p>
 
-    <h3>Technical information</h3>
+    <h3 id="technical-info">Technical information</h3>
     <p>
       <b>Voice input:</b> If you enable voice input in the phone settings, a
       microphone icon will appear on the keyboard. By tapping on this icon, you
@@ -136,7 +163,7 @@
       <b>Scanning the generated QR code:</b> The entered text can be up to
       <b>{{ maxInputLength }} characters</b> long. Note: The more text the QR
       code contains, the longer the scanning process takes. For very long texts,
-      we recommend a special scanner app. QR codes with up to 500 characters can
+      I recommend a special scanner app. QR codes with up to 500 characters can
       usually be scanned without problems with the camera app of your phone.
       Most modern smartphones already have the QR code scanning function
       integrated into the standard camera app.
@@ -152,11 +179,44 @@
     </p>
     <p>
       The <b>QR code file names</b> contain the text <i>qrcode</i> and the
-      timestamp of generation and have the following format:
-      <i>qrcode_YYYYMMDD_HHMMSS.png</i>
+      timestamp of generation and have the following format:<br />
+      <i>qrcode_YYYYMMDD_HHMMSS.png</i><br />
       <i>qrcode_YYYYMMDD_HHMMSS.pdf</i>
     </p>
+      <h3 id="privacy-policy">Privacy Policy</h3>
+    <p>
+      This app does not store any data on a server. All data is stored locally
+      on your device. The app does not use any external services or libraries
+      that share data with third parties. Your data remains private and securely
+      stored on your device. For more information, see the app's
+      <a href="#" (click)="scrollTo('technical-info', $event)"
+        >Technical information</a
+      >.
+    </p>
+    <p>
+      The app is open source, and the source code is available on
+      <a
+        href="https://github.com/zoechbauer/ng-leaflet-fuel-prices.git"
+        target="_blank"
+        rel="noopener noreferrer"
+        >GitHub</a
+      >, so you can review how the app works and how your data is handled at any
+      time. For more information, see the app's
+      <a
+        href="http://www.z-control.at"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Privacy Policy</a
+      >.
+    </p>
   </ion-content>
+  <ion-button
+    class="back-to-table-of-contents"
+    fill="clear"
+    size="small"
+    (click)="scrollToTop()"
+    >{{ scrollToTopObj.text }}</ion-button
+  >
 </ng-template>
 
 <!-- *********************************** -->
@@ -166,14 +226,41 @@
 <ng-template #germanTemplate>
   <ion-header>
     <ion-toolbar>
-      <ion-title>Infos</ion-title>
+      <ion-title>Informationen</ion-title>
       <ion-buttons slot="end">
-        <ion-button (click)="dismissModal()">Zurück</ion-button>
+        <ion-button class="button-color" (click)="dismissModal()"
+          >Zurück</ion-button
+        >
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">
-    <h3>Was kann die App?</h3>
+    <div id="toc-DE" class="ion-padding">
+      <h5 class="ion-text-center">Inhaltsverzeichnis</h5>
+      <ol class="table-of-contents">
+        <li>
+          <a href="#" (click)="scrollTo('what-can-the-app-do-DE', $event)"
+            >Was kann die App?</a
+          >
+        </li>
+        <li>
+          <a href="#" (click)="scrollTo('how-to-use-the-app-DE', $event)"
+            >Wie bediene ich die App?</a
+          >
+        </li>
+        <li>
+          <a href="#" (click)="scrollTo('technical-info-DE', $event)"
+            >Technische Informationen</a
+          >
+        </li>
+        <li>
+          <a href="#" (click)="scrollTo('privacy-policy-DE', $event)"
+            >Datenschutz</a
+          >
+        </li>
+      </ol>
+    </div>
+    <h3 id="what-can-the-app-do-DE">Was kann die App?</h3>
     <p>
       Es wird aus dem erfassten Text ein QR Code erstellt und per Mail
       versendet. Der Text kann nicht formatiert werden und kann bis zu
@@ -190,7 +277,7 @@
       können Sie Mail-Adressen anlegen.
     </p>
 
-    <h3>Wie bediene ich die App?</h3>
+    <h3 id="how-to-use-the-app-DE">Wie bediene ich die App?</h3>
     <h5>Überblick</h5>
     <ol>
       <li>Text erfassen</li>
@@ -284,7 +371,7 @@
       Änderung wird sofort wirksam.
     </p>
 
-    <h3>Technische Informationen</h3>
+    <h3 id="technical-info-DE">Technische Informationen</h3>
     <p>
       <b>Spracheingabe:</b> Wenn Sie in den Handy-Einstellungen die
       Spracheingabe aktivieren, erscheint im Tastaturfeld ein Mikrofon-Symbol.
@@ -296,25 +383,61 @@
       <b>Scannen des generierten QR Codes:</b> Der erfasste Text kann bis zu
       <b>{{ maxInputLength }} Zeichen</b> lang sein. Beachten Sie: Je mehr Text
       der QR Code enthält, desto länger dauert der Scan-Vorgang. Für sehr lange
-      Texte empfehlen wir eine spezielle Scanner-App. QR Codes mit bis zu 500
+      Texte empfehle ich eine spezielle Scanner-App. QR Codes mit bis zu 500
       Zeichen können in der Regel problemlos mit der Kamera-App Ihres Handys
       gescannt werden. Bei den meisten modernen Smartphones ist die QR
       Code-Scan-Funktion bereits in der Standard-Kamera-App integriert.
     </p>
     <p>
-      <b>Erfasste Mailadressen</b> werden im Handy in local Storage (IndexedDB
+      <b>Erfasste Mailadressen</b> werden im Handy in Local Storage (IndexedDB
       bzw. Local Storage) gespeichert.
     </p>
     <p>
       Die <b>generierten QR Code Dateien</b> werden dem Mail als Anhang
-      übergeben und im Handy im Documents Ornder temporär gespeichert. Nach 3
+      übergeben und im Handy im Documents Ordner temporär gespeichert. Nach 3
       Stunden oder wenn Sie die App neu starten werden sie automatisch gelöscht.
     </p>
     <p>
-      Die <b>QR Code Datei Namen</b> enthalten den Text <i>qrcode</i>
-      und den Zeitstempel der Generierung und haben folgendes Format:
-      <i>qrcode_YYYYMMDD_HHMMSS.png</i>
+      Die <b>QR Code Datei Namen</b> enthalten den Text <i>qrcode</i> und den
+      Zeitstempel der Generierung und haben folgendes Format:<br />
+      <i>qrcode_YYYYMMDD_HHMMSS.png</i><br />
       <i>qrcode_YYYYMMDD_HHMMSS.pdf</i>
     </p>
+    <h3 id="privacy-policy-DE">Datenschutz</h3>
+    <p>
+      Diese App speichert keine Daten auf einem Server. Alle Daten werden lokal
+      auf Ihrem Gerät gespeichert. Die App verwendet keine externen Dienste oder
+      Bibliotheken, die Daten an Dritte weitergeben. Ihre Daten bleiben privat
+      und sicher auf Ihrem Gerät gespeichert. Weitere Informationen finden Sie
+      auf dieser Seite unter
+      <a href="#" (click)="scrollTo('technical-info-DE', $event)"
+        >Technische Informationen</a
+      >
+    </p>
+    <p>
+      Die App ist Open Source und der Quellcode ist auf
+      <a
+        href="https://github.com/zoechbauer/ng-leaflet-fuel-prices.git"
+        target="_blank"
+        rel="noopener noreferrer"
+        >GitHub</a
+      >
+      verfügbar, sodass Sie die Funktionsweise der App und den Umgang mit Ihren
+      Daten jederzeit überprüfen können. Weitere Informationen finden Sie in der
+      <a
+        href="http://www.z-control.at"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Datenschutzerklärung</a
+      >
+      der App.
+    </p>
   </ion-content>
+  <ion-button
+    class="back-to-table-of-contents"
+    fill="clear"
+    size="small"
+    (click)="scrollToTop()"
+    >{{ scrollToTopObj.text }}</ion-button
+  >
 </ng-template>

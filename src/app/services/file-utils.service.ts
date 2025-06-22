@@ -102,8 +102,8 @@ export class FileUtilsService {
     }
   }
 
-  deleteFilesAfter30min() {
-    const fileNamePng = this.fileNamePng;
+  deleteFilesAfter180min() {
+  const fileNamePng = this.fileNamePng;
     const fileNamePdf = this.fileNamePdf;
     setTimeout(() => {
       this.deleteFiles(fileNamePng, fileNamePdf);

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import {
   IonText,
@@ -14,19 +14,21 @@ import { FileUtilsService } from '../services/file-utils.service';
 import { LocalStorageService } from '../services/local-storage.service';
 import { QrUtilsService } from '../services/qr-utils.service';
 import { LanguagePopoverComponent } from './language-popover.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
   @ViewChild('qrDataInput') qrDataInput!: IonTextarea;
   @ViewChild('emailInput') emailInput!: IonText;
   MAX_INPUT_LENGTH = 1000; // 2953 = Maximale Kapazität für QR-Code Version 40 mit Fehlerkorrektur-Level L lt. Perplexity KI,
   // aber scannen funktioniert dann nicht mehr, deshalb 1000 - ermittelt durch Tests
 
   showAddress: boolean = false;
+  private langSub?: Subscription;
 
   constructor(
     public qrService: QrUtilsService,
@@ -36,15 +38,17 @@ export class HomePage implements OnInit {
     private modalController: ModalController,
     private fileService: FileUtilsService,
     private popoverController: PopoverController
-  ) {}
-
-  ngOnInit() {
-    this.localStorage.loadSelectedOrDefaultLanguage().then(() => {
-      this.translate.setDefaultLang(this.localStorage.selectedLanguage);
-      this.translate.use(this.localStorage.selectedLanguage);
+  ) {
+    this.langSub = this.localStorage.selectedLanguage$.subscribe(lang => {
+      this.translate.use(lang);
+      this.translate.setDefaultLang(lang);
     });
+  }
 
-    this.fileService.deleteAllQrCodeFiles();
+  ngOnInit(): void {
+    this.localStorage.init()
+      .then(() => this.localStorage.loadSelectedOrDefaultLanguage())
+      .then(() => this.fileService.deleteAllQrCodeFiles());
   }
 
   async openLanguagePopover(ev: any) {
@@ -64,10 +68,7 @@ export class HomePage implements OnInit {
     const modal = await this.modalController.create({
       component: HelpModalComponent,
       componentProps: {
-        fileNamePng: this.fileService.fileNamePng,
-        fileNamePdf: this.fileService.fileNamePdf,
         maxInputLength: this.MAX_INPUT_LENGTH,
-        selectedLanguage: this.localStorage.selectedLanguage,
       },
     });
     return await modal.present();
@@ -102,7 +103,7 @@ export class HomePage implements OnInit {
     await this.fileService.downloadQRCode(this.qrService.qrCodeDownloadLink);
     await this.qrService.printQRCode();
     await this.EmailService.sendEmail();
-    this.fileService.deleteFilesAfter30min();
+    this.fileService.deleteFilesAfter180min();
     this.fileService.ClearNowFormatted();
   }
 
@@ -110,5 +111,14 @@ export class HomePage implements OnInit {
     if (typeof newEmailAddress === 'string') {
       await this.localStorage.saveEmail(newEmailAddress);
     }
+  }
+
+  ngOnDestroy(): void {
+    if (this.langSub) {
+      this.langSub.unsubscribe();
+    }
+    this.qrService.clearQrFields();
+    this.EmailService.clearEmailSent();
+    this.fileService.ClearNowFormatted(); 
   }
 }
