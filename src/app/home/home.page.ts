@@ -28,25 +28,26 @@ export class HomePage implements OnInit, OnDestroy {
   // aber scannen funktioniert dann nicht mehr, deshalb 1000 - ermittelt durch Tests
 
   showAddress: boolean = false;
-  private langSub?: Subscription;
+  private readonly langSub?: Subscription;
 
   constructor(
     public qrService: QrUtilsService,
     public localStorage: LocalStorageService,
-    public EmailService: EmailUtilsService,
+    public emailService: EmailUtilsService,
     public translate: TranslateService,
-    private modalController: ModalController,
-    private fileService: FileUtilsService,
-    private popoverController: PopoverController
+    private readonly modalController: ModalController,
+    private readonly fileService: FileUtilsService,
+    private readonly popoverController: PopoverController
   ) {
-    this.langSub = this.localStorage.selectedLanguage$.subscribe(lang => {
+    this.langSub = this.localStorage.selectedLanguage$.subscribe((lang) => {
       this.translate.use(lang);
       this.translate.setDefaultLang(lang);
     });
   }
 
   ngOnInit(): void {
-    this.localStorage.init()
+    this.localStorage
+      .init()
       .then(() => this.localStorage.loadSelectedOrDefaultLanguage())
       .then(() => this.fileService.deleteAllQrCodeFiles());
   }
@@ -75,7 +76,7 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   clearInputField(): void {
-    this.EmailService.clearEmailSent;
+    this.emailService.clearEmailSent();
     this.qrService.clearQrFields();
 
     if (this.qrDataInput) {
@@ -102,8 +103,8 @@ export class HomePage implements OnInit, OnDestroy {
     this.fileService.SetNowFormatted();
     await this.fileService.downloadQRCode(this.qrService.qrCodeDownloadLink);
     await this.qrService.printQRCode();
-    await this.EmailService.sendEmail();
-    this.fileService.deleteFilesAfter180min();
+    await this.emailService.sendEmail();
+    this.fileService.deleteFilesAfterSpecifiedTime();
     this.fileService.ClearNowFormatted();
   }
 
@@ -118,7 +119,7 @@ export class HomePage implements OnInit, OnDestroy {
       this.langSub.unsubscribe();
     }
     this.qrService.clearQrFields();
-    this.EmailService.clearEmailSent();
-    this.fileService.ClearNowFormatted(); 
+    this.emailService.clearEmailSent();
+    this.fileService.ClearNowFormatted();
   }
 }

@@ -32,5 +32,7 @@
     "ERROR_MESSAGE_SAVE_QR_PDF": "Error saving QR code as PDF.",
     "ERROR_MESSAGE_SAVE_QR": "Error saving QR code.",
     "ERROR_MESSAGE_DELETE_QR": "Error deleting QR code.",
-    "ERROR_MESSAGE_MISSING_QR_URL": "QR code URL not available."
+    "ERROR_MESSAGE_MISSING_QR_URL": "QR code URL not available.",
+    "INFO_ALERT_TITLE_MAIL_ATTACHMENT": "Attach the QR codes to the email and delete these files when you no longer need them!",
+    "INFO_ALERT_MESSAGE_MAIL_ATTACHMENT": "Please manually attach these two downloaded files from the Downloads folder to your email. You can find the Downloads folder in your browser settings. Unfortunately, these files are only automatically attached and deleted on mobile devices."
   }

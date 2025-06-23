@@ -70,7 +70,7 @@
     <ion-button
       expand="block"
       (click)="this.qrService.generateQRCode(qrDataInput.value)"
-      [disabled]="(isInputFieldEmpty() || EmailService.isEmailSent || qrService.isQrCodeGenerated) && !hasInputChangedAfterGeneration()"
+      [disabled]="(isInputFieldEmpty() || emailService.isEmailSent || qrService.isQrCodeGenerated) && !hasInputChangedAfterGeneration()"
       >{{ 'GENERATE' | translate }}</ion-button
     >
     <div class="buttons-no-generation ion-justify-content-around">
@@ -143,7 +143,7 @@
     <ion-button
       expand="block"
       (click)="addEmailAddress(newEmailAddress.value); newEmailAddress.value=''"
-      [disabled]="!newEmailAddress.value || !EmailService.isValidEmailAddress(newEmailAddress.value)"
+      [disabled]="!newEmailAddress.value || !emailService.isValidEmailAddress(newEmailAddress.value)"
       >{{'EMAIL_PAGE_ADD_BUTTON' | translate }}</ion-button
     >
     <div class="buttons-no-add ion-justify-content-around">

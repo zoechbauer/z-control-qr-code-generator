@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 
-import { ErrorAlertService } from './error-alert.service';
+import { AlertService } from './alert.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FileUtilsService {
-  constructor(private errorService: ErrorAlertService) {}
+  constructor(private readonly alertService: AlertService) {}
 
   async getDocumentsPath(isPdf: boolean): Promise<string> {
     const result = await Filesystem.getUri({
@@ -66,7 +67,7 @@ export class FileUtilsService {
         });
       } catch (error) {
         console.error('Error saving file:', error);
-        this.errorService.showErrorAlert('ERROR_MESSAGE_SAVE_QR');
+        this.alertService.showErrorAlert('ERROR_MESSAGE_SAVE_QR');
       }
     } else {
       // for Desktop: create a download link
@@ -89,7 +90,7 @@ export class FileUtilsService {
         });
 
         const qrFiles = files.files.filter((f) => f.name.startsWith('qrcode'));
-        
+
         for (const file of qrFiles) {
           await Filesystem.deleteFile({
             path: file.name,
@@ -102,12 +103,17 @@ export class FileUtilsService {
     }
   }
 
-  deleteFilesAfter180min() {
-  const fileNamePng = this.fileNamePng;
+  deleteFilesAfterSpecifiedTime() {
+    const fileNamePng = this.fileNamePng;
     const fileNamePdf = this.fileNamePdf;
+
+    const storageDurationInHours = environment.storageDurationInHours || 3;
+    const storageDurationInMilliseconds =
+      storageDurationInHours * 60 * 60 * 1000;
+
     setTimeout(() => {
       this.deleteFiles(fileNamePng, fileNamePdf);
-    }, 180 * 60 * 1000); // 180 minutes in milliseconds
+    }, storageDurationInMilliseconds);
   }
 
   private async deleteFiles(fileNamePng: string, fileNamePdf: string) {
@@ -123,8 +129,11 @@ export class FileUtilsService {
         });
       } catch (error) {
         console.error('Error deleting file:', error);
-        this.errorService.showErrorAlert('ERROR_MESSAGE_DELETE_QR');
+        this.alertService.showErrorAlert('ERROR_MESSAGE_DELETE_QR');
       }
+    } else {
+      // Browsers are not allowed to delete files
+      // i informed the user with alert on attaching files to email
     }
   }
 
@@ -140,11 +149,11 @@ export class FileUtilsService {
         await this.saveFile(fileName, base64Data);
       } catch (error) {
         console.error('Error saving file in downloadQRCode:', error);
-        this.errorService.showErrorAlert('ERROR_MESSAGE_SAVE_QR');
+        this.alertService.showErrorAlert('ERROR_MESSAGE_SAVE_QR');
       }
     } else {
       console.error('QR Code URL is not available');
-      this.errorService.showErrorAlert('ERROR_MESSAGE_MISSING_QR_URL');
+      this.alertService.showErrorAlert('ERROR_MESSAGE_MISSING_QR_URL');
     }
   }
 

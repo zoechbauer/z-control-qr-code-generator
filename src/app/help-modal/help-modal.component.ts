@@ -30,8 +30,6 @@ export class HelpModalComponent implements OnInit, OnDestroy{
   }
 
   private setScrollToTopObj() {
-    console.log(`setScrollToTopObj - Selected language: ${this.selectedLanguage}`);
-    
     if (this.selectedLanguage === 'de') {
       this.scrollToTopObj.id = 'toc-DE';
       this.scrollToTopObj.text = 'zurück zu Inhaltsverzeichnis';
