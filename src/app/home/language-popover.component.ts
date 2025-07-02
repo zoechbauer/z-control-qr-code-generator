@@ -14,9 +14,9 @@ import { LocalStorageService } from '../services/local-storage.service';
 })
 export class LanguagePopoverComponent {
   constructor(
-    private translate: TranslateService,
-    private popoverController: PopoverController,
-    private localStorage: LocalStorageService
+    private readonly translate: TranslateService,
+    private readonly popoverController: PopoverController,
+    private readonly localStorage: LocalStorageService
   ) {}
 
   changeLanguage(language: string) {

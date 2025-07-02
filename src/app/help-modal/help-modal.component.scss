@@ -9,7 +9,6 @@ ol.table-of-contents {
     a {
       line-height: 40px !important;
       text-decoration: none;
-      // color: var(--text-color);
 
       &:hover {
         text-decoration: underline;
@@ -21,5 +20,4 @@ ol.table-of-contents {
 .back-to-table-of-contents {
   text-align: center;
   margin-top: 25px;
-  // color: var(--text-color);
 }

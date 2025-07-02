@@ -11,7 +11,10 @@
     <ion-toolbar>
       <ion-title>Informations</ion-title>
       <ion-buttons slot="end">
-        <ion-button class="button-color" (click)="dismissModal()"
+        <ion-button class="button-color" 
+        (click)="dismissModal()"
+        (keydown.enter)="dismissModal()"
+        (keydown.space)="dismissModal()"
           >Back</ion-button
         >
       </ion-buttons>
@@ -215,6 +218,8 @@
     fill="clear"
     size="small"
     (click)="scrollToTop()"
+    (keydown.enter)="scrollToTop()"
+    (keydown.space)="scrollToTop()"
     >{{ scrollToTopObj.text }}</ion-button
   >
 </ng-template>
@@ -228,7 +233,10 @@
     <ion-toolbar>
       <ion-title>Informationen</ion-title>
       <ion-buttons slot="end">
-        <ion-button class="button-color" (click)="dismissModal()"
+        <ion-button class="button-color" 
+        (click)="dismissModal()"
+        (keydown.enter)="dismissModal()"
+        (keydown.space)="dismissModal()"
           >Zurück</ion-button
         >
       </ion-buttons>
@@ -438,6 +446,8 @@
     fill="clear"
     size="small"
     (click)="scrollToTop()"
+    (keydown.enter)="scrollToTop()"
+    (keydown.space)="scrollToTop()"
     >{{ scrollToTopObj.text }}</ion-button
   >
 </ng-template>

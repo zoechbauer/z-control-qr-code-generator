@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Attachment, EmailComposer } from 'capacitor-email-composer';
 import { Capacitor } from '@capacitor/core';
+import { TranslateService } from '@ngx-translate/core';
+import { AlertController } from '@ionic/angular';
+import { lastValueFrom } from 'rxjs';
 
 import { FileUtilsService } from './file-utils.service';
 import { LocalStorageService } from './local-storage.service';
 import { QrUtilsService } from './qr-utils.service';
-import { TranslateService } from '@ngx-translate/core';
-import { AlertService } from './alert.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,23 +16,15 @@ export class EmailUtilsService {
   private emailSent = false;
 
   constructor(
+    private readonly translate: TranslateService,
+    private readonly alertController: AlertController,
+    private readonly qrService: QrUtilsService,
     private readonly fileService: FileUtilsService,
     private readonly localStorage: LocalStorageService,
-    private readonly qrService: QrUtilsService,
-    private readonly translate: TranslateService,
-    private readonly alertService: AlertService
   ) {}
 
   get isEmailSent(): boolean {
     return this.emailSent;
-  }
-
-  isValidEmailAddress(emailAddress: string | number): boolean {
-    if (typeof emailAddress !== 'string') {
-      return false;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(emailAddress);
   }
 
   async sendEmail() {
@@ -95,27 +88,42 @@ export class EmailUtilsService {
         mailBody
       )}`;
       window.location.href = mailto;
-      this.displayEmailAttachmentAlert(filePathPng, filePathPdf);
     }
   }
 
-  private displayEmailAttachmentAlert(
-    filePathPng: string,
-    filePathPdf: string
-  ) {
-    const fileNamePng = this.getFileNameFromPath(filePathPng);
-    const fileNamePdf = this.getFileNameFromPath(filePathPdf);
+  async displayEmailAttachmentAlert(onOkCallback: () => void) {
+    const fileNamePng = this.fileService.fileNamePng;
+    const fileNamePdf = this.fileService.fileNamePdf;
 
-    const header = "INFO_ALERT_TITLE_MAIL_ATTACHMENT";
+    const header = await lastValueFrom(
+      this.translate.get('INFO_ALERT_TITLE_MAIL_ATTACHMENT')
+    );
     const subHeader = fileNamePng + ', ' + fileNamePdf;
-    const message = "INFO_ALERT_MESSAGE_MAIL_ATTACHMENT";
+    const message = await lastValueFrom(
+      this.translate.get('INFO_ALERT_MESSAGE_MAIL_ATTACHMENT')
+    );
+    const okButton = await lastValueFrom(
+      this.translate.get('ERROR_ALERT_BUTTON_OK')
+    );
 
-    this.alertService.showInfoAlert(header, subHeader, message);
-  }
-
-  private getFileNameFromPath(filePath: string): string {
-    const parts = filePath.split('/');
-    return parts[parts.length - 1];
+    const alert = await this.alertController.create({
+      header,
+      subHeader,
+      message,
+      buttons: [
+        {
+          text: okButton,
+          handler: () => {
+            try {
+              onOkCallback();
+            } catch (error) {
+              console.error('Error in callback:', error);
+            }
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
   clearEmailSent() {

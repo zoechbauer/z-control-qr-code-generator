@@ -7,14 +7,16 @@ import {
   PopoverController,
 } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-import { EmailUtilsService } from './../services/email-utils.service';
+import { Capacitor } from '@capacitor/core';
+import { Subscription } from 'rxjs';
 
+import { EmailUtilsService } from './../services/email-utils.service';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
 import { FileUtilsService } from '../services/file-utils.service';
 import { LocalStorageService } from '../services/local-storage.service';
 import { QrUtilsService } from '../services/qr-utils.service';
 import { LanguagePopoverComponent } from './language-popover.component';
-import { Subscription } from 'rxjs';
+import { ValidationService } from '../services/validation.service';
 
 @Component({
   selector: 'app-home',
@@ -34,10 +36,11 @@ export class HomePage implements OnInit, OnDestroy {
     public qrService: QrUtilsService,
     public localStorage: LocalStorageService,
     public emailService: EmailUtilsService,
+    public readonly validationService: ValidationService,
     public translate: TranslateService,
     private readonly modalController: ModalController,
     private readonly fileService: FileUtilsService,
-    private readonly popoverController: PopoverController
+    private readonly popoverController: PopoverController,
   ) {
     this.langSub = this.localStorage.selectedLanguage$.subscribe((lang) => {
       this.translate.use(lang);
@@ -100,12 +103,20 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   async storeMailAndDeleteQRCode() {
-    this.fileService.SetNowFormatted();
+    this.fileService.setNowFormatted();
     await this.fileService.downloadQRCode(this.qrService.qrCodeDownloadLink);
     await this.qrService.printQRCode();
-    await this.emailService.sendEmail();
+
+    if (!Capacitor.isNativePlatform()) {
+      await this.emailService.displayEmailAttachmentAlert(() => {
+        this.emailService.sendEmail();
+      });
+    } else {
+      this.emailService.sendEmail();
+    }
+
     this.fileService.deleteFilesAfterSpecifiedTime();
-    this.fileService.ClearNowFormatted();
+    this.fileService.clearNowFormatted();
   }
 
   async addEmailAddress(newEmailAddress: string | undefined | null | number) {
@@ -115,11 +126,10 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.langSub) {
-      this.langSub.unsubscribe();
-    }
+    this.langSub?.unsubscribe();
+
     this.qrService.clearQrFields();
     this.emailService.clearEmailSent();
-    this.fileService.ClearNowFormatted();
+    this.fileService.clearNowFormatted();
   }
 }

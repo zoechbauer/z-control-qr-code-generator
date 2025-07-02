@@ -9,7 +9,17 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class FileUtilsService {
+  private nowFormatted: string = '';
+
   constructor(private readonly alertService: AlertService) {}
+
+  get fileNamePng(): string {
+    return this.getFileName(false);
+  }
+
+  get fileNamePdf(): string {
+    return this.getFileName(true);
+  }
 
   async getDocumentsPath(isPdf: boolean): Promise<string> {
     const result = await Filesystem.getUri({
@@ -25,29 +35,21 @@ export class FileUtilsService {
     return path;
   }
 
-  get fileNamePng(): string {
-    return this.getFileName(false);
-  }
-
-  get fileNamePdf(): string {
-    return this.getFileName(true);
-  }
-
-  SetNowFormatted() {
-    // Use '-' instead of ':' in time to avoid issues in filenames
+  private generateTimestamp(): string {
     const now = new Date();
     const pad = (n: number) => n.toString().padStart(2, '0');
-    const formatted = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(
+    return `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(
       now.getDate()
     )}_${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
-    this.nowFormatted = formatted;
   }
 
-  ClearNowFormatted() {
+  setNowFormatted() {
+    this.nowFormatted = this.generateTimestamp();
+  }
+
+  clearNowFormatted() {
     this.nowFormatted = '';
   }
-
-  private nowFormatted: string = '';
 
   private getFileName(isPdf: boolean | undefined): string {
     const name = 'qrcode';
@@ -107,7 +109,7 @@ export class FileUtilsService {
     const fileNamePng = this.fileNamePng;
     const fileNamePdf = this.fileNamePdf;
 
-    const storageDurationInHours = environment.storageDurationInHours || 3;
+    const storageDurationInHours = environment.storageDurationInHours ?? 3;
     const storageDurationInMilliseconds =
       storageDurationInHours * 60 * 60 * 1000;
 
@@ -137,7 +139,13 @@ export class FileUtilsService {
     }
   }
 
-  async downloadQRCode(qrCodeDownloadLink: string) {
+  async downloadQRCode(qrCodeDownloadLink: string): Promise<void> {
+    if (!qrCodeDownloadLink?.trim()) {
+      console.error('QR Code URL is not available');
+      this.alertService.showErrorAlert('ERROR_MESSAGE_MISSING_QR_URL');
+      return;
+    }
+
     const fileName = this.fileNamePng;
 
     if (qrCodeDownloadLink) {

@@ -25,17 +25,4 @@ export class AlertService {
     });
     await alert.present();
   }
-
-  async showInfoAlert(headerKey: string, subheaderInfo: string, messageKey: string) {
-    const infoTitle = await lastValueFrom(this.translate.get(headerKey));
-    const infoMessage = await lastValueFrom(this.translate.get(messageKey));
-    const OKButton = await lastValueFrom(this.translate.get('ERROR_ALERT_BUTTON_OK'));
-    const alert = await this.alertController.create({
-      header: infoTitle,
-      subHeader: subheaderInfo,
-      message: infoMessage,
-      buttons: [OKButton]
-    });
-    await alert.present();
-  }
 }
