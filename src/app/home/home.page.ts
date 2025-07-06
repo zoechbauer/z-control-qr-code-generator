@@ -5,6 +5,8 @@ import {
   IonTextarea,
   ModalController,
   PopoverController,
+  Platform,
+  AlertController,
 } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Capacitor } from '@capacitor/core';
@@ -17,6 +19,9 @@ import { LocalStorageService } from '../services/local-storage.service';
 import { QrUtilsService } from '../services/qr-utils.service';
 import { LanguagePopoverComponent } from './language-popover.component';
 import { ValidationService } from '../services/validation.service';
+import { ManualInstructionsModalComponent } from './manual-instructions-modal.component';
+import { environment } from 'src/environments/environment';
+import { AlertService } from '../services/alert.service';
 
 @Component({
   selector: 'app-home',
@@ -26,8 +31,6 @@ import { ValidationService } from '../services/validation.service';
 export class HomePage implements OnInit, OnDestroy {
   @ViewChild('qrDataInput') qrDataInput!: IonTextarea;
   @ViewChild('emailInput') emailInput!: IonText;
-  MAX_INPUT_LENGTH = 1000; // 2953 = Maximale Kapazität für QR-Code Version 40 mit Fehlerkorrektur-Level L lt. Perplexity KI,
-  // aber scannen funktioniert dann nicht mehr, deshalb 1000 - ermittelt durch Tests
 
   showAddress: boolean = false;
   private readonly langSub?: Subscription;
@@ -41,11 +44,21 @@ export class HomePage implements OnInit, OnDestroy {
     private readonly modalController: ModalController,
     private readonly fileService: FileUtilsService,
     private readonly popoverController: PopoverController,
+    private readonly platform: Platform,
+    private readonly alertController: AlertController,
+    private readonly alertService: AlertService
   ) {
     this.langSub = this.localStorage.selectedLanguage$.subscribe((lang) => {
       this.translate.use(lang);
       this.translate.setDefaultLang(lang);
     });
+  }
+
+  get maxInputLength(): number {
+    // 2953 = Maximum capacity for QR code version 40 with error correction level L according to Perplexity AI,
+    // but scanning no longer works, therefore we are using 1000 - results determined by testing
+
+    return environment.maxInputLength ?? 1000;
   }
 
   ngOnInit(): void {
@@ -72,7 +85,7 @@ export class HomePage implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: HelpModalComponent,
       componentProps: {
-        maxInputLength: this.MAX_INPUT_LENGTH,
+        maxInputLength: this.maxInputLength,
       },
     });
     return await modal.present();
@@ -107,22 +120,134 @@ export class HomePage implements OnInit, OnDestroy {
     await this.fileService.downloadQRCode(this.qrService.qrCodeDownloadLink);
     await this.qrService.printQRCode();
 
-    if (!Capacitor.isNativePlatform()) {
+    // Platform-aware email handling
+    await this.handleEmailBasedOnPlatform();
+
+    this.fileService.deleteFilesAfterSpecifiedTime();
+    this.fileService.clearNowFormatted();
+  }
+
+  private async handleEmailBasedOnPlatform() {
+    if (Capacitor.isNativePlatform()) {
+      // Native app - full email client integration works
+      await this.emailService.sendEmail();
+    } else if (this.platform.is('desktop')) {
+      // Desktop browser - mailto usually works, but show alert for attachments
       await this.emailService.displayEmailAttachmentAlert(() => {
         this.emailService.sendEmail();
       });
     } else {
-      this.emailService.sendEmail();
+      // Mobile web browser - show alternative options
+      await this.showMobileWebEmailOptions();
     }
+  }
 
-    this.fileService.deleteFilesAfterSpecifiedTime();
-    this.fileService.clearNowFormatted();
+  private async showMobileWebEmailOptions() {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('MOBILE_WEB_EMAIL_TITLE'),
+      message: this.translate.instant('MOBILE_WEB_EMAIL_MESSAGE'),
+      buttons: [
+        {
+          text: this.translate.instant('MOBILE_WEB_TRY_EMAIL'),
+          handler: () => {
+            this.emailService.sendEmail();
+          },
+        },
+        {
+          text: this.translate.instant('MOBILE_WEB_COPY_TEXT'),
+          handler: async () => {
+            await this.copyQRTextToClipboard();
+          },
+        },
+        {
+          text: this.translate.instant('MOBILE_WEB_INSTRUCTIONS'),
+          handler: async () => {
+            await this.showManualInstructions();
+          },
+        },
+        {
+          text: this.translate.instant('CANCEL'),
+          role: 'cancel',
+        },
+      ],
+      cssClass: 'show-mobile-web-email-options',
+    });
+
+    await alert.present();
+  }
+
+  private async copyQRTextToClipboard() {
+    try {
+      const qrText = this.qrService.myAngularxQrCode;
+
+      // Use navigator.clipboard for web
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(qrText);
+        await this.showCopySuccessAlert(qrText);
+      } else {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = qrText;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy'); // Legacy fallback
+        document.body.removeChild(textArea);
+        await this.showCopySuccessAlert(qrText);
+      }
+    } catch (error) {
+      console.error('Copy to clipboard failed:', error);
+      await this.alertService.showErrorAlert('MOBILE_WEB_COPY_ERROR');
+    }
+  }
+
+  private async showManualInstructions() {
+    // Use proper ion-modal component for better HTML/CSS support
+    const baseMessage = this.translate.instant('MOBILE_WEB_MANUAL_MESSAGE');
+    const qrText = this.qrService.myAngularxQrCode;
+
+    const modal = await this.modalController.create({
+      component: ManualInstructionsModalComponent,
+      componentProps: {
+        title: this.translate.instant('MOBILE_WEB_MANUAL_TITLE'),
+        instructions: baseMessage,
+        qrText: qrText,
+        qrTextLabel: this.translate.instant('MOBILE_WEB_QR_TEXT'),
+        copyButtonLabel: this.translate.instant('MOBILE_WEB_COPY_TEXT'),
+        copyCallback: () => this.copyQRTextToClipboard(),
+      },
+      cssClass: 'manual-instructions-modal',
+    });
+
+    await modal.present();
   }
 
   async addEmailAddress(newEmailAddress: string | undefined | null | number) {
     if (typeof newEmailAddress === 'string') {
       await this.localStorage.saveEmail(newEmailAddress);
     }
+  }
+
+  private async showCopySuccessAlert(copiedText: string) {
+    const maxPreviewLength = environment.maxPreviewLengthOfCopiedText ?? 50;
+    const textPreview =
+      copiedText.length > maxPreviewLength
+        ? copiedText.substring(0, maxPreviewLength) + '...'
+        : copiedText;
+
+    const message =
+      this.translate.instant('MOBILE_WEB_COPIED_TEXT_PREVIEW') +
+      '"' +
+      textPreview +
+      '"';
+
+    const alert = await this.alertController.create({
+      header: this.translate.instant('MOBILE_WEB_COPY_SUCCESS_TITLE'),
+      subHeader: this.translate.instant('MOBILE_WEB_COPY_SUCCESS'),
+      message: message,
+      buttons: [this.translate.instant('OK')],
+      cssClass: 'copy-success-alert',
+    });
+    await alert.present();
   }
 
   ngOnDestroy(): void {

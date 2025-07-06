@@ -36,8 +36,6 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
 
-
-
 ion-app {
   width: 100%;
   margin: 0 auto;
@@ -83,4 +81,19 @@ ion-toolbar {
   .icon-color {
     color: var(--ion-color-primary);
   }
+}
+
+// modal border styling using CSS custom properties
+.manual-instructions-modal {
+  --border-width: 2px;
+  --border-style: solid;
+  --border-color: var(--ion-color-medium);
+  --border-radius: 10px;
+}
+
+// alert border styling - must be global like modal
+.copy-success-alert .alert-wrapper,
+.show-mobile-web-email-options .alert-wrapper {
+  border: 2px solid var(--ion-color-medium);
+  border-radius: 10px;
 }

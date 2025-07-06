@@ -8,7 +8,7 @@ import { HomePageRoutingModule } from './home-routing.module';
 import { HomePage } from './home.page';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
 import { LanguagePopoverComponent } from './language-popover.component';
-
+import { ManualInstructionsModalComponent } from './manual-instructions-modal.component';
 
 @NgModule({
   imports: [
@@ -16,12 +16,13 @@ import { LanguagePopoverComponent } from './language-popover.component';
     IonicModule,
     HomePageRoutingModule,
     QRCodeModule,
-    TranslateModule
+    TranslateModule,
   ],
   declarations: [
-    HomePage, 
+    HomePage,
     HelpModalComponent,
-    LanguagePopoverComponent
-  ]
+    LanguagePopoverComponent,
+    ManualInstructionsModalComponent,
+  ],
 })
 export class HomePageModule {}

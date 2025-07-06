@@ -4,8 +4,19 @@
 
 export const environment = {
   production: false,
-  storageDurationInHours: 3
-}
+
+  // Storage duration for temporary files
+  // balances user convenience with storage cleanup
+  storageDurationInHours: 3,
+
+  // Max preview length for copied text alerts
+  // prevents UI overflow on small screens
+  maxPreviewLengthOfCopiedText: 200,
+
+  // QR code capacity limit
+  // theoretical max is 2953 but scanning fails, using tested value
+  maxInputLength: 1000,
+};
 
 /*
  * For easier debugging in development mode, you can import the following file
@@ -15,5 +26,3 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
-
-

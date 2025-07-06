@@ -33,5 +33,16 @@
   .buttons-no-add {
     display: flex;
   }
+}
 
+// Style for QR text display
+.qr-text-alert {
+  .alert-message {
+    font-family: monospace !important;
+    word-break: break-all !important;
+    white-space: pre-wrap !important;
+    text-align: left !important;
+    line-height: 1.3 !important;
+    font-size: 14px !important;
+  }
 }

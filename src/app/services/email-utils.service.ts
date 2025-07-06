@@ -20,7 +20,7 @@ export class EmailUtilsService {
     private readonly alertController: AlertController,
     private readonly qrService: QrUtilsService,
     private readonly fileService: FileUtilsService,
-    private readonly localStorage: LocalStorageService,
+    private readonly localStorage: LocalStorageService
   ) {}
 
   get isEmailSent(): boolean {
@@ -35,7 +35,7 @@ export class EmailUtilsService {
     const filePathPdf = await this.fileService.getDocumentsPath(true);
 
     const sendTo = this.localStorage.savedEmailAddresses.join(',');
-
+    
     const mailSubjectPrefix = this.translate.instant(
       'EMAIL_SERVICE_MAIL_SUBJECT_PREFIX'
     );

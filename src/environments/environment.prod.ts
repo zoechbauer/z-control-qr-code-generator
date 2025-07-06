@@ -1,4 +1,15 @@
 export const environment = {
   production: true,
-  storageDurationInHours: 3
+  
+  // Storage duration for temporary files
+  // balances user convenience with storage cleanup
+  storageDurationInHours: 3,
+
+  // Max preview length for copied text alerts
+  // prevents UI overflow on small screens
+  maxPreviewLengthOfCopiedText: 200,
+
+  // QR code capacity limit
+  // theoretical max is 2953 but scanning fails, using tested value
+  maxInputLength: 1000,
 }
