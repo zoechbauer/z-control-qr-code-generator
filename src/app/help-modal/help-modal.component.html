@@ -11,16 +11,17 @@
     <ion-toolbar>
       <ion-title>Informations</ion-title>
       <ion-buttons slot="end">
-        <ion-button class="button-color" 
-        (click)="dismissModal()"
-        (keydown.enter)="dismissModal()"
-        (keydown.space)="dismissModal()"
+        <ion-button
+          class="button-color"
+          (click)="dismissModal()"
+          (keydown.enter)="dismissModal()"
+          (keydown.space)="dismissModal()"
           >Back</ion-button
         >
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
-  <ion-content>
+  <ion-content class="ion-padding">
     <div id="toc" class="ion-padding">
       <h5 class="ion-text-center">Table of Contents</h5>
       <ol class="table-of-contents">
@@ -186,7 +187,7 @@
       <i>qrcode_YYYYMMDD_HHMMSS.png</i><br />
       <i>qrcode_YYYYMMDD_HHMMSS.pdf</i>
     </p>
-      <h3 id="privacy-policy">Privacy Policy</h3>
+    <h3 id="privacy-policy">Privacy Policy</h3>
     <p>
       This app does not store any data on a server. All data is stored locally
       on your device. The app does not use any external services or libraries
@@ -204,13 +205,17 @@
         rel="noopener noreferrer"
         >GitHub</a
       >, so you can review how the app works and how your data is handled at any
-      time. For more information, see the app's
+      time.
+    </p>
+    <p>
+      For the complete privacy policy, visit the z-control website
       <a
         href="https://z-control-4070.web.app/privacy/basic/en"
         target="_blank"
         rel="noopener noreferrer"
         >Privacy Policy</a
-      >.
+      >
+      (opens in your browser - switch back to this QR Code app when finished).
     </p>
   </ion-content>
   <ion-button
@@ -233,10 +238,11 @@
     <ion-toolbar>
       <ion-title>Informationen</ion-title>
       <ion-buttons slot="end">
-        <ion-button class="button-color" 
-        (click)="dismissModal()"
-        (keydown.enter)="dismissModal()"
-        (keydown.space)="dismissModal()"
+        <ion-button
+          class="button-color"
+          (click)="dismissModal()"
+          (keydown.enter)="dismissModal()"
+          (keydown.space)="dismissModal()"
           >Zurück</ion-button
         >
       </ion-buttons>
@@ -431,14 +437,19 @@
         >GitHub</a
       >
       verfügbar, sodass Sie die Funktionsweise der App und den Umgang mit Ihren
-      Daten jederzeit überprüfen können. Weitere Informationen finden Sie in der
+      Daten jederzeit überprüfen können.
+    </p>
+    <p>
+      Die vollständige Datenschutzerklärung finden Sie auf der z-control Website
+      unter
       <a
         href="https://z-control-4070.web.app/privacy/basic/de"
         target="_blank"
         rel="noopener noreferrer"
         >Datenschutzerklärung</a
       >
-      der App.
+      (öffnet sich in Ihrem Browser - wechseln Sie nach dem Lesen zurück zu
+      dieser QR Code App).
     </p>
   </ion-content>
   <ion-button

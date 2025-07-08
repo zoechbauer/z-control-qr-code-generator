@@ -81,12 +81,13 @@ export class HomePage implements OnInit, OnDestroy {
     this.showAddress = !this.showAddress;
   }
 
-  async openModal() {
+  async openHelpModal() {
     const modal = await this.modalController.create({
       component: HelpModalComponent,
       componentProps: {
         maxInputLength: this.maxInputLength,
       },
+      cssClass: 'manual-instructions-modal',
     });
     return await modal.present();
   }
