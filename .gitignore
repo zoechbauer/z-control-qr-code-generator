@@ -69,4 +69,11 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# Android Security - DO NOT COMMIT
+android/keystore.properties
+android/local.properties
+upload-keystore.jks
+*.keystore
+*.jks
+
 resources/android/**/*

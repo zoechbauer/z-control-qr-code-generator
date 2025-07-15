@@ -71,7 +71,13 @@ ion-app {
 }
 
 body {
-  background-color: rgb(244, 241, 241) !important;
+  background-color: #40d987 !important; /* Your green splash color */
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #000000 !important; /* Your dark splash color */
+  }
 }
 
 ion-toolbar {

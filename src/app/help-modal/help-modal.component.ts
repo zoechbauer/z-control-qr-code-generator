@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 import { LocalStorageService } from '../services/local-storage.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-help-modal',
@@ -68,6 +69,23 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
+  }
+
+  get versionInfo() {
+    const { major, minor, date } = {
+      major: environment.version.major,
+      minor: environment.version.minor,
+      date: environment.version.date,
+    };
+
+    let formattedDate = date;
+    if (this.selectedLanguage === 'de') {
+      // Convert 'yyyy-mm-dd' to 'dd.mm.yyyy'
+      const [year, month, day] = date.split('-');
+      formattedDate = `${day}.${month}.${year}`;
+    }
+
+    return `Version ${major}.${minor} (${formattedDate})`;
   }
 
   ngOnDestroy() {
