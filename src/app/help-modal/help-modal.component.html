@@ -36,6 +36,16 @@
           >
         </li>
         <li>
+          <a href="#" (click)="scrollTo('select-email-client', $event)"
+            >Select Email app</a
+          >
+        </li>
+        <li>
+          <a href="#" (click)="scrollTo('reset-default-app', $event)"
+            >Reset default app</a
+          >
+        </li>
+        <li>
           <a href="#" (click)="scrollTo('technical-info', $event)"
             >Technical information</a
           >
@@ -49,19 +59,21 @@
     </div>
     <h3 id="what-can-the-app-do">What can the app do?</h3>
     <p>
-      A QR code is created from the entered text and sent by email. The text
-      cannot be formatted and can be up to
-      {{ maxInputLength }} characters long. Text or a link to a web page can be
-      entered.
+      <b>A QR code is created from the entered text and sent by Email.</b> The
+      text cannot be formatted and can be up to {{ maxInputLength }} characters
+      long. Text or a link to a web page can be entered.
     </p>
     <p>
-      The QR code is attached to the email as an image and PDF, and the entered
-      text is included in the email. This way you can immediately see which text
-      is contained in the QR code, in case you create multiple QR codes.
+      <b
+        >The QR code is attached to the Email as an image and PDF, and the
+        entered text is included in the Email.</b
+      >
+      This way you can immediately see which text is contained in the QR code,
+      in case you create multiple QR codes.
     </p>
     <p>
-      To avoid having to enter the email address every time you send an email,
-      you can save email addresses.
+      To avoid having to enter the Email address every time you send an Email,
+      <b>you can save Email addresses</b>.
     </p>
 
     <h3 id="how-to-use-the-app">How to use the app?</h3>
@@ -70,7 +82,7 @@
       <li>Enter text</li>
       <li>Generate QR code</li>
       <li>Email QR code</li>
-      <li>Optionally save email address(es)</li>
+      <li>Optionally save Email address(es)</li>
       <li>Optionally change language (EN / DE)</li>
     </ol>
     <h5>Details on generating QR code</h5>
@@ -80,8 +92,7 @@
         https://de.wikipedia.org).<br />A new line or blank lines can be
         inserted by pressing the Enter key one or more times. Only uppercase
         formatting is supported. The length of the entered text and the maximum
-        text length of {{ maxInputLength }} characters are displayed below the
-        input field.
+        allowed ({{ maxInputLength }}) are displayed below the input field.
       </li>
       <br />
       <li>
@@ -90,27 +101,31 @@
       </li>
       <br />
       <li>
-        Using the <i>Email QR code</i> button, the
-        <i>QR codes are attached to the email as png and pdf</i>.<br /><br />
-        The email can be edited if necessary and sent with the
-        <b>arrow on the right in the top right corner</b>.<br /><br />
-        Sending can be repeated as often as desired by pressing
-        <i>Email QR code</i> again and changing the recipient.<br /><br />
-        <ul>
-          <b>Content of the email</b>
-          <li>
-            <i>Recipient: </i>The recipient(s) are automatically pre-filled if
-            they were saved using <b>EMAIL AD</b>. Otherwise, they must be
-            entered.
-          </li>
-          <br />
-          <li>
-            <i>Subject: </i>QR code with the length of the entered text.<br />e.g.
-            QR code with text length 512
-          </li>
-          <br />
-          <li><i>Text: </i>The entered text contained in the QR codes.</li>
-        </ul>
+        Using the <i><b>Email QR code</b></i> button, the
+        <i>standard selection dialog of Android devices</i> opens and you can
+        <b>select your Email app</b> (e.g. Gmail or Outlook). The exact
+        procedure is described in the section <i>Select Email app</i>.
+        <p>
+          A <b>new Email</b> is then created with the entered text and the QR
+          codes are attached to the Email as png and pdf files. The Email can be
+          edited if necessary and sent with the
+          <b>arrow on the right in the top right corner</b>.
+        </p>
+        <p>
+          Sending can be repeated as often as desired by pressing
+          <i>Email QR code</i> again and changing the recipient.
+        </p>
+        <b>Content of the Email</b>
+        <p>
+          <i>Recipient: </i>The recipient(s) are automatically pre-filled if
+          they were saved using <b>EMAIL AD</b>. Otherwise, they must be
+          entered.
+        </p>
+        <p>
+          <i>Subject: </i>QR code with the length of the entered text.<br />e.g.
+          QR code with text length 512
+        </p>
+        <p><i>Text: </i>The entered text contained in the QR codes.</p>
       </li>
       <br />
       <li>
@@ -124,19 +139,19 @@
       </li>
       <br />
     </ol>
-    <h5>Details on managing email addresses</h5>
+    <h5>Details on managing Email addresses</h5>
     <p>In the <b>header</b> there is the option <b>EMAIL AD</b></p>
     <p>
-      Here you can switch between QR code creation and email address management.
+      Here you can switch between QR code creation and Email address management.
       A switch is only possible if no text has been entered yet.
     </p>
     <p>
-      All previously saved email addresses are displayed, and new email
-      addresses can be saved, and existing email addresses can be deleted.
+      All previously saved Email addresses are displayed, and new Email
+      addresses can be saved, and existing Email addresses can be deleted.
     </p>
     <p>
       The input field can be deleted using the <i>Delete input</i> button and
-      the email address management can be canceled at any time using the
+      the Email address management can be canceled at any time using the
       <i>Back to QR Code</i>button.
     </p>
 
@@ -153,6 +168,55 @@
     <p>
       The language can be changed by pressing the language selection. The change
       takes effect immediately.
+    </p>
+
+    <h3 id="select-email-client">Select Email app</h3>
+    <p>
+      By pressing the <i><b>Email QR code</b></i> button, the
+      <i>standard selection dialog of Android devices</i> opens and you can
+      <b>select your Email app</b> (e.g. Gmail or Outlook). The options
+      <i>Just Once</i> and <i>Always</i> are offered.
+    </p>
+    <p>
+      If you select <i>Always</i>, this selected program will always be used and
+      the Email app will open immediately. If you select <i>Just Once</i>,
+      you will be prompted to select an Email app each time you send an
+      Email.
+    </p>
+    <p>
+      <b>Important:</b> You must select a
+      <b>valid Email app (e.g. Gmail or Outlook)</b> to use all functions of
+      the QR Code app. If you accidentally selected another program with the
+      <i>Always</i> option, you can reset this selection in the Android
+      settings. This is explained in the next section <i>Reset default app</i>.
+    </p>
+
+    <h3 id="reset-default-app">Reset default app</h3>
+    <p>
+      If you accidentally selected a program that is not an Email app (e.g.
+      WhatsApp) as the default for sending emails and chose the
+      <i>Always</i> option, you can reset this selection in the
+      <b>Android settings</b>.
+    </p>
+    <i>Step-by-step instructions</i>
+    <ol>
+      <li>Open the settings on your Android device.</li>
+      <li>Scroll down and tap on "Apps" or "Applications".</li>
+      <li>
+        Find and select the program from the list (e.g. WhatsApp) that you
+        selected for sending emails.
+      </li>
+      <li>
+        Scroll down to "Set as default" (it may also say "Open by default" or
+        similar) and tap on it.
+      </li>
+      <li>Tap on "Clear defaults" or "Reset defaults".</li>
+      <li>Close the settings on your Android device.</li>
+    </ol>
+    <p>
+      The link is now removed and the next time you open a mailto link or click
+      on <i>Send Email</i>, you will be asked again which app should open the
+      link.
     </p>
 
     <h3 id="technical-info">Technical information</h3>
@@ -173,11 +237,11 @@
       integrated into the standard camera app.
     </p>
     <p>
-      <b>Saved email addresses</b> are stored on the phone in local storage
+      <b>Saved Email addresses</b> are stored on the phone in local storage
       (IndexedDB or Local Storage).
     </p>
     <p>
-      The <b>generated QR code files</b> are attached to the email and are
+      The <b>generated QR code files</b> are attached to the Email and are
       stored on the phone in the documents folder. After 3 hours or if you
       restart the app the files are deleted automatically.
     </p>
@@ -200,23 +264,34 @@
     <p>
       The app is open source, and the source code is available on
       <a
+        class="external-link"
         href="https://github.com/zoechbauer/ng-leaflet-fuel-prices.git"
         target="_blank"
         rel="noopener noreferrer"
-        >GitHub</a
+        >GitHub
+        <ion-icon
+          name="open-outline"
+          style="vertical-align: text-bottom; margin-left: 2px"
+        ></ion-icon> </a
       >, so you can review how the app works and how your data is handled at any
       time.
     </p>
     <p>
       For the complete privacy policy, visit the z-control website
       <a
+        class="external-link"
         href="https://z-control-4070.web.app/privacy/basic/en"
         target="_blank"
         rel="noopener noreferrer"
-        >Privacy Policy</a
-      >
+        >Privacy Policy
+        <ion-icon
+          name="open-outline"
+          style="vertical-align: text-bottom; margin-left: 2px"
+        ></ion-icon>
+      </a>
       (opens in your browser - switch back to this QR Code app when finished).
     </p>
+
     <div class="version-info">
       <small>{{ versionInfo }}</small>
     </div>
@@ -266,6 +341,16 @@
           >
         </li>
         <li>
+          <a href="#" (click)="scrollTo('select-email-client-DE', $event)"
+            >Mailprogramm auswählen</a
+          >
+        </li>
+        <li>
+          <a href="#" (click)="scrollTo('reset-default-app-DE', $event)"
+            >Standard App zurücksetzen</a
+          >
+        </li>
+        <li>
           <a href="#" (click)="scrollTo('technical-info-DE', $event)"
             >Technische Informationen</a
           >
@@ -279,19 +364,23 @@
     </div>
     <h3 id="what-can-the-app-do-DE">Was kann die App?</h3>
     <p>
-      Es wird aus dem erfassten Text ein QR Code erstellt und per Mail
-      versendet. Der Text kann nicht formatiert werden und kann bis zu
+      <b
+        >Es wird aus dem erfassten Text ein QR Code erstellt und per E-Mail
+        versendet.</b
+      >
+      Der Text kann nicht formatiert werden und kann bis zu
       {{ maxInputLength }} Zeichen lang sein. Es kann ein Text oder der Link zu
-      einer Web Site erfasst werden.
+      einer Website erfasst werden. Der QR Code wird als Bild und PDF dem E-Mail
+      angehängt.
     </p>
     <p>
-      Der QR Code wird als Bild und PDF dem Mail angehängt und der erfasste Text
-      steht im Mail. So sehen Sie sofort welcher Text im QR Code enthalten ist,
-      falls Sie mehrere QR Codes erstellen.
+      Der <b>QR Code</b> wird <b>als Bild und PDF dem E-Mail angehängt</b> und
+      der <b>erfasste Text steht im E-Mail</b>. So sehen Sie sofort welcher Text
+      im QR Code enthalten ist, falls Sie mehrere QR Codes erstellen.
     </p>
     <p>
       Damit Sie beim Mailversand nicht immer die Mailadresse erfassen müssen,
-      können Sie Mail-Adressen anlegen.
+      können Sie <b>E-Mail-Adressen anlegen</b>.
     </p>
 
     <h3 id="how-to-use-the-app-DE">Wie bediene ich die App?</h3>
@@ -320,29 +409,32 @@
       </li>
       <br />
       <li>
-        Mittels Schaltfläche <i>QR Code mailen</i> werden die
-        <i>QR Codes dem Mail als png und pdf angehängt</i>.<br /><br />
-        Das Mail kann bei Bedarf bearbeitet werden und wird mit dem
-        <b>Pfeil rechts in der rechten Kopfzeile versendet</b>.<br /><br />
-        Das Versenden kann beliebig oft wiederholt werden indem wieder
-        <i>QR Code mailen</i> gedrückt wird und der Empfänger geändert wird.<br /><br />
-        <ul>
-          <b>Inhalt der Mail</b>
-          <li>
-            <i>Empfänger: </i>Der oder die Empfänger werden automatisch
-            vorbelegt, wenn sie mittels <b>MAIL ADR</b> angelegt wurden. Sonst
-            müssen sie erfasst werden.
-          </li>
-          <br />
-          <li>
-            <i>Betreff: </i>QR Code mit Angabe der Textlänge des erfassten
-            Textes.<br />z.B. QR Code mit Textlänge 512
-          </li>
-          <br />
-          <li><i>Text: </i>Der in den QR Codes enthaltene erfasste Text.</li>
-        </ul>
+        Mittels Schaltfläche <i><b>QR Code mailen</b></i> wird die
+        <i>Standardauswahl von Android-Handies</i> geöffnet und Sie können Ihr
+        <b>Mailprogramm auswählen</b> (z.B. Gmail oder Outlook). Der genaue
+        Ablauf ist im Kapitel <i>E-Mail Programm auswählen</i> beschrieben.
+        <p>
+          Es wird dann ein <b>neues E-Mail</b> mit dem erfassten Text erstellt
+          und QR Codes werden dem E-Mail als png und pdf angehängt. Das E-Mail
+          kann bei Bedarf bearbeitet werden und wird mit dem
+          <b>Pfeil rechts in der rechten Kopfzeile versendet</b>.
+        </p>
+        <p>
+          Das Versenden kann beliebig oft wiederholt werden indem wieder
+          <i>QR Code mailen</i> gedrückt wird und der Empfänger geändert wird.
+        </p>
+        <b>Inhalt der E-Mail</b>
+        <p>
+          <i>Empfänger: </i>Der oder die Empfänger werden automatisch vorbelegt,
+          wenn sie mittels <b>MAIL ADR</b> angelegt wurden. Sonst müssen sie
+          erfasst werden.
+        </p>
+        <p>
+          <i>Betreff: </i>QR Code mit Angabe der Textlänge des erfassten Textes.
+          Beispiel: QR Code mit Textlänge 512
+        </p>
+        <p><i>Text: </i>Der in den QR Codes enthaltene erfasste Text.</p>
       </li>
-      <br />
       <li>
         Text <b>ändern oder löschen</b>.<br />Der Text kann jederzeit geändert
         werden, es muss aber nach einer Textänderung wieder die Schaltfläche
@@ -355,21 +447,22 @@
       </li>
       <br />
     </ol>
-    <h5>Detail-Informationen Mail Adressen verwalten</h5>
+    <h5>Detail-Informationen E-Mail Adressen verwalten</h5>
     <p>In der <b>Kopfzeile</b> gibt es die Auswahl <b>MAIL ADR</b></p>
     <p>
-      Hier kann zwischen QR Code Erstellung und Mail-Adressenverwaltung
+      Hier kann zwischen QR Code Erstellung und E-Mail-Adressenverwaltung
       gewechselt werden. Ein Wechsel ist aber
       <b>nur möglich wenn noch kein Text erfasst</b> wurde.
     </p>
     <p>
-      Es werden alle bereits erfassten Mail-Adressen angezeigt und neue
-      Mail-Adressen können erfasst und bereits erfasste Mail-Adressen können
+      Es werden alle bereits erfassten E-Mail-Adressen angezeigt und neue
+      E-Mail-Adressen können erfasst und bereits erfasste E-Mail-Adressen können
       gelöscht werden.
     </p>
     <p>
-      Das Eingabefeld kann mittels Schaltfläche <i>Eingabe löschen</i> gelöscht
-      werden und mittels Schaltfläche <i>Zurück zu QR Code</i>
+      Das Eingabefeld kann mittels Schaltfläche
+      <i>Eingabe löschen</i> gelöscht werden und mittels Schaltfläche
+      <i>Zurück zu QR Code</i>
       kann die Mailadressenverwaltung jederzeit abgebrochen werden.
     </p>
 
@@ -386,6 +479,63 @@
     <p>
       Die Sprache kann durch Drücken auf die Sprachauswahl geändert werden. Die
       Änderung wird sofort wirksam.
+    </p>
+
+    <h3 id="select-email-client-DE">E-Mail Programm auswählen</h3>
+    <p>
+      Mittels Schaltfläche <i><b>QR Code mailen</b></i> wird die
+      <i>Standardauswahl von Android-Geräten</i> geöffnet und Sie können Ihr
+      <b>Mailprogramm auswählen</b> (z.B. Gmail oder Outlook). Es werden die
+      Schaltflächen <i>Nur Diesmal</i> und <i>Immer</i> angeboten.
+    </p>
+    <p>
+      Wenn Sie <i>Immer</i> auswählen, wird immer dieses ausgewählte Programm
+      verwenden, und es wird sofort das Mailprogramm geöffnet. Wenn Sie
+      <i>Nur Diesmal</i> auswählen, werden Sie bei jedem Mailversand
+      aufgefordert, ein Mailprogramm auszuwählen.
+    </p>
+    <p>
+      <b>Wichtig:</b> Sie müssen ein
+      <b>gültiges Mailprogramm (z.B. Gmail oder Outlook) auswählen</b>, damit
+      Sie alle Funktionen von QR-Code App verwenden können. Sollten Sie
+      versehentlich ein anderes Programm mit der Auswahl <i>Immer</i> ausgewählt
+      haben, dann können Sie diese Auswahl in den Android-Einstellungen
+      zurücksetzen. Dies wird im nächsten Abschnitt
+      <i>Standard App zurücksetzen</i> erklärt.
+    </p>
+
+    <h3 id="reset-default-app-DE">Standard App zurücksetzen</h3>
+    <p>
+      Falls Sie irrtümlich kein Mailprogramm (z.B. WhatsApp) als
+      Standardprogramm zum Versenden von Mails ausgewählt haben und die
+      Schaltfläche
+      <i>Immer</i> gewählt haben, können Sie diese Auswahl in den
+      <b>Android-Einstellungen</b> zurücksetzen.
+    </p>
+    <i>Schritt-für-Schritt-Anleitung</i>
+    <ol>
+      <li>Öffnen Sie die Einstellungen auf Ihrem Android-Gerät.</li>
+      <li>
+        Scrollen Sie nach unten und tippen Sie auf „Apps“ oder „Anwendungen“.
+      </li>
+      <li>
+        Suchen und wählen Sie das Programm aus der Liste (z.B. WhatsApp), das
+        Sie beim E-Mail senden ausgewählt haben.
+      </li>
+      <li>
+        Scrollen Sie nach unten zu „Als Standard festlegen“ (ggf. steht dort
+        auch „Standardmäßig öffnen“ oder ähnlich) und klicken Sie darauf.
+      </li>
+      <li>
+        Tippen Sie auf „Standardeinstellungen löschen“ bzw. „Standards
+        zurücksetzen“.
+      </li>
+      <li>Schließen Sie die Einstellungen auf Ihrem Android-Gerät.</li>
+    </ol>
+    <p>
+      Jetzt ist die Verknüpfung aufgehoben und beim nächsten Öffnen eines
+      Mailto-Links bzw. beim nächsten Klick auf <i>E-Mail senden</i> werden Sie
+      wieder gefragt, mit welcher App der Link geöffnet werden soll.
     </p>
 
     <h3 id="technical-info-DE">Technische Informationen</h3>
@@ -410,7 +560,7 @@
       bzw. Local Storage) gespeichert.
     </p>
     <p>
-      Die <b>generierten QR Code Dateien</b> werden dem Mail als Anhang
+      Die <b>generierten QR Code Dateien</b> werden dem E-Mail als Anhang
       übergeben und im Handy im Documents Ordner temporär gespeichert. Nach 3
       Stunden oder wenn Sie die App neu starten werden sie automatisch gelöscht.
     </p>
@@ -434,11 +584,16 @@
     <p>
       Die App ist Open Source und der Quellcode ist auf
       <a
+        class="external-link"
         href="https://github.com/zoechbauer/ng-leaflet-fuel-prices.git"
         target="_blank"
         rel="noopener noreferrer"
-        >GitHub</a
-      >
+        >GitHub
+        <ion-icon
+          name="open-outline"
+          style="vertical-align: text-bottom; margin-left: 2px"
+        ></ion-icon>
+      </a>
       verfügbar, sodass Sie die Funktionsweise der App und den Umgang mit Ihren
       Daten jederzeit überprüfen können.
     </p>
@@ -446,14 +601,20 @@
       Die vollständige Datenschutzerklärung finden Sie auf der z-control Website
       unter
       <a
+        class="external-link"
         href="https://z-control-4070.web.app/privacy/basic/de"
         target="_blank"
         rel="noopener noreferrer"
-        >Datenschutzerklärung</a
-      >
+        >Datenschutzerklärung
+        <ion-icon
+          name="open-outline"
+          style="vertical-align: text-bottom; margin-left: 2px"
+        ></ion-icon>
+      </a>
       (öffnet sich in Ihrem Browser - wechseln Sie nach dem Lesen zurück zu
       dieser QR Code App).
     </p>
+
     <div class="version-info">
       <small>{{ versionInfo }}</small>
     </div>
