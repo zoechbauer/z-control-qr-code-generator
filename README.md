@@ -61,7 +61,7 @@ qr-code/
 ### Installation
 
 ```bash
-git clone https://github.com/yourusername/qr-code-generator.git
+git clone https://github.com/zoechbauer/z-control-qr-code-generator
 cd qr-code-generator
 npm install
 ionic serve
@@ -86,7 +86,7 @@ All documentation, deployment guides, and helper tools are located in the [`docs
 
 ## Privacy Policy
 
-See [`docs/privacy-policy.md`](docs/privacy-policy.md).
+See [Privacy Policy](https://z-control-4070.web.app/privacy/basic/en).
 
 ---
 

@@ -7,17 +7,19 @@
 
 ---
 
-## 📋 **Prerequisites**
+## 📋 Prerequisites
 
 - ✅ Ionic app is ready and tested
 - ✅ All changes are committed to git
 - ✅ Google Play Developer account is set up
 - ✅ Android development environment is working
+- ✅ **Changelog** (`CHANGELOG.md`) is updated
+- ✅ **Version info** is updated in `src/environments/environment.ts` and `environment.prod.ts`
 - ✅ **Remove any debug keystore shortcuts** (see Step 0 below)
 
 ---
 
-## 🚀 **Step-by-Step Deployment Process**
+# 1️⃣ Initial Upload to Google Play Store
 
 ### **Step 0: Clean Debug Keystores (Important!)**
 
@@ -26,10 +28,11 @@
 # Remove or rename any debug keystore shortcuts
 ren "keystore - Verknüpfung.lnk" "keystore-debug-backup.lnk"
 ```
-
 **Why:** Prevents automatic debug signing and ensures proper release signing
 
-### **Step 0a: Create Upload Keystore (FIRST TIME ONLY!)**
+---
+
+### **Step 1: Create Upload Keystore (FIRST TIME ONLY!)**
 
 > ⚠️ **Do this ONLY ONCE per app - then reuse the same keystore for all future updates**
 
@@ -39,20 +42,11 @@ keytool -genkey -v -keystore upload-keystore.jks -keyalg RSA -keysize 2048 -vali
 ```
 
 **You'll be prompted for:**
+- Keystore password (save securely!)
+- Key password (use same as keystore password)
+- Your name, organization, city, country
 
-1. **Keystore password** (e.g., `MySecurePassword123!`) - **SAVE THIS SECURELY!**
-2. **Key password** (use same as keystore password)
-3. **Your name** (e.g., Hans Zöchbauer)
-4. **Organization** (e.g., Development)
-5. **City, State, Country** (e.g., AT for Austria)
-
-**Then create keystore.properties:**
-
-```powershell
-# Create android/keystore.properties with your passwords
-cd android
-# Edit keystore.properties file:
-```
+**Then create `keystore.properties`:**
 
 ```properties
 storePassword=YOUR_SECURE_PASSWORD_HERE
@@ -61,151 +55,127 @@ keyAlias=upload
 storeFile=../../upload-keystore.jks
 ```
 
-**⚠️ CRITICAL:**
+**CRITICAL:**
+- Save your keystore password securely
+- Backup your `upload-keystore.jks` file
+- Never share or commit the `keystore.properties` file to git
 
-- **Save your keystore password securely** - you need it for ALL future updates
-- **Backup your upload-keystore.jks file** - losing it means you can't update your app
-- **Never share or commit** the keystore.properties file to git
-- **See ANDROID_BACKUP_STRATEGY.md** for complete backup instructions
+---
 
-### **Step 1: Update Version Numbers (For Updates Only)**
+### **Step 2: Prepare App for Release**
 
-> ⚠️ **Skip this step for first-time upload**
+- Update version info in `src/environments/environment.ts` and `environment.prod.ts`
+- Set `versionCode` and `versionName` in `android/app/build.gradle` (e.g., `versionCode 1`, `versionName "1.0"`)
 
-```powershell
-# Edit android/app/build.gradle
-# Increment these values:
-versionCode 3        # Previous: 2
-versionName "1.2"    # Previous: "1.1"
-```
+---
 
-### **Step 2: Build Production Ionic App**
+### **Step 3: Build and Bundle the App**
 
 ```powershell
-# In project root: c:\SOURCE-ACTIVE\ionic\qr-code\
 ionic build --prod
-```
-
-**Expected:** Build completes successfully (warnings are normal)
-
-### **Step 3: Sync with Capacitor**
-
-```powershell
 npx cap sync android
-```
-
-**Expected:** Web assets copied to Android project
-
-### **Step 4: Generate Signed App Bundle**
-
-```powershell
-# Navigate to Android directory
 cd android
-
-# Generate the signed bundle
 .\gradlew bundleRelease
 ```
 
 **Expected:** `BUILD SUCCESSFUL` message
 
-### **Step 5: Locate Your App Bundle**
+---
 
-Your signed `.aab` file is located at:
+### **Step 4: Locate and Upload App Bundle**
 
-```
-android\app\build\outputs\bundle\release\app-release.aab
-```
-
-### **Step 6: Upload to Google Play Console**
-
-1. **Go to:** [Google Play Console](https://play.google.com/console)
-2. **Select:** Your app (or create new app for first upload)
-3. **Navigate to:** Production → Releases
-4. **Click:** "Create new release"
-5. **Upload:** `app-release.aab` file
-6. **Fill in:** Release notes
-7. **Review and publish**
+- Find your `.aab` file at:  
+  `android\app\build\outputs\bundle\release\app-release.aab`
+- Go to [Google Play Console](https://play.google.com/console)
+- Create a new app entry if needed
+- Go to **Production → Releases → Create new release**
+- Upload the `.aab` file
+- Copy the relevant section from `CHANGELOG.md` and paste as release notes (plain text)
+- Complete all required Play Store listing fields (screenshots, privacy policy, etc.)
+- Review and publish
 
 ---
 
-## 🔐 **App Signing Configuration**
+# 2️⃣ Uploading Updates (New Versions)
 
-### **For First Upload:**
+### **Step 1: Update Version Info**
 
-- ✅ Use **Google Play App Signing** (recommended)
-- ✅ Let Google manage your app signing key
-- ✅ Your upload will work with debug signing initially
-
-### **For Subsequent Updates:**
-
-- ✅ Same process - Google handles signing automatically
-- ✅ Just increment version numbers before building
+- Update version in `src/environments/environment.ts` and `environment.prod.ts`
+- Increment `versionCode` and update `versionName` in `android/app/build.gradle`
+- Update `CHANGELOG.md` with new changes
 
 ---
 
-## 📁 **File Locations Reference**
-
-| File                | Location                                                   | Purpose                                |
-| ------------------- | ---------------------------------------------------------- | -------------------------------------- |
-| **App Bundle**      | `android\app\build\outputs\bundle\release\app-release.aab` | Upload this to Google Play             |
-| **Version Config**  | `android\app\build.gradle`                                 | Update `versionCode` and `versionName` |
-| **Screenshots**     | `upload-to-google-playstore\*.png`                         | Use for store listing                  |
-| **Feature Graphic** | `upload-to-google-playstore\feature-graphic-final.png`     | Store listing banner                   |
-| **App Icon**        | `upload-to-google-playstore\app-icon-512px.png`            | Store listing icon                     |
-
----
-
-## ⚠️ **Important Notes**
-
-### **Version Management:**
-
-- **versionCode:** Must increase by 1 for each update (1, 2, 3, 4...)
-- **versionName:** User-facing version (1.0, 1.1, 1.2, 2.0...)
-- **First upload:** Keep existing numbers if never uploaded before
-
-### **Common Issues:**
-
-- **Build fails:** Make sure you're in the correct directory
-- **Upload rejected:** Check if version numbers are higher than previous
-- **Signing errors:** Google Play App Signing will handle this
-
-### **Quality Checklist:**
-
-- [ ] App tested on device/emulator
-- [ ] All features working correctly
-- [ ] Screenshots and store listing updated
-- [ ] Version numbers incremented (for updates)
-- [ ] Release notes written
-
----
-
-## 🎯 **Quick Command Sequence**
-
-For experienced use, here's the complete sequence:
+### **Step 2: Build and Bundle the App**
 
 ```powershell
-# 1. Update version (if needed) in android/app/build.gradle
-# 2. Build and deploy
 ionic build --prod
 npx cap sync android
 cd android
 .\gradlew bundleRelease
-cd ..
-# 3. Upload: android\app\build\outputs\bundle\release\app-release.aab
 ```
 
 ---
 
-## 📞 **Need Help?**
+### **Step 3: Upload to Google Play Console**
 
-- Check this guide first
-- Verify all prerequisites
-- Ensure you're in the correct directory
-- Test the app before building
-
-**Success indicator:** `BUILD SUCCESSFUL` message and `.aab` file created
+- Go to your app in [Google Play Console](https://play.google.com/console)
+- Go to **Production → Releases → Create new release**
+- Upload the new `.aab` file
+- Copy the latest changes from `CHANGELOG.md` and paste as release notes (plain text)
+- Review and publish
 
 ---
 
-_Last updated: July 13, 2025_  
-_App: z-control QR Code Generator_
+# 3️⃣ Notes on Internal Test, Closed Test, and Production Mode
+
+## **Internal Test**
+- Use for quick, private testing with a small group.
+- Add tester emails in Play Console.
+- Share the internal test link manually with testers.
+- No automatic email invitations.
+- Testers must use the same Google account as in the test group.
+
+## **Closed Test**
+- Required before production release (as per latest Play Console rules).
+- Create a closed test track in Play Console.
+- Add testers (can be same as internal test group).
+- Upload your `.aab` file and release notes.
+- Share the closed test link with testers.
+- Wait for feedback and ensure all features work as expected.
+
+## **Production Mode**
+- Only release to production after successful internal and closed tests.
+- Double-check all Play Store listing requirements (screenshots, privacy policy, contact info, etc.).
+- Ensure version numbers are incremented.
+- Use the latest `.aab` file.
+- Copy release notes from `CHANGELOG.md` (plain text).
+- Submit for review and wait for Google approval.
+
+---
+
+## 📁 File Locations Reference
+
+| File                | Location                                                   | Purpose                                |
+| ------------------- | ---------------------------------------------------------- | -------------------------------------- |
+| **App Bundle**      | `android\app\build\outputs\bundle\release\app-release.aab` | Upload this to Google Play             |
+| **Version Config**  | `android\app/build.gradle`                                 | Update `versionCode` and `versionName` |
+| **Screenshots**     | `docs/upload-to-google-playstore/*.png`                    | Use for store listing                  |
+| **Feature Graphic** | `docs/upload-to-google-playstore/feature-graphic-final.png`| Store listing banner                   |
+| **App Icon**        | `docs/upload-to-google-playstore/app-icon-512px.png`       | Store listing icon                     |
+| **Changelog**       | `CHANGELOG.md`                                             | Release notes and version history      |
+
+---
+
+## ⚠️ Important Notes
+
+- **Never commit keystore files or passwords to git.**
+- **Always backup your keystore and passwords securely.**
+- **Increment `versionCode` for every update.**
+- **Release notes in Play Console must be plain text (copy from `CHANGELOG.md`).**
+- **Test your app thoroughly before every release.**
+
+---
+
+_Last updated: July 16, 2025_  
+_App: z-
