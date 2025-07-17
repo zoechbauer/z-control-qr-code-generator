@@ -27,3 +27,16 @@ ol.table-of-contents {
   margin-top: 2em;
   color: gray;
 }
+
+
+ion-content ol,
+ion-content ul {
+  margin-left: 1em;
+  padding-left: 1em;
+}
+@media (max-width: 600px) {
+  ion-content ol,
+  ion-content ul {
+    padding-left: 0.5em;
+  }
+}
