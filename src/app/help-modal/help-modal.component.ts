@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { LocalStorageService } from '../services/local-storage.service';
 import { environment } from 'src/environments/environment';
+import { MarkdownViewerComponent } from '../ui/components/markdown-viewer/markdown-viewer.component';
 
 @Component({
   selector: 'app-help-modal',
@@ -86,6 +87,17 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     }
 
     return `Version ${major}.${minor} (${formattedDate})`;
+  }
+
+  async openChangelog() {
+    const modal = await this.modalController.create({
+      component: MarkdownViewerComponent,
+      componentProps: {
+        fullChangeLogPath: 'assets/logs/CHANGELOG.md',
+      },
+    });
+
+    await modal.present();
   }
 
   ngOnDestroy() {

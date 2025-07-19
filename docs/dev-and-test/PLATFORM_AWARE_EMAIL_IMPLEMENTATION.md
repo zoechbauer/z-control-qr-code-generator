@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the platform-aware email sharing strategy implemented in the QR code app to handle the different capabilities and restrictions across platforms.
+This document describes the platform-aware email sharing strategy implemented in the z-control QR Code Generator app to handle the different capabilities and restrictions across platforms.
 
 ## Implementation Strategy
 

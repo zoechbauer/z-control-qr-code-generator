@@ -32,7 +32,9 @@ export class HomePage implements OnInit, OnDestroy {
   @ViewChild('qrDataInput') qrDataInput!: IonTextarea;
   @ViewChild('emailInput') emailInput!: IonText;
 
+  screenWidth: number = window.innerWidth;
   showAddress: boolean = false;
+
   private readonly langSub?: Subscription;
 
   constructor(
@@ -62,6 +64,10 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    window.addEventListener('resize', () => {
+      this.screenWidth = window.innerWidth;
+    });
+
     this.localStorage
       .init()
       .then(() => this.localStorage.loadSelectedOrDefaultLanguage())

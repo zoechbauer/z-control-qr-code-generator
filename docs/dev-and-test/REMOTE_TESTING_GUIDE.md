@@ -1,8 +1,8 @@
-# Remote Testing Guide: QR Code App Platform-Aware Email Sharing
+# Remote Testing Guide: z-control QR Code Generator App Platform-Aware Email Sharing
 
 ## 🎯 Testing Overview
 
-This guide provides comprehensive testing procedures for the platform-aware email sharing functionality implemented in the QR code app. The app now intelligently detects the platform and provides appropriate email sharing options.
+This guide provides comprehensive testing procedures for the platform-aware email sharing functionality implemented in the z-control QR Code Generator app. The app now intelligently detects the platform and provides appropriate email sharing options.
 
 ## 🔧 Setup: Remote Debugging (Android + Windows 11)
 

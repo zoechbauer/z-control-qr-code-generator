@@ -1,4 +1,4 @@
-# Next Steps to Publish Your QR Code Generator App
+# Next Steps to Publish z-control QR Code Generator App
 
 ## 🎯 Current Status
 - ✅ **Internal test created** with app bundle uploaded
@@ -153,7 +153,7 @@ Before hitting "Submit for Review":
 - [x] **Support plan** ready
 - [ ] **Closed test completed**
 
-**Your z-control QR Code Generator is almost ready for the world!** 🚀
+**Your z-control QR Code Generator app is almost ready for the world!** 🚀
 
 ---
 

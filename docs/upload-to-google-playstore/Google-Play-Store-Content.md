@@ -63,7 +63,7 @@ Transform any text into a professional QR code in seconds with our intuitive z-c
 • Product information and pricing
 • Educational content and resources
 
-**Why Choose Our z-control QR Code Generator?**
+**Why Choose Our z-control QR Code Generator App?**
 Unlike basic QR code apps, we focus on the complete sharing experience. Generate your QR code and immediately share it via email with the image automatically attached - no manual file management required.
 
 **Privacy & Security**

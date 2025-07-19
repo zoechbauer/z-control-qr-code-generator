@@ -23,11 +23,8 @@ ol.table-of-contents {
 }
 
 .version-info {
-  text-align: center;
-  margin-top: 2em;
-  color: gray;
+  font-weight: 500;
 }
-
 
 ion-content ol,
 ion-content ul {
@@ -39,4 +36,16 @@ ion-content ul {
   ion-content ul {
     padding-left: 0.5em;
   }
+}
+
+ion-title {
+  font-weight: 600;
+  font-size: 1.2em;
+  color: var(--ion-color-primary);
+  text-align: center;
+}
+
+ion-toolbar {
+  background: var(--ion-color-light);
+  border-bottom: 1px solid #e0e0e0;
 }

@@ -3,8 +3,6 @@
 A modern, user-friendly QR code generator app built with Ionic and Angular.  
 Easily create QR codes, share them via email, and enjoy multi-language support.
 
----
-
 ## Features
 
 - Generate QR codes from text input
@@ -13,8 +11,7 @@ Easily create QR codes, share them via email, and enjoy multi-language support.
 - Dark and light theme support
 - Clean, responsive UI
 - Offline functionality
-
----
+- Change log
 
 ## 🛠️ Tech Stack
 
@@ -40,11 +37,12 @@ qr-code/
 │   ├── app/
 │   │   ├── help-modal/          # Help page
 │   │   ├── home/                # Main QR code page
-│   │   ├── services/            # Application services
+│   │   └── services/            # Application services
 │   ├── assets/                  # Static assets
+│   │   └── logs/                # CHANGELOG.md
 │   ├── environments/            # Environment configurations
 │   └── theme/                   # Global styling
-├── tools/                       # Project-wide dev tools (e.g., backup scripts)
+├── tools/                       # Project-wide dev tools (e.g., backup scripts, CHANGELOG-Templates)
 ├── README.md                    # Project overview (root)
 
 ```
@@ -76,25 +74,17 @@ cd android
 ./gradlew assembleRelease
 ```
 
----
-
 ## Documentation
 
 All documentation, deployment guides, and helper tools are located in the [`docs/`](docs/) folder.
-
----
 
 ## Privacy Policy
 
 See [Privacy Policy](https://z-control-4070.web.app/privacy/basic/en).
 
----
-
 ## License
 
 [MIT](LICENSE)
-
----
 
 ## Contact
 

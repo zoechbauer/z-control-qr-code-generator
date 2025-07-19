@@ -160,4 +160,4 @@ If you lose your upload keystore:
 ---
 
 _Last updated: July 8, 2025_  
-_App: z-control QR Code Generator_
+_App: z-control QR gode generator_

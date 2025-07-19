@@ -103,3 +103,10 @@ ion-toolbar {
   border: 2px solid var(--ion-color-medium);
   border-radius: 10px;
 }
+
+ion-title {
+  text-align: center;
+  width: 100%;
+  justify-content: center;
+  display: flex;
+}

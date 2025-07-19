@@ -12,7 +12,7 @@
         {{!showAddress ? ('EMAIL_ADDRESS_BUTTON' | translate) : "QR Code"}}
       </ion-button>
     </ion-buttons>
-    <ion-title><b>QR Code</b></ion-title>
+    <ion-title><b>{{ screenWidth < 600 ? 'QR Code' : 'z-control QR Code Generator' }}</b></ion-title>
     <ion-buttons slot="end">
       <ion-button class="icon-color" fill="clear" 
       (click)="openHelpModal()"

@@ -1,6 +1,6 @@
 # Google Play Store Deployment Guide
 
-## Complete Step-by-Step Process for z-control QR Code App
+## Complete Step-by-Step Process for z-control QR Code Generator App
 
 > **Use this guide every time you want to deploy to Google Play Store**  
 > _Works for both first-time uploads and updates_
