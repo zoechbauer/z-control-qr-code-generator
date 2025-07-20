@@ -78,6 +78,7 @@ export class HomePage implements OnInit, OnDestroy {
     const popover = await this.popoverController.create({
       component: LanguagePopoverComponent,
       event: ev,
+      side: 'left',
       translucent: true,
     });
     return await popover.present();

@@ -38,45 +38,25 @@
 
 ion-app {
   width: 100%;
+  max-width: 800px;
   margin: 0 auto;
   box-sizing: border-box;
-
-  // Mobile first approach
-  max-width: 100%;
   padding: 0 16px;
-
-  // Tablet (768px and up)
-  @media (min-width: 768px) {
-    max-width: 90vw;
-    padding: 0 24px;
-  }
-
-  // Desktop small (1024px and up)
-  @media (min-width: 1024px) {
-    max-width: 70vw;
-    padding: 0 32px;
-  }
-
-  // Desktop large (1200px and up)
-  @media (min-width: 1200px) {
-    max-width: 65vw;
-    padding: 0 40px;
-  }
-
-  // Extra large screens (1440px and up)
-  @media (min-width: 1440px) {
-    max-width: 60vw;
-    padding: 0 48px;
-  }
 }
 
 body {
-  background-color: #40d987 !important; /* Your green splash color */
+  background-color: #40d987 !important; /* green splash color for mobile */
 }
 
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #000000 !important; /* Your dark splash color */
+    background-color: #000000 !important; /* dark splash color for mobile */
+  }
+}
+
+@media (min-width: 768px) {
+  body {
+    background: #eeeddd !important; /* light gray for desktop */
   }
 }
 
@@ -109,4 +89,42 @@ ion-title {
   width: 100%;
   justify-content: center;
   display: flex;
+}
+
+
+ion-popover::part(content) {
+  /* Mobile First */
+  --offset-x: 40px;
+  --offset-y: 50px;
+  --max-width: 110px;
+
+  /* Tablet */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    --offset-x: -150px;
+    --offset-y: 50px;
+  }
+
+  /* Small Desktop */
+  @media (min-width: 1025px) and (max-width: 1280px) {
+    --offset-x: -250px;
+    --offset-y: 50px;
+  }
+
+  /* Desktop */
+  @media (min-width: 1281px) and (max-width: 1439px) {
+    --offset-x: -300px;
+    --offset-y: 50px;
+  }
+
+  /* Large Desktop */
+  @media (min-width: 1440px) and (max-width: 1919px) {
+    --offset-x: -400px;
+    --offset-y: 50px;
+  }
+
+  /* Sehr große Bildschirme */
+  @media (min-width: 1920px) {
+    --offset-x: -550px;
+    --offset-y: 50px;
+  }
 }

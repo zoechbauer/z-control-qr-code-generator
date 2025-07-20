@@ -20,9 +20,10 @@
     color: var(--ion-color-primary);
   }
 
-  .email-list {
-    ion-label {
-      font-size: 13px;
+  // Desktop: increase font size for email list labels
+  @media (min-width: 768px) {
+    .email-list ion-label {
+      font-size: 20px;
     }
   }
 
