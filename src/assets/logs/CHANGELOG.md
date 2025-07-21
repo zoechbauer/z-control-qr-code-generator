@@ -2,6 +2,21 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+## [1.6] – 2025-07-21
+
+### 🚀 Improvements
+
+- Stored email addresses are displayed on desktop and mobile in larger font for better readability
+- The language selection menu items are displayed better on different screen sizes
+
+### 🐛 Fixes
+
+- Green background on desktop is now replaced with light gray for a cleaner look (global.scss updated). Note: you can run z-control QR Code Generator App on mobile and desktop via Browser.
+
+### 📦 Installations
+
+- Test status in Google Play Store changed from Internal Test to **Closed Test**
+
 ## [1.5] - 2025-07-19
 
 ### 🚀 Improvements

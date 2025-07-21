@@ -20,8 +20,8 @@ export const environment = {
   // version info
    version: {
     major: 1,
-    minor: 5,
-    date: '2025-07-19',
+    minor: 6,
+    date: '2025-07-21',
   },
 };
 
