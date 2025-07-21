@@ -2,6 +2,28 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+## [1.7] – 2025-07-xx
+
+### ✨ New Features
+
+- …
+
+### 🚀 Improvements
+
+- If spaces or line breaks are entered at the end, they are removed from the input field during generation and a hint (toast) is displayed. The user documentation has been updated accordingly.
+
+### 🐛 Fixes
+
+- If spaces or line breaks were entered at the end, the email button was disabled
+
+### 🛡 Security
+
+- …
+
+### 📦 Installations
+
+- …
+
 ## [1.6] – 2025-07-21
 
 ### 🚀 Improvements

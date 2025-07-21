@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import {
-  IonText,
   IonTextarea,
   ModalController,
   PopoverController,
   Platform,
   AlertController,
+  ToastController,
 } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Capacitor } from '@capacitor/core';
@@ -30,7 +30,6 @@ import { AlertService } from '../services/alert.service';
 })
 export class HomePage implements OnInit, OnDestroy {
   @ViewChild('qrDataInput') qrDataInput!: IonTextarea;
-  @ViewChild('emailInput') emailInput!: IonText;
 
   screenWidth: number = window.innerWidth;
   showAddress: boolean = false;
@@ -46,6 +45,7 @@ export class HomePage implements OnInit, OnDestroy {
     private readonly modalController: ModalController,
     private readonly fileService: FileUtilsService,
     private readonly popoverController: PopoverController,
+    private readonly toastController: ToastController,
     private readonly platform: Platform,
     private readonly alertController: AlertController,
     private readonly alertService: AlertService
@@ -61,6 +61,15 @@ export class HomePage implements OnInit, OnDestroy {
     // but scanning no longer works, therefore we are using 1000 - results determined by testing
 
     return environment.maxInputLength ?? 1000;
+  }
+
+  get isGenerationButtonDisabled(): boolean {
+    return (
+      (this.isInputFieldEmpty() ||
+        this.emailService.isEmailSent ||
+        this.qrService.isQrCodeGenerated) &&
+      !this.hasInputChangedAfterGeneration()
+    );
   }
 
   ngOnInit(): void {
@@ -108,15 +117,50 @@ export class HomePage implements OnInit, OnDestroy {
     }
   }
 
-  hasInputChangedAfterGeneration(): boolean {
-    if (this.qrDataInput) {
-      return this.qrDataInput.value !== this.qrService.myAngularxQrCode;
+  sanitizeInputAndGenerateQRCode(data: string | undefined | null) {
+    if (typeof data === 'string' && data.trim() !== '') {
+      const sanitizedData = this.trimTrailingWhitespace(data);
+      this.qrService.generateQRCode(sanitizedData);
     }
-    return false;
+  }
+
+  private trimTrailingWhitespace(data: string): string {
+    const trimmedData = data.replace(/\s+$/, '');
+
+    if (data.length !== trimmedData.length) {
+      this.qrDataInput.value = trimmedData;
+      this.showToastTrailingBlanksRemoved().catch((error) => {
+        console.error('Error presenting toast:', error);
+      });
+    }
+    return trimmedData;
+  }
+
+  private async showToastTrailingBlanksRemoved() {
+    const toast = await this.toastController.create({
+      message: this.translate.instant('TOAST_TRAILING_BLANKS_REMOVED'),
+      duration: 3000,
+      color: 'primary',
+      position: 'bottom',
+      buttons: [
+        {
+          icon: 'close',
+          role: 'cancel',
+        },
+      ],
+    });
+    await toast.present();
+  }
+
+  hasInputChangedAfterGeneration(): boolean {
+    if (!this.qrDataInput || this.isInputFieldEmpty()) {
+      return false;
+    }
+    return this.qrDataInput.value !== this.qrService.myAngularxQrCode;
   }
 
   isInputFieldEmpty(): boolean {
-    return this.qrDataInput ? this.qrDataInput.value === '' : true;
+    return this.qrDataInput ? this.qrDataInput.value?.trim() === '' : true;
   }
 
   onChangeURL(url: SafeUrl) {

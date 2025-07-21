@@ -11,6 +11,7 @@
   "CREATE_QR_CODE": "QR Code erstellen",
   "QR_CODE_TEXT": "Text",
   "INPUT_FIELD_PLACEHOLDER": "Bitte Text eingeben. Leerzeilen mittels Eingabe-Taste ...",
+  "TOAST_TRAILING_BLANKS_REMOVED": "Leerzeichen wurden am Ende entfernt.",  
 
   "------ email address page": "-------",
   "EMAIL_PAGE_TITLE": "Email Adressen",

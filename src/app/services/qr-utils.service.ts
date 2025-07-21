@@ -22,7 +22,7 @@ export class QrUtilsService {
   ) {}
 
   generateQRCode(data: string | null | undefined) {
-    this.myAngularxQrCode = data ? data.trim() : ' ';
+    this.myAngularxQrCode = data ?? '';
     this.isQrCodeGenerated = true;
   }
 

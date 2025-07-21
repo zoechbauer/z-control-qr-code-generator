@@ -11,6 +11,8 @@
   "CREATE_QR_CODE": "Create QR Code",
   "QR_CODE_TEXT": "Text",
   "INPUT_FIELD_PLACEHOLDER": "Please enter text. Use Enter key to fill in blank lines ...",
+  "TOAST_TRAILING_BLANKS_REMOVED": "Spaces have been removed at the end.",  
+
 
   "------ email address page": "-------",
   "EMAIL_PAGE_TITLE": "Email Addresses",

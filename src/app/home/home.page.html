@@ -77,10 +77,10 @@
 
     <ion-button
       expand="block"
-      (click)="this.qrService.generateQRCode(qrDataInput.value)"
-      (keydown.enter)="this.qrService.generateQRCode(qrDataInput.value)"
-      (keydown.space)="this.qrService.generateQRCode(qrDataInput.value)"
-      [disabled]="(isInputFieldEmpty() || emailService.isEmailSent || qrService.isQrCodeGenerated) && !hasInputChangedAfterGeneration()"
+      (click)="sanitizeInputAndGenerateQRCode(qrDataInput.value)"
+      (keydown.enter)="sanitizeInputAndGenerateQRCode(qrDataInput.value)"
+      (keydown.space)="sanitizeInputAndGenerateQRCode(qrDataInput.value)"
+      [disabled]="isGenerationButtonDisabled"
       >{{ 'GENERATE' | translate }}</ion-button
     >
     <div class="buttons-no-generation ion-justify-content-around">
