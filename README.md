@@ -21,6 +21,7 @@ Easily create QR codes, share them via email, and enjoy multi-language support.
 - **Hosting**: Firebase Hosting
 - **Build Tool**: Angular CLI
 - **Icons**: Ionicons
+- **QR Code Generator**: for generating the QR Code we used this library https://github.com/Cordobo/angularx-qrcode
 
 ## 📁 Project Structure
 

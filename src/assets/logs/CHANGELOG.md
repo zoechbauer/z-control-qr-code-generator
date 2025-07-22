@@ -11,6 +11,9 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 ### 🚀 Improvements
 
 - If spaces or line breaks are entered at the end, they are removed from the input field during generation and a hint (toast) is displayed. The user documentation has been updated accordingly.
+- Description of QR codes and the benefits for individuals and companies added to user manual.
+- Tips have been added to the user manual on how to print the QR code in a specific size. 
+- Added used QR Code Generator library to README
 
 ### 🐛 Fixes
 

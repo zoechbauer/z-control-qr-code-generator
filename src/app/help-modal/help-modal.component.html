@@ -53,6 +53,11 @@
           >
         </li>
         <li>
+          <a href="#" (click)="scrollTo('print-qr-code', $event)"
+            >How to print QR Code?</a
+          >
+        </li>
+        <li>
           <a href="#" (click)="scrollTo('qr-code-explained', $event)"
             >QR codes explained</a
           >
@@ -251,6 +256,48 @@
       on <i>Send Email</i>, you will be asked again which app should open the
       link.
     </p>
+
+    <h3 id="print-qr-code">How to print QR Code in a specific size?</h3>
+    <p>
+      There are several ways to print the QR code in a specific size. This
+      depends on the installed printer software and printer. This example is
+      intended to help you print the QR code in your desired size.
+    </p>
+    <ul>
+      <li>
+        <h5>Printing the PDF document</h5>
+        <ol>
+          <li>Open the PDF document on your device</li>
+          <li>Select <i>Print</i> in your PDF viewer</li>
+          <li>
+            Calculate the scaling from the printout according to the email
+            attachment and your desired QR code size
+          </li>
+          <li>
+            In the print dialog, select the option
+            <i>Custom scale</i> and enter the scaling factor
+          </li>
+        </ol>
+      </li>
+      <li>
+        <h5>Printing the image (filename.png)</h5>
+        <ol>
+          <li>Open the image on your device</li>
+          <li>Copy the image</li>
+          <li>Open a word processor (e.g. Google Docs or Word)</li>
+          <li>Paste the image into the document</li>
+          <li>
+            Select the image and choose the option
+            <i>Size and Position</i> from the context menu
+            <ion-icon name="albums"></ion-icon>
+          </li>
+          <li>
+            You can now either enter the height and width in cm or, as with the
+            PDF document, calculate and enter the scaling
+          </li>
+        </ol>
+      </li>
+    </ul>
 
     <h3 id="privacy-policy">Privacy Policy</h3>
     <p>
@@ -493,6 +540,11 @@
           >
         </li>
         <li>
+          <a href="#" (click)="scrollTo('print-qr-code-DE', $event)"
+            >QR Code drucken</a
+          >
+        </li>
+        <li>
           <a href="#" (click)="scrollTo('privacy-policy-DE', $event)"
             >Datenschutz</a
           >
@@ -707,6 +759,50 @@
       Mailto-Links bzw. beim nächsten Klick auf <i>E-Mail senden</i> werden Sie
       wieder gefragt, mit welcher App der Link geöffnet werden soll.
     </p>
+
+    <h3 id="print-qr-code-DE">QR Code in einer bestimmten Größe drucken</h3>
+    <p>
+      Zum Drucken des QR Codes in einer bestimmten Größe gibt es mehrere
+      Möglichkeiten. Diese hängen von der installierten Drucksoftware und
+      Drucker ab. Dieses Beispiel soll Ihnen helfen, den QR Code in der
+      gewünschten Größe zu drucken.
+    </p>
+    <ul>
+      <li>
+        <h5>Drucken des PDF-Dokuments</h5>
+        <ol>
+          <li>Öffnen Sie das PDF-Dokument auf Ihrem Gerät</li>
+          <li>Wählen <i>Drucken</i> in Ihrem PDF-Viewer</li>
+          <li>
+            Berechnen Sie die Skalierung vom Ausdruck lt. Mailanhang und Ihrer
+            gewünschten QR-Code Größe
+          </li>
+          <li>
+            Wählen Sie im Druckdiaglog die Option
+            <i>Benutzerdefinierter Maßstab</i> und geben Sie den
+            Skalierungsfaktor ein
+          </li>
+        </ol>
+      </li>
+      <li>
+        <h5>Drucken des Bildes (Dateiname.png)</h5>
+        <ol>
+          <li>Öffnen Sie das Bild auf Ihrem Gerät</li>
+          <li>Kopieren Sie das Bild</li>
+          <li>Öffnen Sie eine Textverarbeitung (z.B. Google Docs oder Word)</li>
+          <li>Fügen Sie das Bild in das Dokument ein</li>
+          <li>
+            Selektieren Sie das Bild und wählen Sie aus dem Kontextmenü die
+            Option
+            <i>Größe und Position</i> <ion-icon name="albums"></ion-icon>
+          </li>
+          <li>
+            Sie können nun entweder die Höhe und Breite absolut in cm eingeben
+            oder wie beim PDF-Dokument die Skalierung berechnen und eingeben
+          </li>
+        </ol>
+      </li>
+    </ul>
 
     <h3 id="privacy-policy-DE">Datenschutz</h3>
     <p>
