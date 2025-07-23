@@ -2,6 +2,28 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+## [1.8] – 2025-07-xx
+
+### ✨ New Features
+
+- …
+
+### 🚀 Improvements
+
+- Google requested to upgrade to Android 14 (API-Level 34)
+
+### 🐛 Fixes
+
+- …
+
+### 🛡 Security
+
+- …
+
+### 📦 Installations
+
+- 
+
 ## [1.7] – 2025-07-22
 
 ### 🚀 Improvements
