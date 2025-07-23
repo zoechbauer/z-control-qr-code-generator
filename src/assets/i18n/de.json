@@ -11,7 +11,7 @@
   "CREATE_QR_CODE": "QR Code erstellen",
   "QR_CODE_TEXT": "Text",
   "INPUT_FIELD_PLACEHOLDER": "Bitte Text eingeben. Leerzeilen mittels Eingabe-Taste ...",
-  "TOAST_TRAILING_BLANKS_REMOVED": "Leerzeichen wurden am Ende entfernt.",  
+  "TOAST_TRAILING_BLANKS_REMOVED": "Leerzeichen wurden am Ende entfernt.",
 
   "------ email address page": "-------",
   "EMAIL_PAGE_TITLE": "Email Adressen",
@@ -24,8 +24,10 @@
   "EMAIL_PAGE_BACK_BUTTON": "Zurück zu QR Code",
 
   "------ email service": "-------",
-  "EMAIL_SERVICE_MAIL_SUBJECT_PREFIX": "QR Code mit Textlänge: ",
+  "EMAIL_SERVICE_MAIL_SUBJECT_PREFIX": "Generierter z-control QR-Code Ihres Textes mit ",
+  "EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX": " Zeichen",
   "EMAIL_SERVICE_MAIL_BODY_PREFIX": "Dieser Text ist im QR Code enthalten:",
+  "EMAIL_SERVICE_MAIL_BODY_PREFIX_WEB": "Hinweis: Wenn im QR-Code am Anfang Leerzeichen enthalten sind, werden diese beim Öffnen der E-Mail unter Umständen nicht angezeigt. Der Grund: Führende Leerzeichen werden vom Browser beim Verwenden des mailto:-Links automatisch entfernt.",
 
   "------ mobile web email options": "-------",
   "MOBILE_WEB_EMAIL_TITLE": "E-Mail Optionen",

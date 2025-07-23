@@ -11,8 +11,7 @@
   "CREATE_QR_CODE": "Create QR Code",
   "QR_CODE_TEXT": "Text",
   "INPUT_FIELD_PLACEHOLDER": "Please enter text. Use Enter key to fill in blank lines ...",
-  "TOAST_TRAILING_BLANKS_REMOVED": "Spaces have been removed at the end.",  
-
+  "TOAST_TRAILING_BLANKS_REMOVED": "Spaces have been removed at the end.",
 
   "------ email address page": "-------",
   "EMAIL_PAGE_TITLE": "Email Addresses",
@@ -25,8 +24,10 @@
   "EMAIL_PAGE_BACK_BUTTON": "Back to QR Code",
 
   "------ email service": "-------",
-  "EMAIL_SERVICE_MAIL_SUBJECT_PREFIX": "QR Code with text length: ",
+  "EMAIL_SERVICE_MAIL_SUBJECT_PREFIX": "Generated z-control QR Code of your text with ",
+  "EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX": " characters",
   "EMAIL_SERVICE_MAIL_BODY_PREFIX": "This text is contained in the QR code:",
+  "EMAIL_SERVICE_MAIL_BODY_PREFIX_WEB": "Note: If the QR code contains leading spaces, they may not be displayed when opening the email, as leading spaces are automatically removed by the browser when using the mailto link.",
 
   "------ mobile web email options": "-------",
   "MOBILE_WEB_EMAIL_TITLE": "Email Options",
