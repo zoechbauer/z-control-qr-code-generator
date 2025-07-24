@@ -2,11 +2,7 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
-## [1.8] – 2025-07-xx
-
-### ✨ New Features
-
-- …
+## [1.8] – 2025-07-24
 
 ### 🚀 Improvements
 
@@ -14,17 +10,9 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 - The subject line of the email has been improved
 - Due to the mailto protocol, leading spaces in the mail body are removed by the browser. The mail body contains a warning in this case. This only occurs in the web application, not in the mobile app.
 
-### 🐛 Fixes
-
-- …
-
-### 🛡 Security
-
-- …
-
 ### 📦 Installations
 
--
+- App is hosted at Google Play Store for **Internal Test** group and **Closed Test** group
 
 ## [1.7] – 2025-07-22
 
