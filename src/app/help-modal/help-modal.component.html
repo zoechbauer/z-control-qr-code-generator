@@ -9,7 +9,10 @@
 <ng-template #englishTemplate>
   <ion-header>
     <ion-toolbar>
-      <ion-title>Help – z-control QR Code Generator</ion-title>
+      <ion-title>
+        <span *ngIf="!isPortrait">Help – z-control QR Code Generator</span>
+        <span *ngIf="isPortrait">Help – QR Code Generator</span>
+      </ion-title>
       <ion-buttons slot="end">
         <ion-button
           class="button-color"
@@ -504,7 +507,10 @@
 <ng-template #germanTemplate>
   <ion-header>
     <ion-toolbar>
-      <ion-title>Hilfe – z-control QR-Code-Generator</ion-title>
+      <ion-title>
+        <span *ngIf="!isPortrait">Hilfe – z-control QR Code Generator</span>
+        <span *ngIf="isPortrait">Hilfe – QR Code Generator</span>
+      </ion-title>
       <ion-buttons slot="end">
         <ion-button
           class="button-color"

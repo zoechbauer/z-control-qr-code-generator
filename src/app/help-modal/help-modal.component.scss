@@ -45,6 +45,12 @@ ion-title {
   text-align: center;
 }
 
+@media (orientation: portrait) {
+  ion-title {
+    font-size: 1rem;
+  }
+}
+
 ion-toolbar {
   background: var(--ion-color-light);
   border-bottom: 1px solid #e0e0e0;

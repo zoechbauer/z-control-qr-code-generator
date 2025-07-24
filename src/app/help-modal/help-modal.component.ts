@@ -20,7 +20,13 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     text: this.translate.instant('SCROLL_TO_TOP_DE'),
   };
   selectedLanguage: string = 'de';
+  isPortrait = window.matchMedia('(orientation: portrait)').matches;
+
   private langSub?: Subscription;
+
+ private orientationListener = () => {
+    this.isPortrait = window.matchMedia('(orientation: portrait)').matches;
+  };
 
   constructor(
     private readonly modalController: ModalController,
@@ -33,6 +39,10 @@ export class HelpModalComponent implements OnInit, OnDestroy {
       this.selectedLanguage = lang;
       this.setScrollToTopObj();
     });
+
+    window.addEventListener('resize', this.orientationListener);
+    window.addEventListener('orientationchange', this.orientationListener);
+    this.orientationListener();
   }
 
   private setScrollToTopObj() {
@@ -102,5 +112,7 @@ export class HelpModalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.langSub?.unsubscribe();
+    window.removeEventListener('resize', this.orientationListener);
+    window.removeEventListener('orientationchange', this.orientationListener);
   }
 }

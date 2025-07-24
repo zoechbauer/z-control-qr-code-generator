@@ -1,6 +1,7 @@
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Capacitor } from '@capacitor/core';
 import { Component } from '@angular/core';
+import { StatusBar, Style } from '@capacitor/status-bar';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,9 @@ export class AppComponent {
     // Hide splash screen immediately when app starts
     if (this.isNativeApp) {
       SplashScreen.hide();
+
+      StatusBar.show();
+      StatusBar.setStyle({ style: Style.Default });
     }
   }
 }
