@@ -2,29 +2,13 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
-## [1.10] – YYYY-MM-DD
-
-### ✨ New Features
-
-- …
+## [1.10] – 2025-07-28
 
 ### 🚀 Improvements
 
 - Updated mobile phone images used for Google Play app promotion.
 - Added tablet images used for Google Play app promotion.
 - Refined wording and phrasing in the user help page for clarity.
-
-### 🐛 Fixes
-
-- …
-
-### 🛡 Security
-
-- …
-
-### 📦 Installations
-
-- …
 
 ## [1.9] – 2025-07-25
 
