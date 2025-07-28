@@ -2,6 +2,30 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+## [1.10] – YYYY-MM-DD
+
+### ✨ New Features
+
+- …
+
+### 🚀 Improvements
+
+- Updated mobile phone images used for Google Play app promotion.
+- Added tablet images used for Google Play app promotion.
+- Refined wording and phrasing in the user help page for clarity.
+
+### 🐛 Fixes
+
+- …
+
+### 🛡 Security
+
+- …
+
+### 📦 Installations
+
+- …
+
 ## [1.9] – 2025-07-25
 
 ### 🐛 Fixes
@@ -11,7 +35,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 📦 Installations
 
-- App is hosted at Google Play Store for **Internal Test** group and **Closed Test** group.
+- App is hosted at Google Play for **Internal Test** group and **Closed Test** group.
 
 ## [1.8] – 2025-07-24
 
@@ -23,7 +47,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 📦 Installations
 
-- App is hosted at Google Play Store for **Internal Test** group and **Closed Test** group.
+- App is hosted at Google Play for **Internal Test** group and **Closed Test** group.
 
 ## [1.7] – 2025-07-22
 
@@ -40,7 +64,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 📦 Installations
 
-- App is hosted at Google Play Store for **Internal Test** group and **Closed Test** group.
+- App is hosted at Google Play for **Internal Test** group and **Closed Test** group.
 
 ## [1.6] – 2025-07-21
 
@@ -55,7 +79,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 📦 Installations
 
-- Test status in Google Play Store changed from Internal Test to **Closed Test**.
+- Test status in Google Play changed from Internal Test to **Closed Test**.
 
 ## [1.5] - 2025-07-19
 
@@ -89,7 +113,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 📦 Installations
 
-- **Hosted on Google Play Store**: z-control QR Code Generator App is now in **"Internal Test" status**.
+- **Hosted on Google Play**: z-control QR Code Generator App is now in **"Internal Test" status**.
 
 ## [1.1] - 2025-07-02
 
