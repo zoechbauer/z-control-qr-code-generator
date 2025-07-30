@@ -90,5 +90,5 @@ See [Privacy Policy](https://z-control-4070.web.app/privacy/basic/en).
 ## Contact
 
 For questions or support, contact:  
-[hans.zoechbauer@gmail.com](mailto:hans.zoechbauer@gmail.com)  
+[z-control Support](mailto:zcontrol.app.qr@gmail.com)  
 [Project Website](https://z-control-4070.web.app/home)

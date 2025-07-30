@@ -1,10 +1,21 @@
 .qr-code {
+  &.landscape {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+  }
+
   ion-card-header {
     margin-bottom: -20px;
   }
 
-  .buttons-no-generation {
+  .no-generation-buttons {
     display: flex;
+  }
+
+  .button {
+    &.landscape {
+      margin-bottom: 0px;
+    }
   }
 
   .center-horizontal {

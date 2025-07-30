@@ -33,6 +33,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   screenWidth: number = window.innerWidth;
   showAddress: boolean = false;
+  nbrOfInitialRows: number = this.isPortrait ? 3 : 1; 
 
   private readonly langSub?: Subscription;
 
@@ -48,7 +49,7 @@ export class HomePage implements OnInit, OnDestroy {
     private readonly toastController: ToastController,
     private readonly platform: Platform,
     private readonly alertController: AlertController,
-    private readonly alertService: AlertService
+    private readonly alertService: AlertService,
   ) {
     this.langSub = this.localStorage.selectedLanguage$.subscribe((lang) => {
       this.translate.use(lang);
@@ -72,9 +73,18 @@ export class HomePage implements OnInit, OnDestroy {
     );
   }
 
+  get isPortrait(): boolean {
+    return window.matchMedia('(orientation: portrait)').matches;
+  }
+
   ngOnInit(): void {
     window.addEventListener('resize', () => {
       this.screenWidth = window.innerWidth;
+    });
+
+    window.addEventListener('resize', () => {
+        this.screenWidth = window.innerWidth;
+        this.nbrOfInitialRows = window.matchMedia('(orientation: portrait)').matches ? 3 : 1;
     });
 
     this.localStorage
@@ -98,12 +108,14 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   async openHelpModal() {
+    const isDesktop = !Capacitor.isNativePlatform();
+    
     const modal = await this.modalController.create({
       component: HelpModalComponent,
       componentProps: {
         maxInputLength: this.maxInputLength,
       },
-      cssClass: 'manual-instructions-modal',
+      cssClass: isDesktop ? 'manual-instructions-modal desktop' : 'manual-instructions-modal',
     });
     return await modal.present();
   }
