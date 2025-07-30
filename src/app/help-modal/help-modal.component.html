@@ -81,8 +81,8 @@
     <h3 id="what-can-the-app-do">What can the app do?</h3>
     <p>
       <b>A QR code is generated from the text you enter and sent by Email.</b>
-      The text is unformatted and can be up to {{ maxInputLength }} characters long.
-      You can enter plain text, a web link, or a combination of both.
+      The text is unformatted and can be up to {{ maxInputLength }} characters
+      long. You can enter plain text, a web link, or a combination of both.
     </p>
     <p>
       <b
@@ -120,8 +120,8 @@
         <p>
           Blank lines or spaces are only allowed at the beginning or within the
           text. If they are entered at the end, they will be removed from the
-          input field during generation, and a warning will be displayed at the
-          bottom for 3 seconds.
+          input field during generation, and a notification is displayed for 3
+          seconds.
         </p>
         <p>
           The length of the entered text and the maximum allowed ({{
@@ -171,12 +171,14 @@
       </li>
       <li>
         <p>
-          <b>Change or delete text</b>.<br />The text can be changed at any
-          time, but the <i>generate</i> button must be pressed again after a
-          text change.<br /><br />
+          <b>Change or delete text</b>.<br />
+          The text can also be changed after the QR code has been generated.
+          However, the QR code will then be cleared and a <b>notification</b> will be
+          displayed for 3 seconds. You must then generate a new QR code from the
+          changed text.<br /><br />
           To allow the text to be changed even after sending, e.g. for small
-          adjustments, the text is not deleted after sending.<br /><br />
-          The text can be deleted using the <i>Clear input</i> button. The
+          adjustments, the text is not cleared after sending.<br /><br />
+          The text can be cleared using the <i>Clear input</i> button. The
           generated QR code will then no longer be displayed.
         </p>
       </li>
@@ -576,9 +578,13 @@
 
     <h3 id="what-can-the-app-do-DE">Was kann die App?</h3>
     <p>
-      <b>Aus dem eingegebenen Text wird ein QR Code erzeugt und per E-Mail versendet.</b>
-      Der Text ist unformatiert und kann bis zu {{ maxInputLength }} Zeichen lang sein.
-      Sie können einfachen Text, einen Weblink oder eine Kombination aus beidem eingeben.
+      <b
+        >Aus dem eingegebenen Text wird ein QR Code erzeugt und per E-Mail
+        versendet.</b
+      >
+      Der Text ist unformatiert und kann bis zu {{ maxInputLength }} Zeichen
+      lang sein. Sie können einfachen Text, einen Weblink oder eine Kombination
+      aus beidem eingeben.
     </p>
     <p>
       Der <b>QR Code</b> wird <b>als Bild und PDF dem E-Mail angehängt</b> und
@@ -614,8 +620,8 @@
         <p>
           Leerzeilen oder Leerzeichen sind nur am Anfang oder innerhalb des
           Textes erlaubt. Sollten sie am Ende erfasst werden, werden sie bei der
-          Generierung im Eingabefeld entfernt und es wird ein Hinweis am unteren
-          Rand 3 Sekunden lang angezeigt.
+          Generierung im Eingabefeld entfernt und es wird ein Hinweis 3 Sekunden
+          lang angezeigt.
         </p>
         <p>
           Rechts unterhalb dem Eingabefeld werden die erfasste Textlänge und die
@@ -662,9 +668,10 @@
       </li>
       <li>
         <p>
-          Text <b>ändern oder löschen</b>.<br />Der Text kann jederzeit geändert
-          werden, es muss aber nach einer Textänderung wieder die Schaltfläche
-          <i>generieren</i> gedrückt werden.<br /><br />
+          Text <b>ändern oder löschen</b>.<br />Der Text kann auch nach der QR
+          Code Generierung geändert werden. Es wird dann aber der QR Code
+          gelöscht und ein <b>Hinweis</b> 3 Sekunden lang angezeigt. Sie müssen
+          den geänderten Text danach wieder in einen QR Code generieren.<br /><br />
           Damit der Text auch nach dem Senden noch geändert werden kann, z.B.
           wegen kleiner Abweichungen im Text, wird der Text nach dem Senden
           nicht gelöscht.<br /><br />

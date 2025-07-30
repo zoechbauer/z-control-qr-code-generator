@@ -2,6 +2,28 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+## [1.12] – YYYY-MM-DD
+
+### ✨ New Features
+
+- …
+
+### 🚀 Improvements
+
+- When the text is modified after generating a QR code, the QR code is cleared and a notification is shown for 3 seconds.
+
+### 🐛 Fixes
+
+- …
+
+### 🛡 Security
+
+- …
+
+### 📦 Installations
+
+- …
+
 ## [1.11] – 2025-07-30
 
 ### 🚀 Improvements

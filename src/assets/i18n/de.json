@@ -12,6 +12,7 @@
   "QR_CODE_TEXT": "Text",
   "INPUT_FIELD_PLACEHOLDER": "Bitte Text eingeben. Leerzeilen mittels Eingabe-Taste ...",
   "TOAST_TRAILING_BLANKS_REMOVED": "Leerzeichen wurden am Ende entfernt.",
+  "TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE": "QR Code wurde gelöscht, da sich die Eingabe geändert hat.",
 
   "------ email address page": "-------",
   "EMAIL_PAGE_TITLE": "Email Adressen",

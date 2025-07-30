@@ -5,8 +5,8 @@ import { BehaviorSubject } from 'rxjs';
 import { ValidationService } from './validation.service';
 
 enum LocalStorage {
-  savedEmailAddresses = 'savedEmailAddresses',
-  selectedLanguage = 'selectedLanguage',
+  SavedEmailAddresses = 'savedEmailAddresses',
+  SelectedLanguage = 'selectedLanguage',
 }
 
 @Injectable({
@@ -41,7 +41,7 @@ export class LocalStorageService {
 
   async loadSelectedOrDefaultLanguage() {
     const selectedLanguage = await this.storage.get(
-      LocalStorage.selectedLanguage
+      LocalStorage.SelectedLanguage
     );
 
     if (selectedLanguage) {
@@ -56,7 +56,7 @@ export class LocalStorageService {
   async saveSelectedLanguage(language: string) {
     try {
       await this.storage.set(
-        LocalStorage.selectedLanguage,
+        LocalStorage.SelectedLanguage,
         JSON.stringify(language)
       );
       this.selectedLanguageSubject.next(language);
@@ -67,7 +67,7 @@ export class LocalStorageService {
 
   async loadSavedEmailAddresses() {
     const emailAddresses = await this.storage.get(
-      LocalStorage.savedEmailAddresses
+      LocalStorage.SavedEmailAddresses
     );
     if (emailAddresses) {
       this.savedEmailAddresses = JSON.parse(emailAddresses);
@@ -78,7 +78,7 @@ export class LocalStorageService {
     if (index >= 0 && index < this.savedEmailAddresses.length) {
       this.savedEmailAddresses.splice(index, 1);
       await this.storage.set(
-        LocalStorage.savedEmailAddresses,
+        LocalStorage.SavedEmailAddresses,
         JSON.stringify(this.savedEmailAddresses)
       );
     }
@@ -94,7 +94,7 @@ export class LocalStorageService {
       ) {
         this.savedEmailAddresses.push(sanitizedEmail);
         await this.storage.set(
-          LocalStorage.savedEmailAddresses,
+          LocalStorage.SavedEmailAddresses,
           JSON.stringify(this.savedEmailAddresses)
         );
       }

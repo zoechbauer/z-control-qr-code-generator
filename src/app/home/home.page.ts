@@ -10,6 +10,7 @@ import {
 } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Capacitor } from '@capacitor/core';
+import { Keyboard } from '@capacitor/keyboard';
 import { Subscription } from 'rxjs';
 
 import { EmailUtilsService } from './../services/email-utils.service';
@@ -23,6 +24,11 @@ import { ManualInstructionsModalComponent } from './manual-instructions-modal.co
 import { environment } from 'src/environments/environment';
 import { AlertService } from '../services/alert.service';
 
+enum Toast {
+  TrailingBlanksRemoved = 'TOAST_TRAILING_BLANKS_REMOVED',
+  QRCodeDeletedAfterInputChange = 'TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE',
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -33,9 +39,10 @@ export class HomePage implements OnInit, OnDestroy {
 
   screenWidth: number = window.innerWidth;
   showAddress: boolean = false;
-  nbrOfInitialRows: number = this.isPortrait ? 3 : 1; 
+  nbrOfInitialRows: number = this.isPortrait ? 3 : 1;
 
   private readonly langSub?: Subscription;
+  private isKeyboardOpen = false;
 
   constructor(
     public qrService: QrUtilsService,
@@ -49,7 +56,7 @@ export class HomePage implements OnInit, OnDestroy {
     private readonly toastController: ToastController,
     private readonly platform: Platform,
     private readonly alertController: AlertController,
-    private readonly alertService: AlertService,
+    private readonly alertService: AlertService
   ) {
     this.langSub = this.localStorage.selectedLanguage$.subscribe((lang) => {
       this.translate.use(lang);
@@ -83,8 +90,18 @@ export class HomePage implements OnInit, OnDestroy {
     });
 
     window.addEventListener('resize', () => {
-        this.screenWidth = window.innerWidth;
-        this.nbrOfInitialRows = window.matchMedia('(orientation: portrait)').matches ? 3 : 1;
+      this.screenWidth = window.innerWidth;
+      this.nbrOfInitialRows = window.matchMedia('(orientation: portrait)')
+        .matches
+        ? 3
+        : 1;
+    });
+
+    Keyboard.addListener('keyboardWillShow', () => {
+      this.isKeyboardOpen = true;
+    });
+    Keyboard.addListener('keyboardWillHide', () => {
+      this.isKeyboardOpen = false;
     });
 
     this.localStorage
@@ -109,13 +126,15 @@ export class HomePage implements OnInit, OnDestroy {
 
   async openHelpModal() {
     const isDesktop = !Capacitor.isNativePlatform();
-    
+
     const modal = await this.modalController.create({
       component: HelpModalComponent,
       componentProps: {
         maxInputLength: this.maxInputLength,
       },
-      cssClass: isDesktop ? 'manual-instructions-modal desktop' : 'manual-instructions-modal',
+      cssClass: isDesktop
+        ? 'manual-instructions-modal desktop'
+        : 'manual-instructions-modal',
     });
     return await modal.present();
   }
@@ -141,19 +160,42 @@ export class HomePage implements OnInit, OnDestroy {
 
     if (data.length !== trimmedData.length) {
       this.qrDataInput.value = trimmedData;
-      this.showToastTrailingBlanksRemoved().catch((error) => {
-        console.error('Error presenting toast:', error);
-      });
+      this.showToast(Toast.TrailingBlanksRemoved);
     }
     return trimmedData;
   }
 
-  private async showToastTrailingBlanksRemoved() {
+  private showToast(toastType: Toast): void {
+    let translatedToastMessage: string;
+    switch (toastType) {
+      case Toast.TrailingBlanksRemoved:
+        translatedToastMessage = this.translate.instant(
+          'TOAST_TRAILING_BLANKS_REMOVED'
+        );
+        break;
+      case Toast.QRCodeDeletedAfterInputChange:
+        translatedToastMessage = this.translate.instant(
+          'TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE'
+        );
+        break;
+      default:
+        translatedToastMessage = 'undefined toast type';
+        console.warn('Unknown toast type:', toastType);
+    }
+
+    this.showToastMessage(translatedToastMessage).catch((error) => {
+      console.error('Error presenting toast:', error);
+    });
+  }
+
+  private async showToastMessage(translatedToastMessage: string) {
+
+
     const toast = await this.toastController.create({
-      message: this.translate.instant('TOAST_TRAILING_BLANKS_REMOVED'),
+      message: translatedToastMessage,
       duration: 3000,
       color: 'primary',
-      position: 'bottom',
+      position: this.isKeyboardOpen ? 'top' : 'bottom',
       buttons: [
         {
           icon: 'close',
@@ -165,10 +207,22 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   hasInputChangedAfterGeneration(): boolean {
-    if (!this.qrDataInput || this.isInputFieldEmpty()) {
+    if (
+      !this.qrDataInput ||
+      this.isInputFieldEmpty() ||
+      !this.qrService.isQrCodeGenerated
+    ) {
       return false;
     }
     return this.qrDataInput.value !== this.qrService.myAngularxQrCode;
+  }
+
+  deleteQRCode(): void {
+    if (this.hasInputChangedAfterGeneration()) {
+      this.emailService.clearEmailSent();
+      this.qrService.clearQrFields();
+      this.showToast(Toast.QRCodeDeletedAfterInputChange);
+    }
   }
 
   isInputFieldEmpty(): boolean {

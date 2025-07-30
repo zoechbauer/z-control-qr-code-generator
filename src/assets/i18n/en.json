@@ -12,6 +12,7 @@
   "QR_CODE_TEXT": "Text",
   "INPUT_FIELD_PLACEHOLDER": "Please enter text. Use Enter key to fill in blank lines ...",
   "TOAST_TRAILING_BLANKS_REMOVED": "Spaces have been removed at the end.",
+  "TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE": "QR code deleted due to input change.",
 
   "------ email address page": "-------",
   "EMAIL_PAGE_TITLE": "Email Addresses",

@@ -58,6 +58,7 @@
           placeholder="{{'INPUT_FIELD_PLACEHOLDER' | translate}}"
           [rows]="nbrOfInitialRows"
           maxlength="{{maxInputLength}}"
+          (ionInput)="deleteQRCode()"
         ></ion-textarea>
       </ion-item>
 
