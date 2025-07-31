@@ -31,6 +31,11 @@
       <h5 class="ion-text-center">Table of Contents</h5>
       <ol class="table-of-contents">
         <li>
+          <a href="#" (click)="scrollTo('faq', $event)" class="toc-link-normal-height"
+            >Frequently Asked Questions (FAQ)</a
+          >
+        </li>
+        <li>
           <a href="#" (click)="scrollTo('what-can-the-app-do', $event)"
             >What can the app do?</a
           >
@@ -77,6 +82,73 @@
         </li>
       </ol>
     </div>
+
+    <!-- Add this after your Table of Contents and before the first <h3> section in both English and German templates -->
+
+    <h3 id="faq">Frequently Asked Questions (FAQ)</h3>
+    <ol>
+      <li>
+        <b>What can I use this app for?</b>
+        <p>
+          You can generate QR codes from any text or link and send them by email
+          as an image and PDF attachment.
+        </p>
+      </li>
+      <li>
+        <b>How do I save email addresses for future use?</b>
+        <p>
+          Use the "EMAIL AD" option in the header to add, view, or delete saved
+          email addresses. These are stored locally on your device. In the
+          "Select Email app" section, you will find more information on how to
+          manage your email addresses.
+        </p>
+      </li>
+      <li>
+        <b>Why is the QR code cleared after I change the text?</b>
+        <p>
+          To ensure the QR code always matches the input, it is cleared and a
+          notification is shown for 3 seconds if you modify the text after
+          generating a QR code.
+        </p>
+      </li>
+      <li>
+        <b>How do I select or reset my default email app?</b>
+        <p>
+          When sending a QR code, you can choose your preferred email app. If
+          you selected the wrong app as default, follow the "Reset default app"
+          instructions in this help.
+        </p>
+      </li>
+      <li>
+        <b>How can I print the QR code in a specific size?</b>
+        <p>
+          Open the attached PDF or image, and use your printer’s scaling options
+          or insert the image into a document to set the desired size. In the
+          "How to print QR Code?" section, you will find detailed instructions.
+        </p>
+      </li>
+      <li>
+        <b>Is my data private?</b>
+        <p>
+          Yes, all data is stored locally on your device. No data is sent to
+          external servers.
+        </p>
+      </li>
+      <li>
+        <b>How do I change the app language?</b>
+        <p>
+          Tap the language option in the header to switch between English and
+          German. The change takes effect immediately.
+        </p>
+      </li>
+      <li>
+        <b>Where can I find the app version and update history?</b>
+        <p>
+          Scroll to the "App Version & History" section or tap the "Release
+          Notes" button for details.
+        </p>
+      </li>
+    </ol>
 
     <h3 id="what-can-the-app-do">What can the app do?</h3>
     <p>
@@ -173,9 +245,9 @@
         <p>
           <b>Change or delete text</b>.<br />
           The text can also be changed after the QR code has been generated.
-          However, the QR code will then be cleared and a <b>notification</b> will be
-          displayed for 3 seconds. You must then generate a new QR code from the
-          changed text.<br /><br />
+          However, the QR code will then be cleared and a
+          <b>notification</b> will be displayed for 3 seconds. You must then
+          generate a new QR code from the changed text.<br /><br />
           To allow the text to be changed even after sending, e.g. for small
           adjustments, the text is not cleared after sending.<br /><br />
           The text can be cleared using the <i>Clear input</i> button. The
@@ -529,6 +601,11 @@
       <h5 class="ion-text-center">Inhaltsverzeichnis</h5>
       <ol class="table-of-contents">
         <li>
+          <a href="#" (click)="scrollTo('faq-DE', $event)" class="toc-link-normal-height"
+            >Häufig gestellte Fragen (FAQ)</a
+          >
+        </li>
+        <li>
           <a href="#" (click)="scrollTo('what-can-the-app-do-DE', $event)"
             >Was kann die App?</a
           >
@@ -575,6 +652,73 @@
         </li>
       </ol>
     </div>
+
+    <h3 id="faq-DE">Häufig gestellte Fragen (FAQ)</h3>
+    <ol>
+      <li>
+        <b>Wofür kann ich die App verwenden?</b>
+        <p>
+          Sie können aus beliebigem Text oder Links QR Codes generieren und
+          diese per E-Mail als Bild und PDF-Anhang versenden.
+        </p>
+      </li>
+      <li>
+        <b>Wie speichere ich E-Mail-Adressen für die spätere Verwendung?</b>
+        <p>
+          Über die Option „MAIL ADR“ in der Kopfzeile können Sie E-Mail-Adressen
+          hinzufügen, anzeigen oder löschen. Diese werden lokal auf Ihrem Gerät
+          gespeichert. Im Abschnitt „Mailprogramm auswählen“ finden Sie
+          weitere Informationen zur Verwaltung Ihrer E-Mail-Adressen.
+        </p>
+      </li>
+      <li>
+        <b>Warum wird der QR Code gelöscht, wenn ich den Text ändere?</b>
+        <p>
+          Damit der QR Code immer dem aktuellen Text entspricht, wird er
+          gelöscht und ein Hinweis für 3 Sekunden angezeigt, wenn Sie den Text
+          nach der Generierung ändern.
+        </p>
+      </li>
+      <li>
+        <b>Wie wähle oder setze ich mein Standard-Mailprogramm zurück?</b>
+        <p>
+          Beim Versenden eines QR Codes können Sie Ihr bevorzugtes Mailprogramm
+          auswählen. Falls Sie versehentlich das falsche Programm als Standard
+          gewählt haben, finden Sie im Abschnitt „Standard App zurücksetzen“
+          eine Anleitung.
+        </p>
+      </li>
+      <li>
+        <b>Wie kann ich den QR Code in einer bestimmten Größe drucken?</b>
+        <p>
+          Öffnen Sie das angehängte PDF oder Bild und nutzen Sie die
+          Skalierungsoptionen Ihres Druckers oder fügen Sie das Bild in ein
+          Dokument ein, um die gewünschte Größe einzustellen. Im Abschnitt "QR
+          Code drucken" finden Sie detaillierte Anleitungen.
+        </p>
+      </li>
+      <li>
+        <b>Sind meine Daten privat?</b>
+        <p>
+          Ja, alle Daten werden lokal auf Ihrem Gerät gespeichert. Es werden
+          keine Daten an externe Server gesendet.
+        </p>
+      </li>
+      <li>
+        <b>Wie ändere ich die App-Sprache?</b>
+        <p>
+          Über die Sprachauswahl in der Kopfzeile können Sie zwischen Deutsch
+          und Englisch wechseln. Die Änderung wird sofort wirksam.
+        </p>
+      </li>
+      <li>
+        <b>Wo finde ich die App-Version und die Update-Historie?</b>
+        <p>
+          Scrollen Sie zum Abschnitt „App Version & Historie“ oder tippen Sie
+          auf die Schaltfläche „Release Notes“ für Details.
+        </p>
+      </li>
+    </ol>
 
     <h3 id="what-can-the-app-do-DE">Was kann die App?</h3>
     <p>

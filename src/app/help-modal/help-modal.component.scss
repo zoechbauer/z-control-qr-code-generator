@@ -7,11 +7,15 @@ ol.table-of-contents {
     text-align: center;
 
     a {
-      line-height: 40px !important;
+      line-height: 35px !important;
       text-decoration: none;
 
       &:hover {
         text-decoration: underline;
+      }
+
+      &.toc-link-normal-height {
+        line-height: normal !important;
       }
     }
   }
