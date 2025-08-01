@@ -60,6 +60,26 @@ body {
   }
 }
 
+// temporary fix for status bar height on some Android devices, e.g.Samsung devices A55
+@media (prefers-color-scheme: light) {
+  ion-toolbar {
+    padding-top: 24px; /* Typical status bar height */
+  }
+}
+
+// On certain Android devices (e.g., Samsung A55), safe-area-inset-top may be 0px, so manual padding-top is required for proper status bar spacing
+// @media (prefers-color-scheme: light) {
+//   ion-header, ion-toolbar {
+//     padding-top: env(safe-area-inset-top, 24px);
+//   }
+// }
+
+@media (prefers-color-scheme: light) {
+  ion-toolbar {
+    --background: #ffffff !important;
+  }
+}
+
 ion-toolbar {
   .button-color {
     color: var(--ion-color-primary);
@@ -75,7 +95,6 @@ ion-toolbar {
   --border-style: solid;
   --border-color: var(--ion-color-medium);
   --border-radius: 10px;
-  
 }
 
 .manual-instructions-modal.desktop {
@@ -95,8 +114,8 @@ ion-title {
   width: 100%;
   justify-content: center;
   display: flex;
+  font-size: 1.1rem;
 }
-
 
 ion-popover::part(content) {
   /* Mobile First */
