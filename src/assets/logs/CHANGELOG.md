@@ -13,6 +13,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 - When the text is modified after generating a QR code, the QR code is cleared and a notification is shown for 3 seconds.
 - A FAQ-section has been added to the user help page.
 - Added information about BlueMail issues to the FAQ section.
+- Added details about toolbar display issues to the FAQ section.
 
 ### 🐛 Fixes
 
