@@ -2,11 +2,7 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
-## [1.12] – YYYY-MM-DD
-
-### ✨ New Features
-
-- …
+## [1.12] – 2025-08-01
 
 ### 🚀 Improvements
 
@@ -20,13 +16,9 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 - On some older Android versions, the status bar (top system bar) overlapped the toolbar. The toolbar now displays correctly.
 - The app title font size has been reduced to prevent truncation when system font size is increased.
 
-### 🛡 Security
-
-- …
-
 ### 📦 Installations
 
-- …
+- App is hosted at Google Play for **Internal Test** group and **Closed Test** group.
 
 ## [1.11] – 2025-07-30
 
