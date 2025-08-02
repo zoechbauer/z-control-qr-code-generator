@@ -2,6 +2,28 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+## [1.13] – YYYY-MM-DD
+
+### ✨ New Features
+
+- …
+
+### 🚀 Improvements
+
+- Uploaded updated and new screenshots for both English and German versions of the app to the Google Play Console.
+
+### 🐛 Fixes
+
+- …
+
+### 🛡 Security
+
+- …
+
+### 📦 Installations
+
+- …
+
 ## [1.12] – 2025-08-01
 
 ### 🚀 Improvements
