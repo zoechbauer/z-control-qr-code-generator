@@ -17,7 +17,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 🐛 Fixes
 
-- On certain devices, the status bar (top system bar) overlapped the toolbar. The toolbar now displays correctly.
+- On some older Android versions, the status bar (top system bar) overlapped the toolbar. The toolbar now displays correctly.
 - The app title font size has been reduced to prevent truncation when system font size is increased.
 
 ### 🛡 Security

@@ -44,8 +44,9 @@ ion-app {
   padding: 0 16px;
 }
 
-body {
-  background-color: #40d987 !important; /* green splash color for mobile */
+// Compatibility styles for legacy Android versions (e.g., Android 11)
+ion-header ion-toolbar:first-of-type {
+  padding-top: var(--safe-area-top, 24px);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -54,25 +55,11 @@ body {
   }
 }
 
-@media (min-width: 768px) {
-  body {
-    background: #eeeddd !important; /* light gray for desktop */
-  }
-}
-
-// temporary fix for status bar height on some Android devices, e.g.Samsung devices A55
 @media (prefers-color-scheme: light) {
-  ion-toolbar {
-    padding-top: 24px; /* Typical status bar height */
+  body {
+    background-color: #ffffff !important; /* light splash color for mobile */
   }
 }
-
-// On certain Android devices (e.g., Samsung A55), safe-area-inset-top may be 0px, so manual padding-top is required for proper status bar spacing
-// @media (prefers-color-scheme: light) {
-//   ion-header, ion-toolbar {
-//     padding-top: env(safe-area-inset-top, 24px);
-//   }
-// }
 
 @media (prefers-color-scheme: light) {
   ion-toolbar {
@@ -147,7 +134,7 @@ ion-popover::part(content) {
     --offset-y: 50px;
   }
 
-  /* Sehr große Bildschirme */
+  /* Very large screens */
   @media (min-width: 1920px) {
     --offset-x: -550px;
     --offset-y: 50px;
