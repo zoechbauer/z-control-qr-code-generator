@@ -2,6 +2,29 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+## [1.14] – YYYY-MM-DD
+
+### ✨ New Features
+
+- …
+
+### 🚀 Improvements
+
+- …
+
+### 🐛 Fixes
+
+- Fixed the horizontal positioning of the language selection popup menu in landscape mode.
+
+### 🛡 Security
+
+- …
+
+### 📦 Installations
+
+- …
+
+
 ## [1.13] – 2025-08-04
 
 ### 🚀 Improvements
