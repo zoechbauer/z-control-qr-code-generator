@@ -13,6 +13,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 - Uploaded updated and new screenshots for both English and German versions of the app to the Google Play Console.
 - Added comprehensive unit tests for HomePage, HelpModalComponent, and MarkdownViewerComponent to improve code quality and maintainability.
 - Introduced Coding Guidelines inspired by Clean Code principles to promote best practices and maintainable code.
+- Upgraded Capacitor packages to version 7 to ensure consistency and compatibility across the project.
 
 ### 🐛 Fixes
 
