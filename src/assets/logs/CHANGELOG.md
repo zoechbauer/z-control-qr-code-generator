@@ -10,7 +10,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 🚀 Improvements
 
-- …
+- Made the email maintenance page easier to read and use.
 
 ### 🐛 Fixes
 

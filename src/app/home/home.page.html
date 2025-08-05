@@ -12,12 +12,18 @@
         {{!showAddress ? ('EMAIL_ADDRESS_BUTTON' | translate) : "QR Code"}}
       </ion-button>
     </ion-buttons>
-    <ion-title><b>{{ screenWidth < 600 ? 'QR Code' : 'z-control QR Code Generator' }}</b></ion-title>
+    <ion-title
+      ><b
+        >{{ screenWidth < 600 ? 'QR Code' : 'z-control QR Code Generator' }}</b
+      ></ion-title
+    >
     <ion-buttons slot="end">
-      <ion-button class="icon-color" fill="clear" 
-      (click)="openHelpModal()"
-      (keydown.enter)="openHelpModal()"
-      (keydown.space)="openHelpModal()"
+      <ion-button
+        class="icon-color"
+        fill="clear"
+        (click)="openHelpModal()"
+        (keydown.enter)="openHelpModal()"
+        (keydown.space)="openHelpModal()"
       >
         <ion-icon slot="icon-only" name="help"></ion-icon>
       </ion-button>
@@ -36,7 +42,11 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-card *ngIf="!showAddress" class="qr-code" [class.landscape]="!isPortrait">
+  <ion-card
+    *ngIf="!showAddress"
+    class="qr-code"
+    [class.landscape]="!isPortrait"
+  >
     <ion-card-header>
       <ion-card-title class="ion-text-center"
         >{{'CREATE_QR_CODE' | translate}}</ion-card-title
@@ -116,12 +126,13 @@
         >{{'EMAIL_PAGE_TITLE' | translate}}</ion-card-title
       >
     </ion-card-header>
-    <ion-item disabled> {{'EMAIL_PAGE_INFOTEXT' | translate}} </ion-item>
+    <div class="email-page-info ion-text-center">{{'EMAIL_PAGE_INFOTEXT' | translate}}</div>
     <ion-list
       class="email-list"
       *ngIf="this.localStorage.savedEmailAddresses.length > 0"
     >
       <ion-item
+        class="saved-email-address"
         *ngFor="let email of this.localStorage.savedEmailAddresses; let i = index"
       >
         <ion-label>{{ email }}</ion-label>
@@ -143,6 +154,8 @@
       {{'EMAIL_PAGE_NO_EMAIL_ADRESSES' | translate}}
     </p>
 
+    <hr />
+    
     <div class="enter-mail-address">
       <h6 class="ion-text-center">
         {{'EMAIL_PAGE_ADD_EMAIL_TITLE' | translate}}
@@ -158,29 +171,32 @@
         ></ion-input>
       </ion-item>
     </div>
-    <ion-button
-      expand="block"
-      (click)="addEmailAddress(newEmailAddress.value); newEmailAddress.value=''"
-      (keydown.enter)="addEmailAddress(newEmailAddress.value); newEmailAddress.value=''"
-      (keydown.space)="addEmailAddress(newEmailAddress.value); newEmailAddress.value=''"
-      [disabled]="!newEmailAddress.value || !validationService.isValidEmailAddress(newEmailAddress.value.toString())"
-      >{{'EMAIL_PAGE_ADD_BUTTON' | translate }}</ion-button
-    >
-    <div class="buttons-no-add ion-justify-content-around">
+    <div class="mail-address-buttons">
       <ion-button
-        fill="clear"
-        (click)="newEmailAddress.value = '';"
-        (keydown.enter)="newEmailAddress.value = '';"
-        (keydown.space)="newEmailAddress.value = '';"
-        [disabled]="!newEmailAddress.value"
-        >{{ 'CLEAR_INPUT' | translate}}</ion-button
+        expand="block"
+        (click)="addEmailAddress(newEmailAddress.value); newEmailAddress.value=''"
+        (keydown.enter)="addEmailAddress(newEmailAddress.value); newEmailAddress.value=''"
+        (keydown.space)="addEmailAddress(newEmailAddress.value); newEmailAddress.value=''"
+        [disabled]="!newEmailAddress.value || !validationService.isValidEmailAddress(newEmailAddress.value.toString())"
+        >{{'EMAIL_PAGE_ADD_BUTTON' | translate }}</ion-button
       >
-      <ion-button fill="clear" 
-      (click)="toggleShowAddress()"
-      (keydown.enter)="toggleShowAddress()"
-      (keydown.space)="toggleShowAddress()"
-        >{{ 'EMAIL_PAGE_BACK_BUTTON' | translate}}</ion-button
-      >
+      <div class="buttons-no-add ion-justify-content-around">
+        <ion-button
+          fill="clear"
+          (click)="newEmailAddress.value = '';"
+          (keydown.enter)="newEmailAddress.value = '';"
+          (keydown.space)="newEmailAddress.value = '';"
+          [disabled]="!newEmailAddress.value"
+          >{{ 'CLEAR_INPUT' | translate}}</ion-button
+        >
+        <ion-button
+          fill="clear"
+          (click)="toggleShowAddress()"
+          (keydown.enter)="toggleShowAddress()"
+          (keydown.space)="toggleShowAddress()"
+          >{{ 'EMAIL_PAGE_BACK_BUTTON' | translate}}</ion-button
+        >
+      </div>
     </div>
   </ion-card>
 </ion-content>
