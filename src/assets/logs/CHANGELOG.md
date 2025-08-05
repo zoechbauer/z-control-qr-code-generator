@@ -11,6 +11,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 ### 🚀 Improvements
 
 - Made the email maintenance page easier to read and use.
+- Uploaded updated screenshots for both English and German versions of the app to the Google Play Console.
 
 ### 🐛 Fixes
 
