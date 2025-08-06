@@ -23,7 +23,7 @@ export class ValidationService {
    * @param email - The email address to validate and sanitize
    * @returns sanitized email or null if invalid
    */
-  sanitizeEmail(email: string): string | null {
+  sanitizeEmail(email: string | null | undefined): string | null {
     if (!email?.trim()) {
       return null;
     }
