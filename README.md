@@ -66,6 +66,19 @@ npm install
 ionic serve
 ```
 
+### Testing
+
+```bash
+# Run unit tests
+npm test
+
+# Run tests in watch mode (recommended for development)
+npm run test:watch
+
+# Run tests with code coverage
+npm run test:coverage
+```
+
 ### Building for Android
 
 ```bash
