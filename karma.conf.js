@@ -19,8 +19,22 @@ module.exports = function (config) {
         // for example, you can disable the random execution with `random: false`
         // or set a specific seed with `seed: 4321`
       },
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+      clearContext: false, // leave Jasmine Spec Runner output visible in browser
+      captureConsole: false,
     },
+
+    // Add browser flags to suppress warnings
+    customLaunchers: {
+      ChromeNoWarnings: {
+        base: 'Chrome',
+        flags: [
+          '--disable-logging',
+          '--log-level=3',
+          '--disable-dev-shm-usage'
+        ]
+      }
+    },
+
     jasmineHtmlReporter: {
       suppressAll: true // removes the duplicated traces
     },
@@ -35,10 +49,19 @@ module.exports = function (config) {
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_ERROR, // Keep this one (suppresses warnings)
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['ChromeNoWarnings'], // Keep this one (uses custom launcher)
     singleRun: false,
-    restartOnFileChange: true
+    restartOnFileChange: true,
+
+    proxies: {
+      '/assets/': '/base/src/assets/',
+    },
+    
+    // Increase timeouts
+    browserDisconnectTimeout: 60000,
+    browserNoActivityTimeout: 60000,
+    captureTimeout: 60000,
   });
 };
