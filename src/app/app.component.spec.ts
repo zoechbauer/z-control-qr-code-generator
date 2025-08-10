@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { WindowMockUtil } from 'src/test-utils/window-mock.util';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -7,10 +8,7 @@ describe('AppComponent', () => {
   let mockMatchMedia: jasmine.Spy;
 
   beforeEach(async () => {
-    // Mock window.matchMedia - this is essential to prevent errors
-    mockMatchMedia = jasmine.createSpy('matchMedia');
-    (window as any).matchMedia = mockMatchMedia;
-    mockMatchMedia.and.returnValue({ matches: false });
+    mockMatchMedia = WindowMockUtil.setupMatchMediaSpy(false); // Default light mode
 
     await TestBed.configureTestingModule({
       declarations: [AppComponent]
@@ -18,6 +16,10 @@ describe('AppComponent', () => {
 
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
+  });
+
+  afterEach(() => {
+    WindowMockUtil.restore();
   });
 
   it('should create', () => {
