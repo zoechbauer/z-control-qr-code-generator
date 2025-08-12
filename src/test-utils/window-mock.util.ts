@@ -1,43 +1,136 @@
-/**
- * Utility for managing window.matchMedia mocks across test suites
- */
 export class WindowMockUtil {
-  private static originalMatchMedia: any;
+  private static originalDescriptors: Map<
+    string,
+    PropertyDescriptor | undefined
+  > = new Map();
 
   /**
-   * Sets up a fresh window.matchMedia spy
+   * Mock a window property with a specific value
+   */
+  static mockWindowProperty(property: string, value: any): void {
+    // Store original property descriptor (not just value)
+    const originalDescriptor = Object.getOwnPropertyDescriptor(
+      window,
+      property
+    );
+    this.originalDescriptors.set(property, originalDescriptor);
+
+    // Mock the property
+    Object.defineProperty(window, property, {
+      writable: true,
+      configurable: true,
+      value: value,
+    });
+  }
+
+  /**
+   * Setup matchMedia spy for testing responsive behavior
    */
   static setupMatchMediaSpy(defaultMatches: boolean = true): jasmine.Spy {
-    // Store original if not already stored
-    if (!this.originalMatchMedia) {
-      this.originalMatchMedia = (window as any).matchMedia;
-    }
+    const originalDescriptor = Object.getOwnPropertyDescriptor(
+      window,
+      'matchMedia'
+    );
+    this.originalDescriptors.set('matchMedia', originalDescriptor);
 
-    // Create fresh spy
-    const spy = jasmine.createSpy('matchMedia');
-    spy.and.returnValue({ matches: defaultMatches });
+    // Create and setup the spy
+    const mockMatchMedia = jasmine.createSpy('matchMedia').and.returnValue({
+      matches: defaultMatches,
+    });
 
-    // Attach to window
-    (window as any).matchMedia = spy;
+    // Mock window.matchMedia
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      configurable: true,
+      value: mockMatchMedia,
+    });
 
-    return spy;
+    return mockMatchMedia;
   }
 
   /**
-   * Restores original window.matchMedia (call in afterEach)
+   * Mock window.innerWidth specifically (handles read-only property)
+   */
+  static mockInnerWidth(width: number): void {
+    const originalDescriptor = Object.getOwnPropertyDescriptor(
+      window,
+      'innerWidth'
+    );
+    this.originalDescriptors.set('innerWidth', originalDescriptor);
+
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: width,
+    });
+  }
+
+  /**
+   * Mock window.innerHeight specifically (handles read-only property)
+   */
+  static mockInnerHeight(height: number): void {
+    const originalDescriptor = Object.getOwnPropertyDescriptor(
+      window,
+      'innerHeight'
+    );
+    this.originalDescriptors.set('innerHeight', originalDescriptor);
+
+    Object.defineProperty(window, 'innerHeight', {
+      writable: true,
+      configurable: true,
+      value: height,
+    });
+  }
+
+  /**
+   * Mock window location for navigation testing
+   */
+  static mockLocation(locationProps: Partial<Location>): void {
+    const originalDescriptor = Object.getOwnPropertyDescriptor(
+      window,
+      'location'
+    );
+    this.originalDescriptors.set('location', originalDescriptor);
+
+    const mockLocation = {
+      ...window.location,
+      ...locationProps,
+    };
+
+    Object.defineProperty(window, 'location', {
+      writable: true,
+      configurable: true,
+      value: mockLocation,
+    });
+  }
+
+  /**
+   * Restore all mocked window properties to their original state
    */
   static restore(): void {
-    if (this.originalMatchMedia) {
-      (window as any).matchMedia = this.originalMatchMedia;
-    } else {
-      delete (window as any).matchMedia;
-    }
+    this.originalDescriptors.forEach((descriptor, property) => {
+      if (descriptor) {
+        // Restore original property descriptor
+        Object.defineProperty(window, property, descriptor);
+      } else {
+        // Property didn't exist originally, delete it
+        delete (window as any)[property];
+      }
+    });
+    this.originalDescriptors.clear();
   }
 
   /**
-   * Checks if matchMedia is currently spied
+   * Restore a specific property
    */
-  static isSpied(): boolean {
-    return !!(window as any).matchMedia?.isSpy;
+  static restoreProperty(property: string): void {
+    const descriptor = this.originalDescriptors.get(property);
+    if (descriptor) {
+      Object.defineProperty(window, property, descriptor);
+    } else if (this.originalDescriptors.has(property)) {
+      // Property was undefined originally
+      delete (window as any)[property];
+    }
+    this.originalDescriptors.delete(property);
   }
 }

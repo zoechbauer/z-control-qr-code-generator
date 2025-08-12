@@ -8,10 +8,10 @@ describe('AppComponent', () => {
   let mockMatchMedia: jasmine.Spy;
 
   beforeEach(async () => {
-    mockMatchMedia = WindowMockUtil.setupMatchMediaSpy(false); // Default light mode
+    mockMatchMedia = WindowMockUtil.setupMatchMediaSpy(true);
 
     await TestBed.configureTestingModule({
-      declarations: [AppComponent]
+      declarations: [AppComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);
@@ -54,7 +54,9 @@ describe('AppComponent', () => {
       component.initializeApp();
 
       // Assert
-      expect(mockMatchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)');
+      expect(mockMatchMedia).toHaveBeenCalledWith(
+        '(prefers-color-scheme: dark)'
+      );
     });
 
     it('should handle light mode preference', () => {
@@ -63,7 +65,9 @@ describe('AppComponent', () => {
 
       // Act & Assert - should not throw
       expect(() => component.initializeApp()).not.toThrow();
-      expect(mockMatchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)');
+      expect(mockMatchMedia).toHaveBeenCalledWith(
+        '(prefers-color-scheme: dark)'
+      );
     });
 
     it('should handle dark mode preference', () => {
@@ -72,16 +76,20 @@ describe('AppComponent', () => {
 
       // Act & Assert - should not throw
       expect(() => component.initializeApp()).not.toThrow();
-      expect(mockMatchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)');
+      expect(mockMatchMedia).toHaveBeenCalledWith(
+        '(prefers-color-scheme: dark)'
+      );
     });
 
     it('should detect system dark mode preference correctly', () => {
       // Test that the logic correctly reads the matchMedia result
-      
+
       // Test light mode
       mockMatchMedia.and.returnValue({ matches: false });
       component.initializeApp();
-      expect(mockMatchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)');
+      expect(mockMatchMedia).toHaveBeenCalledWith(
+        '(prefers-color-scheme: dark)'
+      );
 
       // Reset spy
       mockMatchMedia.calls.reset();
@@ -89,7 +97,9 @@ describe('AppComponent', () => {
       // Test dark mode
       mockMatchMedia.and.returnValue({ matches: true });
       component.initializeApp();
-      expect(mockMatchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)');
+      expect(mockMatchMedia).toHaveBeenCalledWith(
+        '(prefers-color-scheme: dark)'
+      );
     });
   });
 });

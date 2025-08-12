@@ -22,8 +22,14 @@ export class QrUtilsService {
   ) {}
 
   generateQRCode(data: string | null | undefined) {
-    this.myAngularxQrCode = data ?? '';
-    this.isQrCodeGenerated = true;
+    try {
+      this.myAngularxQrCode = data ?? '';
+      this.isQrCodeGenerated = true;
+    } catch (error) {
+      console.error('Error generating QR code:', error);
+      this.myAngularxQrCode = '';
+      this.isQrCodeGenerated = false;
+    }
   }
 
   async printQRCode() {
@@ -61,9 +67,11 @@ export class QrUtilsService {
         }
       } else {
         console.error('Canvas not found');
+        throw new Error('Canvas not found');
       }
     } else {
       console.error('Print content not found');
+      throw new Error('Print content not found');
     }
   }
 

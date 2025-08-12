@@ -53,6 +53,7 @@
   "ERROR_MESSAGE_SAVE_QR": "Fehler beim Speichern des QR-Codes.",
   "ERROR_MESSAGE_DELETE_QR": "Fehler beim Löschen des QR-Codes.",
   "ERROR_MESSAGE_MISSING_QR_URL": "QR-Code URL nicht verfügbar.",
+  "ERROR_MESSAGE_EMAIL_WORKFLOW": "Fehler beim Verarbeiten der E-Mail. Bitte versuchen Sie es erneut.",
   "INFO_ALERT_TITLE_MAIL_ATTACHMENT": "Hängen Sie die QR-Codes an die E-Mail an und löschen Sie diese Dateien wenn Sie sie nicht mehr brauchen!",
   "INFO_ALERT_MESSAGE_MAIL_ATTACHMENT": "Bitte hängen Sie diese beiden heruntergeladenen Dateien aus dem Download-Ordner manuell an Ihre E-Mail an. Den Download-Ordner finden Sie in Ihren Browsereinstellungen. Leider werden diese Dateien nur auf mobilen Geräten automatisch angehängt und gelöscht.",
 

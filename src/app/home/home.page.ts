@@ -64,6 +64,11 @@ export class HomePage implements OnInit, OnDestroy {
     });
   }
 
+  // for unit tests
+  public setKeyboardState(isOpen: boolean): void {
+    this.isKeyboardOpen = isOpen;
+  }
+
   get maxInputLength(): number {
     // 2953 = Maximum capacity for QR code version 40 with error correction level L according to Perplexity AI,
     // but scanning no longer works, therefore we are using 1000 - results determined by testing
@@ -85,29 +90,53 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.setupEventListeners();
+    this.initializeServicesAsync();
+  }
+
+  private setupEventListeners(): void {
+    // Single resize listener
     window.addEventListener('resize', () => {
       this.screenWidth = window.innerWidth;
+      this.nbrOfInitialRows = this.isPortrait ? 3 : 1;
     });
 
-    window.addEventListener('resize', () => {
-      this.screenWidth = window.innerWidth;
-      this.nbrOfInitialRows = window.matchMedia('(orientation: portrait)')
-        .matches
-        ? 3
-        : 1;
-    });
+    // Platform-specific keyboard listeners
+    if (Capacitor.isNativePlatform()) {
+      Keyboard.addListener('keyboardWillShow', () => {
+        this.isKeyboardOpen = true;
+      });
+      Keyboard.addListener('keyboardWillHide', () => {
+        this.isKeyboardOpen = false;
+      });
+    }
+  }
 
-    Keyboard.addListener('keyboardWillShow', () => {
-      this.isKeyboardOpen = true;
-    });
-    Keyboard.addListener('keyboardWillHide', () => {
-      this.isKeyboardOpen = false;
-    });
+  private async initializeServicesAsync(): Promise<void> {
+    try {
+      await this.localStorage.init();
+      await this.localStorage.loadSelectedOrDefaultLanguage();
 
-    this.localStorage
-      .init()
-      .then(() => this.localStorage.loadSelectedOrDefaultLanguage())
-      .then(() => this.fileService.deleteAllQrCodeFiles());
+      // Non-critical operation - can fail silently
+      try {
+        await this.fileService.deleteAllQrCodeFiles();
+      } catch (cleanupError) {
+        console.warn('File cleanup failed:', cleanupError);
+      }
+    } catch (error) {
+      console.error('App initialization failed:', error);
+      await this.initializeWithDefaults();
+    }
+  }
+
+  private async initializeWithDefaults(): Promise<void> {
+    try {
+      this.translate.setDefaultLang('en');
+      this.translate.use('en');
+      console.log('Initialized with default settings');
+    } catch (fallbackError) {
+      console.error('Critical: Even defaults failed:', fallbackError);
+    }
   }
 
   async openLanguagePopover(ev: any) {
@@ -166,31 +195,28 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   private showToast(toastType: Toast): void {
-    let translatedToastMessage: string;
-    switch (toastType) {
-      case Toast.TrailingBlanksRemoved:
-        translatedToastMessage = this.translate.instant(
-          'TOAST_TRAILING_BLANKS_REMOVED'
-        );
-        break;
-      case Toast.QRCodeDeletedAfterInputChange:
-        translatedToastMessage = this.translate.instant(
-          'TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE'
-        );
-        break;
-      default:
-        translatedToastMessage = 'undefined toast type';
-        console.warn('Unknown toast type:', toastType);
-    }
+    const translatedToastMessage = this.getToastMessage(toastType);
 
     this.showToastMessage(translatedToastMessage).catch((error) => {
       console.error('Error presenting toast:', error);
     });
   }
 
+  private getToastMessage(toastType: Toast): string {
+    switch (toastType) {
+      case Toast.TrailingBlanksRemoved:
+        return this.translate.instant('TOAST_TRAILING_BLANKS_REMOVED');
+      case Toast.QRCodeDeletedAfterInputChange:
+        return this.translate.instant(
+          'TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE'
+        );
+      default:
+        console.warn('Unknown toast type:', toastType);
+        return 'undefined toast type';
+    }
+  }
+
   private async showToastMessage(translatedToastMessage: string) {
-
-
     const toast = await this.toastController.create({
       message: translatedToastMessage,
       duration: 3000,
@@ -234,15 +260,21 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   async storeMailAndDeleteQRCode() {
-    this.fileService.setNowFormatted();
-    await this.fileService.downloadQRCode(this.qrService.qrCodeDownloadLink);
-    await this.qrService.printQRCode();
+    try {
+      // TODO Show loading indicator
 
-    // Platform-aware email handling
-    await this.handleEmailBasedOnPlatform();
+      this.fileService.setNowFormatted();
+      await this.fileService.downloadQRCode(this.qrService.qrCodeDownloadLink);
+      await this.qrService.printQRCode();
+      await this.handleEmailBasedOnPlatform();
 
-    this.fileService.deleteFilesAfterSpecifiedTime();
-    this.fileService.clearNowFormatted();
+      this.fileService.deleteFilesAfterSpecifiedTime();
+      this.fileService.clearNowFormatted();
+    } catch (error) {
+      console.error('Email workflow failed:', error);
+      this.fileService.clearNowFormatted();
+      await this.alertService.showErrorAlert('ERROR_MESSAGE_EMAIL_WORKFLOW');
+    }
   }
 
   private async handleEmailBasedOnPlatform() {
@@ -369,10 +401,21 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.langSub?.unsubscribe();
+    try {
+      // Cleanup subscriptions
+      this.langSub?.unsubscribe();
 
-    this.qrService.clearQrFields();
-    this.emailService.clearEmailSent();
-    this.fileService.clearNowFormatted();
+      // Clear services
+      this.qrService.clearQrFields();
+      this.emailService.clearEmailSent();
+      this.fileService.clearNowFormatted();
+
+      // Remove keyboard listeners if they exist
+      if (Capacitor.isNativePlatform()) {
+        Keyboard.removeAllListeners();
+      }
+    } catch (error) {
+      console.error('Cleanup failed:', error);
+    }
   }
 }
