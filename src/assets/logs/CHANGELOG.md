@@ -10,7 +10,9 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 🚀 Improvements
 
-- Updated app infrastructure for improved stability and performance.
+- Display a loading spinner while generating QR codes and loading emails.
+- Automatically scroll to the action buttons after generating a QR code.
+- Enhanced app infrastructure for greater stability and performance.
 
 ### 🐛 Fixes
 

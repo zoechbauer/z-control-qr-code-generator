@@ -85,6 +85,10 @@
         </div>
       </ion-item>
     </ion-card-content>
+    
+    <div class="ion-text-center">
+      <ion-spinner color="primary" *ngIf="showSpinner"></ion-spinner>
+    </div>
 
     <ion-button
       expand="block"
@@ -126,7 +130,9 @@
         >{{'EMAIL_PAGE_TITLE' | translate}}</ion-card-title
       >
     </ion-card-header>
-    <div class="email-page-info ion-text-center">{{'EMAIL_PAGE_INFOTEXT' | translate}}</div>
+    <div class="email-page-info ion-text-center">
+      {{'EMAIL_PAGE_INFOTEXT' | translate}}
+    </div>
     <ion-list
       class="email-list"
       *ngIf="this.localStorage.savedEmailAddresses.length > 0"
@@ -155,7 +161,7 @@
     </p>
 
     <hr />
-    
+
     <div class="enter-mail-address">
       <h6 class="ion-text-center">
         {{'EMAIL_PAGE_ADD_EMAIL_TITLE' | translate}}

@@ -872,7 +872,6 @@ describe('HomePage', () => {
     let qrUtilsService: jasmine.SpyObj<QrUtilsService>;
     let emailUtilsService: jasmine.SpyObj<EmailUtilsService>;
     let fileUtilsService: jasmine.SpyObj<FileUtilsService>;
-    let alertService: jasmine.SpyObj<AlertService>;
 
     beforeEach(() => {
       qrUtilsService = TestBed.inject(
@@ -884,12 +883,10 @@ describe('HomePage', () => {
       fileUtilsService = TestBed.inject(
         FileUtilsService
       ) as jasmine.SpyObj<FileUtilsService>;
-      alertService = TestBed.inject(
-        AlertService
-      ) as jasmine.SpyObj<AlertService>;
     });
 
     it('should handle complete QR-to-email workflow', async () => {
+      // Note: Spinner display cannot be tested in this unit test
       // Arrange
       component.qrDataInput = { value: 'test' } as any;
 

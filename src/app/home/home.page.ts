@@ -40,6 +40,7 @@ export class HomePage implements OnInit, OnDestroy {
   screenWidth: number = window.innerWidth;
   showAddress: boolean = false;
   nbrOfInitialRows: number = this.isPortrait ? 3 : 1;
+  showSpinner: boolean = false;
 
   private readonly langSub?: Subscription;
   private isKeyboardOpen = false;
@@ -179,9 +180,22 @@ export class HomePage implements OnInit, OnDestroy {
 
   sanitizeInputAndGenerateQRCode(data: string | undefined | null) {
     if (typeof data === 'string' && data.trim() !== '') {
+      this.showSpinner = true;
       const sanitizedData = this.trimTrailingWhitespace(data);
       this.qrService.generateQRCode(sanitizedData);
+
+      this.scrollToNoGenerationButtons();
+      this.showSpinner = false;
     }
+  }
+
+  private scrollToNoGenerationButtons(): void {
+    setTimeout(() => {
+      const element = document.querySelector('.no-generation-buttons');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 0);
   }
 
   private trimTrailingWhitespace(data: string): string {
@@ -261,8 +275,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   async storeMailAndDeleteQRCode() {
     try {
-      // TODO Show loading indicator
-
+      this.showSpinner = true;
       this.fileService.setNowFormatted();
       await this.fileService.downloadQRCode(this.qrService.qrCodeDownloadLink);
       await this.qrService.printQRCode();
@@ -270,9 +283,12 @@ export class HomePage implements OnInit, OnDestroy {
 
       this.fileService.deleteFilesAfterSpecifiedTime();
       this.fileService.clearNowFormatted();
+      this.showSpinner = false;
+
     } catch (error) {
       console.error('Email workflow failed:', error);
       this.fileService.clearNowFormatted();
+      this.showSpinner = false;
       await this.alertService.showErrorAlert('ERROR_MESSAGE_EMAIL_WORKFLOW');
     }
   }
