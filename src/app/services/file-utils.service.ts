@@ -69,7 +69,7 @@ export class FileUtilsService {
         });
       } catch (error) {
         console.error('Error saving file:', error);
-        this.alertService.showErrorAlert('ERROR_MESSAGE_SAVE_QR');
+        this.alertService.showStoragePermissionError();
       }
     } else {
       // for Desktop: create a download link
@@ -131,7 +131,7 @@ export class FileUtilsService {
         });
       } catch (error) {
         console.error('Error deleting file:', error);
-        this.alertService.showErrorAlert('ERROR_MESSAGE_DELETE_QR');
+        // as soon as we get permission qr codes are automatically deleted        // this.alertService.showErrorAlert('ERROR_MESSAGE_DELETE_QR');
       }
     } else {
       // Browsers are not allowed to delete files
@@ -148,20 +148,15 @@ export class FileUtilsService {
 
     const fileName = this.fileNamePng;
 
-    if (qrCodeDownloadLink) {
-      try {
-        const response = await fetch(qrCodeDownloadLink);
-        const blob = await response.blob();
-        const base64Data = await this.blobToBase64(blob);
+    try {
+      const response = await fetch(qrCodeDownloadLink);
+      const blob = await response.blob();
+      const base64Data = await this.blobToBase64(blob);
 
-        await this.saveFile(fileName, base64Data);
-      } catch (error) {
-        console.error('Error saving file in downloadQRCode:', error);
-        this.alertService.showErrorAlert('ERROR_MESSAGE_SAVE_QR');
-      }
-    } else {
-      console.error('QR Code URL is not available');
-      this.alertService.showErrorAlert('ERROR_MESSAGE_MISSING_QR_URL');
+      await this.saveFile(fileName, base64Data);
+    } catch (error) {
+      console.error('Error saving file in downloadQRCode:', error);
+      this.alertService.showStoragePermissionError();
     }
   }
 

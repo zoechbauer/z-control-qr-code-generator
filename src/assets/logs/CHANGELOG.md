@@ -2,6 +2,30 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+
+## [1.16] – YYYY-MM-DD
+
+### ✨ New Features
+
+- …
+
+### 🚀 Improvements
+
+- Improved error message when storage permissions are not granted
+- Added step-by-step permission instructions to the user help page
+
+### 🐛 Fixes
+
+- Fixed app name display in Android Settings/Apps to show "z-control QR Code Generator"
+
+### 🛡 Security
+
+- …
+
+### 📦 Installations
+
+- …
+
 ## [1.15] – 2025-08-13
 
 ### 🚀 Improvements

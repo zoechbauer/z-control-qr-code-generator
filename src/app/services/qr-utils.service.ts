@@ -63,7 +63,7 @@ export class QrUtilsService {
           // await Plugins.FileOpener.open({ filePath: result.uri, contentType: 'application/pdf' });
         } catch (error) {
           console.error('Error saving PDF:', error);
-          this.alertService.showErrorAlert('ERROR_MESSAGE_SAVE_QR_PDF');
+          this.alertService.showStoragePermissionError();
         }
       } else {
         console.error('Canvas not found');
