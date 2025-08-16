@@ -13,6 +13,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 - Improved error message when storage permissions are not granted
 - Added step-by-step permission instructions to the user help page
+- Added step-by-step floating keyboard instructions to the user help page for smaller screens
 
 ### 🐛 Fixes
 
