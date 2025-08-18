@@ -28,8 +28,8 @@
   "CLEAR_CONFIRMATION_BUTTON": "Löschen",
 
   "------ email address page": "-------",
-  "EMAIL_PAGE_TITLE": "Email Adressen",
-  "EMAIL_PAGE_INFOTEXT": "Die hier erfassten Mail-Adressen werden beim Versand der QR Codes im Mailempfänger vorbelegt.",
+  "EMAIL_PAGE_TITLE": "Gespeicherte E-Mail-Adressen",
+  "EMAIL_PAGE_INFOTEXT": "Diese gespeicherten Mail-Adressen werden beim Versand der QR Codes im Mailempfänger vorbelegt.",
   "EMAIL_PAGE_NO_EMAIL_ADRESSES": "Es wurden noch keine Mailadressen erfasst.",
   "EMAIL_PAGE_ADD_EMAIL_TITLE": "Neue Mail-Adresse hinzufügen",
   "EMAIL_PAGE_ADD_EMAIL_LABEL": "EMAIL",

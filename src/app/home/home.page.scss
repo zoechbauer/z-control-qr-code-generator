@@ -38,49 +38,64 @@
   }
 }
 
-.missing-mails {
-  color: var(--ion-color-primary);
-}
-
-.saved-email-address {
-  --border-width: 0 !important;
-  --inner-border-width: 0 !important;
-
-  &::part(native) {
-    border: none !important;
-    box-shadow: none !important;
-  }
-}
-
-hr {
-  border: none;
-  border-top: 1px solid var(--ion-color-medium);
-  margin: 0 0 20px 0;
-}
-
-// Desktop: increase font size for email list labels
-@media (min-width: 768px) {
-  .email-list ion-label {
-    font-size: 18px;
-  }
-
-  .email-page-info {
-    font-size: 15px;
-  }
-}
-
-.mail-address-buttons {
-  margin-top: 20px;
-
-  .buttons-no-add {
-    display: flex;
-  }
-}
-
 // Style for disabled buttons
 .button-wrapper {
   .pseudo-disabled {
     opacity: 0.4;
     cursor: not-allowed;
+  }
+}
+
+// email maintenance
+.mail-address {
+  .enter-mail-address {
+    margin-bottom: 20px;
+
+    h6 {
+      margin: 10px 0;
+      font-weight: 600;
+      color: var(--ion-color-primary);
+    }
+
+    .mail-address-buttons {
+      margin-top: 20px;
+
+      .buttons-no-add {
+        display: flex;
+      }
+    }
+  }
+
+  .saved-emails-section {
+    margin-top: 20px;
+
+    .email-page-info {
+      margin-bottom: 15px;
+      font-size: 0.9em;
+      color: var(--ion-color-medium);
+    }
+
+    .missing-mails {
+      color: var(--ion-color-primary);
+    }
+
+    h6 {
+      margin: 10px 0;
+      font-weight: 600;
+      color: var(--ion-color-primary);
+    }
+
+    .email-list {
+      margin-top: 10px;
+      max-height: 200px; // Limit height for many emails
+      overflow-y: auto;
+    }
+
+    @media (min-width: 768px) {
+      .email-page-info {
+        margin-top: 15px;
+        font-size: 15px;
+      }
+    }
   }
 }

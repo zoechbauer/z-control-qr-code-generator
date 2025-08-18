@@ -28,8 +28,8 @@
   "CLEAR_CONFIRMATION_BUTTON": "Clear",
 
   "------ email address page": "-------",
-  "EMAIL_PAGE_TITLE": "Email Addresses",
-  "EMAIL_PAGE_INFOTEXT": "The email addresses entered here will be pre-filled in the email recipient when the QR codes are sent.",
+  "EMAIL_PAGE_TITLE": "Saved Email Addresses",
+  "EMAIL_PAGE_INFOTEXT": "These saved email addresses will be pre-filled as recipients when sending QR codes.",
   "EMAIL_PAGE_NO_EMAIL_ADRESSES": "No email addresses have been recorded yet.",
   "EMAIL_PAGE_ADD_EMAIL_TITLE": "Add new email address",
   "EMAIL_PAGE_ADD_EMAIL_LABEL": "EMAIL",
