@@ -1182,7 +1182,7 @@ describe('HomePage', () => {
       freshComponent.ngOnInit();
 
       // Assert
-      expect(freshComponent.nbrOfInitialRows).toBe(3); // Portrait = 3 rows
+      expect(freshComponent.nbrOfInitialRows).toBe(6); // Portrait = 6 rows
     });
 
     it('should not add keyboard listeners on web platforms', () => {

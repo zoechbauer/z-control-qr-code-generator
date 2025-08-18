@@ -11,9 +11,14 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 🚀 Improvements
 
+- Added confirmation dialog when clearing QR Code input field with more than 100 characters (configurable threshold)
+- Added helpful tooltips when clicking disabled buttons to explain why they're unavailable
 - Improved error message when storage permissions are not granted
-- Added step-by-step permission instructions to the user help page
+- Added step-by-step storage permission instructions to the user help page
 - Added step-by-step floating keyboard instructions to the user help page for smaller screens
+- Moved navigation button in user help page from bottom to header to prevent overlap with Samsung navigation bar
+- Improved placeholder text for QR Code text entry field
+- Increased default text area height from 3 to 6 lines for better user experience
 
 ### 🐛 Fixes
 

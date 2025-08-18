@@ -21,11 +21,6 @@ ol.table-of-contents {
   }
 }
 
-.back-to-table-of-contents {
-  text-align: center;
-  margin-top: 25px;
-}
-
 .version-info {
   font-weight: 500;
 }
@@ -64,4 +59,51 @@ h3 {
   font-weight: 400;
   margin-top: 40px;
   color: var(--ion-color-primary);
+}
+
+ion-header {
+  ion-toolbar {
+    background: var(--ion-color-light);
+    border-bottom: 1px solid #e0e0e0;
+    
+    ion-title {
+      font-weight: 600;
+      font-size: 1.2em;
+      color: var(--ion-color-primary);
+      text-align: center;
+    }
+    
+    // scroll-to-top button
+    ion-buttons[slot="start"] {
+      ion-button {
+        --color: var(--ion-color-primary);
+        
+        ion-icon {
+          font-size: 20px;
+        }
+      }
+    }
+    
+    // Close button
+    ion-buttons[slot="end"] {
+      ion-button {
+        --color: var(--ion-color-primary);
+      }
+    }
+  }
+}
+
+@media (orientation: portrait) {
+  ion-header {
+    ion-toolbar {
+      ion-title {
+        font-size: 1rem;
+      }
+      
+      ion-buttons ion-button {
+        --padding-start: 8px;
+        --padding-end: 8px;
+      }
+    }
+  }
 }

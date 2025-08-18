@@ -86,6 +86,13 @@ export class FileUtilsService {
   async deleteAllQrCodeFiles() {
     if (Capacitor.isNativePlatform()) {
       try {
+        // check permissions
+        if (!(await this.checkFilesystemPermission())) {
+          console.log('Storage permission not granted, skipping file deletion');
+          return;
+        }
+
+        // delete files
         const files = await Filesystem.readdir({
           directory: Directory.Documents,
           path: '',
@@ -131,7 +138,8 @@ export class FileUtilsService {
         });
       } catch (error) {
         console.error('Error deleting file:', error);
-        // as soon as we get permission qr codes are automatically deleted        // this.alertService.showErrorAlert('ERROR_MESSAGE_DELETE_QR');
+        // as soon as we get permission qr codes are automatically deleted
+        // this.alertService.showErrorAlert('ERROR_MESSAGE_DELETE_QR');
       }
     } else {
       // Browsers are not allowed to delete files
@@ -139,11 +147,15 @@ export class FileUtilsService {
     }
   }
 
-  async downloadQRCode(qrCodeDownloadLink: string): Promise<void> {
+  async downloadQRCode(qrCodeDownloadLink: string): Promise<boolean> {
     if (!qrCodeDownloadLink?.trim()) {
       console.error('QR Code URL is not available');
       this.alertService.showErrorAlert('ERROR_MESSAGE_MISSING_QR_URL');
-      return;
+      return false;
+    }
+
+    if (!(await this.checkAndRequestFilesystemPermission())) {
+      return false;
     }
 
     const fileName = this.fileNamePng;
@@ -154,10 +166,64 @@ export class FileUtilsService {
       const base64Data = await this.blobToBase64(blob);
 
       await this.saveFile(fileName, base64Data);
+      return true;
     } catch (error) {
       console.error('Error saving file in downloadQRCode:', error);
       this.alertService.showStoragePermissionError();
+      return false;
     }
+  }
+
+  private async checkFilesystemPermission(): Promise<boolean> {
+    if (!Capacitor.isNativePlatform()) {
+      return true;
+    }
+    try {
+      const permissions = await Filesystem.checkPermissions();
+
+      if (permissions.publicStorage === 'granted') {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (permissionError) {
+      console.warn(
+        'Permission check failed, continuing anyway:',
+        permissionError
+      );
+    }
+    return true;
+  }
+
+  private async checkAndRequestFilesystemPermission(): Promise<boolean> {
+    if (!Capacitor.isNativePlatform()) {
+      return true;
+    }
+    try {
+      const permissions = await Filesystem.checkPermissions();
+
+      if (permissions.publicStorage === 'granted') {
+        return true;
+      } else {
+        // request missing permission
+        const requestResult = await Filesystem.requestPermissions();
+
+        if (requestResult.publicStorage !== 'granted') {
+          console.error('Storage permission denied by user');
+          this.alertService.showStoragePermissionError();
+          return false;
+        } else {
+          return true;
+        }
+      }
+    } catch (permissionError) {
+      console.warn(
+        'Permission check failed, continuing anyway:',
+        permissionError
+      );
+      // Continue - older Android versions might not support this
+    }
+    return true;
   }
 
   blobToBase64(blob: Blob): Promise<string> {

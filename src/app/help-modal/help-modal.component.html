@@ -11,8 +11,18 @@
     <ion-toolbar>
       <ion-title>
         <span *ngIf="!isPortrait">Help – z-control QR Code Generator</span>
-        <span *ngIf="isPortrait">Help – QR Code Generator</span>
+        <span *ngIf="isPortrait">Help – QR Code</span>
       </ion-title>
+      <ion-buttons slot="start">
+        <ion-button
+          fill="clear"
+          (click)="scrollToTop()"
+          (keydown.enter)="scrollToTop()"
+          (keydown.space)="scrollToTop()"
+        >
+          <ion-icon name="arrow-up-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
       <ion-buttons slot="end">
         <ion-button
           class="button-color"
@@ -20,7 +30,7 @@
           (keydown.enter)="dismissModal()"
           (keydown.space)="dismissModal()"
         >
-          <ion-icon name="close-outline"></ion-icon>
+          <ion-icon name="close-outline" slot="icon-only"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
@@ -279,6 +289,11 @@
           Press the <i><b>generate</b></i> button.<br />The generated QR code
           will then be displayed.
         </p>
+        <p>
+          <b>Note:</b> If buttons appear disabled (grayed out), you can still
+          tap them to see a helpful message explaining why the button is
+          currently unavailable and what steps you need to take to enable it.
+        </p>
       </li>
       <li>
         <p>
@@ -319,8 +334,10 @@
           generate a new QR code from the changed text.<br /><br />
           To allow the text to be changed even after sending, e.g. for small
           adjustments, the text is not cleared after sending.<br /><br />
-          The text can be cleared using the <i>Clear input</i> button. The
-          generated QR code will then no longer be displayed.
+          The text can be removed using the <i>Delete input</i> button. For
+          longer texts (from 100 characters), a safety prompt appears asking if
+          you really want to delete the text. After deletion, the generated QR
+          code will also no longer be displayed.
         </p>
       </li>
     </ol>
@@ -631,16 +648,6 @@
       Release Notes
     </ion-button>
   </ion-content>
-
-  <ion-button
-    class="back-to-table-of-contents"
-    fill="clear"
-    size="small"
-    (click)="scrollToTop()"
-    (keydown.enter)="scrollToTop()"
-    (keydown.space)="scrollToTop()"
-    >{{ scrollToTopObj.text }}</ion-button
-  >
 </ng-template>
 
 <!-- *********************************** -->
@@ -652,15 +659,25 @@
     <ion-toolbar>
       <ion-title>
         <span *ngIf="!isPortrait">Hilfe – z-control QR Code Generator</span>
-        <span *ngIf="isPortrait">Hilfe – QR Code Generator</span>
+        <span *ngIf="isPortrait">Hilfe – QR Code</span>
       </ion-title>
+          <ion-buttons slot="start">
+        <ion-button
+          fill="clear"
+          (click)="scrollToTop()"
+          (keydown.enter)="scrollToTop()"
+          (keydown.space)="scrollToTop()"
+        >
+          <ion-icon name="arrow-up-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
       <ion-buttons slot="end">
         <ion-button
           class="button-color"
           (click)="dismissModal()"
           (keydown.enter)="dismissModal()"
           (keydown.space)="dismissModal()"
-          ><ion-icon name="close-outline"></ion-icon
+          ><ion-icon name="close-outline" slot="icon-only"></ion-icon
         ></ion-button>
       </ion-buttons>
     </ion-toolbar>
@@ -845,7 +862,7 @@
           Falls beim Speichern oder Versenden von QR-Codes dieser Fehler
           auftritt, müssen Sie der App Speicherberechtigungen erteilen:
         </p>
-         <p>Lösung:</p>
+        <p>Lösung:</p>
         <ol>
           <li>Gehen Sie zu Einstellungen</li>
           <li>Wählen Sie Apps</li>
@@ -921,8 +938,17 @@
         </p>
       </li>
       <li>
-        Schaltfläche <i><b>generieren</b></i> drücken.<br />Es wird dann der
-        genertierte QR Code angezeigt.
+        <p>
+          Schaltfläche <i><b>generieren</b></i> drücken.<br />Es wird dann der
+          genertierte QR Code angezeigt.
+        </p>
+        <p>
+          <b>Hinweis:</b> Falls Schaltflächen ausgegraut (deaktiviert)
+          erscheinen, können Sie trotzdem darauf tippen, um eine hilfreiche
+          Meldung zu erhalten, die erklärt, warum die Schaltfläche derzeit nicht
+          verfügbar ist und welche Schritte Sie unternehmen müssen, um sie zu
+          aktivieren.
+        </p>
       </li>
       <li>
         <p>
@@ -963,8 +989,10 @@
           Damit der Text auch nach dem Senden noch geändert werden kann, z.B.
           wegen kleiner Abweichungen im Text, wird der Text nach dem Senden
           nicht gelöscht.<br /><br />
-          Der Text kann mittels Schaltfläche <i>Eingabe löschen</i> gelöscht
-          werden. Es wird dann auch der generierte QR Code nicht mehr angezeigt.
+          Der Text kann mit der Schaltfläche <i>Eingabe löschen</i> entfernt
+          werden. Bei längeren Texten (ab 100 Zeichen) erscheint eine
+          Sicherheitsabfrage, ob der Text wirklich gelöscht werden soll. Nach
+          dem Löschen wird auch der generierte QR Code nicht mehr angezeigt.
         </p>
       </li>
     </ol>
@@ -1298,14 +1326,4 @@
       Release Notes
     </ion-button>
   </ion-content>
-
-  <ion-button
-    class="back-to-table-of-contents"
-    fill="clear"
-    size="small"
-    (click)="scrollToTop()"
-    (keydown.enter)="scrollToTop()"
-    (keydown.space)="scrollToTop()"
-    >{{ scrollToTopObj.text }}</ion-button
-  >
 </ng-template>

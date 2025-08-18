@@ -37,9 +37,10 @@ enum Toast {
 export class HomePage implements OnInit, OnDestroy {
   @ViewChild('qrDataInput') qrDataInput!: IonTextarea;
 
+  newEmailAddressValue: string = '';
   screenWidth: number = window.innerWidth;
   showAddress: boolean = false;
-  nbrOfInitialRows: number = this.isPortrait ? 3 : 1;
+  nbrOfInitialRows: number = 1;
   showSpinner: boolean = false;
 
   private readonly langSub?: Subscription;
@@ -59,6 +60,7 @@ export class HomePage implements OnInit, OnDestroy {
     private readonly alertController: AlertController,
     private readonly alertService: AlertService
   ) {
+    this.setNumberOfRows();
     this.langSub = this.localStorage.selectedLanguage$.subscribe((lang) => {
       this.translate.use(lang);
       this.translate.setDefaultLang(lang);
@@ -99,7 +101,7 @@ export class HomePage implements OnInit, OnDestroy {
     // Single resize listener
     window.addEventListener('resize', () => {
       this.screenWidth = window.innerWidth;
-      this.nbrOfInitialRows = this.isPortrait ? 3 : 1;
+      this.setNumberOfRows();
     });
 
     // Platform-specific keyboard listeners
@@ -111,6 +113,10 @@ export class HomePage implements OnInit, OnDestroy {
         this.isKeyboardOpen = false;
       });
     }
+  }
+
+  private setNumberOfRows(): void {
+    this.nbrOfInitialRows = this.isPortrait ? 6 : 1;
   }
 
   private async initializeServicesAsync(): Promise<void> {
@@ -170,11 +176,109 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   clearInputField(): void {
+    const currentText = this.qrDataInput?.value?.trim() || '';
+
+    // Show confirmation for longer text (100+ characters)
+    if (currentText.length > (environment.clearConfirmationLength ?? 100)) {
+      this.showClearConfirmation();
+      return;
+    }
+
+    // Clear immediately for short text
+    this.performClear();
+  }
+
+  private async showClearConfirmation() {
+    const alert = await this.alertController.create({
+      header: await this.translate.get('CLEAR_CONFIRMATION_HEADER').toPromise(),
+      message: await this.translate
+        .get('CLEAR_CONFIRMATION_MESSAGE')
+        .toPromise(),
+      buttons: [
+        {
+          text: await this.translate.get('CANCEL').toPromise(),
+          role: 'cancel',
+        },
+        {
+          text: await this.translate
+            .get('CLEAR_CONFIRMATION_BUTTON')
+            .toPromise(),
+          handler: () => this.performClear(),
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  private performClear(): void {
     this.emailService.clearEmailSent();
     this.qrService.clearQrFields();
 
     if (this.qrDataInput) {
       this.qrDataInput.value = '';
+    }
+  }
+
+  handleAddEmailAddressButtonClick() {
+    if (!this.newEmailAddressValue || !this.validationService.isValidEmailAddress(this.newEmailAddressValue)) {
+      this.showDisabledToast('TOOLTIP_EMAIL_INVALID_ADDRESS').catch((error) => {
+        console.error('Error presenting toast:', error);
+      });
+      return;
+    }
+
+    // Add email and clear input
+    this.addEmailAddress(this.newEmailAddressValue);
+    this.newEmailAddressValue = ''; // ✅ Easy to clear!
+  }
+  
+  handleToggleShowAddressButtonClick() {
+    if (!this.isInputFieldEmpty()) {
+      this.showDisabledToast('TOOLTIP_NAVIGATION_CLEAR_TEXT_TO_SWITCH').catch(
+        (error) => {
+          console.error('Error presenting toast:', error);
+        }
+      );
+    } else {
+      // Input is empty - allow switch to email maintenance
+      this.toggleShowAddress();
+    }
+  }
+
+  handleSendEmailButtonClick() {
+    if (!this.qrService.isQrCodeGenerated) {
+      this.showDisabledToast('TOOLTIP_EMAIL_NO_QR_GENERATED').catch((error) => {
+        console.error('Error presenting toast:', error);
+      });
+    } else {
+      // Valid input, send email
+      this.storeMailAndDeleteQRCode();
+    }
+  }
+
+  handleGenerateButtonClick() {
+    // show toast if disabled or generate qr code
+    if (this.isInputFieldEmpty()) {
+      this.showDisabledToast('TOOLTIP_GENERATION_ENTER_TEXT_FIRST').catch(
+        (error) => {
+          console.error('Error presenting toast:', error);
+        }
+      );
+    } else if (this.emailService.isEmailSent) {
+      this.showDisabledToast('TOOLTIP_GENERATION_EMAIL_ALREADY_SENT').catch(
+        (error) => {
+          console.error('Error presenting toast:', error);
+        }
+      );
+    } else if (this.qrService.isQrCodeGenerated) {
+      this.showDisabledToast('TOOLTIP_GENERATION_QR_ALREADY_GENERATED').catch(
+        (error) => {
+          console.error('Error presenting toast:', error);
+        }
+      );
+    } else {
+      // Valid input, generate QR code
+      this.sanitizeInputAndGenerateQRCode(this.qrDataInput.value);
     }
   }
 
@@ -187,6 +291,29 @@ export class HomePage implements OnInit, OnDestroy {
       this.scrollToNoGenerationButtons();
       this.showSpinner = false;
     }
+  }
+
+  private async showDisabledToast(toastMsg: string) {
+    const translatedMsg = this.translate.instant(toastMsg);
+
+    const toast = await this.toastController.create({
+      message: translatedMsg,
+      duration: 3000,
+      position: this.getToastPosition(),
+      icon: 'information-circle',
+      color: 'medium',
+      buttons: [
+        {
+          text: 'OK',
+          role: 'cancel',
+        },
+      ],
+    });
+    await toast.present();
+  }
+
+  private getToastPosition(): 'top' | 'bottom' {
+    return this.isKeyboardOpen ? 'top' : 'bottom';
   }
 
   private scrollToNoGenerationButtons(): void {
@@ -234,8 +361,9 @@ export class HomePage implements OnInit, OnDestroy {
     const toast = await this.toastController.create({
       message: translatedToastMessage,
       duration: 3000,
-      color: 'primary',
-      position: this.isKeyboardOpen ? 'top' : 'bottom',
+      icon: 'information-circle',
+      color: 'medium',
+      position: this.getToastPosition(),
       buttons: [
         {
           icon: 'close',
@@ -277,14 +405,22 @@ export class HomePage implements OnInit, OnDestroy {
     try {
       this.showSpinner = true;
       this.fileService.setNowFormatted();
-      await this.fileService.downloadQRCode(this.qrService.qrCodeDownloadLink);
+
+      if (
+        !(await this.fileService.downloadQRCode(
+          this.qrService.qrCodeDownloadLink
+        ))
+      ) {
+        this.showSpinner = false;
+        return;
+      }
+
       await this.qrService.printQRCode();
       await this.handleEmailBasedOnPlatform();
 
       this.fileService.deleteFilesAfterSpecifiedTime();
       this.fileService.clearNowFormatted();
       this.showSpinner = false;
-
     } catch (error) {
       console.error('Email workflow failed:', error);
       this.fileService.clearNowFormatted();
@@ -387,7 +523,7 @@ export class HomePage implements OnInit, OnDestroy {
     await modal.present();
   }
 
-  async addEmailAddress(newEmailAddress: string | undefined | null | number) {
+  async addEmailAddress(newEmailAddress: string) {
     if (typeof newEmailAddress === 'string') {
       await this.localStorage.saveEmail(newEmailAddress);
     }

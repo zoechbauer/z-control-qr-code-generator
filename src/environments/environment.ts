@@ -17,6 +17,9 @@ export const environment = {
   // theoretical max is 2953 but scanning fails, using tested value
   maxInputLength: 1000,
 
+  // confirm deleting input data with 100 chars or more
+  clearConfirmationLength: 100,
+
   // version info
    version: {
     major: 1,

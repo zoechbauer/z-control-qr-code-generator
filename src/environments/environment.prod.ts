@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  
+
   // Storage duration for temporary files
   // balances user convenience with storage cleanup
   storageDurationInHours: 3,
@@ -13,10 +13,13 @@ export const environment = {
   // theoretical max is 2953 but scanning fails, using tested value
   maxInputLength: 1000,
 
+  // confirm deleting input data with 100 chars or more
+  clearConfirmationLength: 100,
+
   // version info
-   version: {
+  version: {
     major: 1,
     minor: 15,
     date: '2025-08-13',
   },
-}
+};

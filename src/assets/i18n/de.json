@@ -10,9 +10,22 @@
   "CLEAR_INPUT": "Eingabe löschen",
   "CREATE_QR_CODE": "QR Code erstellen",
   "QR_CODE_TEXT": "Text",
-  "INPUT_FIELD_PLACEHOLDER": "Bitte Text eingeben. Leerzeilen mittels Eingabe-Taste ...",
+  "INPUT_FIELD_PLACEHOLDER": "Bitte Text eingeben. Verwenden Sie die Eingabe-Taste für Leerzeilen.",
   "TOAST_TRAILING_BLANKS_REMOVED": "Leerzeichen wurden am Ende entfernt.",
   "TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE": "QR Code wurde gelöscht, da sich die Eingabe geändert hat.",
+
+  "------ Tooltip Disabled Button": "-------",
+  "TOOLTIP_GENERATION_ENTER_TEXT_FIRST": "Bitte geben Sie Text ein, bevor Sie den QR-Code generieren",
+  "TOOLTIP_GENERATION_EMAIL_ALREADY_SENT": "-Mail wurde bereits gesendet. Bitte löschen oder ändern Sie das Eingabefeld für einen neuen QR-Code",
+  "TOOLTIP_GENERATION_QR_ALREADY_GENERATED": "QR-Code wurde bereits generiert. Bitte löschen oder ändern Sie das Eingabefeld für einen neuen QR-Code",
+  "TOOLTIP_EMAIL_NO_QR_GENERATED": "Bitte generieren Sie zuerst den QR-Code",
+  "TOOLTIP_EMAIL_INVALID_ADDRESS": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+  "TOOLTIP_NAVIGATION_CLEAR_TEXT_TO_SWITCH": "Bitte leeren Sie das Textfeld, bevor Sie zur E-Mail-Verwaltung wechseln",
+
+"------ Clear Input Text Confirmation": "-------",
+  "CLEAR_CONFIRMATION_HEADER": "Text löschen?",
+  "CLEAR_CONFIRMATION_MESSAGE": "Dies löscht den gesamten eingegebenen Text. Fortfahren?",
+  "CLEAR_CONFIRMATION_BUTTON": "Löschen",
 
   "------ email address page": "-------",
   "EMAIL_PAGE_TITLE": "Email Adressen",

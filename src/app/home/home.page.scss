@@ -38,49 +38,49 @@
   }
 }
 
-// Style for email address management
-.mail-address {
+.missing-mails {
+  color: var(--ion-color-primary);
+}
+
+.saved-email-address {
+  --border-width: 0 !important;
+  --inner-border-width: 0 !important;
+
+  &::part(native) {
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--ion-color-medium);
+  margin: 0 0 20px 0;
+}
+
+// Desktop: increase font size for email list labels
+@media (min-width: 768px) {
+  .email-list ion-label {
+    font-size: 18px;
+  }
+
   .email-page-info {
-    font-size: 13px;
-    margin: 16px;
+    font-size: 15px;
   }
+}
 
-  .missing-mails {
-    color: var(--ion-color-primary);
+.mail-address-buttons {
+  margin-top: 20px;
+
+  .buttons-no-add {
+    display: flex;
   }
+}
 
-  .saved-email-address {
-    --border-width: 0 !important;
-    --inner-border-width: 0 !important;
-
-    &::part(native) {
-      border: none !important;
-      box-shadow: none !important;
-    }
-  }
-
-  hr {
-    border: none;
-    border-top: 1px solid var(--ion-color-medium);
-    margin: 0 0 20px 0;
-  }
-
-  // Desktop: increase font size for email list labels
-  @media (min-width: 768px) {
-    .email-list ion-label {
-      font-size: 18px;
-    }
-
-    .email-page-info {
-      font-size: 15px;
-    }
-  }
-
-  .mail-address-buttons {
-    margin-top: 20px;
-
-    .buttons-no-add {
-      display: flex;
-    }
+// Style for disabled buttons
+.button-wrapper {
+  .pseudo-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 }

@@ -1,16 +1,23 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button
-        class="button-color"
-        fill="clear"
-        (click)="toggleShowAddress()"
-        (keydown.enter)="toggleShowAddress()"
-        (keydown.space)="toggleShowAddress()"
-        [disabled]="!isInputFieldEmpty()"
+      <div
+        class="button-wrapper"
+        (click)="handleToggleShowAddressButtonClick()"
+        (keydown.enter)="handleToggleShowAddressButtonClick()"
+        (keydown.space)="handleToggleShowAddressButtonClick()"
       >
-        {{!showAddress ? ('EMAIL_ADDRESS_BUTTON' | translate) : "QR Code"}}
-      </ion-button>
+        <ion-button
+          class="button-color"
+          fill="clear"
+          (keydown.enter)="toggleShowAddress()"
+          (keydown.space)="toggleShowAddress()"
+          [class.pseudo-disabled]="!isInputFieldEmpty()"
+          [disabled]="false"
+        >
+          {{!showAddress ? ('EMAIL_ADDRESS_BUTTON' | translate) : "QR Code"}}
+        </ion-button>
+      </div>
     </ion-buttons>
     <ion-title
       ><b
@@ -85,30 +92,43 @@
         </div>
       </ion-item>
     </ion-card-content>
-    
+
     <div class="ion-text-center">
       <ion-spinner color="primary" *ngIf="showSpinner"></ion-spinner>
     </div>
 
-    <ion-button
-      expand="block"
-      [class.landscape]="!isPortrait"
-      (click)="sanitizeInputAndGenerateQRCode(qrDataInput.value)"
-      (keydown.enter)="sanitizeInputAndGenerateQRCode(qrDataInput.value)"
-      (keydown.space)="sanitizeInputAndGenerateQRCode(qrDataInput.value)"
-      [disabled]="isGenerationButtonDisabled"
-      >{{ 'GENERATE' | translate }}</ion-button
+    <div
+      class="button-wrapper"
+      (click)="handleGenerateButtonClick()"
+      (keydown.enter)="handleGenerateButtonClick()"
+      (keydown.space)="handleGenerateButtonClick()"
     >
-    <div class="no-generation-buttons ion-justify-content-around">
       <ion-button
+        expand="block"
         [class.landscape]="!isPortrait"
-        fill="clear"
-        (click)="storeMailAndDeleteQRCode()"
-        (keydown.enter)="storeMailAndDeleteQRCode()"
-        (keydown.space)="storeMailAndDeleteQRCode()"
-        [disabled]="qrService.qrCodeDownloadLink === '' || hasInputChangedAfterGeneration()"
-        >{{ 'MAIL_QR_CODE' | translate}}</ion-button
+        [class.pseudo-disabled]="isGenerationButtonDisabled"
+        [disabled]="false"
       >
+        {{ 'GENERATE' | translate }}
+      </ion-button>
+    </div>
+    <div class="no-generation-buttons ion-justify-content-around">
+      <div
+        class="button-wrapper"
+        (click)="handleSendEmailButtonClick()"
+        (keydown.enter)="handleSendEmailButtonClick()"
+        (keydown.space)="handleSendEmailButtonClick()"
+      >
+        <ion-button
+          [class.landscape]="!isPortrait"
+          fill="clear"
+          (keydown.enter)="storeMailAndDeleteQRCode()"
+          (keydown.space)="storeMailAndDeleteQRCode()"
+          [class.pseudo-disabled]="qrService.qrCodeDownloadLink === '' || hasInputChangedAfterGeneration()"
+          [disabled]="false"
+          >{{ 'MAIL_QR_CODE' | translate}}</ion-button
+        >
+      </div>
       <ion-button
         [class.landscape]="!isPortrait"
         fill="clear"
@@ -171,28 +191,34 @@
           >{{'EMAIL_PAGE_ADD_EMAIL_LABEL' | translate}}</ion-label
         >
         <ion-input
-          #newEmailAddress
+          [(ngModel)]="newEmailAddressValue"
           type="email"
           placeholder="{{'EMAIL_PAGE_ADD_EMAIL_PLACEHOLDER' | translate}}"
         ></ion-input>
       </ion-item>
     </div>
     <div class="mail-address-buttons">
-      <ion-button
-        expand="block"
-        (click)="addEmailAddress(newEmailAddress.value); newEmailAddress.value=''"
-        (keydown.enter)="addEmailAddress(newEmailAddress.value); newEmailAddress.value=''"
-        (keydown.space)="addEmailAddress(newEmailAddress.value); newEmailAddress.value=''"
-        [disabled]="!newEmailAddress.value || !validationService.isValidEmailAddress(newEmailAddress.value.toString())"
-        >{{'EMAIL_PAGE_ADD_BUTTON' | translate }}</ion-button
+      <div
+        class="button-wrapper"
+        (click)="handleAddEmailAddressButtonClick()"
+        (keydown.enter)="handleAddEmailAddressButtonClick()"
+        (keydown.space)="handleAddEmailAddressButtonClick()"
       >
+        <ion-button
+          expand="block"
+          [class.pseudo-disabled]="!newEmailAddressValue || !validationService.isValidEmailAddress(newEmailAddressValue)"
+          [disabled]="false"
+        >
+          {{ 'EMAIL_PAGE_ADD_BUTTON' | translate }}
+        </ion-button>
+      </div>
       <div class="buttons-no-add ion-justify-content-around">
         <ion-button
           fill="clear"
-          (click)="newEmailAddress.value = '';"
-          (keydown.enter)="newEmailAddress.value = '';"
-          (keydown.space)="newEmailAddress.value = '';"
-          [disabled]="!newEmailAddress.value"
+          (click)="newEmailAddressValue = '';"
+          (keydown.enter)="newEmailAddressValue = '';"
+          (keydown.space)="newEmailAddressValue = '';"
+          [disabled]="!newEmailAddressValue"
           >{{ 'CLEAR_INPUT' | translate}}</ion-button
         >
         <ion-button

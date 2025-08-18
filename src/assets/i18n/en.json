@@ -10,9 +10,22 @@
   "CLEAR_INPUT": "Clear Input",
   "CREATE_QR_CODE": "Create QR Code",
   "QR_CODE_TEXT": "Text",
-  "INPUT_FIELD_PLACEHOLDER": "Please enter text. Use Enter key to fill in blank lines ...",
+  "INPUT_FIELD_PLACEHOLDER": "Please enter text. Use Enter key to fill in blank lines.",
   "TOAST_TRAILING_BLANKS_REMOVED": "Spaces have been removed at the end.",
   "TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE": "QR code deleted due to input change.",
+
+  "------ Tooltip Disabled Button": "-------",
+  "TOOLTIP_GENERATION_ENTER_TEXT_FIRST": "Please enter text before generating QR code",
+  "TOOLTIP_GENERATION_EMAIL_ALREADY_SENT": "Email was already sent. Please clear or modify the input field for new QR code",
+  "TOOLTIP_GENERATION_QR_ALREADY_GENERATED": "QR code was already generated. Please clear or modify the input field for new QR code",
+  "TOOLTIP_EMAIL_NO_QR_GENERATED": "Please generate QR code first",
+  "TOOLTIP_EMAIL_INVALID_ADDRESS": "Please enter a valid email address",
+  "TOOLTIP_NAVIGATION_CLEAR_TEXT_TO_SWITCH": "Please clear the text field before switching to email maintenance",
+
+"------ Clear Input Text Confirmation": "-------",
+  "CLEAR_CONFIRMATION_HEADER": "Clear Text?",
+  "CLEAR_CONFIRMATION_MESSAGE": "This will clear all entered text. Continue?",
+  "CLEAR_CONFIRMATION_BUTTON": "Clear",
 
   "------ email address page": "-------",
   "EMAIL_PAGE_TITLE": "Email Addresses",
