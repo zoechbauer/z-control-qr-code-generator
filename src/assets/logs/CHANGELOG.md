@@ -14,6 +14,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 - Redesigned email maintenance layout to fix keyboard overlap issues on smaller Android devices (Galaxy J5)
 - Added confirmation dialog when clearing QR Code input field with more than 100 characters (configurable threshold)
 - Added helpful tooltips when clicking disabled buttons to explain why they're unavailable
+- Enhanced email content with QR code printing instructions and help page references
 - Improved error message when storage permissions are not granted
 - Added step-by-step storage permission instructions to the user help page
 - Added step-by-step floating keyboard instructions to the user help page for smaller screens

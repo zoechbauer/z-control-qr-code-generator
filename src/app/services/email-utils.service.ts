@@ -35,7 +35,7 @@ export class EmailUtilsService {
     const filePathPdf = await this.fileService.getDocumentsPath(true);
 
     const sendTo = this.localStorage.savedEmailAddresses.join(',');
-    
+
     const mailSubjectPrefix = this.translate.instant(
       'EMAIL_SERVICE_MAIL_SUBJECT_PREFIX'
     );
@@ -45,11 +45,20 @@ export class EmailUtilsService {
     const mailBodyPrefix = this.translate.instant(
       'EMAIL_SERVICE_MAIL_BODY_PREFIX'
     );
+    const printingInfo = this.translate.instant(
+      'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO'
+    );
 
     const mailSubject =
-      mailSubjectPrefix + this.qrService.myAngularxQrCode.length + mailSubjectSuffix;
+      mailSubjectPrefix +
+      this.qrService.myAngularxQrCode.length +
+      mailSubjectSuffix;
     const mailBody =
-      mailBodyPrefix + lineBreak + lineBreak + this.qrService.myAngularxQrCode;
+      mailBodyPrefix +
+      lineBreak +
+      lineBreak +
+      this.qrService.myAngularxQrCode +
+      printingInfo;
 
     const attachmentPng: Attachment = {
       path: filePathPng,
@@ -85,12 +94,16 @@ export class EmailUtilsService {
       }
     } else {
       // Web: use mailto link
-      let mailBodyWeb = this.translate.instant(
-        'EMAIL_SERVICE_MAIL_BODY_PREFIX_WEB'
-      ) + lineBreak + lineBreak + mailBody;
+      let mailBodyWeb =
+        this.translate.instant('EMAIL_SERVICE_MAIL_BODY_PREFIX_WEB') +
+        lineBreak +
+        lineBreak +
+        mailBody;
 
-      // If mailBody contains leading spaces, add info that they are not included in the mail body  
-      const mailBodyToUse = /^\s+/.test(this.qrService.myAngularxQrCode) ? mailBodyWeb : mailBody;
+      // If mailBody contains leading spaces, add info that they are not included in the mail body
+      const mailBodyToUse = /^\s+/.test(this.qrService.myAngularxQrCode)
+        ? mailBodyWeb
+        : mailBody;
       const mailto = `mailto:${encodeURIComponent(
         sendTo
       )}?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(

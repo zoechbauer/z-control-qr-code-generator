@@ -40,8 +40,9 @@
   "------ email service": "-------",
   "EMAIL_SERVICE_MAIL_SUBJECT_PREFIX": "Generierter z-control QR-Code Ihres Textes mit ",
   "EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX": " Zeichen",
-  "EMAIL_SERVICE_MAIL_BODY_PREFIX": "Dieser Text ist im QR Code enthalten:",
-  "EMAIL_SERVICE_MAIL_BODY_PREFIX_WEB": "Hinweis: Wenn im QR-Code am Anfang Leerzeichen enthalten sind, werden diese beim Öffnen der E-Mail unter Umständen nicht angezeigt. Der Grund: Führende Leerzeichen werden vom Browser beim Verwenden des mailto:-Links automatisch entfernt.",
+  "EMAIL_SERVICE_MAIL_BODY_PREFIX": "Dieser Text ist im QR-Code enthalten:",
+  "EMAIL_SERVICE_MAIL_BODY_PREFIX_WEB": "Hinweis: Falls der QR-Code führende Leerzeichen enthält, werden diese beim Öffnen der E-Mail möglicherweise nicht angezeigt, da führende Leerzeichen beim Verwenden des mailto-Links automatisch vom Browser entfernt werden.",
+  "EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO": "\n\nDRUCKANWEISUNGEN:\nDas angehängte PDF druckt einen großen QR-Code (fast die gesamte A4-Breite). Für verschiedene Größen oder detaillierte Druckanleitungen siehe den Abschnitt 'Wie drucke ich QR-Code in einer bestimmten Größe?' in der App-Hilfeseite (? Symbol).\n\nTipp: Für optimales Scannen sollten QR-Codes mindestens 2,5 cm x 2,5 cm groß sein. Verwenden Sie 'Originalgröße'-Skalierung beim Drucken.",
 
   "------ mobile web email options": "-------",
   "MOBILE_WEB_EMAIL_TITLE": "E-Mail Optionen",

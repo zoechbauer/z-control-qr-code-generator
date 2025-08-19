@@ -42,7 +42,8 @@
   "EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX": " characters",
   "EMAIL_SERVICE_MAIL_BODY_PREFIX": "This text is contained in the QR code:",
   "EMAIL_SERVICE_MAIL_BODY_PREFIX_WEB": "Note: If the QR code contains leading spaces, they may not be displayed when opening the email, as leading spaces are automatically removed by the browser when using the mailto link.",
-
+  "EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO": "\n\nPRINTING INSTRUCTIONS:\nThe attached PDF prints a large QR code (almost full A4 width). For different sizes or detailed printing instructions, see the 'How to print QR Code in a specific size?' section in the app's help page (? icon).\n\nQuick tip: For optimal scanning, QR codes should be at least 2.5 cm x 2.5 cm. Use 'Actual Size' scaling when printing.",
+  
   "------ mobile web email options": "-------",
   "MOBILE_WEB_EMAIL_TITLE": "Email Options",
   "MOBILE_WEB_EMAIL_MESSAGE": "On mobile web browsers, email clients may not open automatically. Choose an option:",
