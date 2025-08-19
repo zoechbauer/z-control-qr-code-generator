@@ -59,6 +59,14 @@
           >
         </li>
         <li>
+          <a
+            href="#"
+            (click)="scrollTo('web-version', $event)"
+            class="toc-link-normal-height"
+            >Using the Web Version for Longer Texts</a
+          >
+        </li>
+        <li>
           <a href="#" (click)="scrollTo('select-email-client', $event)"
             >Select Email app</a
           >
@@ -227,6 +235,15 @@
           need to manually enable them in your device settings.
         </p>
       </li>
+      <li>
+        <b>Why doesn't email work the same way in the web version?</b>
+        <p>
+          Browser security restrictions prevent web apps from automatically
+          attaching files to emails. In the web version, QR codes download to
+          your Downloads folder and must be manually attached to emails. The
+          native mobile app handles this automatically.
+        </p>
+      </li>
     </ol>
 
     <h3 id="what-can-the-app-do">What can the app do?</h3>
@@ -370,6 +387,122 @@
     <p>
       The language can be changed by pressing the language selection. The change
       takes effect immediately.
+    </p>
+
+    <h3 id="web-version">Using the Web Version for Longer Texts</h3>
+    <p>
+      <b
+        >For creating QR codes with longer texts, you can use the web version of
+        this app in your browser.</b
+      >
+    </p>
+    <p>
+      While the mobile app supports text up to {{ maxInputLength }} characters,
+      typing longer texts on a mobile device can be inconvenient. The web
+      version offers the same functionality with the comfort of a full keyboard,
+      but with some platform-specific limitations.
+    </p>
+
+    <h5>How to access the web version:</h5>
+    <ol>
+      <li>Open your web browser (Chrome, Firefox, Safari, etc.)</li>
+      <li>
+        Navigate to:
+        <a
+          class="external-link"
+          href="https://z-control-qr-code.web.app/home"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://z-control-qr-code.web.app/home
+          <ion-icon
+            name="open-outline"
+            style="vertical-align: text-bottom; margin-left: 2px"
+          ></ion-icon>
+        </a>
+      </li>
+      <li>Use the app with your computer's keyboard for easier text input</li>
+      <li>Generate QR codes just like in the mobile app</li>
+    </ol>
+
+    <h5>Benefits of the web version:</h5>
+    <ul>
+      <li>
+        <b>Instant Access:</b> Start using immediately without installation
+      </li>
+      <li>
+        <b>Comfortable typing:</b> Use your full-size keyboard for longer texts
+      </li>
+      <li>
+        <b>Copy & paste:</b> Easily transfer text from documents or websites
+      </li>
+      <li><b>Cross-Platform:</b> Works on any device with a browser</li>
+      <li><b>Multi-Language:</b> Available in English and German</li>
+      <li><b>No storage required:</b> No app installation needed</li>
+    </ul>
+
+    <h5>Web version limitations:</h5>
+    <ul>
+      <li>
+        <b>File Management:</b> Downloaded QR codes remain in your browser's
+        download folder - manual cleanup required
+      </li>
+      <li>
+        <b>Email Integration:</b> QR code attachments must be manually added to
+        emails (browser security restrictions)
+      </li>
+      <li><b>Offline Access:</b> Requires internet connection to function</li>
+      <li>
+        <b>iOS Limitations:</b> Limited email functionality on iOS
+        Safari/browsers due to system restrictions
+      </li>
+    </ul>
+
+    <h5>How email functionality works on different platforms:</h5>
+
+    <h6>Desktop Web (Windows, Mac, Linux):</h6>
+    <ol>
+      <li>Click "Email QR Code" button</li>
+      <li>QR code files download to your Downloads folder</li>
+      <li>Alert shows instruction to manually attach files</li>
+      <li>Email client opens with recipients and content pre-filled</li>
+      <li>Manually attach the downloaded QR code files and send</li>
+    </ol>
+
+    <h6>Android Web Browsers:</h6>
+    <ol>
+      <li>Click "Email QR Code" button</li>
+      <li>
+        Full functionality with options dialog offering multiple sharing
+        methods:
+        <ul>
+          <li>
+            <b>Try Email App:</b> Attempt to open your default email application
+          </li>
+          <li><b>Copy QR Text:</b> Copy the QR code content to clipboard</li>
+          <li><b>Manual Instructions:</b> Show step-by-step guidance</li>
+          <li><b>Cancel:</b> Return without action</li>
+        </ul>
+      </li>
+      <li>Choose your preferred option to share the QR code</li>
+    </ol>
+
+    <h6>iOS Safari/Browsers:</h6>
+    <p>
+      <b>Limited functionality:</b> QR code downloads but email options
+      dialog may not appear due to iOS browser restrictions. You can still
+      generate and download QR codes, but email integration is limited.
+    </p>
+
+    <p>
+      <b>Pro Tip:</b> The native mobile app handles file management and email
+      attachments automatically for a seamless experience.
+    </p>
+
+    <p>
+      <b>Note:</b> Your saved email addresses are stored locally on each device,
+      so you may need to re-enter them when switching between mobile and web
+      versions.
     </p>
 
     <h3 id="select-email-client">Select Email app</h3>
@@ -661,7 +794,7 @@
         <span *ngIf="!isPortrait">Hilfe – z-control QR Code Generator</span>
         <span *ngIf="isPortrait">Hilfe – QR Code</span>
       </ion-title>
-          <ion-buttons slot="start">
+      <ion-buttons slot="start">
         <ion-button
           fill="clear"
           (click)="scrollToTop()"
@@ -705,8 +838,16 @@
           >
         </li>
         <li>
+          <a
+            href="#"
+            (click)="scrollTo('web-version-DE', $event)"
+            class="toc-link-normal-height"
+            >Web-Version für längere Texte verwenden</a
+          >
+        </li>
+        <li>
           <a href="#" (click)="scrollTo('select-email-client-DE', $event)"
-            >Mailprogramm auswählen</a
+            >E-Mail Programm auswählen</a
           >
         </li>
         <li>
@@ -879,6 +1020,16 @@
           die Berechtigung manuell in den Geräteeinstellungen aktivieren.
         </p>
       </li>
+      <li>
+        <b>Warum funktioniert E-Mail in der Web-Version anders?</b>
+        <p>
+          Browser-Sicherheitseinschränkungen verhindern, dass Web-Apps
+          automatisch Dateien an E-Mails anhängen. In der Web-Version werden
+          QR-Codes in Ihren Download-Ordner heruntergeladen und müssen manuell
+          an E-Mails angehängt werden. Die native mobile App erledigt dies
+          automatisch.
+        </p>
+      </li>
     </ol>
 
     <h3 id="what-can-the-app-do-DE">Was kann die App?</h3>
@@ -1028,6 +1179,143 @@
     <p>
       Die Sprache kann durch Drücken auf die Sprachauswahl geändert werden. Die
       Änderung wird sofort wirksam.
+    </p>
+
+    <h3 id="web-version-DE">Web-Version für längere Texte verwenden</h3>
+    <p>
+      <b
+        >Für die Erstellung von QR-Codes mit längeren Texten können Sie die
+        Web-Version dieser App in Ihrem Browser verwenden.</b
+      >
+    </p>
+    <p>
+      Während die mobile App Texte bis zu {{ maxInputLength }} Zeichen
+      unterstützt, kann die Eingabe längerer Texte auf einem Mobilgerät
+      umständlich sein. Die Web-Version bietet dieselben Funktionen mit dem
+      Komfort einer vollständigen Tastatur, jedoch mit einigen
+      plattformspezifischen Einschränkungen.
+    </p>
+
+    <h5>So greifen Sie auf die Web-Version zu:</h5>
+    <ol>
+      <li>Öffnen Sie Ihren Webbrowser (Chrome, Firefox, Safari, etc.)</li>
+      <li>
+        Navigieren Sie zu:
+        <a
+          class="external-link"
+          href="https://z-control-qr-code.web.app/home"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://z-control-qr-code.web.app/home
+          <ion-icon
+            name="open-outline"
+            style="vertical-align: text-bottom; margin-left: 2px"
+          ></ion-icon>
+        </a>
+      </li>
+      <li>
+        Verwenden Sie die App mit der Tastatur Ihres Computers für einfachere
+        Texteingabe
+      </li>
+      <li>Generieren Sie QR-Codes genau wie in der mobilen App</li>
+    </ol>
+
+    <h5>Vorteile der Web-Version:</h5>
+    <ul>
+      <li><b>Sofortiger Zugriff:</b> Beginnen Sie sofort ohne Installation</li>
+      <li>
+        <b>Komfortable Eingabe:</b> Verwenden Sie Ihre vollständige Tastatur für
+        längere Texte
+      </li>
+      <li>
+        <b>Kopieren & Einfügen:</b> Übertragen Sie einfach Text aus Dokumenten
+        oder Websites
+      </li>
+      <li>
+        <b>Plattformübergreifend:</b> Funktioniert auf jedem Gerät mit Browser
+      </li>
+      <li><b>Mehrsprachig:</b> Verfügbar in Deutsch und Englisch</li>
+      <li>
+        <b>Kein Speicherplatz nötig:</b> Keine App-Installation erforderlich
+      </li>
+    </ul>
+
+    <h5>Einschränkungen der Web-Version:</h5>
+    <ul>
+      <li>
+        <b>Dateiverwaltung:</b> Heruntergeladene QR-Codes verbleiben im
+        Download-Ordner des Browsers - manuelle Bereinigung erforderlich
+      </li>
+      <li>
+        <b>E-Mail-Integration:</b> QR-Code-Anhänge müssen manuell zu E-Mails
+        hinzugefügt werden (Browser-Sicherheitseinschränkungen)
+      </li>
+      <li><b>Offline-Zugriff:</b> Benötigt Internetverbindung</li>
+      <li>
+        <b>iOS-Einschränkungen:</b> Begrenzte E-Mail-Funktionalität in iOS
+        Safari/Browsern aufgrund von Systembeschränkungen
+      </li>
+    </ul>
+
+    <h5>
+      Wie die E-Mail-Funktionalität auf verschiedenen Plattformen
+      funktioniert:
+    </h5>
+
+    <h6>Desktop-Web (Windows, Mac, Linux):</h6>
+    <ol>
+      <li>Klicken Sie auf "QR Code mailen"</li>
+      <li>QR-Code-Dateien werden in Ihren Download-Ordner heruntergeladen</li>
+      <li>Warnung zeigt Anweisungen zum manuellen Anhängen von Dateien</li>
+      <li>
+        E-Mail-Client öffnet sich mit vorausgefüllten Empfängern und Inhalt
+      </li>
+      <li>
+        Hängen Sie die heruntergeladenen QR-Code-Dateien manuell an und senden
+        Sie die E-Mail
+      </li>
+    </ol>
+
+    <h6>Android-Web-Browser:</h6>
+    <ol>
+      <li>Klicken Sie auf "QR Code mailen"</li>
+      <li>
+        Vollständige Funktionalität mit Optionsdialog, der mehrere
+        Freigabemethoden bietet:
+        <ul>
+          <li>
+            <b>E-Mail-App versuchen:</b> Versucht, Ihre
+            Standard-E-Mail-Anwendung zu öffnen
+          </li>
+          <li>
+            <b>QR-Text kopieren:</b> Kopiert den QR-Code-Inhalt in die
+            Zwischenablage
+          </li>
+          <li><b>Manuelle Anweisungen:</b> Zeigt schrittweise Anleitung</li>
+          <li><b>Abbrechen:</b> Zurückkehren ohne Aktion</li>
+        </ul>
+      </li>
+      <li>Wählen Sie Ihre bevorzugte Option zum Teilen des QR-Codes</li>
+    </ol>
+
+    <h6>iOS Safari/Browser:</h6>
+    <p>
+      <b>Eingeschränkte Funktionalität:</b> QR-Code wird heruntergeladen,
+      aber der E-Mail-Optionsdialog erscheint möglicherweise nicht aufgrund von
+      iOS-Browser-Beschränkungen. Sie können weiterhin QR-Codes generieren und
+      herunterladen, aber die E-Mail-Integration ist begrenzt.
+    </p>
+
+    <p>
+      <b>Profi-Tipp:</b> Die native mobile App verwaltet Dateien und
+      E-Mail-Anhänge automatisch für eine nahtlose Erfahrung.
+    </p>
+
+    <p>
+      <b>Hinweis:</b> Ihre gespeicherten E-Mail-Adressen werden lokal auf jedem
+      Gerät gespeichert. Beim Wechsel zwischen mobiler und Web-Version müssen
+      Sie diese möglicherweise erneut eingeben.
     </p>
 
     <h3 id="select-email-client-DE">E-Mail Programm auswählen</h3>

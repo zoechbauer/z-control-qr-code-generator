@@ -20,6 +20,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 - Moved navigation button in user help page from bottom to header to prevent overlap with Samsung navigation bar
 - Improved placeholder text for QR Code text entry field
 - Increased default text area height from 3 to 6 lines for better user experience
+- Added comprehensive web version documentation for creating QR codes with longer texts
 
 ### 🐛 Fixes
 
