@@ -637,10 +637,10 @@ export class HomePage implements OnInit, OnDestroy {
   if (!text) return false;
   
   const criteria = {
-    characterCount: text.length >= 90, // tested on Galaxy J5
-    wordCount: text.trim().split(/\s+/).length >= 15, // tested on Galaxy J5
-    lineBreaks: text.split('\n').length >= 4, // tested on Galaxy J5
-    hasLongSentence: text.includes('.') && text.length >= 80
+    characterCount: text.length > 120, // tested on Galaxy J5 without ion-padding
+    wordCount: text.trim().split(/\s+/).length > 25, // tested on Galaxy J5
+    lineBreaks: text.split('\n').length > 4, // tested on Galaxy J5
+    hasLongSentence: text.includes('.') && text.length >= 100
   };
   
   // returns if any criteria is met
