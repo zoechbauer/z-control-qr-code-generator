@@ -15,6 +15,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 - **Comprehensive Web Documentation**: Added detailed web version documentation for creating QR codes with longer texts
 - **Storage Permission Guide**: Added step-by-step storage permission instructions to the user help page
 - **Floating Keyboard Instructions**: Added step-by-step floating keyboard instructions to the user help page for smaller screens
+- **Email Address Counter:** The number of stored email addresses is now displayed on the email management page for easier overview.
 
 ### 🚀 Improvements
 
@@ -27,6 +28,8 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 ### 🐛 Fixes
 
 - Fixed app name display in Android Settings/Apps to show "z-control QR Code Generator"
+- Fixed extra space at the bottom to prevent overlap with the navigation bar when present
+- Fixed logic for detecting small mobile devices to avoid false positives in landscape mode on modern phones
 
 ### 🛡 Security
 

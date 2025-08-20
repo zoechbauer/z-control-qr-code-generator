@@ -24,9 +24,14 @@
     flex: 1;
     justify-content: center;
   }
+
+  ion-card {
+    // Add enough padding to clear the navigation bar
+    padding-bottom: 100px !important;
+  }
 }
 // style for smaller screens, e.g. Galaxy J5
-@media (max-height: 640px) {
+@media (max-height: 640px) and (orientation: portrait) {
   .qr-code {
     // enable scrolling for the entire card
     max-height: calc(100vh - 100px) !important;

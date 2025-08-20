@@ -74,7 +74,7 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   get isSmallScreen(): boolean {
-    return window.innerHeight <= 640;
+    return window.innerHeight <= 640 && this.isPortrait;
   }
 
   get maxInputLength(): number {

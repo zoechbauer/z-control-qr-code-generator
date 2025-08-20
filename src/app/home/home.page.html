@@ -48,7 +48,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   <ion-card
     *ngIf="!showAddress"
     class="qr-code"
@@ -212,7 +212,11 @@
     </div>
 
     <div class="saved-emails-section">
-      <h6 class="ion-text-center">{{'EMAIL_PAGE_TITLE' | translate}}</h6>
+      <h6 class="ion-text-center">
+        {{'EMAIL_PAGE_TITLE' | translate}} <br />
+        {{this.localStorage.savedEmailAddresses.length > 0 ?
+        this.localStorage.savedEmailAddresses.length : ""}}
+      </h6>
       <div class="email-page-info ion-text-center">
         {{'EMAIL_PAGE_INFOTEXT' | translate}}
       </div>
