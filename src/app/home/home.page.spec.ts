@@ -683,7 +683,7 @@ describe('HomePage', () => {
       toastController.create.and.returnValue(Promise.resolve(mockToast));
 
       // Act
-      component.deleteQRCode();
+      component.deleteQRCodeIfInputChangedAfterGeneration();
 
       // Assert
       expect(qrUtilsService.clearQrFields).toHaveBeenCalled();
@@ -715,7 +715,7 @@ describe('HomePage', () => {
       spyOn(component, 'hasInputChangedAfterGeneration').and.returnValue(false);
 
       // Act
-      component.deleteQRCode();
+      component.deleteQRCodeIfInputChangedAfterGeneration();
 
       // Assert
       expect(qrUtilsService.clearQrFields).not.toHaveBeenCalled();
@@ -747,7 +747,7 @@ describe('HomePage', () => {
       component.setKeyboardState(false);
 
       // Act
-      component.deleteQRCode();
+      component.deleteQRCodeIfInputChangedAfterGeneration();
 
       // Assert - Only test the position
       expect(toastController.create).toHaveBeenCalledWith(
@@ -762,7 +762,7 @@ describe('HomePage', () => {
       component.setKeyboardState(true);
 
       // Act
-      component.deleteQRCode();
+      component.deleteQRCodeIfInputChangedAfterGeneration();
 
       // Assert - Only test the position
       expect(toastController.create).toHaveBeenCalledWith(

@@ -45,6 +45,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   private readonly langSub?: Subscription;
   private isKeyboardOpen = false;
+  private hasShownKeyboardAlert = false;
 
   constructor(
     public qrService: QrUtilsService,
@@ -70,6 +71,10 @@ export class HomePage implements OnInit, OnDestroy {
   // for unit tests
   public setKeyboardState(isOpen: boolean): void {
     this.isKeyboardOpen = isOpen;
+  }
+
+  get isSmallScreen(): boolean {
+    return window.innerHeight <= 640;
   }
 
   get maxInputLength(): number {
@@ -140,7 +145,6 @@ export class HomePage implements OnInit, OnDestroy {
     try {
       this.translate.setDefaultLang('en');
       this.translate.use('en');
-      console.log('Initialized with default settings');
     } catch (fallbackError) {
       console.error('Critical: Even defaults failed:', fallbackError);
     }
@@ -158,6 +162,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   toggleShowAddress() {
     this.showAddress = !this.showAddress;
+    this.performClear();
   }
 
   async openHelpModal() {
@@ -217,10 +222,15 @@ export class HomePage implements OnInit, OnDestroy {
     if (this.qrDataInput) {
       this.qrDataInput.value = '';
     }
+
+    this.hasShownKeyboardAlert = false;
   }
 
   handleAddEmailAddressButtonClick() {
-    if (!this.newEmailAddressValue || !this.validationService.isValidEmailAddress(this.newEmailAddressValue)) {
+    if (
+      !this.newEmailAddressValue ||
+      !this.validationService.isValidEmailAddress(this.newEmailAddressValue)
+    ) {
       this.showDisabledToast('TOOLTIP_EMAIL_INVALID_ADDRESS').catch((error) => {
         console.error('Error presenting toast:', error);
       });
@@ -231,7 +241,7 @@ export class HomePage implements OnInit, OnDestroy {
     this.addEmailAddress(this.newEmailAddressValue);
     this.newEmailAddressValue = ''; // ✅ Easy to clear!
   }
-  
+
   handleToggleShowAddressButtonClick() {
     if (!this.isInputFieldEmpty()) {
       this.showDisabledToast('TOOLTIP_NAVIGATION_CLEAR_TEXT_TO_SWITCH').catch(
@@ -385,7 +395,7 @@ export class HomePage implements OnInit, OnDestroy {
     return this.qrDataInput.value !== this.qrService.myAngularxQrCode;
   }
 
-  deleteQRCode(): void {
+  deleteQRCodeIfInputChangedAfterGeneration(): void {
     if (this.hasInputChangedAfterGeneration()) {
       this.emailService.clearEmailSent();
       this.qrService.clearQrFields();
@@ -551,6 +561,91 @@ export class HomePage implements OnInit, OnDestroy {
     });
     await alert.present();
   }
+
+  private async showKeyboardAlert(): Promise<void> {
+    this.hasShownKeyboardAlert = true;
+
+    const alert = await this.alertController.create({
+      header: this.translate.instant('KEYBOARD_ALERT_TITLE'),
+      message: this.translate.instant('KEYBOARD_ALERT_MESSAGE'),
+      cssClass: 'keyboard-alert',
+      buttons: [
+        {
+          text: this.translate.instant('KEYBOARD_ALERT_HELP_KEYBOARD'),
+          handler: async () => {
+            await alert.dismiss();
+            await this.openHelpModalToSection('floating-keyboard');
+          },
+        },
+        {
+          text: this.translate.instant('KEYBOARD_ALERT_HELP_WEB'),
+          handler: async () => {
+            await alert.dismiss();
+            await this.openHelpModalToSection('web-version');
+          },
+        },
+        {
+          text: this.translate.instant('KEYBOARD_ALERT_SHORT_TEXT'),
+          handler: async () => {
+            await alert.dismiss();
+            this.performClear();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  private async openHelpModalToSection(
+    sectionType: 'floating-keyboard' | 'web-version'
+  ): Promise<void> {
+    const isDesktop = !Capacitor.isNativePlatform();
+    const currentLang = this.translate.currentLang || 'en';
+    const sectionId = currentLang === 'de' ? `${sectionType}-DE` : sectionType;
+
+    const modal = await this.modalController.create({
+      component: HelpModalComponent,
+      componentProps: {
+        maxInputLength: this.maxInputLength,
+        scrollToSection: sectionId,
+      },
+      cssClass: isDesktop
+        ? 'manual-instructions-modal desktop'
+        : 'manual-instructions-modal',
+    });
+
+    return await modal.present();
+  }
+
+  onTextareaInput(): void {
+    this.deleteQRCodeIfInputChangedAfterGeneration();
+
+    // Check for keyboard alert on Galaxy J5 or smaller mobiles
+    if (this.isSmallScreen && !this.hasShownKeyboardAlert) {
+      const currentText = this.qrDataInput?.value || '';
+
+      if (this.shouldShowKeyboardAlert(currentText)) {
+        setTimeout(() => {
+          this.showKeyboardAlert();
+        }, 500);
+      }
+    }
+  }
+
+  private shouldShowKeyboardAlert(text: string): boolean {
+  if (!text) return false;
+  
+  const criteria = {
+    characterCount: text.length >= 90, // tested on Galaxy J5
+    wordCount: text.trim().split(/\s+/).length >= 15, // tested on Galaxy J5
+    lineBreaks: text.split('\n').length >= 4, // tested on Galaxy J5
+    hasLongSentence: text.includes('.') && text.length >= 80
+  };
+  
+  // returns if any criteria is met
+  return Object.values(criteria).some(condition => condition);
+}
 
   ngOnDestroy(): void {
     try {

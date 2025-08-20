@@ -75,7 +75,7 @@
           placeholder="{{'INPUT_FIELD_PLACEHOLDER' | translate}}"
           [rows]="nbrOfInitialRows"
           maxlength="{{maxInputLength}}"
-          (ionInput)="deleteQRCode()"
+          (ionInput)="onTextareaInput()"
         ></ion-textarea>
       </ion-item>
 
@@ -97,47 +97,54 @@
       <ion-spinner color="primary" *ngIf="showSpinner"></ion-spinner>
     </div>
 
-    <div
-      class="button-wrapper"
-      (click)="handleGenerateButtonClick()"
-      (keydown.enter)="handleGenerateButtonClick()"
-      (keydown.space)="handleGenerateButtonClick()"
-    >
-      <ion-button
-        expand="block"
-        [class.landscape]="!isPortrait"
-        [class.pseudo-disabled]="isGenerationButtonDisabled"
-        [disabled]="false"
-      >
-        {{ 'GENERATE' | translate }}
-      </ion-button>
-    </div>
-    <div class="no-generation-buttons ion-justify-content-around">
+    <div class="qr-code-buttons">
       <div
         class="button-wrapper"
-        (click)="handleSendEmailButtonClick()"
-        (keydown.enter)="handleSendEmailButtonClick()"
-        (keydown.space)="handleSendEmailButtonClick()"
+        (click)="handleGenerateButtonClick()"
+        (keydown.enter)="handleGenerateButtonClick()"
+        (keydown.space)="handleGenerateButtonClick()"
       >
+        <ion-button
+          expand="block"
+          [class.landscape]="!isPortrait"
+          [class.pseudo-disabled]="isGenerationButtonDisabled"
+          [disabled]="false"
+          (click)="handleGenerateButtonClick(); $event.stopPropagation()"
+        >
+          {{ 'GENERATE' | translate }}
+        </ion-button>
+      </div>
+
+      <div
+        class="no-generation-buttons ion-justify-content-around"
+        [class.small-screen-hidden]="isSmallScreen && !qrService.isQrCodeGenerated"
+      >
+        <div
+          class="button-wrapper"
+          (click)="handleSendEmailButtonClick()"
+          (keydown.enter)="handleSendEmailButtonClick()"
+          (keydown.space)="handleSendEmailButtonClick()"
+        >
+          <ion-button
+            [class.landscape]="!isPortrait"
+            fill="clear"
+            (keydown.enter)="storeMailAndDeleteQRCode()"
+            (keydown.space)="storeMailAndDeleteQRCode()"
+            [class.pseudo-disabled]="qrService.qrCodeDownloadLink === '' || hasInputChangedAfterGeneration()"
+            [disabled]="false"
+            >{{ 'MAIL_QR_CODE' | translate}}</ion-button
+          >
+        </div>
         <ion-button
           [class.landscape]="!isPortrait"
           fill="clear"
-          (keydown.enter)="storeMailAndDeleteQRCode()"
-          (keydown.space)="storeMailAndDeleteQRCode()"
-          [class.pseudo-disabled]="qrService.qrCodeDownloadLink === '' || hasInputChangedAfterGeneration()"
-          [disabled]="false"
-          >{{ 'MAIL_QR_CODE' | translate}}</ion-button
+          (click)="clearInputField()"
+          (keydown.enter)="clearInputField()"
+          (keydown.space)="clearInputField()"
+          [disabled]="isInputFieldEmpty()"
+          >{{ 'CLEAR_INPUT' | translate}}</ion-button
         >
       </div>
-      <ion-button
-        [class.landscape]="!isPortrait"
-        fill="clear"
-        (click)="clearInputField()"
-        (keydown.enter)="clearInputField()"
-        (keydown.space)="clearInputField()"
-        [disabled]="isInputFieldEmpty()"
-        >{{ 'CLEAR_INPUT' | translate}}</ion-button
-      >
     </div>
   </ion-card>
 
@@ -205,11 +212,7 @@
     </div>
 
     <div class="saved-emails-section">
-      <h6
-        class="ion-text-center"
-      >
-        {{'EMAIL_PAGE_TITLE' | translate}}
-      </h6>
+      <h6 class="ion-text-center">{{'EMAIL_PAGE_TITLE' | translate}}</h6>
       <div class="email-page-info ion-text-center">
         {{'EMAIL_PAGE_INFOTEXT' | translate}}
       </div>

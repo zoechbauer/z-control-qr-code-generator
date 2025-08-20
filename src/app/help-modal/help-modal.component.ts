@@ -14,6 +14,7 @@ import { MarkdownViewerComponent } from '../ui/components/markdown-viewer/markdo
 })
 export class HelpModalComponent implements OnInit, OnDestroy {
   @Input() maxInputLength!: number;
+  @Input() scrollToSection?: string;  // for direct section navigation
 
   readonly scrollToTopObj = {
     id: 'toc-DE',
@@ -35,6 +36,13 @@ export class HelpModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // Scroll to specific section if provided
+    if (this.scrollToSection) {
+      setTimeout(() => {
+        this.scrollToElement(this.scrollToSection!);
+      }, 500); // Delay to ensure modal is fully rendered
+    }
+
     this.langSub = this.localStorage.selectedLanguage$.subscribe((lang) => {
       this.selectedLanguage = lang;
       this.setScrollToTopObj();
@@ -43,6 +51,16 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     window.addEventListener('resize', this.orientationListener);
     window.addEventListener('orientationchange', this.orientationListener);
     this.orientationListener();
+  }
+
+    private scrollToElement(elementId: string): void {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    }
   }
 
   private setScrollToTopObj() {

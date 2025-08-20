@@ -1,4 +1,4 @@
-// Style for QR code generation page
+// style for QR code generation page
 .qr-code {
   &.landscape {
     margin-top: 0px !important;
@@ -25,8 +25,124 @@
     justify-content: center;
   }
 }
+// style for smaller screens, e.g. Galaxy J5
+@media (max-height: 640px) {
+  .qr-code {
+    // enable scrolling for the entire card
+    max-height: calc(100vh - 100px) !important;
+    overflow-y: auto !important;
 
-// Style for QR text display
+    // rearrange sections using flexbox order
+    display: flex !important;
+    flex-direction: column !important;
+
+    ion-card-header {
+      order: 1 !important; // Header first
+      padding: 8px 16px !important;
+      margin-bottom: 0 !important;
+      position: sticky !important; // keep header visible when scrolling
+      top: 0 !important;
+      background: var(--ion-background-color) !important;
+      z-index: 10 !important;
+
+      ion-card-title {
+        font-size: 0.9rem !important;
+        margin: 0 !important;
+      }
+    }
+
+    // move generate button section to top (after header)
+    .qr-code-buttons {
+      order: 2 !important; // Buttons second
+      padding: 8px 16px !important;
+      background: var(--ion-color-light) !important;
+      border-bottom: 1px solid var(--ion-color-light-shade) !important;
+      position: sticky !important; // Keep buttons visible when scrolling
+      top: 50px !important; // Below the header
+      z-index: 9 !important;
+
+      .button-wrapper {
+        margin: 0 !important;
+
+        ion-button {
+          font-size: 0.8rem !important;
+          height: 36px !important;
+          --padding-top: 8px !important;
+          --padding-bottom: 8px !important;
+        }
+      }
+
+      .no-generation-buttons {
+        &.small-screen-hidden {
+          display: none !important;
+        }
+
+        &:not(.small-screen-hidden) {
+          display: flex !important;
+          margin-top: 8px !important;
+
+          ion-button {
+            font-size: 0.7rem !important;
+            height: 32px !important;
+            --padding-top: 6px !important;
+            --padding-bottom: 6px !important;
+          }
+        }
+      }
+    }
+
+    // content comes last - scrollable area
+    ion-card-content {
+      order: 3 !important;
+      padding: 8px 16px 60px 16px !important; // extra bottom padding for keyboard
+      flex: 1 !important;
+
+      ion-item {
+        margin-bottom: 20px !important;
+
+        ion-textarea {
+          // enable text scrolling within textarea
+          max-height: 200px !important;
+          overflow-y: auto !important;
+        }
+      }
+    }
+
+    // spinner
+    .ion-text-center {
+      order: 4 !important;
+      padding-bottom: 20px !important;
+    }
+  }
+
+  // alert styling for keyboard limitation
+  .alert-wrapper {
+    &.keyboard-alert {
+      .alert-message {
+        white-space: pre-line !important;
+        text-align: left !important;
+        line-height: 1.4 !important;
+        font-size: 0.9em !important;
+      }
+
+      .alert-button-group {
+        flex-direction: column !important;
+
+        .alert-button {
+          margin: 4px 0 !important;
+          min-height: 44px !important;
+
+          .alert-button-inner {
+            font-size: 0.85em !important;
+            text-align: center !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+// style for QR text display
 .qr-text-alert {
   .alert-message {
     font-family: monospace !important;
@@ -38,7 +154,7 @@
   }
 }
 
-// Style for disabled buttons
+// style for disabled buttons
 .button-wrapper {
   .pseudo-disabled {
     opacity: 0.4;
@@ -46,7 +162,7 @@
   }
 }
 
-// email maintenance
+// style for email maintenance
 .mail-address {
   .enter-mail-address {
     margin-bottom: 20px;

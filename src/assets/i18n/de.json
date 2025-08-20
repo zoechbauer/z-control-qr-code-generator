@@ -14,6 +14,7 @@
   "TOAST_TRAILING_BLANKS_REMOVED": "Leerzeichen wurden am Ende entfernt.",
   "TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE": "QR Code wurde gelöscht, da sich die Eingabe geändert hat.",
 
+
   "------ Tooltip Disabled Button": "-------",
   "TOOLTIP_GENERATION_ENTER_TEXT_FIRST": "Bitte geben Sie Text ein, bevor Sie den QR-Code generieren",
   "TOOLTIP_GENERATION_EMAIL_ALREADY_SENT": "-Mail wurde bereits gesendet. Bitte löschen oder ändern Sie das Eingabefeld für einen neuen QR-Code",
@@ -21,6 +22,11 @@
   "TOOLTIP_EMAIL_NO_QR_GENERATED": "Bitte generieren Sie zuerst den QR-Code",
   "TOOLTIP_EMAIL_INVALID_ADDRESS": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
   "TOOLTIP_NAVIGATION_CLEAR_TEXT_TO_SWITCH": "Bitte leeren Sie das Textfeld, bevor Sie zur E-Mail-Verwaltung wechseln",
+  "KEYBOARD_ALERT_TITLE": "Texteingabe-Einschränkung", 
+  "KEYBOARD_ALERT_MESSAGE": "Auf diesem Gerät sind längere Texte schwer zu bearbeiten, da die Tastatur das Eingabefeld verdeckt.\n\nEmpfehlungen:\n• Diese mobile App nur für KURZE Texte verwenden\n• Für LÄNGERE Texte: Web-Version auf Tablet oder PC nutzen\n• Schwebende Tastatur aktivieren (siehe Hilfebereich)",
+  "KEYBOARD_ALERT_HELP_KEYBOARD": "Hilfe anzeigen (Schwebende Tastatur)",
+  "KEYBOARD_ALERT_HELP_WEB": "Hilfe anzeigen (Web-Version)",
+  "KEYBOARD_ALERT_SHORT_TEXT": "Löschen & kurzen Text verwenden",
 
 "------ Clear Input Text Confirmation": "-------",
   "CLEAR_CONFIRMATION_HEADER": "Text löschen?",

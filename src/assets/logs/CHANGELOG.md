@@ -2,26 +2,27 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
-
 ## [1.16] – YYYY-MM-DD
 
 ### ✨ New Features
 
-- …
+- **Smart Keyboard Alert for Small Devices**: Added intelligent detection system for text input that may be covered by keyboard on small Android devices (Galaxy J5 and similar)
+- **Multi-Criteria Text Detection**: Automatic alert appears when users type substantial content (90+ characters, 15+ words, 4+ line breaks, or long sentences) 
+- **Contextual Help Navigation**: Alert provides direct links to floating keyboard instructions and web version for better typing experience
+- **Clear Input Confirmation**: Added confirmation dialog when clearing QR Code input field with more than 100 characters (configurable threshold)
+- **Disabled Button Tooltips**: Added helpful tooltips when clicking disabled buttons to explain why they're unavailable
+- **Enhanced Email Content**: Added QR code printing instructions and help page references to email templates
+- **Comprehensive Web Documentation**: Added detailed web version documentation for creating QR codes with longer texts
+- **Storage Permission Guide**: Added step-by-step storage permission instructions to the user help page
+- **Floating Keyboard Instructions**: Added step-by-step floating keyboard instructions to the user help page for smaller screens
 
 ### 🚀 Improvements
 
-- Redesigned email maintenance layout to fix keyboard overlap issues on smaller Android devices (Galaxy J5)
-- Added confirmation dialog when clearing QR Code input field with more than 100 characters (configurable threshold)
-- Added helpful tooltips when clicking disabled buttons to explain why they're unavailable
-- Enhanced email content with QR code printing instructions and help page references
-- Improved error message when storage permissions are not granted
-- Added step-by-step storage permission instructions to the user help page
-- Added step-by-step floating keyboard instructions to the user help page for smaller screens
-- Moved navigation button in user help page from bottom to header to prevent overlap with Samsung navigation bar
-- Improved placeholder text for QR Code text entry field
-- Increased default text area height from 3 to 6 lines for better user experience
-- Added comprehensive web version documentation for creating QR codes with longer texts
+- **Redesigned Email Layout**: Fixed keyboard overlap issues on smaller Android devices (Galaxy J5) with responsive flexbox layout
+- **Enhanced Error Messages**: Improved error message clarity when storage permissions are not granted
+- **Better Navigation**: Moved navigation button in user help page from bottom to header to prevent overlap with Samsung navigation bar
+- **Improved Text Input**: Enhanced placeholder text for QR Code text entry field
+- **Larger Text Area**: Increased default text area height from 3 to 6 lines for better user experience
 
 ### 🐛 Fixes
 

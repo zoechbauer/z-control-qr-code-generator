@@ -13,6 +13,11 @@
   "INPUT_FIELD_PLACEHOLDER": "Please enter text. Use Enter key to fill in blank lines.",
   "TOAST_TRAILING_BLANKS_REMOVED": "Spaces have been removed at the end.",
   "TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE": "QR code deleted due to input change.",
+  "KEYBOARD_ALERT_TITLE": "Text Input Limitation",
+  "KEYBOARD_ALERT_MESSAGE": "On this device, longer texts are difficult to edit because the keyboard covers the input field.\n\nRecommendations:\n• Use this mobile app only for SHORT texts\n• For LONGER texts: Use the web version on a tablet or PC\n• Try enabling floating keyboard (see help section)",
+  "KEYBOARD_ALERT_HELP_KEYBOARD": "Show Help (Floating Keyboard)",
+  "KEYBOARD_ALERT_HELP_WEB": "Show Help (Open Web Version)",
+  "KEYBOARD_ALERT_SHORT_TEXT": "Clear & Use Short Text",
 
   "------ Tooltip Disabled Button": "-------",
   "TOOLTIP_GENERATION_ENTER_TEXT_FIRST": "Please enter text before generating QR code",
@@ -43,7 +48,7 @@
   "EMAIL_SERVICE_MAIL_BODY_PREFIX": "This text is contained in the QR code:",
   "EMAIL_SERVICE_MAIL_BODY_PREFIX_WEB": "Note: If the QR code contains leading spaces, they may not be displayed when opening the email, as leading spaces are automatically removed by the browser when using the mailto link.",
   "EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO": "\n\nPRINTING INSTRUCTIONS:\nThe attached PDF prints a large QR code (almost full A4 width). For different sizes or detailed printing instructions, see the 'How to print QR Code in a specific size?' section in the app's help page (? icon).\n\nQuick tip: For optimal scanning, QR codes should be at least 2.5 cm x 2.5 cm. Use 'Actual Size' scaling when printing.",
-  
+
   "------ mobile web email options": "-------",
   "MOBILE_WEB_EMAIL_TITLE": "Email Options",
   "MOBILE_WEB_EMAIL_MESSAGE": "On mobile web browsers, email clients may not open automatically. Choose an option:",
