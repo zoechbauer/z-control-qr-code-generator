@@ -8,6 +8,8 @@ This folder contains all documentation, guides, and helper tools for the **z-con
 
 - **dev-and-test/**  
   Development and testing documentation, guides, and notes.
+    - **Samsung_Galaxy_J5_Android9/**  
+      Screenshots are included here that document the different behavior on older phones with smaller displays.
 
 - **upload-to-google-playstore/**  
   All documents, checklists, and assets related to deploying the app to the Google Play Store.

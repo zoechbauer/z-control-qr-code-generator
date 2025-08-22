@@ -2,12 +2,34 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+## [1.17] – YYYY-MM-DD
+
+### ✨ New Features
+
+- …
+
+### 🚀 Improvements
+
+- Added new screenshots demonstrating the smart Keyboard Alert and multi-criteria text detection features for small devices to the documentation folder, providing clearer visual guidance for users.
+
+### 🐛 Fixes
+
+- …
+
+### 🛡 Security
+
+- …
+
+### 📦 Installations
+
+- …
+
 ## [1.16] – 2025-08-20
 
 ### ✨ New Features
 
 - **Smart Keyboard Alert for Small Devices**: Added intelligent detection system for text input that may be covered by keyboard on small Android devices (Galaxy J5 and similar)
-- **Multi-Criteria Text Detection**: Automatic alert appears when users type substantial content (90+ characters, 15+ words, 4+ line breaks, or long sentences) 
+- **Multi-Criteria Text Detection for Small Devices**: Automatic alert appears when users type substantial content (90+ characters, 15+ words, 4+ line breaks, or long sentences)
 - **Contextual Help Navigation**: Alert provides direct links to floating keyboard instructions and web version for better typing experience
 - **Clear Input Confirmation**: Added confirmation dialog when clearing QR Code input field with more than 100 characters (configurable threshold)
 - **Disabled Button Tooltips**: Added helpful tooltips when clicking disabled buttons to explain why they're unavailable

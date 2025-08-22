@@ -25,7 +25,7 @@ export class HelpModalComponent implements OnInit, OnDestroy {
 
   private langSub?: Subscription;
 
- private orientationListener = () => {
+ private readonly orientationListener = () => {
     this.isPortrait = window.matchMedia('(orientation: portrait)').matches;
   };
 
