@@ -2,28 +2,20 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
-## [1.17] – YYYY-MM-DD
+## [1.17] – 2025-08-24
 
 ### ✨ New Features
 
-  - Added a workflow feature that dynamically displays the next recommended user action, guiding users step-by-step through the QR code creation and email process.
+- Added a workflow feature that dynamically displays the next recommended user action, guiding users step-by-step through the QR code creation and email process.
 
 ### 🚀 Improvements
 
 - Added new screenshots demonstrating the smart Keyboard Alert and multi-criteria text detection features for small devices to the documentation folder, providing clearer visual guidance for users.
 - Added additional helpful information and clarifications to the user help page.
 
-### 🐛 Fixes
-
-- …
-
-### 🛡 Security
-
-- …
-
 ### 📦 Installations
 
-- …
+- App is hosted at Google Play for **Internal Test** group and **Closed Test** group.
 
 ## [1.16] – 2025-08-20
 
