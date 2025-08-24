@@ -23,7 +23,7 @@
   "WORKFLOW_STEP_ENTER_TEXT": "Next step: Enter text or email address",
   "WORKFLOW_STEP_GENERATE": "Next step: Generate QR code",
   "WORKFLOW_STEP_MAIL": "Next step: Mail QR code",
-  "WORKFLOW_STEP_MAIL_AGAIN": "Next step: Mail again or clear input",
+  "WORKFLOW_STEP_MAIL_AGAIN": "Next step: Mail again or change/clear input",
 
   "------ Tooltip Disabled Button": "-------",
   "TOOLTIP_GENERATION_ENTER_TEXT_FIRST": "Please enter text before generating QR code",
