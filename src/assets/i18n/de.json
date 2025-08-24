@@ -14,6 +14,11 @@
   "TOAST_TRAILING_BLANKS_REMOVED": "Leerzeichen wurden am Ende entfernt.",
   "TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE": "QR Code wurde gelöscht, da sich die Eingabe geändert hat.",
 
+  "------ Workflow steps": "-------",
+  "WORKFLOW_STEP_ENTER_TEXT": "Nächster Schritt: Text oder Mail Adresse eingeben",
+  "WORKFLOW_STEP_GENERATE": "Nächster Schritt: QR-Code generieren",
+  "WORKFLOW_STEP_MAIL": "Nächster Schritt: QR-Code mailen",
+  "WORKFLOW_STEP_MAIL_AGAIN": "Nächster Schritt: erneut mailen oder Eingabe löschen",
 
   "------ Tooltip Disabled Button": "-------",
   "TOOLTIP_GENERATION_ENTER_TEXT_FIRST": "Bitte geben Sie Text ein, bevor Sie den QR-Code generieren",

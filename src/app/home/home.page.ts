@@ -29,6 +29,13 @@ enum Toast {
   QRCodeDeletedAfterInputChange = 'TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE',
 }
 
+enum Workflow {
+  StepEnterText = 'WORKFLOW_STEP_ENTER_TEXT',
+  StepGenerate = 'WORKFLOW_STEP_GENERATE',
+  StepMail = 'WORKFLOW_STEP_MAIL',
+  StepMailAgain = 'WORKFLOW_STEP_MAIL_AGAIN',
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -42,6 +49,7 @@ export class HomePage implements OnInit, OnDestroy {
   showAddress: boolean = false;
   nbrOfInitialRows: number = 1;
   showSpinner: boolean = false;
+  workflowStep: Workflow = Workflow.StepEnterText;
 
   private readonly langSub?: Subscription;
   private isKeyboardOpen = false;
@@ -224,6 +232,28 @@ export class HomePage implements OnInit, OnDestroy {
     }
 
     this.hasShownKeyboardAlert = false;
+    this.resetWorkflowStep();
+  }
+
+  private resetWorkflowStep(): void {
+    this.workflowStep = Workflow.StepEnterText;
+  }
+
+  private showWorkflowStep(currentStep: Workflow): void {
+    console.log('Current workflow step:', currentStep);
+
+    switch (currentStep) {
+      case Workflow.StepEnterText:
+        this.workflowStep = Workflow.StepGenerate;
+        break;
+      case Workflow.StepGenerate:
+        this.workflowStep = Workflow.StepMail;
+        break;
+      case Workflow.StepMail:
+        this.workflowStep = Workflow.StepMailAgain;
+        break;
+      default:
+    }
   }
 
   handleAddEmailAddressButtonClick() {
@@ -263,6 +293,7 @@ export class HomePage implements OnInit, OnDestroy {
     } else {
       // Valid input, send email
       this.storeMailAndDeleteQRCode();
+      this.showWorkflowStep(this.workflowStep);
     }
   }
 
@@ -289,6 +320,7 @@ export class HomePage implements OnInit, OnDestroy {
     } else {
       // Valid input, generate QR code
       this.sanitizeInputAndGenerateQRCode(this.qrDataInput.value);
+      this.showWorkflowStep(Workflow.StepGenerate);
     }
   }
 
@@ -619,12 +651,13 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   onTextareaInput(): void {
+    const currentText = this.qrDataInput?.value || '';
+
     this.deleteQRCodeIfInputChangedAfterGeneration();
+    this.showWorkflowStepGenerate(currentText);
 
     // Check for keyboard alert on Galaxy J5 or smaller mobiles
     if (this.isSmallScreen && !this.hasShownKeyboardAlert) {
-      const currentText = this.qrDataInput?.value || '';
-
       if (this.shouldShowKeyboardAlert(currentText)) {
         setTimeout(() => {
           this.showKeyboardAlert();
@@ -634,18 +667,33 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   private shouldShowKeyboardAlert(text: string): boolean {
-  if (!text) return false;
-  
-  const criteria = {
-    characterCount: text.length > 120, // tested on Galaxy J5 without ion-padding
-    wordCount: text.trim().split(/\s+/).length > 25, // tested on Galaxy J5
-    lineBreaks: text.split('\n').length > 4, // tested on Galaxy J5
-    hasLongSentence: text.includes('.') && text.length >= 100
-  };
-  
-  // returns if any criteria is met
-  return Object.values(criteria).some(condition => condition);
-}
+    if (!text) return false;
+
+    const criteria = {
+      characterCount: text.length > 150, // tested on Galaxy J5 without ion-padding
+      wordCount: text.trim().split(/\s+/).length > 25, // tested on Galaxy J5
+      lineBreaks: text.split('\n').length > 5, // tested on Galaxy J5
+      hasLongSentence: text.includes('.') && text.length >= 130,
+    };
+
+    // returns if any criteria is met
+    return Object.values(criteria).some((condition) => condition);
+  }
+
+  private showWorkflowStepGenerate(text: string): void {
+    if (!text) return;
+
+    const criteria = {
+      characterCount: text.length > 10,
+      wordCount: text.trim().split(/\s+/).length > 5,
+      lineBreaks: text.split('\n').length > 1 && text.length > 5,
+      hasLongSentence: text.includes('.') && text.length >= 5,
+    };
+
+    if (Object.values(criteria).some((condition) => condition)) {
+      this.workflowStep = Workflow.StepGenerate;
+    }
+  }
 
   ngOnDestroy(): void {
     try {

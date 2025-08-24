@@ -23,6 +23,15 @@
     display: flex;
     flex: 1;
     justify-content: center;
+    max-height: 250px;
+  }
+
+  .next-step {
+    margin-top: 0px;
+    padding: 0px;
+    margin-bottom: 5px;
+    font-size: 0.65rem;
+    color: var(--ion-color-medium);
   }
 
   ion-card {
@@ -43,7 +52,7 @@
 
     ion-card-header {
       order: 1 !important; // Header first
-      padding: 8px 16px !important;
+      padding: 0px 16px !important;
       margin-bottom: 0 !important;
       position: sticky !important; // keep header visible when scrolling
       top: 0 !important;
@@ -53,18 +62,26 @@
       ion-card-title {
         font-size: 0.9rem !important;
         margin: 0 !important;
+        padding: 0 !important;
       }
     }
 
     // move generate button section to top (after header)
     .qr-code-buttons {
       order: 2 !important; // Buttons second
-      padding: 8px 16px !important;
-      background: var(--ion-color-light) !important;
+      padding: 0px 16px 8px 16px !important;
       border-bottom: 1px solid var(--ion-color-light-shade) !important;
       position: sticky !important; // Keep buttons visible when scrolling
-      top: 50px !important; // Below the header
+      top: 20px !important; // Below the header
       z-index: 9 !important;
+
+      .next-step {
+        font-size: 0.75rem;
+      }
+
+      .ion-text-center {
+        padding: 5px !important;
+      }
 
       .button-wrapper {
         margin: 0 !important;

@@ -6,11 +6,12 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### ✨ New Features
 
-- …
+  - Added a workflow feature that dynamically displays the next recommended user action, guiding users step-by-step through the QR code creation and email process.
 
 ### 🚀 Improvements
 
 - Added new screenshots demonstrating the smart Keyboard Alert and multi-criteria text detection features for small devices to the documentation folder, providing clearer visual guidance for users.
+- Added additional helpful information and clarifications to the user help page.
 
 ### 🐛 Fixes
 
