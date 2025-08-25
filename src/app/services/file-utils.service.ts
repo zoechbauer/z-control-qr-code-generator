@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 
 import { AlertService } from './alert.service';
 import { environment } from '../../environments/environment';
+import { FILESYSTEM, FilesystemLike } from './filesystem.token';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,9 @@ import { environment } from '../../environments/environment';
 export class FileUtilsService {
   private nowFormatted: string = '';
 
-  constructor(private readonly alertService: AlertService) {}
+  constructor(private readonly alertService: AlertService,
+    @Inject(FILESYSTEM) private readonly filesystem: FilesystemLike
+  ) {}
 
   get fileNamePng(): string {
     return this.getFileName(false);
@@ -22,7 +25,7 @@ export class FileUtilsService {
   }
 
   async getDocumentsPath(isPdf: boolean): Promise<string> {
-    const result = await Filesystem.getUri({
+    const result = await this.filesystem.getUri({
       path: isPdf ? this.fileNamePdf : this.fileNamePng,
       directory: Directory.Documents,
     });
@@ -36,7 +39,7 @@ export class FileUtilsService {
   }
 
   private generateTimestamp(): string {
-    const now = new Date();
+    const now = new Date(Date.now());
     const pad = (n: number) => n.toString().padStart(2, '0');
     return `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(
       now.getDate()
@@ -62,7 +65,7 @@ export class FileUtilsService {
     if (Capacitor.isNativePlatform()) {
       // use Capacitor Filesystem API for mobiles
       try {
-        await Filesystem.writeFile({
+        await this.filesystem.writeFile({
           path: fileName,
           data: data,
           directory: Directory.Documents,
@@ -93,15 +96,15 @@ export class FileUtilsService {
         }
 
         // delete files
-        const files = await Filesystem.readdir({
+        const files = await this.filesystem.readdir({
           directory: Directory.Documents,
           path: '',
         });
 
-        const qrFiles = files.files.filter((f) => f.name.startsWith('qrcode'));
+        const qrFiles = files.files.filter((f: { name: string }) => f.name.startsWith('qrcode'));
 
         for (const file of qrFiles) {
-          await Filesystem.deleteFile({
+          await this.filesystem.deleteFile({
             path: file.name,
             directory: Directory.Documents,
           });
@@ -128,11 +131,11 @@ export class FileUtilsService {
   private async deleteFiles(fileNamePng: string, fileNamePdf: string) {
     if (Capacitor.isNativePlatform()) {
       try {
-        await Filesystem.deleteFile({
+        await this.filesystem.deleteFile({
           path: fileNamePng,
           directory: Directory.Documents,
         });
-        await Filesystem.deleteFile({
+        await this.filesystem.deleteFile({
           path: fileNamePdf,
           directory: Directory.Documents,
         });
@@ -179,7 +182,7 @@ export class FileUtilsService {
       return true;
     }
     try {
-      const permissions = await Filesystem.checkPermissions();
+      const permissions = await this.filesystem.checkPermissions();
 
       if (permissions.publicStorage === 'granted') {
         return true;
@@ -200,13 +203,13 @@ export class FileUtilsService {
       return true;
     }
     try {
-      const permissions = await Filesystem.checkPermissions();
+      const permissions = await this.filesystem.checkPermissions();
 
       if (permissions.publicStorage === 'granted') {
         return true;
       } else {
         // request missing permission
-        const requestResult = await Filesystem.requestPermissions();
+        const requestResult = await this.filesystem.requestPermissions();
 
         if (requestResult.publicStorage !== 'granted') {
           console.error('Storage permission denied by user');

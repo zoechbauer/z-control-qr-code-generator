@@ -697,7 +697,8 @@ describe('HomePage', () => {
         jasmine.objectContaining({
           message: 'QR Code deleted',
           duration: 3000,
-          color: 'primary',
+          color: 'medium',
+          icon: 'information-circle',
         })
       );
     });
@@ -894,7 +895,7 @@ describe('HomePage', () => {
       fileUtilsService.setNowFormatted = jasmine.createSpy('setNowFormatted');
       fileUtilsService.downloadQRCode = jasmine
         .createSpy('downloadQRCode')
-        .and.returnValue(Promise.resolve());
+        .and.returnValue(Promise.resolve(true));
       fileUtilsService.deleteFilesAfterSpecifiedTime = jasmine.createSpy(
         'deleteFilesAfterSpecifiedTime'
       );
@@ -980,7 +981,7 @@ describe('HomePage', () => {
       fileUtilsService.setNowFormatted = jasmine.createSpy('setNowFormatted');
       fileUtilsService.downloadQRCode = jasmine
         .createSpy('downloadQRCode')
-        .and.returnValue(Promise.resolve());
+        .and.returnValue(Promise.resolve(true));
       fileUtilsService.clearNowFormatted =
         jasmine.createSpy('clearNowFormatted');
       qrUtilsService.printQRCode = jasmine
@@ -1082,7 +1083,7 @@ describe('HomePage', () => {
       fileUtilsService.setNowFormatted = jasmine.createSpy('setNowFormatted');
       fileUtilsService.downloadQRCode = jasmine
         .createSpy('downloadQRCode')
-        .and.returnValue(Promise.resolve());
+        .and.returnValue(Promise.resolve(true));
       fileUtilsService.clearNowFormatted =
         jasmine.createSpy('clearNowFormatted');
       qrUtilsService.printQRCode = jasmine

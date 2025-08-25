@@ -2,6 +2,29 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+
+## [1.18] – YYYY-MM-DD
+
+### ✨ New Features
+
+- …
+
+### 🚀 Improvements
+
+- Enhanced app infrastructure for greater stability and performance.
+
+### 🐛 Fixes
+
+- Fixed issue where the Release Notes button was overlapped by the navigation bar, preventing it from being opened.
+
+### 🛡 Security
+
+- …
+
+### 📦 Installations
+
+- …
+
 ## [1.17] – 2025-08-24
 
 ### ✨ New Features

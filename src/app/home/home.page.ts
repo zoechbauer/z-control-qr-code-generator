@@ -240,8 +240,6 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   private showWorkflowStep(currentStep: Workflow): void {
-    console.log('Current workflow step:', currentStep);
-
     switch (currentStep) {
       case Workflow.StepEnterText:
         this.workflowStep = Workflow.StepGenerate;
