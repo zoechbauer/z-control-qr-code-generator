@@ -2,6 +2,28 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+## [1.19] – YYYY-MM-DD
+
+### ✨ New Features
+
+- …
+
+### 🚀 Improvements
+
+- Enhanced app infrastructure for greater stability and performance.
+- Minor wording improvements for greater clarity in the user help page.
+
+### 🐛 Fixes
+
+- …
+
+### 🛡 Security
+
+- …
+
+### 📦 Installations
+
+- …
 
 ## [1.18] – 2025-08-25
 
@@ -255,4 +277,5 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 - **Professional Design**: Clean, modern interface following best practices.
 
 ---
+
 Thank you for using our z-control applications!

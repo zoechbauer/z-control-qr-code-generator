@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Attachment, EmailComposer } from 'capacitor-email-composer';
+import { Inject, Injectable } from '@angular/core';
+import { Attachment } from 'capacitor-email-composer';
 import { Capacitor } from '@capacitor/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertController } from '@ionic/angular';
@@ -8,6 +8,8 @@ import { lastValueFrom } from 'rxjs';
 import { FileUtilsService } from './file-utils.service';
 import { LocalStorageService } from './local-storage.service';
 import { QrUtilsService } from './qr-utils.service';
+
+export const EMAIL_COMPOSER = 'EMAIL_COMPOSER';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +22,8 @@ export class EmailUtilsService {
     private readonly alertController: AlertController,
     private readonly qrService: QrUtilsService,
     private readonly fileService: FileUtilsService,
-    private readonly localStorage: LocalStorageService
+    private readonly localStorage: LocalStorageService,
+    @Inject(EMAIL_COMPOSER) private readonly emailComposer: any
   ) {}
 
   get isEmailSent(): boolean {
@@ -71,10 +74,10 @@ export class EmailUtilsService {
     };
 
     if (Capacitor.isNativePlatform()) {
-      const available = await EmailComposer.hasAccount();
+      const available = await this.emailComposer.hasAccount();
       if (available.hasAccount) {
         try {
-          await EmailComposer.open({
+          await this.emailComposer.open({
             to: [sendTo],
             subject: mailSubject,
             body: mailBody,
@@ -109,8 +112,13 @@ export class EmailUtilsService {
       )}?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(
         mailBodyToUse
       )}`;
-      window.location.href = mailto;
+      this.navigateTo(mailto);
+      this.emailSent = true;
     }
+  }
+
+  private navigateTo(url: string) {
+    window.location.href = url;
   }
 
   async displayEmailAttachmentAlert(onOkCallback: () => void) {

@@ -7,9 +7,11 @@ import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideMarkdown } from 'ngx-markdown';
+import { EmailComposer } from 'capacitor-email-composer';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { EMAIL_COMPOSER } from './services/email-utils.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -32,6 +34,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: EMAIL_COMPOSER, useValue: EmailComposer },
     provideHttpClient(withInterceptorsFromDi()),
     provideMarkdown()
   ],

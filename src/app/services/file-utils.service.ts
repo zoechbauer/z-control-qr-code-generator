@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
-import { Directory, Filesystem } from '@capacitor/filesystem';
+import { Directory } from '@capacitor/filesystem';
 
 import { AlertService } from './alert.service';
 import { environment } from '../../environments/environment';

@@ -151,4 +151,67 @@ describe('FileUtilsService', () => {
       expect(revokeObjectURLSpy).toHaveBeenCalledWith('blob:url');
     });
   });
+
+  describe('deleteQRCodeFiles', () => {
+    const testFileName = 'qrcode_20250826_125000';
+
+    it('should delete all QR code files on native platforms', async () => {
+      // arrange
+      spyOn(console, 'error');
+      filesystemSpy.readdir.and.returnValue(Promise.resolve({ files: [{ name: testFileName }] }));
+
+      // act
+      await service.deleteAllQrCodeFiles();
+
+      // assert
+      expect(filesystemSpy.deleteFile).toHaveBeenCalledWith({
+        directory: Directory.Documents,
+        path: testFileName,
+      });
+      expect(alertServiceSpy.showStoragePermissionError).not.toHaveBeenCalled();
+      expect(console.error).not.toHaveBeenCalled();
+    });
+
+    it('should not delete QR code files on native platforms if not permitted', async () => {
+      // arrange
+      spyOn(console, 'error');
+      spyOn(console, 'log');
+      filesystemSpy.readdir.and.returnValue(Promise.resolve({ files: [{ name: testFileName }] }));
+      filesystemSpy.checkPermissions.and.returnValue(
+        Promise.resolve({ publicStorage: 'denied' })
+      );
+
+      // act
+      await service.deleteAllQrCodeFiles();
+
+      // assert
+      expect(filesystemSpy.deleteFile).not.toHaveBeenCalledWith({
+        directory: Directory.Documents,
+        path: testFileName,
+      });
+      expect(alertServiceSpy.showStoragePermissionError).not.toHaveBeenCalled();
+      expect(console.error).not.toHaveBeenCalled();
+      expect(console.log).toHaveBeenCalledOnceWith('Storage permission not granted, skipping file deletion');
+    });
+
+    it('should not delete QR code files on web platforms', async () => {
+      // arrange
+      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
+      spyOn(console, 'error');
+      spyOn(console, 'log');
+      filesystemSpy.readdir.and.returnValue(Promise.resolve({ files: [{ name: testFileName }] }));
+
+      // act
+      await service.deleteAllQrCodeFiles();
+
+      // assert
+      expect(filesystemSpy.deleteFile).not.toHaveBeenCalledWith({
+        directory: Directory.Documents,
+        path: testFileName,
+      });
+      expect(alertServiceSpy.showStoragePermissionError).not.toHaveBeenCalled();
+      expect(console.error).not.toHaveBeenCalled();
+      expect(console.log).not.toHaveBeenCalled();
+    });
+  });
 });
