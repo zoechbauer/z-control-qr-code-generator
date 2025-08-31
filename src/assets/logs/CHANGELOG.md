@@ -2,7 +2,7 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
-## [1.19] – YYYY-MM-DD
+## [1.19] – 2025-08-31
 
 ### ✨ New Features
 
@@ -18,17 +18,9 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 - Updated the Google Play link for this app from the Internal Test group to the public release link.
 - Updated the alert message explaining why QR codes are not automatically attached to emails in the web version for greater clarity.
 
-### 🐛 Fixes
-
-- …
-
-### 🛡 Security
-
-- …
-
 ### 📦 Installations
 
-- …
+- App is hosted at Google Play for **Internal Test** group and **Closed Test** group.
 
 ## [1.18] – 2025-08-25
 

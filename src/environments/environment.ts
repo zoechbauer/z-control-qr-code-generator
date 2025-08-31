@@ -21,10 +21,10 @@ export const environment = {
   clearConfirmationLength: 100,
 
   // version info
-   version: {
+  version: {
     major: 1,
-    minor: 18,
-    date: '2025-08-25',
+    minor: 19,
+    date: '2025-08-31',
   },
 };
 
