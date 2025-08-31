@@ -44,6 +44,23 @@ ion-app {
   padding: 0 16px;
 }
 
+ion-header {
+  &.web-app {
+    margin-top: -25px;
+  }
+
+  ion-toolbar {
+    --background: var(--ion-color-primary) !important;
+    --color: #fff !important;
+
+    ion-title,
+    ion-button,
+    ion-icon {
+      color: #fff !important;
+    }
+  }
+}
+
 // Compatibility styles for legacy Android versions (e.g., Android 11)
 ion-header ion-toolbar:first-of-type {
   padding-top: var(--safe-area-top, 24px);
@@ -67,21 +84,16 @@ ion-header ion-toolbar:first-of-type {
   }
 }
 
-ion-toolbar {
-  .button-color {
-    color: var(--ion-color-primary);
-  }
-  .icon-color {
-    color: var(--ion-color-primary);
-  }
-}
-
 // modal border styling using CSS custom properties
 .manual-instructions-modal {
   --border-width: 2px;
   --border-style: solid;
   --border-color: var(--ion-color-medium);
   --border-radius: 10px;
+
+  &:has(app-help-modal) {
+    --border-width: 0;
+  }
 }
 
 .manual-instructions-modal.desktop {

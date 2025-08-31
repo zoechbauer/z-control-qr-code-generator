@@ -6,12 +6,17 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### ✨ New Features
 
-- …
+- Added a persistent z-control footer to the web app, displaying the current version number, release notes link, support email, and a direct download link for the mobile app. This provides users with quick access to important information and support resources.
 
 ### 🚀 Improvements
 
 - Enhanced app infrastructure for greater stability and performance.
+- Enhanced header design: All headers now have a blue background with white text and icons for improved visibility and a modern look. In the web app, header height is reduced since there is no status bar, providing a more streamlined appearance.
 - Minor wording improvements for greater clarity in the user help page.
+- Revised the "QR Codes Explained" section: removed generic examples and added app-specific examples to better illustrate usage within this application.
+- Relocated the displayed version information and release notes link from the user help page to the new z-control footer for easier access.
+- Updated the Google Play link for this app from the Internal Test group to the public release link.
+- Updated the alert message explaining why QR codes are not automatically attached to emails in the web version for greater clarity.
 
 ### 🐛 Fixes
 

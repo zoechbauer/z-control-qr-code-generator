@@ -5,7 +5,6 @@ import { of } from 'rxjs';
 
 import { HelpModalComponent } from './help-modal.component';
 import { LocalStorageService } from '../services/local-storage.service';
-import { MarkdownViewerComponent } from '../ui/components/markdown-viewer/markdown-viewer.component';
 
 describe('HelpModalComponent', () => {
   let component: HelpModalComponent;
@@ -158,44 +157,6 @@ describe('HelpModalComponent', () => {
       spyOn(document, 'getElementById').and.returnValue(null);
 
       expect(() => component.scrollToTop()).not.toThrow();
-    });
-  });
-
-  describe('versionInfo getter', () => {
-    beforeEach(() => {
-      // Mock environment
-      spyOnProperty(component, 'versionInfo', 'get').and.callThrough();
-    });
-
-    it('should return formatted version info for German', () => {
-      component.selectedLanguage = 'de';
-      
-      // This test would need environment mocking
-      // For now, we can test the logic structure
-      expect(component.versionInfo).toContain('Version');
-    });
-
-    it('should return formatted version info for English', () => {
-      component.selectedLanguage = 'en';
-      
-      expect(component.versionInfo).toContain('Version');
-    });
-  });
-
-  describe('openChangelog', () => {
-    it('should create and present changelog modal', async () => {
-      const mockModal = jasmine.createSpyObj('HTMLIonModalElement', ['present']);
-      mockModalController.create.and.returnValue(Promise.resolve(mockModal));
-
-      await component.openChangelog();
-
-      expect(mockModalController.create).toHaveBeenCalledWith({
-        component: MarkdownViewerComponent,
-        componentProps: {
-          fullChangeLogPath: 'assets/logs/CHANGELOG.md',
-        },
-      });
-      expect(mockModal.present).toHaveBeenCalled();
     });
   });
 

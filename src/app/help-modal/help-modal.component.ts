@@ -2,10 +2,9 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { Capacitor } from '@capacitor/core';
 
 import { LocalStorageService } from '../services/local-storage.service';
-import { environment } from 'src/environments/environment';
-import { MarkdownViewerComponent } from '../ui/components/markdown-viewer/markdown-viewer.component';
 
 @Component({
   selector: 'app-help-modal',
@@ -14,7 +13,7 @@ import { MarkdownViewerComponent } from '../ui/components/markdown-viewer/markdo
 })
 export class HelpModalComponent implements OnInit, OnDestroy {
   @Input() maxInputLength!: number;
-  @Input() scrollToSection?: string;  // for direct section navigation
+  @Input() scrollToSection?: string; // for direct section navigation
 
   readonly scrollToTopObj = {
     id: 'toc-DE',
@@ -25,7 +24,7 @@ export class HelpModalComponent implements OnInit, OnDestroy {
 
   private langSub?: Subscription;
 
- private readonly orientationListener = () => {
+  private readonly orientationListener = () => {
     this.isPortrait = window.matchMedia('(orientation: portrait)').matches;
   };
 
@@ -34,6 +33,10 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     private readonly translate: TranslateService,
     private readonly localStorage: LocalStorageService
   ) {}
+
+  get isNative(): boolean {
+    return Capacitor.isNativePlatform();
+  }
 
   ngOnInit() {
     // Scroll to specific section if provided
@@ -53,12 +56,12 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     this.orientationListener();
   }
 
-    private scrollToElement(elementId: string): void {
+  private scrollToElement(elementId: string): void {
     const element = document.getElementById(elementId);
     if (element) {
-      element.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'start' 
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
       });
     }
   }
@@ -98,34 +101,6 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
-  }
-
-  get versionInfo() {
-    const { major, minor, date } = {
-      major: environment.version.major,
-      minor: environment.version.minor,
-      date: environment.version.date,
-    };
-
-    let formattedDate = date;
-    if (this.selectedLanguage === 'de') {
-      // Convert 'yyyy-mm-dd' to 'dd.mm.yyyy'
-      const [year, month, day] = date.split('-');
-      formattedDate = `${day}.${month}.${year}`;
-    }
-
-    return `Version ${major}.${minor} (${formattedDate})`;
-  }
-
-  async openChangelog() {
-    const modal = await this.modalController.create({
-      component: MarkdownViewerComponent,
-      componentProps: {
-        fullChangeLogPath: 'assets/logs/CHANGELOG.md',
-      },
-    });
-
-    await modal.present();
   }
 
   ngOnDestroy() {

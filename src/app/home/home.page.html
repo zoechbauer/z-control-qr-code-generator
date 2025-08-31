@@ -1,5 +1,5 @@
-<ion-header>
-  <ion-toolbar>
+<ion-header [class.web-app]="!isNative">
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <div
         class="button-wrapper"
@@ -98,7 +98,9 @@
     </div>
 
     <div class="qr-code-buttons">
-      <div class="next-step ion-text-center">{{ workflowStep | translate }}</div>
+      <div class="next-step ion-text-center">
+        {{ workflowStep | translate }}
+      </div>
       <div
         class="button-wrapper"
         (click)="handleGenerateButtonClick()"
@@ -148,17 +150,14 @@
       </div>
     </div>
   </ion-card>
+  <div class="ion-text-center" *ngIf="!showAddress">
+    <app-footer></app-footer>
+  </div>
 
   <!-- +++++++++++++++++++++++++ -->
   <!-- E-MAIL ADDRESSE MAINTENANCE -->
   <!-- +++++++++++++++++++++++++ -->
   <ion-card *ngIf="showAddress" class="mail-address">
-    <!-- <ion-card-header>
-    <ion-card-title class="ion-text-center">
-      {{'EMAIL_PAGE_TITLE' | translate}}
-    </ion-card-title>
-  </ion-card-header> -->
-
     <div class="enter-mail-address">
       <h6 class="ion-text-center">
         {{'EMAIL_PAGE_ADD_EMAIL_TITLE' | translate}}

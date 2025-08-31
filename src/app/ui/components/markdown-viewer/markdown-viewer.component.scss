@@ -1,3 +1,16 @@
+ion-header {
+  ion-toolbar {
+    --background: var(--ion-color-primary) !important;
+    --color: #fff !important;
+
+    ion-title,
+    ion-button,
+    ion-icon {
+      color: #fff !important;
+    }
+  }
+}
+
 :host {
   ::ng-deep {
     // stylelint-disable-next-line selector-type-no-unknown

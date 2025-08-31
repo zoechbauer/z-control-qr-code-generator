@@ -71,6 +71,11 @@
   "CANCEL": "Cancel",
   "OK": "OK",
 
+  "------ web footer": "-------",
+  "WEB_FOOTER_Z-CONTROL_FOCUS": "Innovative Mobile Solutions",
+  "WEB_FOOTER_COUNTRY": "Austria",
+  "WEB_FOOTER_DOWNLOAD_LINK": "Get Mobile Version",
+
   "------ error messages": "-------",
   "ERROR_ALERT_TITLE_ERROR": "Error",
   "ERROR_ALERT_BUTTON_OK": "OK",
@@ -81,7 +86,7 @@
   "ERROR_MESSAGE_MISSING_QR_URL": "QR code URL not available.",
   "ERROR_MESSAGE_EMAIL_WORKFLOW": "Error processing email. Please try again.",
   "INFO_ALERT_TITLE_MAIL_ATTACHMENT": "Attach the QR codes to the email and delete these files when you no longer need them!",
-  "INFO_ALERT_MESSAGE_MAIL_ATTACHMENT": "Please manually attach these two downloaded files from the Downloads folder to your email. You can find the Downloads folder in your browser settings. Unfortunately, these files are only automatically attached and deleted on mobile devices.",
+  "INFO_ALERT_MESSAGE_MAIL_ATTACHMENT": "Due to browser restrictions, files cannot be attached to emails automatically on the web. Please manually attach the two downloaded files from your Downloads folder to your email. You can find the Downloads folder in your browser settings. Automatic attachment and deletion of files is only possible on mobile devices.",
 
   "------ help-modal": "-------",
   "SCROLL_TO_TOP_EN": "back to table of contents"

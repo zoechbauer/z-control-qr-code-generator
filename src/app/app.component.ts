@@ -18,22 +18,23 @@ export class AppComponent {
   initializeApp() {
     if (this.isNativeApp) {
       SplashScreen.hide();
-      
+
       StatusBar.setOverlaysWebView({ overlay: false });
 
       const isDarkMode = window.matchMedia(
         '(prefers-color-scheme: dark)'
       ).matches;
 
+      const primaryColor = '#3880ff';
+
       if (isDarkMode) {
-        // dark background, light icons
-        StatusBar.setStyle({ style: Style.Dark });
-        StatusBar.setBackgroundColor({ color: '#000000' });
-      } else {
-        // light background, dark icons
+        StatusBar.setBackgroundColor({ color: primaryColor });
         StatusBar.setStyle({ style: Style.Light });
-        StatusBar.setBackgroundColor({ color: '#f9f9f9' });
+      } else {
+        StatusBar.setBackgroundColor({ color: primaryColor });
+        StatusBar.setStyle({ style: Style.Dark });
       }
+
       StatusBar.show();
     }
   }

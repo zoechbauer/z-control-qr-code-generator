@@ -13,6 +13,7 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { closeOutline } from 'ionicons/icons';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-markdown-viewer',
@@ -40,6 +41,10 @@ export class MarkdownViewerComponent implements OnInit {
     private readonly modalController: ModalController
   ) {
     this.registerIcons();
+  }
+
+  get isNative(): boolean {
+    return Capacitor.isNativePlatform();
   }
 
   ngOnInit() {

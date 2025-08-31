@@ -105,6 +105,10 @@ export class HomePage implements OnInit, OnDestroy {
     return window.matchMedia('(orientation: portrait)').matches;
   }
 
+  get isNative(): boolean {
+    return Capacitor.isNativePlatform();
+  }
+
   ngOnInit(): void {
     this.setupEventListeners();
     this.initializeServicesAsync();

@@ -7,8 +7,8 @@
 <!-- *********************************** -->
 
 <ng-template #englishTemplate>
-  <ion-header>
-    <ion-toolbar>
+  <ion-header [class.web-app]="!isNative">
+    <ion-toolbar color="primary">
       <ion-title>
         <span *ngIf="!isPortrait">Help – z-control QR Code Generator</span>
         <span *ngIf="isPortrait">Help – QR Code</span>
@@ -38,7 +38,7 @@
 
   <ion-content class="ion-padding">
     <div id="toc" class="ion-padding">
-      <h5 class="ion-text-center">Table of Contents</h5>
+      <h5 class="ion-text-center toc-title">Table of Contents</h5>
       <ol class="table-of-contents">
         <li>
           <a
@@ -89,7 +89,7 @@
             >How to print QR Code in a specific size?</a
           >
         </li>
-        <li>
+        <li class="toc-increase-margin-top">
           <a
             href="#"
             (click)="scrollTo('floating-keyboard', $event)"
@@ -105,11 +105,6 @@
         <li>
           <a href="#" (click)="scrollTo('technical-info', $event)"
             >Technical information</a
-          >
-        </li>
-        <li>
-          <a href="#" (click)="scrollTo('version-info', $event)"
-            >App Version & History</a
           >
         </li>
       </ol>
@@ -212,14 +207,15 @@
         </p>
       </li>
       <li>
-        <b>Where can I find the app version and update history?</b>
+        <b>How can I switch between Dark and Light Mode?</b>
         <p>
-          Scroll to the "App Version & History" section or tap the "Release
-          Notes" button for details.
+          The app automatically adapts to the mode set on your device. To switch
+          between Dark and Light Mode, simply change the display settings (e.g.,
+          "Dark theme" or "Light theme") in your device's system settings.
         </p>
       </li>
       <li>
-        <b>Why is the email body sometimes missing when I send a QR code?</b>
+        <b>Why is the email body missing when I send a QR code?</b>
         <p>
           Some third-party email apps (such as Bluemail) may not display the
           pre-filled email body text when sending emails with attachments. This
@@ -276,6 +272,15 @@
           attaching files to emails. In the web version, QR codes download to
           your Downloads folder and must be manually attached to emails. The
           native mobile app handles this automatically.
+        </p>
+      </li>
+      <li>
+        <b>How can I provide feedback or contact support?</b>
+        <p>
+          You can easily send us your feedback, questions, or suggestions using
+          the email link in the app footer. Simply open the section with the
+          z-control icon and click on the "z-control Support" email address.
+          Your email app will open automatically so you can contact us directly.
         </p>
       </li>
     </ol>
@@ -374,7 +379,10 @@
           length of the entered text. Example: Generated z-control QR Code of
           your text with 512 characters
         </p>
-        <p><i>Text: </i>The entered text contained in the QR codes.</p>
+        <p>
+          <i>Text: </i>The text contained in the QR code as well as tips and
+          instructions for printing the QR code.
+        </p>
       </li>
       <li>
         <p>
@@ -636,7 +644,7 @@
       </li>
     </ol>
 
-    <h4 id="floating-keyboard">How to enable floating keyboard on Android:</h4>
+    <h3 id="floating-keyboard">How to enable floating keyboard on Android:</h3>
     <p>
       <b>Samsung devices:</b>
     </p>
@@ -697,90 +705,75 @@
     <h5>What are QR codes?</h5>
     <p>
       QR codes (Quick Response Codes) are two-dimensional barcodes that store
-      information in a square pattern. They can be read with a camera or QR code
-      scanner and allow quick access to information, websites, or actions.
+      information in a square pattern. They can be scanned with a smartphone
+      camera or QR code reader to quickly access the encoded information.
     </p>
-    <h5>How can I use them privately?</h5>
-    <p>In everyday life, QR codes offer many possible uses:</p>
-    <ul>
-      <li>
-        <b>Contact information:</b> QR codes can store your contact details,
-        which others can scan to contact you.
-      </li>
-      <li>
-        <b>Links to websites:</b> You can create QR codes that link to websites
-        to share information quickly.
-      </li>
-      <li>
-        <b>Wi-Fi access:</b> A QR code can be used to quickly and easily provide
-        guests with access details for your home Wi-Fi.
-      </li>
-      <li>
-        <b>Digital photo albums & recipes:</b> A QR code on a greeting card can
-        share a link to an online photo album or a digitized family recipe.
-      </li>
-      <li>
-        <b>Pets & valuables:</b> On pet tags, keychains, or bicycles, a QR code
-        with contact details can help with recovery in case of loss.
-      </li>
-      <li>
-        <b>Emergency and health data:</b> For example, on a medical bracelet, so
-        important information is quickly available in an emergency.
-      </li>
-      <li>
-        <b>Social media & online profiles:</b> Share personal profiles,
-        playlists, or curated content with friends or family.
-      </li>
-    </ul>
+    <h5>What can this app do?</h5>
     <p>
-      QR codes are practical, flexible tools for easily sharing and using
-      digital content, contact details, or personal information in everyday
-      life.
-    </p>
-    <h5>How can companies use QR codes?</h5>
-    <p>
-      QR codes are used by companies in many ways to make digital content easily
-      accessible and to strengthen customer loyalty. Typical applications
-      include:
+      This app allows you to generate QR codes from <b>any plain text</b> you
+      enter. You can use it to:
     </p>
     <ul>
       <li>
-        <b>Marketing and advertising:</b> QR codes on product packaging, flyers,
-        posters, or business cards lead customers directly to websites, offers,
-        social media profiles, or app downloads, increasing reach and
-        interaction.
+        <b>Share simple messages or notes:</b> Encode any text and let others
+        scan it to read your message.
       </li>
       <li>
-        <b>Customer service and information:</b> QR codes allow quick access to
-        user manuals, product videos, or further details, improving user
-        convenience.
+        <b>Share links:</b> Paste a website URL as plain text, and the QR code
+        will open the link when scanned.
       </li>
       <li>
-        <b>Events and admission control:</b> QR codes serve as digital tickets
-        and enable efficient check-in at events.
+        <b>Label items:</b> Print QR codes with custom text to label documents,
+        objects, or locations.
       </li>
       <li>
-        <b>Payments and vouchers:</b> They facilitate contactless payments and
-        redeeming discount coupons.
-      </li>
-      <li>
-        <b>Logistics and product tracking:</b> QR codes support tracking goods
-        in supply chains and promote transparency in the process.
-      </li>
-      <li>
-        <b>Digital business cards:</b> Contact details can be quickly and
-        accurately transferred to smartphones via QR code.
-      </li>
-      <li>
-        <b>Customer feedback and interaction:</b> Companies use QR codes to make
-        reviews, surveys, or calendar entries directly available.
+        <b>Transfer information:</b> Quickly move text between devices by
+        scanning the QR code.
       </li>
     </ul>
     <p>
-      QR codes enable a seamless transition from the offline to the online
-      world, always providing clear added value to the user. It is important to
-      make the benefit of the code visible and to optimize the target pages for
-      mobile devices.
+      <b>Note:</b> Unlike some other QR code apps, this app does
+      <b>not</b> support special QR code formats for contacts, emails, Wi-Fi, or
+      calendar events. All QR codes generated by this app contain only the plain
+      text you enter.
+    </p>
+    <h5>How does it work?</h5>
+    <ol>
+      <li>
+        <b>Enter your text:</b> Type or paste any text (up to
+        {{ maxInputLength }} characters).
+      </li>
+      <li>
+        <b>Generate the QR code:</b> Tap the "Generate" button to create a QR
+        code from your text.
+      </li>
+      <li>
+        <b>Send or print:</b> You can email the QR code as an image or PDF, or
+        print it for use on labels, cards, or documents.
+      </li>
+      <li>
+        <b>Scan to retrieve:</b> Anyone can scan the QR code with a standard QR
+        code reader to view the plain text you entered.
+      </li>
+    </ol>
+    <h5>Why use plain text QR codes?</h5>
+    <ul>
+      <li>
+        <b>Simplicity:</b> No special formatting or technical knowledge
+        required.
+      </li>
+      <li>
+        <b>Privacy:</b> The app does not store or process your data externally.
+      </li>
+      <li>
+        <b>Flexibility:</b> Use QR codes for any purpose where sharing plain
+        text is helpful.
+      </li>
+    </ul>
+    <p>
+      <b>In summary:</b> This app is designed for users who want a simple,
+      reliable way to generate and share QR codes containing plain text—no more,
+      no less.
     </p>
 
     <h3 id="technical-info">Technical information</h3>
@@ -810,7 +803,7 @@
       <b>Scanning the generated QR code:</b> The entered text can be up to
       <b>{{ maxInputLength }} characters</b> long. Note: The more text the QR
       code contains, the longer the scanning process takes. For very long texts,
-      I recommend a special scanner app. QR codes with up to 500 characters can
+      we recommend a special scanner app. QR codes with up to 500 characters can
       usually be scanned without problems with the camera app of your phone.
       Most modern smartphones already have the QR code scanning function
       integrated into the standard camera app.
@@ -830,27 +823,7 @@
       <i>qrcode_YYYYMMDD_HHMMSS.png</i><br />
       <i>qrcode_YYYYMMDD_HHMMSS.pdf</i>
     </p>
-
-    <h3 id="version-info">App Version & History</h3>
-    <div class="version-info">
-      {{ versionInfo }}
-    </div>
-
-    <p>
-      You find all new features, improvements and bug fixes of the z-control QR
-      Code Generator app since the start of the testing phase in the Release
-      Notes.
-    </p>
-    <ion-button
-      fill="clear"
-      size="small"
-      (click)="openChangelog()"
-      (keydown.enter)="openChangelog()"
-      class="changelog-button"
-    >
-      <ion-icon name="list-outline" slot="start"></ion-icon>
-      Release Notes
-    </ion-button>
+    <p class="empty-last-item"></p>
   </ion-content>
 </ng-template>
 
@@ -859,7 +832,7 @@
 <!-- *********************************** -->
 
 <ng-template #germanTemplate>
-  <ion-header>
+  <ion-header [class.web-app]="!isNative">
     <ion-toolbar>
       <ion-title>
         <span *ngIf="!isPortrait">Hilfe – z-control QR Code Generator</span>
@@ -888,7 +861,7 @@
   </ion-header>
   <ion-content class="ion-padding">
     <div id="toc-DE" class="ion-padding">
-      <h5 class="ion-text-center">Inhaltsverzeichnis</h5>
+      <h5 class="ion-text-center toc-title">Inhaltsverzeichnis</h5>
       <ol class="table-of-contents">
         <li>
           <a
@@ -934,7 +907,7 @@
             >QR Code in einer bestimmten Größe drucken</a
           >
         </li>
-        <li>
+        <li class="toc-increase-margin-top">
           <a
             href="#"
             (click)="scrollTo('floating-keyboard-DE', $event)"
@@ -955,11 +928,6 @@
         <li>
           <a href="#" (click)="scrollTo('technical-info-DE', $event)"
             >Technische Informationen</a
-          >
-        </li>
-        <li>
-          <a href="#" (click)="scrollTo('version-info-DE', $event)"
-            >App Version & Historie</a
           >
         </li>
       </ol>
@@ -1063,15 +1031,17 @@
         </p>
       </li>
       <li>
-        <b>Wo finde ich die App-Version und die Update-Historie?</b>
+        <b>Wie kann ich zwischen Dark- und Light-Mode wechseln?</b>
         <p>
-          Scrollen Sie zum Abschnitt „App Version & Historie“ oder tippen Sie
-          auf die Schaltfläche „Release Notes“ für Details.
+          Die App passt sich automatisch dem auf Ihrem Gerät eingestellten Modus
+          an. Um zwischen Dark- und Light-Mode zu wechseln, ändern Sie einfach
+          die Anzeigeeinstellungen (z.&nbsp;B. „Dunkles Design“ oder „Helles
+          Design“) in den Systemeinstellungen Ihres Geräts.
         </p>
       </li>
       <li>
         <b
-          >Warum fehlt manchmal der E-Mail-Text, wenn ich einen QR Code
+          >Warum fehlt der E-Mail-Text, wenn ich einen QR Code
           versende?</b
         >
         <p>
@@ -1137,6 +1107,16 @@
           automatisch.
         </p>
       </li>
+      <li>
+        <b>Wie kann ich Feedback geben oder den Support kontaktieren?</b>
+        <p>
+          Sie können uns Ihr Feedback, Ihre Fragen oder Anregungen ganz einfach
+          über den E-Mail-Link im App-Footer senden. Öffnen Sie dazu den Bereich
+          mit dem z-control-Icon und klicken Sie auf die E-Mail-Adresse
+          „z-control Support“. Ihr E-Mail-Programm öffnet sich automatisch,
+          sodass Sie uns direkt kontaktieren können.
+        </p>
+      </li>
     </ol>
 
     <h3 id="what-can-the-app-do-DE">Was kann die App?</h3>
@@ -1168,7 +1148,7 @@
       <li>Optional Mailadresse(n) erfassen</li>
       <li>Optional Sprache ändern (EN / DE)</li>
     </ol>
-    <h5>Detail-Informationen QR Code generieren</h5>
+    <h5>Detail-Informationen zu QR Code generieren</h5>
     <ol>
       <li>
         <p>
@@ -1236,7 +1216,10 @@
           der Textlänge des erfassten Textes. Beispiel: Generierter z-control
           QR-Code Ihres Textes mit 512 Zeichen
         </p>
-        <p><i>Text: </i>Der in den QR Codes enthaltene erfasste Text.</p>
+        <p>
+          <i>Text: </i>Der im QR Code enthaltene Text sowie Hinweise und Tipps
+          zum Drucken des QR Codes.
+        </p>
       </li>
       <li>
         <p>
@@ -1254,7 +1237,7 @@
         </p>
       </li>
     </ol>
-    <h5>Detail-Informationen E-Mail Adressen verwalten</h5>
+    <h5>Detail-Informationen zu E-Mail Adressen verwalten</h5>
     <p>In der <b>Kopfzeile</b> gibt es die Auswahl <b>MAIL ADR</b></p>
     <p>
       Hier kann zwischen QR Code Erstellung und E-Mail-Adressenverwaltung
@@ -1273,7 +1256,7 @@
       kann die Mailadressenverwaltung jederzeit abgebrochen werden.
     </p>
 
-    <h5>Detail-Informationen Sprache ändern</h5>
+    <h5>Detail-Informationen zu Sprache ändern</h5>
     <p>
       In der <b>Kopfzeile</b> wird ganz rechts die Sprache angezeigt. Diese ist
       entweder <b>Deutsch (DE)</b> oder <b>Englisch (EN)</b> je nachdem welche
@@ -1530,9 +1513,9 @@
       </li>
     </ol>
 
-    <h4 id="floating-keyboard-DE">
+    <h3 id="floating-keyboard-DE">
       Schwebende Tastatur auf Android aktivieren
-    </h4>
+    </h3>
     <p>
       <b>Samsung-Geräte:</b>
     </p>
@@ -1596,95 +1579,76 @@
     <p>
       QR Codes (Quick Response Codes) sind zweidimensionale Strichcodes, die
       Informationen in einem quadratischen Muster speichern. Sie können mit
-      einer Kamera oder einem QR Code-Scanner gelesen werden und ermöglichen den
-      schnellen Zugriff auf Informationen, Websites oder Aktionen.
+      einer Smartphone-Kamera oder einem QR-Code-Scanner gelesen werden, um
+      schnell auf die enthaltenen Informationen zuzugreifen.
     </p>
-    <h5>Wie kann ich sie privat nutzen?</h5>
+    <h5>Was kann diese App?</h5>
     <p>
-      Im privaten Bereich bieten QR Codes zahlreiche Anwendungsmöglichkeiten:
-    </p>
-    <ul>
-      <li>
-        <b>Kontaktinformationen:</b> QR Codes können Ihre Kontaktdaten
-        speichern, die andere Personen scannen können, um Sie zu kontaktieren.
-      </li>
-      <li>
-        <b>Links zu Websites:</b> Sie können QR Codes erstellen, die auf
-        Websites verweisen, um Informationen schnell zu teilen.
-      </li>
-      <li>
-        <b>WLAN-Zugang:</b> Ein QR Code kann genutzt werden, um Gästen schnell
-        und einfach Zugangsdaten zum heimischen WLAN bereitzustellen.
-      </li>
-      <li>
-        <b>Digitale Fotoalben & Rezepte:</b> Über einen QR Code auf einer
-        Grußkarte kann ein Link zu einem Online-Fotoalbum oder einem
-        digitalisierten Familienrezept geteilt werden.
-      </li>
-      <li>
-        <b>Haustiere & Wertgegenstände:</b> Auf Hundemarken, Schlüsselanhängern
-        oder Fahrrädern kann ein QR Code mit Kontaktdaten angebracht werden, um
-        im Verlustfall die Rückgabe zu erleichtern.
-      </li>
-      <li>
-        <b>Notfall- und Gesundheitsdaten:</b> Einsatz z.B. auf einem
-        medizinischen Armband, sodass im Notfall wichtige Informationen schnell
-        zur Verfügung stehen.
-      </li>
-      <li>
-        <b>Social Media & Online-Auftritte:</b> Teilen persönlicher Profile,
-        Playlists oder kuratierter Inhalte mit Freunden oder Familie
-      </li>
-    </ul>
-    <p>
-      QR Codes sind praktische, flexible Werkzeuge, um im Alltag unkompliziert
-      digitale Inhalte, Kontaktdaten oder persönliche Informationen zu teilen
-      und zu nutzen.
-    </p>
-    <h5>Wie können Firmen QR Codes nutzen?</h5>
-    <p>
-      QR-Codes werden von Unternehmen vielseitig eingesetzt, um digitale Inhalte
-      einfach zugänglich zu machen und die Kundenbindung zu stärken. Typische
-      Anwendungen sind:
+      Mit dieser App können Sie QR Codes aus
+      <b>beliebigem Klartext</b> erstellen. Sie können sie verwenden, um:
     </p>
     <ul>
       <li>
-        <b>Marketing und Werbung:</b> QR-Codes auf Produktverpackungen, Flyern,
-        Plakaten oder Visitenkarten führen Kunden direkt zu Websites, Angeboten,
-        Social-Media-Profilen oder App-Downloads und erhöhen so die Reichweite
-        und Interaktion.
+        <b>Einfache Nachrichten oder Notizen zu teilen:</b> Beliebigen Text
+        eingeben und als QR Code weitergeben.
       </li>
       <li>
-        <b>Kundenservice und Information:</b> Durch QR-Codes können
-        Bedienungsanleitungen, Produktvideos oder weitere Details schnell
-        abgerufen werden, was den Nutzerkomfort steigert.
+        <b>Links teilen:</b> Eine Webadresse als Klartext eingeben – beim
+        Scannen öffnet sich der Link direkt.
       </li>
       <li>
-        <b>Veranstaltungen und Eintrittskontrolle:</b> QR-Codes dienen als
-        digitale Tickets und ermöglichen effizientes Einchecken bei Events.
+        <b>Gegenstände beschriften:</b> QR Codes mit individuellem Text
+        ausdrucken und auf Dokumenten, Objekten oder Orten anbringen.
       </li>
       <li>
-        <b>Zahlungsverkehr und Gutscheine:</b> Sie erleichtern kontaktloses
-        Bezahlen und das Einlösen von Rabattcoupons.
-      </li>
-      <li>
-        <b>Logistik und Produktverfolgung:</b> QR-Codes unterstützen die
-        Warenverfolgung in Lieferketten und fördern die Transparenz im Prozess.
-      </li>
-      <li>
-        <b>Digitale Visitenkarten:</b> Kontaktdaten lassen sich per QR-Code
-        schnell und fehlerfrei auf Smartphones übertragen.
-      </li>
-      <li>
-        <b>Kundenfeedback und Interaktion:</b> Unternehmen nutzen QR-Codes, um
-        Bewertungen, Umfragen oder Kalendereinträge direkt verfügbar zu machen.
+        <b>Informationen übertragen:</b> Text schnell zwischen Geräten
+        übertragen, indem Sie den QR Code scannen.
       </li>
     </ul>
     <p>
-      Durch QR-Codes gelingt der fließende Übergang von Offline- zu Online-Welt,
-      wobei der Nutzer stets einen klaren Mehrwert erhält. Wichtig ist, den
-      Nutzen des Codes sichtbar zu machen und die Zielseiten für mobile Geräte
-      zu optimieren.
+      <b>Hinweis:</b> Im Gegensatz zu manchen anderen QR-Code-Apps unterstützt
+      diese App <b>keine speziellen QR-Code-Formate</b> für Kontakte, E-Mails,
+      WLAN oder Kalendereinträge. Alle QR Codes enthalten ausschließlich den von
+      Ihnen eingegebenen Klartext.
+    </p>
+    <h5>Wie funktioniert es?</h5>
+    <ol>
+      <li>
+        <b>Text eingeben:</b> Geben Sie beliebigen Text ein (bis zu
+        {{ maxInputLength }} Zeichen).
+      </li>
+      <li>
+        <b>QR Code generieren:</b> Tippen Sie auf „Generieren“, um aus Ihrem
+        Text einen QR Code zu erstellen.
+      </li>
+      <li>
+        <b>Senden oder drucken:</b> Sie können den QR Code als Bild oder PDF per
+        E-Mail versenden oder ausdrucken.
+      </li>
+      <li>
+        <b>Scannen:</b> Jeder kann den QR Code mit einer Standard-App scannen
+        und den eingegebenen Text lesen.
+      </li>
+    </ol>
+    <h5>Warum Klartext-QR-Codes?</h5>
+    <ul>
+      <li>
+        <b>Einfachheit:</b> Keine spezielle Formatierung oder technisches Wissen
+        nötig.
+      </li>
+      <li>
+        <b>Datenschutz:</b> Die App speichert oder verarbeitet Ihre Daten nicht
+        extern.
+      </li>
+      <li>
+        <b>Flexibilität:</b> QR Codes für jeden Zweck, bei dem das Teilen von
+        Klartext hilfreich ist.
+      </li>
+    </ul>
+    <p>
+      <b>Zusammengefasst:</b> Diese App ist für Nutzer gedacht, die einfach und
+      zuverlässig QR Codes mit Klartext erstellen und teilen möchten – nicht
+      mehr und nicht weniger.
     </p>
 
     <h3 id="technical-info-DE">Technische Informationen</h3>
@@ -1715,7 +1679,7 @@
       <b>Scannen des generierten QR Codes:</b> Der erfasste Text kann bis zu
       <b>{{ maxInputLength }} Zeichen</b> lang sein. Beachten Sie: Je mehr Text
       der QR Code enthält, desto länger dauert der Scan-Vorgang. Für sehr lange
-      Texte empfehle ich eine spezielle Scanner-App. QR Codes mit bis zu 500
+      Texte empfehlen wir eine spezielle Scanner-App. QR Codes mit bis zu 500
       Zeichen können in der Regel problemlos mit der Kamera-App Ihres Handys
       gescannt werden. Bei den meisten modernen Smartphones ist die QR
       Code-Scan-Funktion bereits in der Standard-Kamera-App integriert.
@@ -1735,26 +1699,6 @@
       <i>qrcode_YYYYMMDD_HHMMSS.png</i><br />
       <i>qrcode_YYYYMMDD_HHMMSS.pdf</i>
     </p>
-
-    <h3 id="version-info-DE">App Version & Historie</h3>
-    <div class="version-info">
-      {{ versionInfo }}
-    </div>
-
-    <p>
-      Alle neuen Funktionen, Verbesserungen und Fehlerbehebungen der z-control
-      QR-Code-Generator-App seit Beginn der Testphase finden Sie in
-      <b>englischer Sprache</b> in den Release Notes.
-    </p>
-    <ion-button
-      fill="clear"
-      size="small"
-      (click)="openChangelog()"
-      (keydown.enter)="openChangelog()"
-      class="changelog-button"
-    >
-      <ion-icon name="list-outline" slot="start"></ion-icon>
-      Release Notes
-    </ion-button>
+    <p class="empty-last-item"></p>
   </ion-content>
 </ng-template>

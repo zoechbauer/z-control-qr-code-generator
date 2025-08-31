@@ -1,0 +1,77 @@
+<ion-footer>
+  <ion-toolbar>
+    <div
+      class="footer-content"
+      role="button"
+      tabindex="0"
+      (click)="toggleFooterDetails()"
+      (keydown.enter)="toggleFooterDetails()"
+    >
+      <!-- Compact footer  -->
+      <div class="footer-compact">
+        <div class="footer-main logo-container">
+          <img
+            class="logo"
+            src="assets/icon/z-control.png"
+            alt="z-control logo"
+          />
+          <span class="footer-copyright">© 2025 z-control</span>
+        </div>
+        <ion-button
+          fill="clear"
+          size="small"
+          class="expand-button"
+          (keydown.enter)="toggleFooterDetails()"
+        >
+          <ion-icon
+            [name]="showDetails ? 'chevron-up-outline' : 'chevron-down-outline'"
+            slot="icon-only"
+          ></ion-icon>
+        </ion-button>
+      </div>
+
+      <!-- Expandable details -->
+      <div class="footer-details" [class.expanded]="showDetails">
+        <div class="footer-section">
+          <p>{{ "WEB_FOOTER_Z-CONTROL_FOCUS" | translate }}</p>
+          <div
+            class="version-info"
+            (click)="openChangelog()"
+            (keydown.enter)="openChangelog()"
+          >
+            <p class="footer-version">{{ versionInfo }}</p>
+            <ion-button fill="clear" size="small" class="changelog-button">
+              <ion-icon name="list-outline" slot="start"></ion-icon>
+              Release Notes
+            </ion-button>
+          </div>
+        </div>
+        <div class="footer-playstore" *ngIf="!isNative">
+            <ion-icon name="download-outline"></ion-icon>
+            <a
+              class="footer-link"
+              href="https://play.google.com/store/apps/details?id=at.zcontrol.zoe.qrcodeapp"
+              >{{ "WEB_FOOTER_DOWNLOAD_LINK" | translate }}</a
+            >
+          </div>
+        <div class="footer-contact">
+          <div class="footer-email">
+            <ion-icon name="mail-outline"></ion-icon>
+            <a class="footer-link" href="{{ mailtoLink }}"
+              >z-control Support & Feedback</a
+            >
+          </div>
+          <div class="contact-item">
+            <ion-icon name="person-outline"></ion-icon>
+            <span>Hans Zöchbauer</span>
+          </div>
+          <div class="contact-item small">
+            <ion-icon name="location-outline"></ion-icon>
+            <span>{{ "WEB_FOOTER_COUNTRY" | translate }}</span>
+          </div>
+        </div>
+        <div class="footer-navigation-bar" *ngIf="isNative"></div>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-footer>

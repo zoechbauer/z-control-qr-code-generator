@@ -62,7 +62,7 @@
   "MOBILE_WEB_TRY_EMAIL": "E-Mail-App versuchen",
   "MOBILE_WEB_INSTRUCTIONS": "Manuelle Anleitung",
   "MOBILE_WEB_MANUAL_TITLE": "Manuelle E-Mail Anleitung",
-  "MOBILE_WEB_MANUAL_MESSAGE": "1. Kopieren Sie den QR-Code-Text unten\n2. Öffnen Sie Ihre E-Mail-App manuell\n3. Erstellen Sie eine neue E-Mail mit Ihren Empfängern\n4. Fügen Sie den Text ein und hängen Sie die heruntergeladenen QR-Code-Bilder an\n\nDie QR-Code-Dateien wurden in Ihrem Downloads-Ordner gespeichert.",
+  "MOBILE_WEB_MANUAL_MESSAGE": "1. Kopieren Sie den unten angeführten QR-Code-Text\n2. Öffnen Sie Ihre E-Mail-App manuell\n3. Erstellen Sie eine neue E-Mail mit Ihren Empfängern\n4. Fügen Sie den Text ein und hängen Sie die heruntergeladenen QR-Code-Bilder an\n\nDie QR-Code-Dateien wurden in Ihrem Downloads-Ordner gespeichert.",
   "MOBILE_WEB_QR_TEXT": "QR-Code-Text",
   "MOBILE_WEB_COPY_SUCCESS": "QR-Code-Text in die Zwischenablage kopiert!",
   "MOBILE_WEB_COPY_SUCCESS_TITLE": "Erfolgreich kopiert",
@@ -70,6 +70,11 @@
   "MOBILE_WEB_COPY_ERROR": "Kopieren fehlgeschlagen. Bitte manuell markieren und kopieren.",
   "CANCEL": "Abbrechen",
   "OK": "OK",
+
+    "------ web footer": "-------",
+  "WEB_FOOTER_Z-CONTROL_FOCUS": "Innovative mobile Lösungen",
+  "WEB_FOOTER_COUNTRY": "Österreich",
+  "WEB_FOOTER_DOWNLOAD_LINK": "Mobile Version herunterladen",
 
   "------ error messages": "-------",
   "ERROR_ALERT_TITLE_ERROR": "Fehler",
@@ -81,7 +86,7 @@
   "ERROR_MESSAGE_MISSING_QR_URL": "QR-Code URL nicht verfügbar.",
   "ERROR_MESSAGE_EMAIL_WORKFLOW": "Fehler beim Verarbeiten der E-Mail. Bitte versuchen Sie es erneut.",
   "INFO_ALERT_TITLE_MAIL_ATTACHMENT": "Hängen Sie die QR-Codes an die E-Mail an und löschen Sie diese Dateien wenn Sie sie nicht mehr brauchen!",
-  "INFO_ALERT_MESSAGE_MAIL_ATTACHMENT": "Bitte hängen Sie diese beiden heruntergeladenen Dateien aus dem Download-Ordner manuell an Ihre E-Mail an. Den Download-Ordner finden Sie in Ihren Browsereinstellungen. Leider werden diese Dateien nur auf mobilen Geräten automatisch angehängt und gelöscht.",
+  "INFO_ALERT_MESSAGE_MAIL_ATTACHMENT": "Aufgrund von Browser-Beschränkungen können Dateien im Web nicht automatisch an E-Mails angehängt werden. Bitte fügen Sie die beiden heruntergeladenen Dateien manuell aus Ihrem Downloads-Ordner Ihrer E-Mail hinzu. Den Downloads-Ordner finden Sie in den Einstellungen Ihres Browsers. Das automatische Anhängen und Löschen von Dateien ist nur auf mobilen Geräten möglich.",
 
   "------ help-modal": "-------",
   "SCROLL_TO_TOP_DE": "zurück zu Inhaltsverzeichnis"
