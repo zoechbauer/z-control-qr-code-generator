@@ -61,6 +61,10 @@ ion-header {
   }
 }
 
+ion-tab-bar {
+  padding-bottom: env(safe-area-bottom, 44px);
+}
+
 // Compatibility styles for legacy Android versions (e.g., Android 11)
 ion-header ion-toolbar:first-of-type {
   padding-top: var(--safe-area-top, 24px);

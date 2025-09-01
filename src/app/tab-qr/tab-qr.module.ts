@@ -6,25 +6,25 @@ import { FormsModule } from '@angular/forms';
 import { QRCodeModule } from 'angularx-qrcode';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { HomePageRoutingModule } from './home-routing.module';
-import { HomePage } from './home.page';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
 import { LanguagePopoverComponent } from './language-popover.component';
 import { ManualInstructionsModalComponent } from './manual-instructions-modal.component';
 import { FooterComponent } from '../ui/components/footer/footer.component';
+import { TabQrPageRoutingModule } from './tab-qr-routing.module';
+import { TabQrPage } from './tab-qr.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule,
+    TabQrPageRoutingModule,
     QRCodeModule,
     TranslateModule,
     FooterComponent
   ],
   declarations: [
-    HomePage,
+    TabQrPage,
     HelpModalComponent,
     LanguagePopoverComponent,
     ManualInstructionsModalComponent,
@@ -33,4 +33,5 @@ import { FooterComponent } from '../ui/components/footer/footer.component';
     ModalController
   ]
 })
-export class HomePageModule {}
+export class TabQrPageModule {}
+

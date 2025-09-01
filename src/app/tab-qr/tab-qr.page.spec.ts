@@ -25,15 +25,15 @@ import { LocalStorageService } from '../services/local-storage.service';
 import { ValidationService } from '../services/validation.service';
 import { FileUtilsService } from '../services/file-utils.service';
 import { AlertService } from '../services/alert.service';
-import { HomePage } from './home.page';
+import { TabQrPage } from './tab-qr.page';
 import { environment } from 'src/environments/environment';
 import { LanguagePopoverComponent } from './language-popover.component';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
 import { WindowMockUtil } from 'src/test-utils/window-mock.util';
 
-describe('HomePage', () => {
-  let component: HomePage;
-  let fixture: ComponentFixture<HomePage>;
+describe('TabQrPage', () => {
+  let component: TabQrPage;
+  let fixture: ComponentFixture<TabQrPage>;
   let mockMatchMedia: jasmine.Spy;
 
   beforeEach(async () => {
@@ -1309,4 +1309,5 @@ describe('HomePage', () => {
     });
   });
 });
+
 
