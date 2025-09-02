@@ -34,16 +34,6 @@
       >
         <ion-icon slot="icon-only" name="help"></ion-icon>
       </ion-button>
-      <ion-button
-        class="icon-color"
-        fill="clear"
-        (click)="openLanguagePopover($event)"
-        (keydown.enter)="openLanguagePopover($event)"
-        (keydown.space)="openLanguagePopover($event)"
-      >
-        <ion-icon slot="icon-only" name="language"></ion-icon>
-        {{this.localStorage.selectedLanguage$ | async}}
-      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -150,9 +140,6 @@
       </div>
     </div>
   </ion-card>
-  <div class="ion-text-center" *ngIf="!showAddress">
-    <app-footer></app-footer>
-  </div>
 
   <!-- +++++++++++++++++++++++++ -->
   <!-- E-MAIL ADDRESSE MAINTENANCE -->

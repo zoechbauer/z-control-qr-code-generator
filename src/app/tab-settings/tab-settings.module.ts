@@ -9,6 +9,10 @@ import { TabSettingsPageRoutingModule } from './tab-settings-routing.module';
 import { TabSettingsPage } from './tab-settings.page';
 import { FooterComponent } from "../ui/components/footer/footer.component";
 import { EmailMaintenanceComponent } from '../ui/components/email-maintenance/email-maintenance.component';
+import { LogoComponent } from '../ui/components/logo/logo.component';
+import { PrivacyPolicyComponent } from '../ui/components/privacy-policy/privacy-policy.component';
+import { GetSourceCodeComponent } from '../ui/components/get-source-code/get-source-code.component';
+import { GetMobileAppComponent } from '../ui/components/get-mobile-app/get-mobile-app.component';
 
 @NgModule({
   imports: [
@@ -17,7 +21,11 @@ import { EmailMaintenanceComponent } from '../ui/components/email-maintenance/em
     IonicModule,
     TabSettingsPageRoutingModule,
     TranslateModule,
-    FooterComponent
+    FooterComponent,
+    LogoComponent,
+    PrivacyPolicyComponent,
+    GetSourceCodeComponent,
+    GetMobileAppComponent
 ],
   declarations: [TabSettingsPage, EmailMaintenanceComponent],
   providers: [

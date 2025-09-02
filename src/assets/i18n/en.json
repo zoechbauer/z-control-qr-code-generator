@@ -1,8 +1,21 @@
 {
-  "------ general settings": "-------",
+  "-- TODO remove EMAIL_ADDRESS_BUTTON": "-------",
+
+  "------ settings page": "-------",
+  "SETTINGS": "Settings",
+  "LANGUAGE": "Language",
   "LANGUAGE_EN": "English",
   "LANGUAGE_DE": "German",
   "EMAIL_ADDRESS_BUTTON": "Email Ad",
+  "EMAIL_ADDRESSES": "Email Addresses",
+  "SELECT_LANGUAGE": "Select Language",
+  "FEEDBACK": "Feedback",
+  "FEEDBACK_TO": "Feedback to",
+  "INFORMATIONS": "Informations",
+  "PRIVACY_POLICY": "Privacy Policy",
+  "GET_SOURCE_CODE": "Get Source Code",
+  "INSTALL_MOBILE_APP": "Install Mobile App",
+  "RELEASE_NOTES_INFOS": "You find all new features, improvements and bug fixes of the z-control QR Code Generator app since the start of the testing phase in the Release Notes.",
 
   "------ QR code page": "-------",
   "GENERATE": "Generate",

@@ -1,8 +1,20 @@
 {
   "------ general settings": "-------",
+  "SETTINGS": "Einstellungen",
+  "LANGUAGE": "Sprache",
   "LANGUAGE_EN": "Englisch",
   "LANGUAGE_DE": "Deutsch",
   "EMAIL_ADDRESS_BUTTON": "Mail Adr",
+  "EMAIL_ADDRESSES": "Email Adressen",
+  "SELECT_LANGUAGE": "Sprache auswählen",
+  "FEEDBACK": "Feedback",
+  "FEEDBACK_TO": "Feedback an",
+  "INFORMATIONS": "Informationen",
+  "PRIVACY_POLICY": "Datenschutz-Bestimmungen",
+  "GET_SOURCE_CODE": "Quellcode abrufen",
+  "INSTALL_MOBILE_APP": "Mobile App installieren",
+  "RELEASE_NOTES_INFOS": "Sie finden alle neuen Funktionen, Verbesserungen und Fehlerbehebungen der z-control QR Code Generator-App seit Beginn der Testphase in den Release Notes (in ENGLISCH).",
+
 
   "------ QR code page": "-------",
   "GENERATE": "Generieren",

@@ -1,25 +1,117 @@
-<ion-header>
+<ion-header [class.web-app]="!isNative">
   <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <app-logo [type]="LogoType.Company"></app-logo>
+    </ion-buttons>
     <ion-title>{{ 'SETTINGS' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button
+        class="icon-color"
+        fill="clear"
+        (click)="openHelpModal()"
+        (keydown.enter)="openHelpModal()"
+        (keydown.space)="openHelpModal()"
+      >
+        <ion-icon slot="icon-only" name="help"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- Language Selection -->
-  <ion-item>
-    <ion-label>{{ 'LANGUAGE' | translate }}</ion-label>
-    <ion-select
-      interface="popover"
-      [value]="selectedLanguage"
-      (ionChange)="onLanguageChange($event.detail.value)"
-    >
-      <ion-select-option value="en">English</ion-select-option>
-      <ion-select-option value="de">Deutsch</ion-select-option>
-    </ion-select>
-  </ion-item>
-
-<app-email-maintenance></app-email-maintenance>
-
-  <app-footer></app-footer>
-
+  <ion-accordion-group>
+    <h5 class="ion-text-center">{{'SETTINGS' | translate}}</h5>
+    <ion-accordion value="language">
+      <ion-item slot="header" color="light">
+        <ion-label>{{ 'SELECT_LANGUAGE' | translate }}</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <ion-item>
+          <ion-label>{{ 'LANGUAGE' | translate }}</ion-label>
+          <ion-select
+            interface="popover"
+            [value]="selectedLanguage"
+            (ionChange)="onLanguageChange($event.detail.value)"
+          >
+            <ion-select-option value="en"
+              >{{ 'LANGUAGE_EN' | translate }}</ion-select-option
+            >
+            <ion-select-option value="de"
+              >{{ 'LANGUAGE_DE' | translate }}</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="emails">
+      <ion-item slot="header" color="light" class="accordion-margin-top">
+        <ion-label>{{ 'EMAIL_ADDRESSES' | translate }}</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <app-email-maintenance></app-email-maintenance>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+  <ion-accordion-group>
+    <h5 class="ion-text-center">{{ 'FEEDBACK' | translate }}</h5>
+    <ion-accordion value="z-control">
+      <ion-item slot="header" color="light">
+        <ion-label>{{ 'FEEDBACK_TO' | translate }} z-control</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <app-logo [type]="LogoType.Copyright"></app-logo>
+        <app-footer></app-footer>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+  <ion-accordion-group>
+    <h5 class="ion-text-center">
+      z-control Generator App {{ 'INFORMATIONS' | translate }}
+    </h5>
+    <ion-accordion value="privacy-policy">
+      <ion-item slot="header" color="light">
+        <ion-label>{{ 'PRIVACY_POLICY' | translate }}</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <app-privacy-policy></app-privacy-policy>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="version">
+      <ion-item slot="header" color="light" class="accordion-margin-top">
+        <ion-label>{{ versionInfo }}</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <p>{{ 'RELEASE_NOTES_INFOS' | translate }}</p>
+        <div
+          class="version-info ion-text-center"
+          (click)="openChangelog()"
+          (keydown.enter)="openChangelog()"
+        >
+          <p class="version">{{ versionInfo }}</p>
+          <div class="button-wrapper ion-text-center">
+            <ion-button color="primary">
+              <ion-icon name="list-outline" slot="start"></ion-icon>
+              Release Notes
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="download-mobile-app" *ngIf="!isNative">
+      <ion-item slot="header" color="light" class="accordion-margin-top">
+        <ion-label>{{ 'INSTALL_MOBILE_APP' | translate }}</ion-label>
+      </ion-item>
+      <div class="ion-padding download-mobile-app" slot="content">
+        <app-get-mobile-app></app-get-mobile-app>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="download-source-code">
+      <ion-item slot="header" color="light" class="accordion-margin-top">
+        <ion-label>{{ 'GET_SOURCE_CODE' | translate }}</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <app-get-source-code></app-get-source-code>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
 </ion-content>

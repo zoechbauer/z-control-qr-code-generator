@@ -18,11 +18,11 @@
   import { FileUtilsService } from '../services/file-utils.service';
   import { LocalStorageService } from '../services/local-storage.service';
   import { QrUtilsService } from '../services/qr-utils.service';
-  import { LanguagePopoverComponent } from './language-popover.component';
   import { ValidationService } from '../services/validation.service';
   import { ManualInstructionsModalComponent } from './manual-instructions-modal.component';
   import { environment } from 'src/environments/environment';
   import { AlertService } from '../services/alert.service';
+import { UtilsService } from '../services/utils.service';
   
   enum Toast {
     TrailingBlanksRemoved = 'TOAST_TRAILING_BLANKS_REMOVED',
@@ -68,6 +68,7 @@
       private readonly platform: Platform,
       private readonly alertController: AlertController,
       private readonly alertService: AlertService,
+      private readonly utilsService: UtilsService,
     ) {
       this.setNumberOfRows();
       this.langSub = this.localStorage.selectedLanguage$.subscribe((lang) => {
@@ -162,34 +163,13 @@
       }
     }
   
-    async openLanguagePopover(ev: any) {
-      const popover = await this.popoverController.create({
-        component: LanguagePopoverComponent,
-        event: ev,
-        side: 'left',
-        translucent: true,
-      });
-      return await popover.present();
-    }
-  
     toggleShowAddress() {
       this.showAddress = !this.showAddress;
       this.performClear();
     }
   
     async openHelpModal() {
-      const isDesktop = !Capacitor.isNativePlatform();
-  
-      const modal = await this.modalController.create({
-        component: HelpModalComponent,
-        componentProps: {
-          maxInputLength: this.maxInputLength,
-        },
-        cssClass: isDesktop
-          ? 'manual-instructions-modal desktop'
-          : 'manual-instructions-modal',
-      });
-      return await modal.present();
+      this.utilsService.openHelpModal();
     }
   
     clearInputField(): void {

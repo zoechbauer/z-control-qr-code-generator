@@ -1,0 +1,25 @@
+ion-accordion-group h5 {
+  color: var(--ion-color-primary);
+}
+
+.accordion-margin-top {
+  padding-top: 10px;
+}
+
+.version-info {
+  cursor: pointer;
+
+  .version {
+    font-size: 0.8em;
+    margin: 0px;
+  }
+}
+
+.button-wrapper {
+  text-align: center;
+  margin: 5px 0;
+
+  ion-button {
+    margin: 0 auto;
+  }
+}

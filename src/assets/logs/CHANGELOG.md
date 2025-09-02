@@ -2,6 +2,33 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+## [2.0] – YYYY-MM-DD
+
+### ✨ New Features
+
+- **Refactored Layout:** Introduced a tab-based interface with separate tabs for QR Code generation and Settings.
+- **Centralized Language Selection:** Moved the language selection option from the header to the Settings page for easier access.
+- **Footer Relocation:** The footer component is now part of the Settings page.
+- **Privacy Policy Update:** The privacy policy has been relocated from the user help page to the Settings page.
+- **Source Code Download:** The option to download the source code is now available on the Settings page instead of the user help page.
+- **Mobile App Download:** Added a direct download link for the mobile app to the Settings page in the web application.
+
+### 🚀 Improvements
+
+- …
+
+### 🐛 Fixes
+
+- …
+
+### 🛡 Security
+
+- …
+
+### 📦 Installations
+
+- …
+
 ## [1.19] – 2025-08-31
 
 ### ✨ New Features
