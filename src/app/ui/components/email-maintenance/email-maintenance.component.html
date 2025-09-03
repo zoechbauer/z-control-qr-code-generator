@@ -1,3 +1,85 @@
-<p>
-  email-maintenance works!
-</p>
+
+  <ion-card class="mail-address">
+    <div class="enter-mail-address">
+      <h6 class="ion-text-center">
+        {{'EMAIL_PAGE_ADD_EMAIL_TITLE' | translate}}
+      </h6>
+      <ion-item>
+        <ion-label position="stacked">
+          {{'EMAIL_PAGE_ADD_EMAIL_LABEL' | translate}}
+        </ion-label>
+        <ion-input
+          [(ngModel)]="newEmailAddressValue"
+          type="email"
+          placeholder="{{'EMAIL_PAGE_ADD_EMAIL_PLACEHOLDER' | translate}}"
+        ></ion-input>
+      </ion-item>
+
+      <div class="mail-address-buttons">
+        <div
+          class="button-wrapper"
+          (click)="handleAddEmailAddressButtonClick()"
+          (keydown.enter)="handleAddEmailAddressButtonClick()"
+          (keydown.space)="handleAddEmailAddressButtonClick()"
+        >
+          <ion-button
+            expand="block"
+            [class.pseudo-disabled]="!newEmailAddressValue || !validationService.isValidEmailAddress(newEmailAddressValue)"
+            [disabled]="false"
+          >
+            {{ 'EMAIL_PAGE_ADD_BUTTON' | translate }}
+          </ion-button>
+        </div>
+
+        <div class="buttons-no-add ion-justify-content-around">
+          <ion-button
+            fill="clear"
+            (click)="newEmailAddressValue = '';"
+            (keydown.enter)="newEmailAddressValue = '';"
+            (keydown.space)="newEmailAddressValue = '';"
+            [disabled]="!newEmailAddressValue"
+          >
+            {{ 'CLEAR_INPUT' | translate }}
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+    <div class="saved-emails-section">
+      <h6 class="ion-text-center">
+        {{'EMAIL_PAGE_TITLE' | translate}} <br />
+        {{this.localStorage.savedEmailAddresses.length > 0 ?
+        this.localStorage.savedEmailAddresses.length : ""}}
+      </h6>
+      <div class="email-page-info ion-text-center">
+        {{'EMAIL_PAGE_INFOTEXT' | translate}}
+      </div>
+      <ion-list
+        class="email-list"
+        *ngIf="this.localStorage.savedEmailAddresses.length > 0"
+      >
+        <ion-item
+          class="saved-email-address"
+          *ngFor="let email of this.localStorage.savedEmailAddresses; let i = index"
+        >
+          <ion-label>{{ email }}</ion-label>
+          <ion-button
+            slot="end"
+            fill="clear"
+            (click)="this.localStorage.deleteMailAddress(i)"
+            (keydown.enter)="this.localStorage.deleteMailAddress(i)"
+            (keydown.space)="this.localStorage.deleteMailAddress(i)"
+          >
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+
+      <p
+        class="missing-mails ion-text-center"
+        *ngIf="this.localStorage.savedEmailAddresses.length === 0"
+      >
+        {{'EMAIL_PAGE_NO_EMAIL_ADRESSES' | translate}}
+      </p>
+    </div>
+  </ion-card>

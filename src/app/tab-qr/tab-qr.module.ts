@@ -12,6 +12,7 @@ import { ManualInstructionsModalComponent } from './manual-instructions-modal.co
 import { FooterComponent } from '../ui/components/footer/footer.component';
 import { TabQrPageRoutingModule } from './tab-qr-routing.module';
 import { TabQrPage } from './tab-qr.page';
+import { LogoComponent } from '../ui/components/logo/logo.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { TabQrPage } from './tab-qr.page';
     TabQrPageRoutingModule,
     QRCodeModule,
     TranslateModule,
-    FooterComponent
+    FooterComponent,
+    LogoComponent
   ],
   declarations: [
     TabQrPage,

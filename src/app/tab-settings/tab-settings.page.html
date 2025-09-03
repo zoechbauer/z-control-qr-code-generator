@@ -73,7 +73,7 @@
         <ion-label>{{ 'PRIVACY_POLICY' | translate }}</ion-label>
       </ion-item>
       <div class="ion-padding" slot="content">
-        <app-privacy-policy></app-privacy-policy>
+        <app-privacy-policy [lang]="selectedLanguage"></app-privacy-policy>
       </div>
     </ion-accordion>
     <ion-accordion value="version">
@@ -102,7 +102,7 @@
         <ion-label>{{ 'INSTALL_MOBILE_APP' | translate }}</ion-label>
       </ion-item>
       <div class="ion-padding download-mobile-app" slot="content">
-        <app-get-mobile-app></app-get-mobile-app>
+        <app-get-mobile-app [lang]="selectedLanguage"></app-get-mobile-app>
       </div>
     </ion-accordion>
     <ion-accordion value="download-source-code">
@@ -110,7 +110,7 @@
         <ion-label>{{ 'GET_SOURCE_CODE' | translate }}</ion-label>
       </ion-item>
       <div class="ion-padding" slot="content">
-        <app-get-source-code></app-get-source-code>
+        <app-get-source-code [lang]="selectedLanguage"></app-get-source-code>
       </div>
     </ion-accordion>
   </ion-accordion-group>

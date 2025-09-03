@@ -1,16 +1,45 @@
 <app-logo [type]="LogoType.Copyright"></app-logo>
-<p>
-  The app is <b>open source</b>, and the source code is available on
-  <a
-    class="external-link"
-    href="https://github.com/zoechbauer/z-control-qr-code-generator"
-    target="_blank"
-    rel="noopener noreferrer"
-    >GitHub
-    <ion-icon
-      name="open-outline"
-      style="vertical-align: text-bottom; margin-left: 2px"
-    ></ion-icon> </a
-  >, so you can review how the app works and how your data is handled at any
-  time.
-</p>
+
+<ng-container *ngIf="lang === 'de'; else englishTemplate">
+  <ng-container *ngTemplateOutlet="germanTemplate"></ng-container>
+</ng-container>
+
+<!-- E N G L I S H   T E M P L A T E -->
+
+<ng-template #englishTemplate>
+  <p>
+    The app is <b>open source</b>, and the source code is available on
+    <a
+      class="external-link"
+      href="https://github.com/zoechbauer/z-control-qr-code-generator"
+      target="_blank"
+      rel="noopener noreferrer"
+      >GitHub
+      <ion-icon
+        name="open-outline"
+        style="vertical-align: text-bottom; margin-left: 2px"
+      ></ion-icon> </a
+    >, so you can review how the app works and how your data is handled at any
+    time.
+  </p>
+</ng-template>
+
+<!-- G E R M A N   T E M P L A T E -->
+
+<ng-template #germanTemplate>
+  <p>
+    Die App ist <b>open source</b>, und der Quellcode ist verfügbar unter
+    <a
+      class="external-link"
+      href="https://github.com/zoechbauer/z-control-qr-code-generator"
+      target="_blank"
+      rel="noopener noreferrer"
+      >GitHub
+      <ion-icon
+        name="open-outline"
+        style="vertical-align: text-bottom; margin-left: 2px"
+      ></ion-icon> </a
+    >, sodass Sie jederzeit überprüfen können, wie die App funktioniert und wie
+    Ihre Daten verarbeitet werden.
+  </p>
+</ng-template>

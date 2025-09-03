@@ -1,22 +1,53 @@
-<h3 id="privacy-policy">Privacy Policy</h3>
-    <p>
-      This app does not store any data on a server. All data is stored locally
-      on your device. The app does not use any external services or libraries
-      that share data with third parties. Your data remains private and securely
-      stored on your device.
-    </p>
-    <p>
-      For the complete privacy policy, visit the z-control website
-      <a
-        class="external-link"
-        href="https://z-control-4070.web.app/privacy/basic/en"
-        target="_blank"
-        rel="noopener noreferrer"
-        >Privacy Policy
-        <ion-icon
-          name="open-outline"
-        ></ion-icon>
-      </a>
-      (opens in your browser - switch back to this z-control QR Code Generator
-      app when finished).
-    </p>
+<app-logo [type]="LogoType.Copyright"></app-logo>
+
+<ng-container *ngIf="lang === 'de'; else englishTemplate">
+  <ng-container *ngTemplateOutlet="germanTemplate"></ng-container>
+</ng-container>
+
+<!-- E N G L I S H   T E M P L A T E -->
+
+<ng-template #englishTemplate>
+  <p>
+    This app does not store any data on a server. All data is stored locally on
+    your device. The app does not use any external services or libraries that
+    share data with third parties. Your data remains private and securely stored
+    on your device.
+  </p>
+  <p>
+    For the complete privacy policy, visit the z-control website
+    <a
+      class="external-link"
+      href="https://z-control-4070.web.app/privacy/basic/en"
+      target="_blank"
+      rel="noopener noreferrer"
+      >Privacy Policy
+      <ion-icon name="open-outline"></ion-icon>
+    </a>
+    (opens in your browser - switch back to this z-control QR Code Generator app
+    when finished).
+  </p>
+</ng-template>
+
+<!-- G E R M A N   T E M P L A T E -->
+
+<ng-template #germanTemplate>
+  <p>
+    Diese App speichert keine Daten auf einem Server. Alle Daten werden lokal
+    auf Ihrem Gerät gespeichert. Die App verwendet keine externen Dienste oder
+    Bibliotheken, die Daten mit Dritten teilen. Ihre Daten bleiben privat und
+    sicher auf Ihrem Gerät gespeichert.
+  </p>
+  <p>
+    Für die vollständige Datenschutzerklärung besuchen Sie die z-control-Website
+    <a
+      class="external-link"
+      href="https://z-control-4070.web.app/privacy/basic/de"
+      target="_blank"
+      rel="noopener noreferrer"
+      >Datenschutzerklärung
+      <ion-icon name="open-outline"></ion-icon>
+    </a>
+    (öffnet sich in Ihrem Browser - wechseln Sie zurück zu dieser z-control
+    QR-Code-Generator-App, wenn Sie fertig sind).
+  </p>
+</ng-template>

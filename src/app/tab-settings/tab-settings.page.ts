@@ -4,11 +4,11 @@ import { ModalController } from '@ionic/angular/standalone';
 import { TranslateService } from '@ngx-translate/core';
 import { Capacitor } from '@capacitor/core';
 
+import { LogoType } from '../ui/components/logo/logo.component';
 import { LocalStorageService } from '../services/local-storage.service';
 import { environment } from 'src/environments/environment';
 import { MarkdownViewerComponent } from '../ui/components/markdown-viewer/markdown-viewer.component';
 import { UtilsService } from '../services/utils.service';
-import { LogoType } from '../ui/components/logo/logo.component';
 
 @Component({
   selector: 'app-tab-settings',

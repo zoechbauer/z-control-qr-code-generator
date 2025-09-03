@@ -15,7 +15,11 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 🚀 Improvements
 
-- …
+- Implemented translations in the GetSourceCode, GetMobileApp, and PrivacyPolicy components for a consistent multilingual experience.
+- Created a reusable ToastService for displaying toast notifications in both the QR code and Settings pages.
+- Moved the email maintenance template and logic from the QR code page to the Settings page for better organization.
+- Removed the button logic for switching between QR code creation and email maintenance, simplifying the workflow.
+- Replaced the email button with the z-control logo on the QR code page for a cleaner and more consistent UI.
 
 ### 🐛 Fixes
 

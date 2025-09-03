@@ -1,5 +1,11 @@
 import { NgIf } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 
 export enum LogoType {
   Copyright = 'copyright',
@@ -13,7 +19,7 @@ export enum LogoType {
   standalone: true,
   imports: [NgIf],
 })
-export class LogoComponent {
+export class LogoComponent implements OnInit, OnChanges {
   @Input() type?: LogoType;
   leftLogoText: string = '';
   rightLogoText: string = '';
@@ -23,6 +29,16 @@ export class LogoComponent {
     window.addEventListener('resize', () => {
       this.setLogoText();
     });
+  }
+
+  ngOnInit(): void {
+    this.setLogoText();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['type']) {
+      this.setLogoText();
+    }
   }
 
   private setLogoText(): void {
