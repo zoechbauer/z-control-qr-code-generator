@@ -4,7 +4,7 @@
   "LANGUAGE": "Sprache",
   "LANGUAGE_EN": "Englisch",
   "LANGUAGE_DE": "Deutsch",
-  "EMAIL_ADDRESSES": "Email Adressen verwalten",
+  "EMAIL_ADDRESSES": "E-Mail Adressen verwalten",
   "SELECT_LANGUAGE": "Sprache auswählen",
   "FEEDBACK": "Feedback",
   "FEEDBACK_TO": "Feedback an",
@@ -13,7 +13,6 @@
   "GET_SOURCE_CODE": "Quellcode abrufen",
   "INSTALL_MOBILE_APP": "Mobile App installieren",
   "RELEASE_NOTES_INFOS": "Sie finden alle neuen Funktionen, Verbesserungen und Fehlerbehebungen der z-control QR Code Generator-App seit Beginn der Testphase in den Release Notes (in ENGLISCH).",
-
 
   "------ QR code page": "-------",
   "GENERATE": "Generieren",
@@ -38,13 +37,13 @@
   "TOOLTIP_EMAIL_NO_QR_GENERATED": "Bitte generieren Sie zuerst den QR-Code",
   "TOOLTIP_EMAIL_INVALID_ADDRESS": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
   "TOOLTIP_NAVIGATION_CLEAR_TEXT_TO_SWITCH": "Bitte leeren Sie das Textfeld, bevor Sie zur E-Mail-Verwaltung wechseln",
-  "KEYBOARD_ALERT_TITLE": "Texteingabe-Einschränkung", 
+  "KEYBOARD_ALERT_TITLE": "Texteingabe-Einschränkung",
   "KEYBOARD_ALERT_MESSAGE": "Auf diesem Gerät sind längere Texte schwer zu bearbeiten, da die Tastatur das Eingabefeld verdeckt.\n\nEmpfehlungen:\n• Diese mobile App nur für KURZE Texte verwenden\n• Für LÄNGERE Texte: Web-Version auf Tablet oder PC nutzen\n• Schwebende Tastatur aktivieren (siehe Hilfebereich)",
   "KEYBOARD_ALERT_HELP_KEYBOARD": "Hilfe anzeigen (Schwebende Tastatur)",
   "KEYBOARD_ALERT_HELP_WEB": "Hilfe anzeigen (Web-Version)",
   "KEYBOARD_ALERT_SHORT_TEXT": "Löschen & kurzen Text verwenden",
 
-"------ Clear Input Text Confirmation": "-------",
+  "------ Clear Input Text Confirmation": "-------",
   "CLEAR_CONFIRMATION_HEADER": "Text löschen?",
   "CLEAR_CONFIRMATION_MESSAGE": "Dies löscht den gesamten eingegebenen Text. Fortfahren?",
   "CLEAR_CONFIRMATION_BUTTON": "Löschen",
@@ -82,7 +81,7 @@
   "CANCEL": "Abbrechen",
   "OK": "OK",
 
-    "------ web footer": "-------",
+  "------ web footer": "-------",
   "WEB_FOOTER_Z-CONTROL_FOCUS": "Innovative mobile Lösungen",
   "WEB_FOOTER_COUNTRY": "Österreich",
   "WEB_FOOTER_DOWNLOAD_LINK": "Mobile Version herunterladen",

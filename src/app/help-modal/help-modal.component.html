@@ -77,11 +77,6 @@
           >
         </li>
         <li>
-          <a href="#" (click)="scrollTo('privacy-policy', $event)"
-            >Privacy Policy</a
-          >
-        </li>
-        <li>
           <a
             href="#"
             (click)="scrollTo('print-qr-code', $event)"
@@ -127,10 +122,10 @@
       <li>
         <b>How do I save email addresses for future use?</b>
         <p>
-          Use the "EMAIL AD" option in the header to add, view, or delete saved
-          email addresses. These are stored locally on your device. In the
-          "Select Email app" section, you will find more information on how to
-          manage your email addresses.
+          In the "Settings" tab in the footer, you can add, view, or delete
+          email addresses via the "Manage Email Addresses" option. These are
+          stored locally on your device. For more information on managing your
+          email addresses, see the "Select Email app" section.
         </p>
       </li>
       <li>
@@ -202,8 +197,9 @@
       <li>
         <b>How do I change the app language?</b>
         <p>
-          Tap the language option in the header to switch between English and
-          German. The change takes effect immediately.
+          In the "Settings" tab in the footer, you can use the "Select Language"
+          option to switch between English and German. The change takes effect
+          immediately.
         </p>
       </li>
       <li>
@@ -221,18 +217,6 @@
           pre-filled email body text when sending emails with attachments. This
           is a limitation of those email apps. We recommend using standard email
           apps like Gmail or Outlook for the best experience.
-        </p>
-      </li>
-      <li>
-        <b
-          >Why are the buttons in the title bar sometimes not displayed
-          correctly?</b
-        >
-        <p>
-          In rare cases, the buttons in the title bar may not be displayed
-          correctly. This usually happens if your phone does not have the latest
-          operating system installed. Please perform a system update to ensure
-          the buttons are displayed correctly again.
         </p>
       </li>
       <li>
@@ -277,10 +261,11 @@
       <li>
         <b>How can I provide feedback or contact support?</b>
         <p>
-          You can easily send us your feedback, questions, or suggestions using
-          the email link in the app footer. Simply open the section with the
-          z-control icon and click on the "z-control Support" email address.
-          Your email app will open automatically so you can contact us directly.
+          You can easily send us your feedback, questions, or suggestions via
+          the email link in "Settings". To do so, go to the "Settings" tab in
+          the footer, open "Feedback to z-control", and then click the
+          "z-control Support & Feedback" link. Your email app will open
+          automatically so you can contact us directly.
         </p>
       </li>
     </ol>
@@ -305,13 +290,23 @@
     </p>
 
     <h3 id="how-to-use-the-app">How to use the app?</h3>
+    <h5>App Structure</h5>
+    <p>The app uses two main tabs at the bottom:</p>
+    <ul>
+      <li><b>QR Code:</b> For creating and sending QR codes.</li>
+      <li>
+        <b>Settings:</b> For managing email addresses, changing language, and
+        accessing app info.
+      </li>
+    </ul>
     <h5>Overview</h5>
     <ol>
-      <li>Enter text</li>
-      <li>Generate QR code</li>
-      <li>Email QR code</li>
-      <li>Optionally save Email address(es)</li>
-      <li>Optionally change language (EN / DE)</li>
+      <li>Go to the <b>QR Code</b> tab and enter your text or link.</li>
+      <li>Generate your QR code and send it by email if desired.</li>
+      <li>
+        Switch to the <b>Settings</b> tab to manage email addresses or change
+        the language.
+      </li>
     </ol>
     <h5>Details on generating QR code</h5>
     <ol>
@@ -370,9 +365,9 @@
         </p>
         <b>Content of the Email</b>
         <p>
-          <i>Recipient: </i>The recipient(s) are automatically pre-filled if
-          they were saved using <b>EMAIL AD</b>. Otherwise, they must be
-          entered.
+          <i>Recipient(s): </i>The recipient(s) are automatically pre-filled if
+          you have added them using <b>Settings / Manage Email Addresses</b>.
+          Otherwise, you need to enter them manually.
         </p>
         <p>
           <i>Subject: </i>Generated z-control QR Code of your text with the
@@ -400,36 +395,56 @@
         </p>
       </li>
     </ol>
-    <h5>Details on managing Email addresses</h5>
-    <p>In the <b>header</b> there is the option <b>EMAIL AD</b></p>
+
+    <h5>Details on Managing Email Addresses</h5>
     <p>
-      Here you can switch between QR code creation and Email address management.
-      A switch is only possible if no text has been entered yet.
+      In the <b>Settings</b> section, there is an option called
+      <b>Manage Email Addresses</b>.
     </p>
     <p>
-      All previously saved email addresses are displayed. New email addresses
-      can be added and previously saved email addresses can be deleted.
+      All previously saved email addresses are displayed. You can add new email
+      addresses and delete existing ones.
     </p>
     <p>
-      The input field can be deleted using the <i>Delete input</i> button and
-      the Email address management can be canceled at any time using the
-      <i>Back to QR Code</i>button.
+      You can switch between QR code creation and email address management at
+      any time. The entered QR code data will not be deleted when switching.
     </p>
 
-    <h5>Details on changing the language</h5>
+    <h5>Details on Selected Language and Changing It</h5>
     <p>
-      In the <b>header</b>, the language is displayed on the far right. It is
-      either <b>German (DE)</b> or <b>English (EN)</b> depending on the language
-      set on the phone.
+      The app language is either <b>German</b> or <b>English</b> depending on
+      your device's language setting.
     </p>
     <p>
       If a language other than German or English is set, the app will be
       displayed in English.
     </p>
     <p>
-      The language can be changed by pressing the language selection. The change
-      takes effect immediately.
+      In the <b>Settings</b> section, there is an option <b>Select Language</b>.
+      You can change the language at any time. The change takes effect
+      immediately.
     </p>
+
+    <h5>Details on Feedback to z-control</h5>
+    <p>
+      In the <b>Settings</b> section, you will find the option
+      <b>Feedback to z-control</b>. Open this section and click the "z-control
+      Support & Feedback" link. Your email program will open automatically so
+      you can contact us directly.
+    </p>
+
+    <h5>Details on z-control QR Code Generator App Information</h5>
+    <p>
+      In the <b>Settings</b> section, you will find information on the following
+      topics:
+    </p>
+    <ol>
+      <li>Privacy Policy</li>
+      <li>App version and changes</li>
+      <li>Install mobile app <i>(only shown in the web app)</i></li>
+      <li>Access source code</li>
+    </ol>
+    <p>You will find the description at the respective points.</p>
 
     <h3 id="web-version">Using the Web Version for Longer Texts</h3>
     <p>
@@ -674,33 +689,6 @@
       comfortable typing of longer texts.
     </p>
 
-    <h3 id="privacy-policy">Privacy Policy</h3>
-    <p>
-      This app does not store any data on a server. All data is stored locally
-      on your device. The app does not use any external services or libraries
-      that share data with third parties. Your data remains private and securely
-      stored on your device. For more information, see the app's
-      <a href="#" (click)="scrollTo('technical-info', $event)"
-        >Technical information</a
-      >.
-    </p>
-    <p>
-      For the complete privacy policy, visit the z-control website
-      <a
-        class="external-link"
-        href="https://z-control-4070.web.app/privacy/basic/en"
-        target="_blank"
-        rel="noopener noreferrer"
-        >Privacy Policy
-        <ion-icon
-          name="open-outline"
-          style="vertical-align: text-bottom; margin-left: 2px"
-        ></ion-icon>
-      </a>
-      (opens in your browser - switch back to this z-control QR Code Generator
-      app when finished).
-    </p>
-
     <h3 id="qr-code-explained">QR codes explained</h3>
     <h5>What are QR codes?</h5>
     <p>
@@ -778,21 +766,6 @@
 
     <h3 id="technical-info">Technical information</h3>
     <p>
-      The app is <b>open source</b>, and the source code is available on
-      <a
-        class="external-link"
-        href="https://github.com/zoechbauer/z-control-qr-code-generator"
-        target="_blank"
-        rel="noopener noreferrer"
-        >GitHub
-        <ion-icon
-          name="open-outline"
-          style="vertical-align: text-bottom; margin-left: 2px"
-        ></ion-icon> </a
-      >, so you can review how the app works and how your data is handled at any
-      time.
-    </p>
-    <p>
       <b>Voice input:</b> If you enable voice input in the phone settings, a
       microphone icon will appear on the keyboard. By tapping on this icon, you
       switch to voice input. You can switch flexibly between keyboard and voice
@@ -814,8 +787,9 @@
     </p>
     <p>
       The <b>generated QR code files</b> are attached to the Email and are
-      stored on the phone in the documents folder. After 3 hours or if you
-      restart the app the files are deleted automatically.
+      stored on the phone in the documents folder. Automatic deletion only
+      occurs while the app is open—no background service runs. After 3 hours or
+      when the app restarts, they are automatically deleted.
     </p>
     <p>
       The <b>QR code file names</b> contain the text <i>qrcode</i> and the
@@ -916,11 +890,6 @@
           >
         </li>
         <li>
-          <a href="#" (click)="scrollTo('privacy-policy-DE', $event)"
-            >Datenschutz</a
-          >
-        </li>
-        <li>
           <a href="#" (click)="scrollTo('qr-code-explained-DE', $event)"
             >QR Code kurz erklärt</a
           >
@@ -948,10 +917,11 @@
       <li>
         <b>Wie speichere ich E-Mail-Adressen für die spätere Verwendung?</b>
         <p>
-          Über die Option „MAIL ADR“ in der Kopfzeile können Sie E-Mail-Adressen
-          hinzufügen, anzeigen oder löschen. Diese werden lokal auf Ihrem Gerät
-          gespeichert. Im Abschnitt „Mailprogramm auswählen“ finden Sie weitere
-          Informationen zur Verwaltung Ihrer E-Mail-Adressen.
+          Über den Tab "Einstellungen" in der Fußzeile können Sie über den Punkt
+          "Email Adressen verwalten" E-Mail-Adressen hinzufügen, anzeigen oder
+          löschen. Diese werden lokal auf Ihrem Gerät gespeichert. Im Abschnitt
+          „Mailprogramm auswählen“ finden Sie weitere Informationen zur
+          Verwaltung Ihrer E-Mail-Adressen.
         </p>
       </li>
       <li>
@@ -1026,8 +996,9 @@
       <li>
         <b>Wie ändere ich die App-Sprache?</b>
         <p>
-          Über die Sprachauswahl in der Kopfzeile können Sie zwischen Deutsch
-          und Englisch wechseln. Die Änderung wird sofort wirksam.
+          Über den Tab "Einstellungen" in der Fußzeile können Sie über den Punkt
+          "Sprache auswählen" zwischen Deutsch und Englisch wechseln. Die
+          Änderung wird sofort wirksam.
         </p>
       </li>
       <li>
@@ -1040,29 +1011,13 @@
         </p>
       </li>
       <li>
-        <b
-          >Warum fehlt der E-Mail-Text, wenn ich einen QR Code
-          versende?</b
-        >
+        <b>Warum fehlt der E-Mail-Text, wenn ich einen QR Code versende?</b>
         <p>
           Einige E-Mail-Apps von Drittanbietern (wie Bluemail) zeigen den
           vorbefüllten E-Mail-Text beim Versand von E-Mails mit Anhängen
           möglicherweise nicht an. Dies ist eine Einschränkung dieser
           E-Mail-Programme. Für die beste Erfahrung empfehlen wir die Verwendung
           von Standard-Mailprogrammen wie Gmail oder Outlook.
-        </p>
-      </li>
-      <li>
-        <b
-          >Warum werden die Schaltflächen in der Titelleiste manchmal nicht
-          richtig angezeigt?</b
-        >
-        <p>
-          In seltenen Fällen kann es vorkommen, dass die Schaltflächen in der
-          Titelleiste nicht korrekt dargestellt werden. Dies passiert meist,
-          wenn auf Ihrem Handy kein aktuelles Betriebssystem installiert ist.
-          Bitte führen Sie ein Systemupdate durch, damit die Schaltflächen
-          wieder korrekt angezeigt werden.
         </p>
       </li>
       <li>
@@ -1111,10 +1066,11 @@
         <b>Wie kann ich Feedback geben oder den Support kontaktieren?</b>
         <p>
           Sie können uns Ihr Feedback, Ihre Fragen oder Anregungen ganz einfach
-          über den E-Mail-Link im App-Footer senden. Öffnen Sie dazu den Bereich
-          mit dem z-control-Icon und klicken Sie auf die E-Mail-Adresse
-          „z-control Support“. Ihr E-Mail-Programm öffnet sich automatisch,
-          sodass Sie uns direkt kontaktieren können.
+          über den E-Mail-Link in den "Einstellungen" senden. Wechseln Sie dazu
+          zum Tab "Einstellungen" in der Fußzeile, öffnen Sie "Feedback an
+          z-control" und klicken Sie dann auf den Link "z-control Support &
+          Feedback". Ihr E-Mail-Programm öffnet sich automatisch, sodass Sie uns
+          direkt kontaktieren können.
         </p>
       </li>
     </ol>
@@ -1140,15 +1096,31 @@
     </p>
 
     <h3 id="how-to-use-the-app-DE">Wie bediene ich die App?</h3>
+    <h5>App-Struktur</h5>
+    <p>Die App verwendet zwei Haupt-Tabs am unteren Bildschirmrand:</p>
+    <ul>
+      <li><b>QR Code:</b> Zum Erstellen und Versenden von QR Codes.</li>
+      <li>
+        <b>Einstellungen:</b> Zum Verwalten von E-Mail-Adressen, Ändern der
+        Sprache und Anzeigen von App-Informationen.
+      </li>
+    </ul>
     <h5>Überblick</h5>
     <ol>
-      <li>Text erfassen</li>
-      <li>QR Code generieren</li>
-      <li>QR Code mailen</li>
-      <li>Optional Mailadresse(n) erfassen</li>
-      <li>Optional Sprache ändern (EN / DE)</li>
+      <li>
+        Wechseln Sie zum Tab <b>QR Code</b> und geben Sie Ihren Text oder Link
+        ein.
+      </li>
+      <li>
+        Generieren Sie Ihren QR Code und versenden Sie ihn bei Bedarf per
+        E-Mail.
+      </li>
+      <li>
+        Wechseln Sie zum Tab <b>Einstellungen</b>, um E-Mail-Adressen zu
+        verwalten oder die Sprache zu ändern.
+      </li>
     </ol>
-    <h5>Detail-Informationen zu QR Code generieren</h5>
+    <h5>Details zu QR Code generieren</h5>
     <ol>
       <li>
         <p>
@@ -1208,8 +1180,9 @@
         <b>Inhalt der E-Mail</b>
         <p>
           <i>Empfänger: </i>Der oder die Empfänger werden automatisch vorbelegt,
-          wenn sie mittels <b>MAIL ADR</b> angelegt wurden. Sonst müssen sie
-          erfasst werden.
+          wenn sie mittels
+          <b>Einstellungen / E-Mail Adressen verwalten</b> angelegt wurden.
+          Sonst müssen sie erfasst werden.
         </p>
         <p>
           <i>Betreff: </i>Generierter z-control QR-Code Ihres Textes mit Angabe
@@ -1237,12 +1210,10 @@
         </p>
       </li>
     </ol>
-    <h5>Detail-Informationen zu E-Mail Adressen verwalten</h5>
-    <p>In der <b>Kopfzeile</b> gibt es die Auswahl <b>MAIL ADR</b></p>
+    <h5>Details zu E-Mail Adressen verwalten</h5>
     <p>
-      Hier kann zwischen QR Code Erstellung und E-Mail-Adressenverwaltung
-      gewechselt werden. Ein Wechsel ist aber
-      <b>nur möglich wenn noch kein Text erfasst</b> wurde.
+      In den <b>Einstellungen</b> gibt es die Auswahl
+      <b>E-Mail Adressen verwalten</b>
     </p>
     <p>
       Es werden alle bereits erfassten E-Mail-Adressen angezeigt. Es können neue
@@ -1250,26 +1221,47 @@
       gelöscht werden.
     </p>
     <p>
-      Das Eingabefeld kann mittels Schaltfläche
-      <i>Eingabe löschen</i> gelöscht werden und mittels Schaltfläche
-      <i>Zurück zu QR Code</i>
-      kann die Mailadressenverwaltung jederzeit abgebrochen werden.
+      Sie können jederzeit zwischen der QR Code Erstellung und der
+      E-Mail-Adressenverwaltung wechseln. Die erfassten QR Code Daten werden
+      beim Wechseln nicht gelöscht.
     </p>
 
-    <h5>Detail-Informationen zu Sprache ändern</h5>
+    <h5>Details zur ausgewählten Sprache und Änderung</h5>
     <p>
-      In der <b>Kopfzeile</b> wird ganz rechts die Sprache angezeigt. Diese ist
-      entweder <b>Deutsch (DE)</b> oder <b>Englisch (EN)</b> je nachdem welche
-      Sprache am Handy eingestellt wurde.
+      Die verwendete Sprache ist entweder <b>Deutsch</b> oder <b>Englisch</b> je
+      nachdem welche Sprache am Handy eingestellt wurde.
     </p>
     <p>
       Wurde eine andere Sprache als Deutsch oder Englisch eingestellt, wird die
       App in Englisch angezeigt.
     </p>
     <p>
-      Die Sprache kann durch Drücken auf die Sprachauswahl geändert werden. Die
-      Änderung wird sofort wirksam.
+      In den <b>Einstellungen</b> gibt es die Auswahl <b>Sprache auswählen</b>.
+      Dort können Sie jederzeit die Sprache ändern. Die Änderun ist sofort
+      wirksam.
     </p>
+
+    <h5>Details zu Feedback an z-control</h5>
+    <p>
+      In den <b>Einstellungen</b> finden Sie die Option
+      <b>Feedback an z-control</b>. Öffnen Sie diesen Bereich und klicken Sie
+      auf den Link „z-control Support & Feedback“. Ihr E-Mail-Programm öffnet
+      sich automatisch, sodass Sie uns direkt kontaktieren können.
+    </p>
+
+    <h5>Details zu z-control QR Code Generator App Informationen</h5>
+    <p>
+      In den <b>Einstellungen</b> finden Sie Informationen zu folgenden Themen:
+    </p>
+    <ol>
+      <li>Datenschutz-Bestimmungen</li>
+      <li>Version der App und Änderungen</li>
+      <li>
+        Mobile App installieren <i>(wird nur in der Web App angezeigt)</i>
+      </li>
+      <li>Quellcode abrufen</li>
+    </ol>
+    <p>Die Beschreibung finden Sie bei den jeweiligen Punkten.</p>
 
     <h3 id="web-version-DE">Web-Version für längere Texte verwenden</h3>
     <p>
@@ -1545,35 +1537,6 @@
       oder PC für komfortables Tippen längerer Texte.
     </p>
 
-    <h3 id="privacy-policy-DE">Datenschutz</h3>
-    <p>
-      Diese App speichert keine Daten auf einem Server. Alle Daten werden lokal
-      auf Ihrem Gerät gespeichert. Die App verwendet keine externen Dienste oder
-      Bibliotheken, die Daten an Dritte weitergeben. Ihre Daten bleiben privat
-      und sicher auf Ihrem Gerät gespeichert. Weitere Informationen finden Sie
-      auf dieser Seite unter
-      <a href="#" (click)="scrollTo('technical-info-DE', $event)"
-        >Technische Informationen</a
-      >
-    </p>
-    <p>
-      Die vollständige Datenschutzerklärung finden Sie auf der z-control Website
-      unter
-      <a
-        class="external-link"
-        href="https://z-control-4070.web.app/privacy/basic/de"
-        target="_blank"
-        rel="noopener noreferrer"
-        >Datenschutzerklärung
-        <ion-icon
-          name="open-outline"
-          style="vertical-align: text-bottom; margin-left: 2px"
-        ></ion-icon>
-      </a>
-      (öffnet sich in Ihrem Browser - wechseln Sie nach dem Lesen zurück zu
-      dieser z-control QR Code Generator App).
-    </p>
-
     <h3 id="qr-code-explained-DE">QR Code kurz erklärt</h3>
     <h5>Was sind QR Codes?</h5>
     <p>
@@ -1653,22 +1616,6 @@
 
     <h3 id="technical-info-DE">Technische Informationen</h3>
     <p>
-      Die App ist <b>Open Source</b> und der Quellcode ist auf
-      <a
-        class="external-link"
-        href="https://github.com/zoechbauer/z-control-qr-code-generator"
-        target="_blank"
-        rel="noopener noreferrer"
-        >GitHub
-        <ion-icon
-          name="open-outline"
-          style="vertical-align: text-bottom; margin-left: 2px"
-        ></ion-icon>
-      </a>
-      verfügbar, sodass Sie die Funktionsweise der App und den Umgang mit Ihren
-      Daten jederzeit überprüfen können.
-    </p>
-    <p>
       <b>Spracheingabe:</b> Wenn Sie in den Handy-Einstellungen die
       Spracheingabe aktivieren, erscheint im Tastaturfeld ein Mikrofon-Symbol.
       Durch Tippen auf dieses Symbol wechseln Sie zur Spracheingabe. Sie können
@@ -1690,8 +1637,10 @@
     </p>
     <p>
       Die <b>generierten QR Code Dateien</b> werden dem E-Mail als Anhang
-      übergeben und im Handy im Documents Ordner temporär gespeichert. Nach 3
-      Stunden oder wenn Sie die App neu starten werden sie automatisch gelöscht.
+      übergeben und im Handy im Ordner "Dokumente" temporär gespeichert. Die
+      automatische Löschung erfolgt jedoch nur, solange die App geöffnet ist –
+      es läuft kein Hintergrunddienst. Nach 3 Stunden oder beim Neustart der App
+      werden sie automatisch gelöscht.
     </p>
     <p>
       Die <b>QR Code Datei Namen</b> enthalten den Text <i>qrcode</i> und den
