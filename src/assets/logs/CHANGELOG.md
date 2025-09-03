@@ -20,6 +20,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 - Moved the email maintenance template and logic from the QR code page to the Settings page for better organization.
 - Removed the button logic for switching between QR code creation and email maintenance, simplifying the workflow.
 - Replaced the email button with the z-control logo on the QR code page for a cleaner and more consistent UI.
+- The accordion header now displays the current count of stored email addresses for easier overview.
 
 ### 🐛 Fixes
 

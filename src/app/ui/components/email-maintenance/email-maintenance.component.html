@@ -48,19 +48,18 @@
     <div class="saved-emails-section">
       <h6 class="ion-text-center">
         {{'EMAIL_PAGE_TITLE' | translate}} <br />
-        {{this.localStorage.savedEmailAddresses.length > 0 ?
-        this.localStorage.savedEmailAddresses.length : ""}}
+        {{ ((localStorage?.savedEmailAddresses$ | async)?.length || 0) > 0 ? (localStorage?.savedEmailAddresses$ | async)?.length : '' }}
       </h6>
       <div class="email-page-info ion-text-center">
         {{'EMAIL_PAGE_INFOTEXT' | translate}}
       </div>
       <ion-list
         class="email-list"
-        *ngIf="this.localStorage.savedEmailAddresses.length > 0"
+        *ngIf="((localStorage?.savedEmailAddresses$ | async)?.length || 0) > 0"
       >
         <ion-item
           class="saved-email-address"
-          *ngFor="let email of this.localStorage.savedEmailAddresses; let i = index"
+          *ngFor="let email of (localStorage?.savedEmailAddresses$ | async); let i = index"
         >
           <ion-label>{{ email }}</ion-label>
           <ion-button
@@ -77,7 +76,7 @@
 
       <p
         class="missing-mails ion-text-center"
-        *ngIf="this.localStorage.savedEmailAddresses.length === 0"
+        *ngIf="((localStorage?.savedEmailAddresses$ | async)?.length || 0) === 0"
       >
         {{'EMAIL_PAGE_NO_EMAIL_ADRESSES' | translate}}
       </p>

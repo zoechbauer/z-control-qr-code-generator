@@ -14,6 +14,9 @@ enum LocalStorage {
 })
 export class LocalStorageService {
   savedEmailAddresses: string[] = [];
+  savedEmailAddressesSubject = new BehaviorSubject<string[]>([]);
+  savedEmailAddresses$ = this.savedEmailAddressesSubject.asObservable();
+  
   selectedLanguageSubject = new BehaviorSubject<string>(
     this.getMobileDefaultLanguage()
   );
@@ -71,7 +74,10 @@ export class LocalStorageService {
     );
     if (emailAddresses) {
       this.savedEmailAddresses = JSON.parse(emailAddresses);
+    } else {
+      this.savedEmailAddresses = [];
     }
+    this.savedEmailAddressesSubject.next(this.savedEmailAddresses);
   }
 
   async deleteMailAddress(index: number) {
@@ -81,6 +87,7 @@ export class LocalStorageService {
         LocalStorage.SavedEmailAddresses,
         JSON.stringify(this.savedEmailAddresses)
       );
+      this.savedEmailAddressesSubject.next(this.savedEmailAddresses);
     }
   }
 
@@ -97,6 +104,7 @@ export class LocalStorageService {
           LocalStorage.SavedEmailAddresses,
           JSON.stringify(this.savedEmailAddresses)
         );
+        this.savedEmailAddressesSubject.next(this.savedEmailAddresses);
       }
     } catch (error) {
       console.error('Error saving email:', error);

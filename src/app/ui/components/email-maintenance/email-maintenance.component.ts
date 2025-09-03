@@ -9,8 +9,7 @@ import { ValidationService } from 'src/app/services/validation.service';
   templateUrl: './email-maintenance.component.html',
   styleUrls: ['./email-maintenance.component.scss'],
 })
-export class EmailMaintenanceComponent {
-  showAddress: boolean = false;
+export class EmailMaintenanceComponent implements OnInit {
   newEmailAddressValue: string = '';
 
   constructor(
@@ -18,6 +17,10 @@ export class EmailMaintenanceComponent {
     public localStorage: LocalStorageService,
     public toastService: ToastService
   ) {}
+
+  ngOnInit() {
+    this.localStorage.init();
+  }
 
   handleAddEmailAddressButtonClick() {
     if (

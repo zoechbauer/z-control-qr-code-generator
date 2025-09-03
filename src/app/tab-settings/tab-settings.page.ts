@@ -22,7 +22,7 @@ export class TabSettingsPage implements OnDestroy {
 
   constructor(
     public translate: TranslateService,
-    private readonly localStorage: LocalStorageService,
+    public readonly localStorage: LocalStorageService,
     private readonly modalController: ModalController,
     private readonly utilsService: UtilsService,
   ) {
