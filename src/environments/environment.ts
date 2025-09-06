@@ -22,9 +22,9 @@ export const environment = {
 
   // version info
   version: {
-    major: 1,
-    minor: 19,
-    date: '2025-08-31',
+    major: 2,
+    minor: 0,
+    date: '2025-09-06',
   },
 };
 
