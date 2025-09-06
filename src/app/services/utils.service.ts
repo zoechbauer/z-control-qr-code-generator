@@ -29,6 +29,11 @@ export class UtilsService {
     return isMobileWidth && this.isPortrait;
   }
 
+    get isSmallDevice(): boolean {
+    const isMobileHeight = window.innerHeight <= 640;
+    return isMobileHeight && this.isPortrait;
+  }
+
   get isDesktop(): boolean {
     return !Capacitor.isNativePlatform();
   }

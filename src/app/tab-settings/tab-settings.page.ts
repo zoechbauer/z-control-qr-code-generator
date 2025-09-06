@@ -24,7 +24,7 @@ export class TabSettingsPage implements OnInit, OnDestroy {
   constructor(
     public translate: TranslateService,
     public readonly localStorage: LocalStorageService,
-    private readonly utilsService: UtilsService
+    public readonly utilsService: UtilsService
   ) {}
 
   ngOnInit() {
@@ -67,15 +67,11 @@ export class TabSettingsPage implements OnInit, OnDestroy {
 
   onAccordionGroupChange(event: CustomEvent, content: IonContent) {
     const value = event.detail.value;
-    if (
-      value === 'download-source-code' ||
-      value === 'version' ||
-      value === 'privacy-policy'
-    ) {
-      setTimeout(() => {
-        content.scrollToBottom();
-      }, 300);
-    }
+    const ms = value === 'z-control' ? 300 : 150;
+
+    setTimeout(() => {
+        this.utilsService.scrollToElement(value);
+      }, ms);
   }
 
   onLanguageChange(lang: string) {

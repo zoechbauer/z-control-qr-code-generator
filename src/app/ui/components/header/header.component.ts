@@ -40,8 +40,8 @@ export class HeaderComponent {
 
   constructor(
     public translate: TranslateService,
-    private readonly router: Router,
-    private readonly utilsService: UtilsService
+    public readonly utilsService: UtilsService,
+    private readonly router: Router
   ) {}
 
   get isNative(): boolean {

@@ -1,6 +1,6 @@
 <app-header [currentTab]="Tab.Qr"></app-header>
-<ion-content>
-  <ion-card class="qr-code" [class.landscape]="!utilsService.isPortrait">
+<ion-content class="qr-code-content" [class.landscape]="!utilsService.isPortrait">
+  <ion-card class="qr-code">
     <ion-card-header>
       <ion-card-title class="ion-text-center"
         >{{'CREATE_QR_CODE' | translate}}</ion-card-title
@@ -64,7 +64,7 @@
 
       <div
         class="no-generation-buttons ion-justify-content-around"
-        [class.small-screen-hidden]="utilsService.isSmallScreen && !qrService.isQrCodeGenerated"
+        [class.small-screen-hidden]="utilsService.isSmallDevice && !qrService.isQrCodeGenerated"
       >
         <div
           class="button-wrapper"

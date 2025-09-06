@@ -1,26 +1,28 @@
-ion-accordion-group h5 {
-  color: var(--ion-color-primary);
-  font-size: 0.8em;
-}
-
-.accordion-margin-top {
-  padding-top: 10px;
-}
-
-.version-info {
-  cursor: pointer;
-
-  .version {
+.qr-settings-content {
+  ion-accordion-group h5 {
+    color: var(--ion-color-primary);
     font-size: 0.8em;
-    margin: 0px;
   }
-}
 
-.button-wrapper {
-  text-align: center;
-  margin: 5px 0;
+  .accordion-margin-top {
+    padding-top: 10px;
+  }
 
-  ion-button {
-    margin: 0 auto;
+  .version-info {
+    cursor: pointer;
+
+    .version {
+      font-size: 0.8em;
+      margin: 0px;
+    }
+  }
+
+  .button-wrapper {
+    text-align: center;
+    margin: 5px 0;
+
+    ion-button {
+      margin: 0 auto;
+    }
   }
 }

@@ -28,7 +28,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 🐛 Fixes
 
-- …
+- The QR Code, Settings, user help, and Release Notes pages now consistently avoid overlapping the navigation bar for improved visual clarity.
 
 ### 🛡 Security
 

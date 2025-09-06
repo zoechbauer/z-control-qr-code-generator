@@ -1,10 +1,11 @@
 <app-header [currentTab]="Tab.Settings"></app-header>
-<ion-content #content>
-  <ion-accordion-group  [value]="openAccordion"
+<ion-content #content class="qr-settings-content" [class.landscape]="!utilsService.isPortrait">
+  <ion-accordion-group
+    [value]="openAccordion"
     (ionValueChange)="onAccordionGroupChange($event, content)"
   >
     <h5 class="ion-text-center">{{'SETTINGS' | translate}}</h5>
-    <ion-accordion value="language">
+    <ion-accordion value="language" id="language">
       <ion-item slot="header" color="light">
         <ion-label>{{ 'SELECT_LANGUAGE' | translate }}</ion-label>
       </ion-item>
@@ -26,7 +27,7 @@
         </ion-item>
       </div>
     </ion-accordion>
-    <ion-accordion value="emails">
+    <ion-accordion value="emails" id="emails">
       <ion-item slot="header" color="light" class="accordion-margin-top">
         <ion-label
           >{{ 'EMAIL_ADDRESSES' | translate }} [{{
@@ -40,7 +41,7 @@
     </ion-accordion>
 
     <h5 class="ion-text-center">{{ 'FEEDBACK' | translate }}</h5>
-    <ion-accordion value="z-control">
+    <ion-accordion value="z-control" id="z-control">
       <ion-item slot="header" color="light">
         <ion-label>{{ 'FEEDBACK_TO' | translate }} z-control</ion-label>
       </ion-item>
@@ -53,7 +54,7 @@
     <h5 class="ion-text-center">
       z-control QR Code Generator App<br />{{ 'INFORMATIONS' | translate }}
     </h5>
-    <ion-accordion value="privacy-policy">
+    <ion-accordion value="privacy-policy" id="privacy-policy">
       <ion-item slot="header" color="light">
         <ion-label>{{ 'PRIVACY_POLICY' | translate }}</ion-label>
       </ion-item>
@@ -61,7 +62,7 @@
         <app-privacy-policy [lang]="selectedLanguage"></app-privacy-policy>
       </div>
     </ion-accordion>
-    <ion-accordion value="version">
+    <ion-accordion value="version" id="version">
       <ion-item slot="header" color="light" class="accordion-margin-top">
         <ion-label>{{ versionInfo }}</ion-label>
       </ion-item>
@@ -82,7 +83,11 @@
         </div>
       </div>
     </ion-accordion>
-    <ion-accordion value="download-mobile-app" *ngIf="!isNative">
+    <ion-accordion
+      value="download-mobile-app"
+      id="download-mobile-app"
+      *ngIf="!isNative"
+    >
       <ion-item slot="header" color="light" class="accordion-margin-top">
         <ion-label>{{ 'INSTALL_MOBILE_APP' | translate }}</ion-label>
       </ion-item>
@@ -90,7 +95,7 @@
         <app-get-mobile-app [lang]="selectedLanguage"></app-get-mobile-app>
       </div>
     </ion-accordion>
-    <ion-accordion value="download-source-code">
+    <ion-accordion value="download-source-code" id="download-source-code">
       <ion-item slot="header" color="light" class="accordion-margin-top">
         <ion-label>{{ 'GET_SOURCE_CODE' | translate }}</ion-label>
       </ion-item>

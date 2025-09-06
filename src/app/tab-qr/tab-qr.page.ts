@@ -255,17 +255,19 @@ export class TabQrPage implements OnInit, OnDestroy {
         });
     } else {
       // Valid input, generate QR code
-      this.generateMarginForButtonsIfNeeded();
       this.sanitizeInputAndGenerateQRCode(this.qrDataInput.value);
       this.showWorkflowStep(Workflow.StepGenerate);
+      this.generateMarginForButtonsIfNeeded();
     }
   }
 
   private generateMarginForButtonsIfNeeded(): void {
-    const isSmallScreen = this.utilsService.isSmallScreen;
-    if (isSmallScreen) return;
+    const isSmallDevice = this.utilsService.isSmallDevice;
+    console.log('isSmallDevice:', isSmallDevice);
+    if (isSmallDevice) return;
 
     const element = document.querySelector('.no-generation-buttons');
+    console.log('element:', element);
     if (!element?.classList.contains('extra-margin-bottom')) {
       element?.classList.add('extra-margin-bottom');
     }
@@ -536,7 +538,7 @@ export class TabQrPage implements OnInit, OnDestroy {
     this.showWorkflowStepGenerate(currentText);
 
     // Check for keyboard alert on Galaxy J5 or smaller mobiles
-    if (this.utilsService.isSmallScreen && !this.hasShownKeyboardAlert) {
+    if (this.utilsService.isSmallDevice && !this.hasShownKeyboardAlert) {
       if (this.shouldShowKeyboardAlert(currentText)) {
         setTimeout(() => {
           this.showKeyboardAlert();

@@ -60,7 +60,7 @@ ion-header {
     }
   }
 }
-  
+
 ion-tab-bar {
   padding-bottom: env(safe-area-inset-bottom, 44px);
   display: flex;
@@ -93,24 +93,43 @@ ion-header ion-toolbar:first-of-type {
   }
 }
 
-// modal border styling using CSS custom properties
+.app-header,
+.qr-code-content,
+.qr-settings-content {
+  &.landscape {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+
+    // content ends horizontally before navigation bar in landscape mode
+    max-width: calc(100vw - env(safe-area-inset-right, 44px)) !important;
+    overflow-x: auto !important;
+  }
+}
+
+.change-log-modal,
 .manual-instructions-modal {
   --border-width: 2px;
   --border-style: solid;
   --border-color: var(--ion-color-medium);
   --border-radius: 10px;
 
+  // Modal ends vertically above navigation bar in portrait mode
+  max-height: calc(100vh - env(safe-area-inset-bottom, 44px)) !important;
+  overflow-y: auto !important;
+
+  // Modal ends horizontally before navigation bar in landscape mode
+  max-width: calc(100vw - env(safe-area-inset-right, 44px)) !important;
+  overflow-x: auto !important;
+
   &:has(app-help-modal) {
     --border-width: 0;
   }
-}
 
-
-// height of help page & release notes in web app
-.change-log-modal.desktop,
-.manual-instructions-modal.desktop {
-  --height: 90vh;
-  --max-height: 90vh;
+  // height of help page & release notes in web app
+  &.desktop {
+    --height: 90vh;
+    --max-height: 90vh;
+  }
 }
 
 // alert border styling - must be global like modal
