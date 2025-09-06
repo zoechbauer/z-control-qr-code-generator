@@ -3,6 +3,7 @@ import { ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Toast } from '../enums';
+import { UtilsService } from './utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,8 @@ import { Toast } from '../enums';
 export class ToastService {
   constructor(
     public translate: TranslateService,
-    private readonly toastController: ToastController
+    private readonly toastController: ToastController,
+    private readonly utilsService: UtilsService
   ) {}
 
   async showDisabledToast(toastMsg: string) {
@@ -72,8 +74,10 @@ export class ToastService {
   }
 
   private getToastPosition(): 'top' | 'bottom' {
-    // return this.isKeyboardOpen ? 'top' : 'bottom';
-    // always on top to avoid covering by navigation bar
+    if (this.utilsService.isDesktop) {
+      return 'bottom';
+    }
+    // On mobile devices, display toast at the top to prevent it from being obscured by the navigation bar.
     return 'top';
   }
 }

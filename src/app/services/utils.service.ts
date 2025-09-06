@@ -29,7 +29,7 @@ export class UtilsService {
     return isMobileWidth && this.isPortrait;
   }
 
-  private get isDesktop(): boolean {
+  get isDesktop(): boolean {
     return !Capacitor.isNativePlatform();
   }
 

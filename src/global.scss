@@ -62,7 +62,7 @@ ion-header {
 }
   
 ion-tab-bar {
-  padding-bottom: env(safe-area-bottom, 44px);
+  padding-bottom: env(safe-area-inset-bottom, 44px);
   display: flex;
 
   &.hide-ion-tab-bar {

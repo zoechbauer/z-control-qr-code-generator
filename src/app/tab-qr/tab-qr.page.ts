@@ -255,13 +255,19 @@ export class TabQrPage implements OnInit, OnDestroy {
         });
     } else {
       // Valid input, generate QR code
-      const element = document.querySelector('.no-generation-buttons');
-      if (!element?.classList.contains('extra-margin-bottom')) {
-        element?.classList.add('extra-margin-bottom');
-      }
-
+      this.generateMarginForButtonsIfNeeded();
       this.sanitizeInputAndGenerateQRCode(this.qrDataInput.value);
       this.showWorkflowStep(Workflow.StepGenerate);
+    }
+  }
+
+  private generateMarginForButtonsIfNeeded(): void {
+    const isSmallScreen = this.utilsService.isSmallScreen;
+    if (isSmallScreen) return;
+
+    const element = document.querySelector('.no-generation-buttons');
+    if (!element?.classList.contains('extra-margin-bottom')) {
+      element?.classList.add('extra-margin-bottom');
     }
   }
 
