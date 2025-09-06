@@ -84,5 +84,11 @@ export class QrUtilsService {
     this.isQrCodeGenerated = false;
     this.qrCodeDownloadLink = '';
     this.myAngularxQrCode = '';
+
+    // remove class
+    const element = document.querySelector('.no-generation-buttons');
+    if (element?.classList.contains('extra-margin-bottom')) {
+      element.classList.remove('extra-margin-bottom');
+    }
   }
 }

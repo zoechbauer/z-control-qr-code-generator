@@ -1,40 +1,81 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ModalController } from '@ionic/angular/standalone';
 import { TranslateService } from '@ngx-translate/core';
 import { Capacitor } from '@capacitor/core';
+import { IonContent } from '@ionic/angular';
 
-import { LogoType } from '../ui/components/logo/logo.component';
 import { LocalStorageService } from '../services/local-storage.service';
 import { environment } from 'src/environments/environment';
-import { MarkdownViewerComponent } from '../ui/components/markdown-viewer/markdown-viewer.component';
 import { UtilsService } from '../services/utils.service';
+import { LogoType, Tab } from '../enums';
 
 @Component({
   selector: 'app-tab-settings',
   templateUrl: './tab-settings.page.html',
   styleUrls: ['./tab-settings.page.scss'],
 })
-export class TabSettingsPage implements OnDestroy {
+export class TabSettingsPage implements OnInit, OnDestroy {
+  public openAccordion: string | null = null;
   selectedLanguage?: string;
   LogoType = LogoType;
-  private readonly langSub?: Subscription;
+  Tab = Tab;
+  private readonly subscriptions: Subscription[] = [];
 
   constructor(
     public translate: TranslateService,
     public readonly localStorage: LocalStorageService,
-    private readonly modalController: ModalController,
-    private readonly utilsService: UtilsService,
-  ) {
-    this.langSub = this.localStorage.selectedLanguage$.subscribe((lang) => {
-      this.translate.use(lang);
-      this.translate.setDefaultLang(lang);
-      this.selectedLanguage = lang;
+    private readonly utilsService: UtilsService
+  ) {}
+
+  ngOnInit() {
+    this.utilsService.showOrHideIonTabBar();
+    this.setupEventListeners();
+    this.setupSubscriptions();
+  }
+
+  private setupSubscriptions() {
+    this.subscriptions.push(
+      this.localStorage.selectedLanguage$.subscribe((lang) => {
+        this.translate.use(lang);
+        this.translate.setDefaultLang(lang);
+        this.selectedLanguage = lang;
+      })
+    );
+    this.subscriptions.push(
+      this.utilsService.logoClicked$.subscribe(() => {
+        this.openFeedbackAccordion();
+      })
+    );
+  }
+
+  private openFeedbackAccordion() {
+    this.openAccordion = '';
+    setTimeout(() => {
+      this.openAccordion = 'z-control';
+    }, 300);
+  }
+
+  private setupEventListeners(): void {
+    window.addEventListener('resize', () => {
+      this.utilsService.showOrHideIonTabBar();
     });
   }
 
   get isNative(): boolean {
     return Capacitor.isNativePlatform();
+  }
+
+  onAccordionGroupChange(event: CustomEvent, content: IonContent) {
+    const value = event.detail.value;
+    if (
+      value === 'download-source-code' ||
+      value === 'version' ||
+      value === 'privacy-policy'
+    ) {
+      setTimeout(() => {
+        content.scrollToBottom();
+      }, 300);
+    }
   }
 
   onLanguageChange(lang: string) {
@@ -44,14 +85,7 @@ export class TabSettingsPage implements OnDestroy {
   }
 
   async openChangelog() {
-    const modal = await this.modalController.create({
-      component: MarkdownViewerComponent,
-      componentProps: {
-        fullChangeLogPath: 'assets/logs/CHANGELOG.md',
-      },
-    });
-
-    await modal.present();
+    this.utilsService.openChangelog();
   }
 
   get versionInfo() {
@@ -68,6 +102,6 @@ export class TabSettingsPage implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-      this.langSub?.unsubscribe();
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 }

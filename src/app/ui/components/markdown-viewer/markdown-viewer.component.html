@@ -14,5 +14,9 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <markdown [data]="markdown"></markdown>
+  <div class="ion-text-center">
+    <ion-spinner color="primary" *ngIf="showSpinner"></ion-spinner>
+  </div>
+
+  <markdown [data]="markdown" *ngIf="!showSpinner"></markdown>
 </ion-content>

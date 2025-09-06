@@ -2,7 +2,8 @@ import { Component, Input } from '@angular/core';
 import { IonIcon, IonButton } from '@ionic/angular/standalone';
 import { NgIf, NgTemplateOutlet } from '@angular/common';
 
-import { LogoComponent, LogoType } from '../logo/logo.component';
+import { LogoComponent } from '../logo/logo.component';
+import { LogoType } from 'src/app/enums';
 @Component({
   selector: 'app-get-mobile-app',
   templateUrl: './get-mobile-app.component.html',

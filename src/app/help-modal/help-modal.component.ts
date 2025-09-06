@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Capacitor } from '@capacitor/core';
 
 import { LocalStorageService } from '../services/local-storage.service';
+import { UtilsService } from './../services/utils.service';
 
 @Component({
   selector: 'app-help-modal',
@@ -29,9 +30,10 @@ export class HelpModalComponent implements OnInit, OnDestroy {
   };
 
   constructor(
+    public readonly utilsService: UtilsService,
     private readonly modalController: ModalController,
     private readonly translate: TranslateService,
-    private readonly localStorage: LocalStorageService
+    private readonly localStorage: LocalStorageService,
   ) {}
 
   get isNative(): boolean {
@@ -42,7 +44,7 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     // Scroll to specific section if provided
     if (this.scrollToSection) {
       setTimeout(() => {
-        this.scrollToElement(this.scrollToSection!);
+        this.utilsService.scrollToElement(this.scrollToSection!);
       }, 500); // Delay to ensure modal is fully rendered
     }
 
@@ -54,16 +56,6 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     window.addEventListener('resize', this.orientationListener);
     window.addEventListener('orientationchange', this.orientationListener);
     this.orientationListener();
-  }
-
-  private scrollToElement(elementId: string): void {
-    const element = document.getElementById(elementId);
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
-    }
   }
 
   private setScrollToTopObj() {
@@ -78,21 +70,6 @@ export class HelpModalComponent implements OnInit, OnDestroy {
 
   dismissModal() {
     this.modalController.dismiss();
-  }
-
-  /**
-   * Scrolls to a specific element by ID
-   * @param id - The ID of the target element
-   * @param event - The click event to prevent default behavior
-   */
-  scrollTo(id: string, event: Event) {
-    event.preventDefault();
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      console.warn(`Element with id '${id}' not found`);
-    }
   }
 
   scrollToTop() {

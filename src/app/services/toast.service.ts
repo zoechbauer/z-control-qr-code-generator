@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 
-export enum Toast {
-  TrailingBlanksRemoved = 'TOAST_TRAILING_BLANKS_REMOVED',
-  QRCodeDeletedAfterInputChange = 'TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE',
-}
+import { Toast } from '../enums';
 
 @Injectable({
   providedIn: 'root',

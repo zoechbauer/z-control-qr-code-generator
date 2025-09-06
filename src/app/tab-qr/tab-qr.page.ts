@@ -12,7 +12,6 @@ import { Capacitor } from '@capacitor/core';
 import { Keyboard } from '@capacitor/keyboard';
 import { Subscription } from 'rxjs';
 
-import { LogoType } from './../ui/components/logo/logo.component';
 import { EmailUtilsService } from './../services/email-utils.service';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
 import { FileUtilsService } from '../services/file-utils.service';
@@ -23,7 +22,8 @@ import { ManualInstructionsModalComponent } from './manual-instructions-modal.co
 import { environment } from 'src/environments/environment';
 import { AlertService } from '../services/alert.service';
 import { UtilsService } from '../services/utils.service';
-import { Toast, ToastService } from '../services/toast.service';
+import { ToastService } from '../services/toast.service';
+import { LogoType, Tab, Toast } from '../enums';
 
 enum Workflow {
   StepEnterText = 'WORKFLOW_STEP_ENTER_TEXT',
@@ -41,6 +41,8 @@ export class TabQrPage implements OnInit, OnDestroy {
   @ViewChild('qrDataInput') qrDataInput!: IonTextarea;
 
   LogoType = LogoType;
+  Toast = Toast;
+  Tab = Tab;
   screenWidth: number = window.innerWidth;
   nbrOfInitialRows: number = 1;
   showSpinner: boolean = false;
@@ -57,12 +59,12 @@ export class TabQrPage implements OnInit, OnDestroy {
     public readonly validationService: ValidationService,
     public translate: TranslateService,
     private readonly modalController: ModalController,
+    public readonly utilsService: UtilsService,
     private readonly fileService: FileUtilsService,
     private readonly popoverController: PopoverController,
     private readonly platform: Platform,
     private readonly alertController: AlertController,
     private readonly alertService: AlertService,
-    private readonly utilsService: UtilsService,
     private readonly toastService: ToastService
   ) {
     this.setNumberOfRows();
@@ -75,10 +77,6 @@ export class TabQrPage implements OnInit, OnDestroy {
   // for unit tests
   public setKeyboardState(isOpen: boolean): void {
     this.isKeyboardOpen = isOpen;
-  }
-
-  get isSmallScreen(): boolean {
-    return window.innerHeight <= 640 && this.isPortrait;
   }
 
   get maxInputLength(): number {
@@ -97,15 +95,12 @@ export class TabQrPage implements OnInit, OnDestroy {
     );
   }
 
-  get isPortrait(): boolean {
-    return window.matchMedia('(orientation: portrait)').matches;
-  }
-
   get isNative(): boolean {
     return Capacitor.isNativePlatform();
   }
 
   ngOnInit(): void {
+    this.utilsService.showOrHideIonTabBar();
     this.setupEventListeners();
     this.initializeServicesAsync();
   }
@@ -115,6 +110,7 @@ export class TabQrPage implements OnInit, OnDestroy {
     window.addEventListener('resize', () => {
       this.screenWidth = window.innerWidth;
       this.setNumberOfRows();
+      this.utilsService.showOrHideIonTabBar();
     });
 
     // Platform-specific keyboard listeners
@@ -129,7 +125,7 @@ export class TabQrPage implements OnInit, OnDestroy {
   }
 
   private setNumberOfRows(): void {
-    this.nbrOfInitialRows = this.isPortrait ? 6 : 1;
+    this.nbrOfInitialRows = this.utilsService.isPortrait ? 6 : 1;
   }
 
   private async initializeServicesAsync(): Promise<void> {
@@ -156,10 +152,6 @@ export class TabQrPage implements OnInit, OnDestroy {
     } catch (fallbackError) {
       console.error('Critical: Even defaults failed:', fallbackError);
     }
-  }
-
-  async openHelpModal() {
-    this.utilsService.openHelpModal();
   }
 
   clearInputField(): void {
@@ -263,6 +255,11 @@ export class TabQrPage implements OnInit, OnDestroy {
         });
     } else {
       // Valid input, generate QR code
+      const element = document.querySelector('.no-generation-buttons');
+      if (!element?.classList.contains('extra-margin-bottom')) {
+        element?.classList.add('extra-margin-bottom');
+      }
+
       this.sanitizeInputAndGenerateQRCode(this.qrDataInput.value);
       this.showWorkflowStep(Workflow.StepGenerate);
     }
@@ -533,7 +530,7 @@ export class TabQrPage implements OnInit, OnDestroy {
     this.showWorkflowStepGenerate(currentText);
 
     // Check for keyboard alert on Galaxy J5 or smaller mobiles
-    if (this.isSmallScreen && !this.hasShownKeyboardAlert) {
+    if (this.utilsService.isSmallScreen && !this.hasShownKeyboardAlert) {
       if (this.shouldShowKeyboardAlert(currentText)) {
         setTimeout(() => {
           this.showKeyboardAlert();

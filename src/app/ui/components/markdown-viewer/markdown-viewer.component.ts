@@ -10,10 +10,12 @@ import {
   IonButton,
   IonIcon,
   ModalController,
+  IonSpinner,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { closeOutline } from 'ionicons/icons';
 import { Capacitor } from '@capacitor/core';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-markdown-viewer',
@@ -21,6 +23,7 @@ import { Capacitor } from '@capacitor/core';
   styleUrls: ['./markdown-viewer.component.scss'],
   standalone: true,
   imports: [
+    IonSpinner,
     IonContent,
     IonHeader,
     IonToolbar,
@@ -29,12 +32,15 @@ import { Capacitor } from '@capacitor/core';
     IonButton,
     IonIcon,
     MarkdownComponent,
+    IonSpinner,
+    NgIf,
   ],
   providers: [ModalController],
 })
 export class MarkdownViewerComponent implements OnInit {
   @Input() fullChangeLogPath!: string;
   markdown: string = '';
+  showSpinner: boolean = true;
 
   constructor(
     private readonly http: HttpClient,
@@ -65,9 +71,11 @@ export class MarkdownViewerComponent implements OnInit {
     this.http.get(this.fullChangeLogPath, { responseType: 'text' }).subscribe({
       next: (data) => {
         this.markdown = data;
+        this.showSpinner = false;
       },
       error: (error) => {
         console.error('Error loading changelog:', error);
+        this.showSpinner = false;
       },
     });
   }

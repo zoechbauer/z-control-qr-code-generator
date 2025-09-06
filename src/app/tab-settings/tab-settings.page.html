@@ -1,25 +1,8 @@
-<ion-header [class.web-app]="!isNative">
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <app-logo [type]="LogoType.Company"></app-logo>
-    </ion-buttons>
-    <ion-title>{{ 'SETTINGS' | translate }}</ion-title>
-    <ion-buttons slot="end">
-      <ion-button
-        class="icon-color"
-        fill="clear"
-        (click)="openHelpModal()"
-        (keydown.enter)="openHelpModal()"
-        (keydown.space)="openHelpModal()"
-      >
-        <ion-icon slot="icon-only" name="help"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <ion-accordion-group>
+<app-header [currentTab]="Tab.Settings"></app-header>
+<ion-content #content>
+  <ion-accordion-group  [value]="openAccordion"
+    (ionValueChange)="onAccordionGroupChange($event, content)"
+  >
     <h5 class="ion-text-center">{{'SETTINGS' | translate}}</h5>
     <ion-accordion value="language">
       <ion-item slot="header" color="light">
@@ -45,26 +28,28 @@
     </ion-accordion>
     <ion-accordion value="emails">
       <ion-item slot="header" color="light" class="accordion-margin-top">
-        <ion-label>{{ 'EMAIL_ADDRESSES' | translate }} [{{ (localStorage.savedEmailAddresses$ | async)?.length || 0 }}]</ion-label>
+        <ion-label
+          >{{ 'EMAIL_ADDRESSES' | translate }} [{{
+          (localStorage.savedEmailAddresses$ | async)?.length || 0
+          }}]</ion-label
+        >
       </ion-item>
       <div slot="content">
         <app-email-maintenance></app-email-maintenance>
       </div>
     </ion-accordion>
-  </ion-accordion-group>
-  <ion-accordion-group>
+
     <h5 class="ion-text-center">{{ 'FEEDBACK' | translate }}</h5>
     <ion-accordion value="z-control">
       <ion-item slot="header" color="light">
         <ion-label>{{ 'FEEDBACK_TO' | translate }} z-control</ion-label>
       </ion-item>
-      <div class="ion-padding" slot="content">
+      <div class="ion-padding ion-text-center" slot="content">
         <app-logo [type]="LogoType.Copyright"></app-logo>
         <app-footer></app-footer>
       </div>
     </ion-accordion>
-  </ion-accordion-group>
-  <ion-accordion-group>
+
     <h5 class="ion-text-center">
       z-control QR Code Generator App<br />{{ 'INFORMATIONS' | translate }}
     </h5>

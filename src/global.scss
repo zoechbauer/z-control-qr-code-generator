@@ -60,9 +60,14 @@ ion-header {
     }
   }
 }
-
+  
 ion-tab-bar {
   padding-bottom: env(safe-area-bottom, 44px);
+  display: flex;
+
+  &.hide-ion-tab-bar {
+    display: none;
+  }
 }
 
 // Compatibility styles for legacy Android versions (e.g., Android 11)
@@ -100,6 +105,9 @@ ion-header ion-toolbar:first-of-type {
   }
 }
 
+
+// height of help page & release notes in web app
+.change-log-modal.desktop,
 .manual-instructions-modal.desktop {
   --height: 90vh;
   --max-height: 90vh;

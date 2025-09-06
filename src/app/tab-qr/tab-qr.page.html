@@ -1,32 +1,6 @@
-<ion-header [class.web-app]="!isNative">
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <app-logo [type]="LogoType.Company"></app-logo>
-    </ion-buttons>
-    <ion-title
-      ><b
-        >{{ screenWidth < 600 ? 'QR Code' : 'z-control QR Code Generator' }}</b
-      ></ion-title
-    >
-    <ion-buttons slot="end">
-      <ion-button
-        class="icon-color"
-        fill="clear"
-        (click)="openHelpModal()"
-        (keydown.enter)="openHelpModal()"
-        (keydown.space)="openHelpModal()"
-      >
-        <ion-icon slot="icon-only" name="help"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
+<app-header [currentTab]="Tab.Qr"></app-header>
 <ion-content>
-  <ion-card
-    class="qr-code"
-    [class.landscape]="!isPortrait"
-  >
+  <ion-card class="qr-code" [class.landscape]="!utilsService.isPortrait">
     <ion-card-header>
       <ion-card-title class="ion-text-center"
         >{{'CREATE_QR_CODE' | translate}}</ion-card-title
@@ -79,7 +53,7 @@
       >
         <ion-button
           expand="block"
-          [class.landscape]="!isPortrait"
+          [class.landscape]="!utilsService.isPortrait"
           [class.pseudo-disabled]="isGenerationButtonDisabled"
           [disabled]="false"
           (click)="handleGenerateButtonClick(); $event.stopPropagation()"
@@ -90,7 +64,7 @@
 
       <div
         class="no-generation-buttons ion-justify-content-around"
-        [class.small-screen-hidden]="isSmallScreen && !qrService.isQrCodeGenerated"
+        [class.small-screen-hidden]="utilsService.isSmallScreen && !qrService.isQrCodeGenerated"
       >
         <div
           class="button-wrapper"
@@ -99,7 +73,7 @@
           (keydown.space)="handleSendEmailButtonClick()"
         >
           <ion-button
-            [class.landscape]="!isPortrait"
+            [class.landscape]="!utilsService.isPortrait"
             fill="clear"
             (keydown.enter)="storeMailAndDeleteQRCode()"
             (keydown.space)="storeMailAndDeleteQRCode()"
@@ -109,7 +83,7 @@
           >
         </div>
         <ion-button
-          [class.landscape]="!isPortrait"
+          [class.landscape]="!utilsService.isPortrait"
           fill="clear"
           (click)="clearInputField()"
           (keydown.enter)="clearInputField()"
@@ -120,5 +94,4 @@
       </div>
     </div>
   </ion-card>
-
 </ion-content>

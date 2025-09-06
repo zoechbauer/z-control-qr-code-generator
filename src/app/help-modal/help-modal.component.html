@@ -43,43 +43,51 @@
         <li>
           <a
             href="#"
-            (click)="scrollTo('faq', $event)"
+            (click)="utilsService.scrollTo('faq', $event)"
             class="toc-link-normal-height"
             >Frequently Asked Questions (FAQ)</a
           >
         </li>
         <li>
-          <a href="#" (click)="scrollTo('what-can-the-app-do', $event)"
+          <a
+            href="#"
+            (click)="utilsService.scrollTo('what-can-the-app-do', $event)"
             >What can the app do?</a
           >
         </li>
         <li>
-          <a href="#" (click)="scrollTo('how-to-use-the-app', $event)"
+          <a
+            href="#"
+            (click)="utilsService.scrollTo('how-to-use-the-app', $event)"
             >How to use the app?</a
           >
         </li>
         <li>
           <a
             href="#"
-            (click)="scrollTo('web-version', $event)"
+            (click)="utilsService.scrollTo('web-version', $event)"
             class="toc-link-normal-height"
             >Using the Web Version for Longer Texts</a
           >
         </li>
         <li>
-          <a href="#" (click)="scrollTo('select-email-client', $event)"
+          <a
+            href="#"
+            (click)="utilsService.scrollTo('select-email-client', $event)"
             >Select Email app</a
           >
         </li>
         <li>
-          <a href="#" (click)="scrollTo('reset-default-app', $event)"
+          <a
+            href="#"
+            (click)="utilsService.scrollTo('reset-default-app', $event)"
             >Reset default app</a
           >
         </li>
         <li>
           <a
             href="#"
-            (click)="scrollTo('print-qr-code', $event)"
+            (click)="utilsService.scrollTo('print-qr-code', $event)"
             class="toc-link-normal-height"
             >How to print QR Code in a specific size?</a
           >
@@ -87,18 +95,20 @@
         <li class="toc-increase-margin-top">
           <a
             href="#"
-            (click)="scrollTo('floating-keyboard', $event)"
+            (click)="utilsService.scrollTo('floating-keyboard', $event)"
             class="toc-link-normal-height"
             >How to enable floating keyboard on Android?</a
           >
         </li>
         <li>
-          <a href="#" (click)="scrollTo('qr-code-explained', $event)"
+          <a
+            href="#"
+            (click)="utilsService.scrollTo('qr-code-explained', $event)"
             >QR codes explained</a
           >
         </li>
         <li>
-          <a href="#" (click)="scrollTo('technical-info', $event)"
+          <a href="#" (click)="utilsService.scrollTo('technical-info', $event)"
             >Technical information</a
           >
         </li>
@@ -117,6 +127,18 @@
           print the QR code from the attachments and place it wherever needed—
           for example, on documents, labels, cards, or objects—so it can be
           easily scanned later.
+        </p>
+      </li>
+      <li>
+        <b>How do I switch between QR Code and Settings?</b>
+        <p>
+          <b>On mobile devices in portrait mode:</b> Use the tabs at the bottom
+          of the screen to switch between QR Code and Settings.
+        </p>
+        <p>
+          <b>On tablets, desktops, or when in landscape mode:</b> Use the
+          navigation button in the top right of the header to switch between QR
+          Code and Settings.
         </p>
       </li>
       <li>
@@ -261,11 +283,11 @@
       <li>
         <b>How can I provide feedback or contact support?</b>
         <p>
-          You can easily send us your feedback, questions, or suggestions via
-          the email link in "Settings". To do so, go to the "Settings" tab in
-          the footer, open "Feedback to z-control", and then click the
-          "z-control Support & Feedback" link. Your email app will open
-          automatically so you can contact us directly.
+          You can quickly send us feedback, questions, or suggestions using the
+          email link in "Settings". Simply click the logo in the header to open
+          "Feedback to z-control" in the settings, then click the "z-control
+          Support & Feedback" link. Your email app will open automatically,
+          allowing you to contact us directly.
         </p>
       </li>
     </ol>
@@ -290,8 +312,8 @@
     </p>
 
     <h3 id="how-to-use-the-app">How to use the app?</h3>
-    <h5>App Structure</h5>
-    <p>The app uses two main tabs at the bottom:</p>
+    <h5>App Structure & Navigation</h5>
+    <p>The app uses two main tabs for navigation:</p>
     <ul>
       <li><b>QR Code:</b> For creating and sending QR codes.</li>
       <li>
@@ -299,6 +321,21 @@
         accessing app info.
       </li>
     </ul>
+    <p>
+      <b>Navigation:</b>
+    </p>
+    <ul>
+      <li>
+        <b>On mobile devices in portrait mode:</b> Use the tabs at the bottom of
+        the screen to switch between QR Code and Settings.
+      </li>
+      <li>
+        <b>On tablets, desktops, or in landscape mode:</b> Use the navigation
+        button in the top right of the header to switch between QR Code and
+        Settings.
+      </li>
+    </ul>
+
     <h5>Overview</h5>
     <ol>
       <li>Go to the <b>QR Code</b> tab and enter your text or link.</li>
@@ -840,43 +877,51 @@
         <li>
           <a
             href="#"
-            (click)="scrollTo('faq-DE', $event)"
+            (click)="utilsService.scrollTo('faq-DE', $event)"
             class="toc-link-normal-height"
             >Häufig gestellte Fragen (FAQ)</a
           >
         </li>
         <li>
-          <a href="#" (click)="scrollTo('what-can-the-app-do-DE', $event)"
+          <a
+            href="#"
+            (click)="utilsService.scrollTo('what-can-the-app-do-DE', $event)"
             >Was kann die App?</a
           >
         </li>
         <li>
-          <a href="#" (click)="scrollTo('how-to-use-the-app-DE', $event)"
+          <a
+            href="#"
+            (click)="utilsService.scrollTo('how-to-use-the-app-DE', $event)"
             >Wie bediene ich die App?</a
           >
         </li>
         <li>
           <a
             href="#"
-            (click)="scrollTo('web-version-DE', $event)"
+            (click)="utilsService.scrollTo('web-version-DE', $event)"
             class="toc-link-normal-height"
             >Web-Version für längere Texte verwenden</a
           >
         </li>
         <li>
-          <a href="#" (click)="scrollTo('select-email-client-DE', $event)"
+          <a
+            href="#"
+            (click)="utilsService.scrollTo('select-email-client-DE', $event)"
             >E-Mail Programm auswählen</a
           >
         </li>
         <li>
-          <a href="#" (click)="scrollTo('reset-default-app-DE', $event)"
+          <a
+            href="#"
+            (click)="utilsService.scrollTo('reset-default-app-DE', $event)"
             >Standard App zurücksetzen</a
           >
         </li>
         <li>
           <a
             href="#"
-            (click)="scrollTo('print-qr-code-DE', $event)"
+            (click)="utilsService.scrollTo('print-qr-code-DE', $event)"
             class="toc-link-normal-height"
             >QR Code in einer bestimmten Größe drucken</a
           >
@@ -884,18 +929,22 @@
         <li class="toc-increase-margin-top">
           <a
             href="#"
-            (click)="scrollTo('floating-keyboard-DE', $event)"
+            (click)="utilsService.scrollTo('floating-keyboard-DE', $event)"
             class="toc-link-normal-height"
             >Schwebende Tastatur auf Android aktivieren</a
           >
         </li>
         <li>
-          <a href="#" (click)="scrollTo('qr-code-explained-DE', $event)"
+          <a
+            href="#"
+            (click)="utilsService.scrollTo('qr-code-explained-DE', $event)"
             >QR Code kurz erklärt</a
           >
         </li>
         <li>
-          <a href="#" (click)="scrollTo('technical-info-DE', $event)"
+          <a
+            href="#"
+            (click)="utilsService.scrollTo('technical-info-DE', $event)"
             >Technische Informationen</a
           >
         </li>
@@ -912,6 +961,19 @@
           können Sie oder Ihre Kontakte den QR Code aus den Anhängen ausdrucken
           und überall dort anbringen – zum Beispiel auf Dokumenten, Etiketten,
           Karten oder Gegenständen – wo er später einfach gescannt werden soll.
+        </p>
+      </li>
+      <li>
+        <b>Wie wechsle ich zwischen QR Code und Einstellungen?</b>
+        <p>
+          <b>Auf Mobilgeräten im Hochformat:</b> Verwenden Sie die Tabs am
+          unteren Bildschirmrand, um zwischen QR Code und Einstellungen zu
+          wechseln.
+        </p>
+        <p>
+          <b>Auf Tablets, Desktop-PCs oder im Querformat:</b> Nutzen Sie die
+          Schaltfläche oben rechts in der Kopfzeile, um zwischen QR Code und
+          Einstellungen zu wechseln.
         </p>
       </li>
       <li>
@@ -1065,11 +1127,11 @@
       <li>
         <b>Wie kann ich Feedback geben oder den Support kontaktieren?</b>
         <p>
-          Sie können uns Ihr Feedback, Ihre Fragen oder Anregungen ganz einfach
-          über den E-Mail-Link in den "Einstellungen" senden. Wechseln Sie dazu
-          zum Tab "Einstellungen" in der Fußzeile, öffnen Sie "Feedback an
-          z-control" und klicken Sie dann auf den Link "z-control Support &
-          Feedback". Ihr E-Mail-Programm öffnet sich automatisch, sodass Sie uns
+          Sie können uns schnell Feedback, Fragen oder Vorschläge über den
+          E-Mail-Link in den „Einstellungen“ senden. Klicken Sie einfach auf das
+          Logo in der Kopfzeile, um „Feedback an z-control“ in den Einstellungen
+          zu öffnen, und klicken Sie dann auf den Link „z-control Support &
+          Feedback“. Ihr E-Mail-Programm öffnet sich automatisch, sodass Sie uns
           direkt kontaktieren können.
         </p>
       </li>
@@ -1096,8 +1158,8 @@
     </p>
 
     <h3 id="how-to-use-the-app-DE">Wie bediene ich die App?</h3>
-    <h5>App-Struktur</h5>
-    <p>Die App verwendet zwei Haupt-Tabs am unteren Bildschirmrand:</p>
+    <h5>App-Struktur & Navigation</h5>
+    <p>Die App verwendet zwei Haupt-Tabs zur Navigation:</p>
     <ul>
       <li><b>QR Code:</b> Zum Erstellen und Versenden von QR Codes.</li>
       <li>
@@ -1105,6 +1167,21 @@
         Sprache und Anzeigen von App-Informationen.
       </li>
     </ul>
+    <p>
+      <b>Navigation:</b>
+    </p>
+    <ul>
+      <li>
+        <b>Auf Mobilgeräten im Hochformat:</b> Verwenden Sie die Tabs am unteren
+        Bildschirmrand, um zwischen QR Code und Einstellungen zu wechseln.
+      </li>
+      <li>
+        <b>Auf Tablets, Desktop-PCs oder im Querformat:</b> Nutzen Sie die
+        Schaltfläche oben rechts in der Kopfzeile, um zwischen QR Code und
+        Einstellungen zu wechseln.
+      </li>
+    </ul>
+
     <h5>Überblick</h5>
     <ol>
       <li>

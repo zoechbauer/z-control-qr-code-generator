@@ -11,7 +11,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 - **Footer Relocation:** The footer component is now part of the Settings page.
 - **Privacy Policy Update:** The privacy policy has been relocated from the user help page to the Settings page.
 - **Source Code Download:** The option to download the source code is now available on the Settings page instead of the user help page.
-- **Mobile App Download:** Added a direct download link for the mobile app to the Settings page in the web application.
+- **Mobile App Download:** Added a direct download link for the mobile app to the Settings page in the **web app**lication.
 
 ### 🚀 Improvements
 
@@ -21,7 +21,10 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 - Removed the button logic for switching between QR code creation and email maintenance, simplifying the workflow.
 - Replaced the email button with the z-control logo on the QR code page for a cleaner and more consistent UI.
 - The accordion header now displays the current count of stored email addresses for easier overview.
-- Updated help page to reflect the new tab-based layout, providing clearer instructions for using the QR Code and
+- Updated help page to reflect the new tab-based layout, providing clearer instructions for using the QR Code and Settings
+- Various UI and UX enhancements, including interface refactoring for improved usability and visual consistency.
+- Developed a reusable header component now shared by both the QR code and Settings pages, ensuring a consistent look and streamlined navigation across the app.
+- The user help page and Release Notes now have a consistent height in the **web app** for a more uniform appearance.
 
 ### 🐛 Fixes
 
@@ -39,12 +42,12 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### ✨ New Features
 
-- Added a persistent z-control footer to the web app, displaying the current version number, release notes link, support email, and a direct download link for the mobile app. This provides users with quick access to important information and support resources.
+- Added a persistent z-control footer to the **web app**, displaying the current version number, release notes link, support email, and a direct download link for the mobile app. This provides users with quick access to important information and support resources.
 
 ### 🚀 Improvements
 
 - Enhanced app infrastructure for greater stability and performance.
-- Enhanced header design: All headers now have a blue background with white text and icons for improved visibility and a modern look. In the web app, header height is reduced since there is no status bar, providing a more streamlined appearance.
+- Enhanced header design: All headers now have a blue background with white text and icons for improved visibility and a modern look. In the **web app**, header height is reduced since there is no status bar, providing a more streamlined appearance.
 - Minor wording improvements for greater clarity in the user help page.
 - Revised the "QR Codes Explained" section: removed generic examples and added app-specific examples to better illustrate usage within this application.
 - Relocated the displayed version information and release notes link from the user help page to the new z-control footer for easier access.
@@ -214,7 +217,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 - Google requested to upgrade to Android 14 (API-Level 34)
 - The subject line of the email has been improved
-- Due to the mailto protocol, leading spaces in the mail body are removed by the browser. The mail body contains a warning in this case. This only occurs in the web application, not in the mobile app.
+- Due to the mailto protocol, leading spaces in the mail body are removed by the browser. The mail body contains a warning in this case. This only occurs in the **web app**, not in the mobile app.
 
 ### 📦 Installations
 
