@@ -9,6 +9,11 @@ export enum LogoType {
 }
 
 export enum Toast {
-  TrailingBlanksRemoved = 'TOAST_TRAILING_BLANKS_REMOVED',
-  QRCodeDeletedAfterInputChange = 'TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE',
+  TrailingBlanksRemoved = 'toast_trailing_blanks_removed',
+  QRCodeDeletedAfterInputChange = 'toast_qr_code_deleted_after_input_change',
+}
+
+export enum Modal {
+  Changelog = 'changelog_modal',
+  Help = 'help_modal',
 }

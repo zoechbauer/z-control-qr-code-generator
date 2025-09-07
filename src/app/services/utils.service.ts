@@ -14,11 +14,18 @@ import { BehaviorSubject } from 'rxjs';
 export class UtilsService {
   logoClickedSub = new BehaviorSubject<void>(undefined);
   logoClicked$ = this.logoClickedSub.asObservable();
+  private currentModal: HTMLIonModalElement | null = null;
 
   constructor(
     private readonly modalController: ModalController,
     private readonly router: Router
-  ) {}
+  ) {
+    window.addEventListener('orientationchange', () => {
+      if (this.currentModal) {
+        this.setModalLandscapeClasses(this.currentModal);
+      }
+    });
+  }
 
   get isPortrait(): boolean {
     return window.matchMedia('(orientation: portrait)').matches;
@@ -29,7 +36,7 @@ export class UtilsService {
     return isMobileWidth && this.isPortrait;
   }
 
-    get isSmallDevice(): boolean {
+  get isSmallDevice(): boolean {
     const isMobileHeight = window.innerHeight <= 640;
     return isMobileHeight && this.isPortrait;
   }
@@ -71,26 +78,50 @@ export class UtilsService {
   async openHelpModal() {
     const modal = await this.modalController.create({
       component: HelpModalComponent,
-      cssClass: this.isDesktop
-        ? 'manual-instructions-modal desktop'
-        : 'manual-instructions-modal',
     });
+    this.currentModal = modal;
+    this.setModalLandscapeClasses(modal);
     return await modal.present();
   }
 
-    async openChangelog() {
-      const modal = await this.modalController.create({
-        component: MarkdownViewerComponent,
-        componentProps: {
-          fullChangeLogPath: 'assets/logs/CHANGELOG.md',
-        },
-        cssClass: this.isDesktop
-          ? 'change-log-modal desktop'
-          : 'change-log-modal',
-      });
-  
-      await modal.present();
-    }
+  async openChangelog() {
+    const modal = await this.modalController.create({
+      component: MarkdownViewerComponent,
+      componentProps: {
+        fullChangeLogPath: 'assets/logs/CHANGELOG.md',
+      },
+    });
+    this.currentModal = modal;
+    this.setModalLandscapeClasses(modal);
+    return await modal.present();
+  }
+
+  setModalLandscapeClasses(modal: HTMLIonModalElement) {
+    setTimeout(() => {
+      modal.classList.remove(
+        'manual-instructions-modal',
+        'change-log-modal',
+        'desktop',
+        'landscape'
+      );
+      switch (modal.component) {
+        case HelpModalComponent:
+          modal.classList.add('manual-instructions-modal');
+          break;
+        case MarkdownViewerComponent:
+          modal.classList.add('change-log-modal');
+          break;
+        default:
+          console.error('Unknown modal component for setting landscape class');
+      }
+      if (this.isDesktop) {
+        modal.classList.add('desktop');
+      }
+      if (!this.isPortrait) {
+        modal.classList.add('landscape');
+      }
+    }, 10);
+  }
 
   /**
    * Scrolls to a specific element by ID

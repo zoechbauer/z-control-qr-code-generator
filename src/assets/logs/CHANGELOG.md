@@ -2,6 +2,25 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+# What's New?
+
+All recent updates and improvements to our **z-control QR Code Generator** app.
+
+## [2.1] – 2025-09-07
+
+### 🚀 Improvements
+
+- Removed the black border from the Release Notes for a cleaner appearance.
+- Reduced header height in landscape mode for better use of screen space.
+
+### 🐛 Fixes
+
+- Added extra padding to the bottom and right edges in landscape mode to prevent overlap with the navigation bar, addressing issues on devices that report incorrect navigation bar dimensions (e.g., Samsung Galaxy A55).
+
+### 📦 Installations
+
+- App is hosted at Google Play for **Internal Test** group and **Closed Test** group.
+
 ## [2.0] – 2025-09-06
 
 ### ✨ New Features

@@ -263,11 +263,9 @@ export class TabQrPage implements OnInit, OnDestroy {
 
   private generateMarginForButtonsIfNeeded(): void {
     const isSmallDevice = this.utilsService.isSmallDevice;
-    console.log('isSmallDevice:', isSmallDevice);
     if (isSmallDevice) return;
 
     const element = document.querySelector('.no-generation-buttons');
-    console.log('element:', element);
     if (!element?.classList.contains('extra-margin-bottom')) {
       element?.classList.add('extra-margin-bottom');
     }

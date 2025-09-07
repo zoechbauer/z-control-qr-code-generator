@@ -3,7 +3,7 @@
   [class.landscape]="!utilsService.isPortrait"
   [class.web-app]="!isNative"
 >
-  <ion-toolbar color="primary">
+  <ion-toolbar color="primary" [class.landscape]="!utilsService.isPortrait">
     <ion-buttons slot="start">
       <app-logo
         [type]="LogoType.Company"

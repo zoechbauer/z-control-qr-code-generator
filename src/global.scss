@@ -45,24 +45,32 @@ ion-app {
 }
 
 ion-header {
+  margin-right: 0;
+  padding-right: 0;
+
   &.web-app {
-    margin-top: -25px;
+    margin-top: -10px !important;
   }
 
   ion-toolbar {
     --background: var(--ion-color-primary) !important;
     --color: #fff !important;
+    padding-right: 0;
 
     ion-title,
     ion-button,
     ion-icon {
       color: #fff !important;
     }
+
+    &.landscape {
+      padding-top: 10px !important;
+    }
   }
 }
 
 ion-tab-bar {
-  padding-bottom: env(safe-area-inset-bottom, 44px);
+  padding-bottom: var(--safe-area-bottom-fix, 44px);
   display: flex;
 
   &.hide-ion-tab-bar {
@@ -97,29 +105,27 @@ ion-header ion-toolbar:first-of-type {
 .qr-code-content,
 .qr-settings-content {
   &.landscape {
-    margin-top: 0px !important;
-    margin-bottom: 0px !important;
+    margin-top: 0px;
+    margin-bottom: 0px;
 
     // content ends horizontally before navigation bar in landscape mode
-    max-width: calc(100vw - env(safe-area-inset-right, 44px)) !important;
+    max-width: calc(100vw - var(--safe-area-right-fix, 65px));
     overflow-x: auto !important;
   }
 }
 
 .change-log-modal,
 .manual-instructions-modal {
-  --border-width: 2px;
-  --border-style: solid;
-  --border-color: var(--ion-color-medium);
-  --border-radius: 10px;
-
   // Modal ends vertically above navigation bar in portrait mode
-  max-height: calc(100vh - env(safe-area-inset-bottom, 44px)) !important;
+  max-height: calc(100vh - var(--safe-area-bottom-fix, 44px)) !important;
   overflow-y: auto !important;
 
-  // Modal ends horizontally before navigation bar in landscape mode
-  max-width: calc(100vw - env(safe-area-inset-right, 44px)) !important;
-  overflow-x: auto !important;
+  &.landscape {
+    // Modal ends horizontally before navigation bar in landscape mode
+    max-width: calc(100vw - var(--safe-area-right-fix, 65px));
+    overflow-x: auto !important;
+    max-height: 100vh !important;
+  }
 
   &:has(app-help-modal) {
     --border-width: 0;
