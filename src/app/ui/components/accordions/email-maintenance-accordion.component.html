@@ -1,0 +1,12 @@
+<ion-accordion value="emails" id="emails">
+  <ion-item slot="header" color="light" class="accordion-margin-top">
+    <ion-label
+      >{{ "EMAIL_ADDRESSES" | translate }} [{{
+        (localStorage.savedEmailAddresses$ | async)?.length || 0
+      }}]</ion-label
+    >
+  </ion-item>
+  <div slot="content">
+    <app-email-maintenance></app-email-maintenance>
+  </div>
+</ion-accordion>

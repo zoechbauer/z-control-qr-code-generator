@@ -12,10 +12,10 @@ import { LogoType, Tab } from '../enums';
 @Component({
   selector: 'app-tab-settings',
   templateUrl: './tab-settings.page.html',
-  styleUrls: ['./tab-settings.page.scss'],
 })
 export class TabSettingsPage implements OnInit, OnDestroy {
-  public openAccordion: string | null = null;
+  openAccordion: string | null = null;
+  showAllAccordions = true;
   selectedLanguage?: string;
   LogoType = LogoType;
   Tab = Tab;
@@ -28,6 +28,7 @@ export class TabSettingsPage implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.showAllAccordions = true;
     this.utilsService.showOrHideIonTabBar();
     this.setupEventListeners();
     this.setupSubscriptions();
@@ -50,9 +51,7 @@ export class TabSettingsPage implements OnInit, OnDestroy {
 
   private openFeedbackAccordion() {
     this.openAccordion = '';
-    setTimeout(() => {
-      this.openAccordion = 'z-control';
-    }, 300);
+    this.openAccordion = 'z-control';
   }
 
   private setupEventListeners(): void {
@@ -66,15 +65,17 @@ export class TabSettingsPage implements OnInit, OnDestroy {
   }
 
   onAccordionGroupChange(event: CustomEvent, content: IonContent) {
-    const value = event.detail.value;
-    const ms = value === 'z-control' ? 300 : 150;
-
-    setTimeout(() => {
-        this.utilsService.scrollToElement(value);
-      }, ms);
+    this.openAccordion = event.detail.value;
+    this.showAllAccordions = !this.openAccordion ? true : false;
   }
 
-  onLanguageChange(lang: string) {
+  showAll() {
+    this.openAccordion = null;
+    this.showAllAccordions = true;
+  }
+
+  onLanguageChange(event: any) {
+    const lang = event.detail.value;
     this.localStorage.saveSelectedLanguage(lang);
     this.translate.use(lang);
     this.translate.setDefaultLang(lang);

@@ -1,0 +1,21 @@
+    <ion-accordion value="language" id="language">
+      <ion-item slot="header" color="light">
+        <ion-label>{{ 'SELECT_LANGUAGE' | translate }}</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <ion-item>
+          <ion-label>{{ 'LANGUAGE' | translate }}</ion-label>
+          <ion-select
+            interface="popover"
+            [value]="selectedLanguage"
+          >
+            <ion-select-option value="en"
+              >{{ 'LANGUAGE_EN' | translate }}</ion-select-option
+            >
+            <ion-select-option value="de"
+              >{{ 'LANGUAGE_DE' | translate }}</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+      </div>
+    </ion-accordion>

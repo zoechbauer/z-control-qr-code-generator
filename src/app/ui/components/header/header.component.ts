@@ -72,7 +72,7 @@ export class HeaderComponent {
     this.utilsService.navigateToTabWithParams(Tab.Settings, {
       open: 'z-control',
     });
-    this.utilsService.logoClickedSub.next();
+    this.utilsService.logoClickedSub.next(true);
   }
 
   async openHelpModal() {

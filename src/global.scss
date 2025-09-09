@@ -152,3 +152,36 @@ ion-title {
   display: flex;
   font-size: 1.1rem;
 }
+
+.qr-settings-content {
+  .settings-section-title {
+    color: var(--ion-color-primary);
+    font-size: 0.8em;
+  }
+
+  .accordion-margin-top {
+    padding-top: 10px;
+  }
+
+  .version-info {
+    cursor: pointer;
+
+    .version {
+      font-size: 0.8em;
+      margin: 0px;
+    }
+  }
+
+  .button-wrapper {
+    text-align: center;
+    margin: 5px 0;
+
+    ion-button {
+      margin: 0 auto;
+    }
+  }
+
+  .accordion-close-button {
+    opacity: 0.2;
+  }
+}

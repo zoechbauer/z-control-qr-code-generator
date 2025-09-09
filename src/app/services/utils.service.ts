@@ -6,13 +6,13 @@ import { Router } from '@angular/router';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
 import { Tab } from '../enums';
 import { MarkdownViewerComponent } from '../ui/components/markdown-viewer/markdown-viewer.component';
-import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UtilsService {
-  logoClickedSub = new BehaviorSubject<void>(undefined);
+  logoClickedSub = new Subject<boolean>();
   logoClicked$ = this.logoClickedSub.asObservable();
   private currentModal: HTMLIonModalElement | null = null;
 

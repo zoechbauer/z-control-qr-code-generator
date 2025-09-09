@@ -6,6 +6,32 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+# What's New?
+
+All recent updates and improvements to our **z-control QR Code Generator** app.
+
+## [2.2.] – YYYY-MM-DD
+
+### ✨ New Features
+
+- …
+
+### 🚀 Improvements
+
+- When an accordion in the Settings page is opened, all other accordions are temporarily hidden to provide a clearer and more focused user experience. Once the accordion is closed, all accordions become visible again.
+
+### 🐛 Fixes
+
+- …
+
+### 🛡 Security
+
+- …
+
+### 📦 Installations
+
+- …
+
 ## [2.1] – 2025-09-07
 
 ### 🚀 Improvements
