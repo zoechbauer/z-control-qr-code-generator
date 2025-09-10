@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MarkdownComponent } from 'ngx-markdown';
 import {
   IonContent,
@@ -16,6 +16,8 @@ import { addIcons } from 'ionicons';
 import { closeOutline } from 'ionicons/icons';
 import { Capacitor } from '@capacitor/core';
 import { NgIf } from '@angular/common';
+
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-markdown-viewer',
@@ -39,12 +41,15 @@ import { NgIf } from '@angular/common';
 })
 export class MarkdownViewerComponent implements OnInit {
   @Input() fullChangeLogPath!: string;
+  @ViewChild('content', { static: false }) content!: IonContent;
+
   markdown: string = '';
   showSpinner: boolean = true;
 
   constructor(
     private readonly http: HttpClient,
-    private readonly modalController: ModalController
+    private readonly modalController: ModalController,
+    public readonly utilsService: UtilsService
   ) {
     this.registerIcons();
   }
@@ -59,6 +64,10 @@ export class MarkdownViewerComponent implements OnInit {
 
   closeModal() {
     this.modalController.dismiss();
+  }
+
+  scrollToTop() {
+    this.content.scrollToTop(300);
   }
 
   private registerIcons() {

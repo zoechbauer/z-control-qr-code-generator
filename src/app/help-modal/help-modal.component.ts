@@ -73,11 +73,7 @@ export class HelpModalComponent implements OnInit, OnDestroy {
   }
 
   scrollToTop() {
-    const id = this.scrollToTopObj.id;
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    this.utilsService.scrollToElement(this.scrollToTopObj.id);
   }
 
   ngOnDestroy() {

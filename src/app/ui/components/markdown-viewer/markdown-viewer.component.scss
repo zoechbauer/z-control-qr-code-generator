@@ -8,6 +8,15 @@ ion-header {
     ion-icon {
       color: #fff !important;
     }
+
+    // scroll-to-top button
+    ion-buttons[slot="start"] {
+      ion-button {
+        ion-icon {
+          font-size: 20px;
+        }
+      }
+    }
   }
 }
 

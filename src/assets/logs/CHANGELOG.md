@@ -19,11 +19,14 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 ### 🚀 Improvements
 
 - Opening an accordion in the Settings page now temporarily hides all other accordions, allowing users to focus on the selected section. When the accordion is closed, all sections are shown again for easy navigation.
-- User Help content has been reorganized and moved into relevant Settings accordions, making information easier to find and improving overall clarity.
+- Added a convenient "Back to Top" button to the Release Notes header, allowing users to quickly return to the beginning of the page.
 
 ### 🐛 Fixes
 
-- …
+- Reverted the reduction of header height in landscape mode due to display issues on Huawei phones and tablets.
+
+only for commit
+- Removed obsolete empty files and the unused `home` folder. All relevant objects had previously been relocated, but the old folder was not deleted.
 
 ### 🛡 Security
 
