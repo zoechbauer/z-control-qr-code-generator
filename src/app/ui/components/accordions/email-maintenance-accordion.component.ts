@@ -5,7 +5,7 @@ import {
   IonLabel,
 } from '@ionic/angular/standalone';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 
 import { EmailMaintenanceComponent } from '../email-maintenance/email-maintenance.component';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
@@ -21,10 +21,11 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
     TranslateModule,
     AsyncPipe,
     EmailMaintenanceComponent,
+    CommonModule
   ],
 })
 export class EmailMaintenanceAccordionComponent {
-  @Input() selectedLanguage: string = 'en';
+  @Input() lang: string = 'en';
 
   constructor(public translate: TranslateService, public localStorage: LocalStorageService) {}
 }

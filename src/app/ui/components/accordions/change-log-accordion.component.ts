@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   IonAccordion,
@@ -19,10 +20,12 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     IonIcon,
     IonButton,
     TranslateModule,
+    CommonModule
   ],
 })
 export class ChangeLogAccordionComponent {
   @Input() versionInfo!: string;
+  @Input() lang: string = 'en';
   @Output() ionChange = new EventEmitter<void>();
 
   constructor(public translate: TranslateService) {}

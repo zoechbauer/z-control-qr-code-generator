@@ -6,7 +6,46 @@
       }}]</ion-label
     >
   </ion-item>
-  <div slot="content">
+  <div class="ion-padding" slot="content">
     <app-email-maintenance></app-email-maintenance>
+
+    <ng-container *ngIf="lang === 'de'; else englishTemplate">
+      <ng-container *ngTemplateOutlet="germanTemplate"></ng-container>
+    </ng-container>
+
+    <!-- E N G L I S H   T E M P L A T E -->
+
+    <ng-template #englishTemplate>
+      <div class="notes">
+        <p>Note</p>
+        <p>
+          All previously saved email addresses are displayed. You can add new
+          email addresses and delete existing ones.
+        </p>
+        <p>
+          You can switch between QR code creation and email address management
+          at any time. The entered QR code data will not be deleted when
+          switching.
+        </p>
+      </div>
+    </ng-template>
+
+    <!-- G E R M A N   T E M P L A T E -->
+
+    <ng-template #germanTemplate>
+      <div class="notes">
+        <p>Hinweis</p>
+        <p>
+          Es werden alle bereits erfassten E-Mail-Adressen angezeigt. Es können
+          neue E-Mail-Adressen erfasst und bereits erfasste E-Mail-Adressen
+          wieder gelöscht werden.
+        </p>
+        <p>
+          Sie können jederzeit zwischen der QR Code Erstellung und der
+          E-Mail-Adressenverwaltung wechseln. Die erfassten QR Code Daten werden
+          beim Wechseln nicht gelöscht.
+        </p>
+      </div>
+    </ng-template>
   </div>
 </ion-accordion>

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import {
   IonAccordion,
@@ -19,10 +20,11 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     IonSelect,
     IonSelectOption,
     TranslateModule,
+    CommonModule
   ],
 })
 export class LanguageAccordionComponent {
-  @Input() selectedLanguage?: string;
+  @Input() lang?: string;
 
   constructor(public translate: TranslateService) {}
 }

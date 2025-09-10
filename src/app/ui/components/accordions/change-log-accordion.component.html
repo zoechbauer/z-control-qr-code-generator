@@ -3,7 +3,6 @@
     <ion-label>{{ versionInfo }}</ion-label>
   </ion-item>
   <div class="ion-padding" slot="content">
-    <p>{{ "RELEASE_NOTES_INFOS" | translate }}</p>
     <div
       class="version-info ion-text-center"
       (click)="openChangelog()"
@@ -17,5 +16,43 @@
         </ion-button>
       </div>
     </div>
+
+    <ng-container *ngIf="lang === 'de'; else englishTemplate">
+      <ng-container *ngTemplateOutlet="germanTemplate"></ng-container>
+    </ng-container>
+
+    <!-- E N G L I S H   T E M P L A T E -->
+
+    <ng-template #englishTemplate>
+      <div class="notes">
+        <p>Note</p>
+        <p>
+          You can find all new features, improvements, and bug fixes of the
+          <b>z-control QR Code Generator App</b> since the start of the test
+          phase in the release notes.
+        </p>
+        <p>
+          If you want to read the release notes, simply click the "Release
+          Notes" button.
+        </p>
+      </div>
+    </ng-template>
+
+    <!-- G E R M A N   T E M P L A T E -->
+
+    <ng-template #germanTemplate>
+      <div class="notes">
+        <p>Hinweis</p>
+        <p>
+          Sie finden alle neuen Funktionen, Verbesserungen und Fehlerbehebungen
+          der <b>z-control QR Code Generator-App</b> seit Beginn der Testphase
+          in den Release Notes
+        </p>
+        <p>
+          Wenn Sie die Release Notes in <b>Englisch</b> lesen möchten, klicken
+          Sie einfach auf die Schaltfläche "Release Notes".
+        </p>
+      </div>
+    </ng-template>
   </div>
 </ion-accordion>

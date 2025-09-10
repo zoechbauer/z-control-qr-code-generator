@@ -18,7 +18,8 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 🚀 Improvements
 
-- When an accordion in the Settings page is opened, all other accordions are temporarily hidden to provide a clearer and more focused user experience. Once the accordion is closed, all accordions become visible again.
+- Opening an accordion in the Settings page now temporarily hides all other accordions, allowing users to focus on the selected section. When the accordion is closed, all sections are shown again for easy navigation.
+- User Help content has been reorganized and moved into relevant Settings accordions, making information easier to find and improving overall clarity.
 
 ### 🐛 Fixes
 

@@ -14,7 +14,7 @@
         {{'SETTINGS' | translate}}
       </h5>
       <app-language-accordion
-        [selectedLanguage]="selectedLanguage"
+        [lang]="selectedLanguage"
         (ionChange)="onLanguageChange($event)"
       ></app-language-accordion>
       <app-email-maintenance-accordion></app-email-maintenance-accordion>
@@ -42,23 +42,28 @@
       <ng-container [ngSwitch]="openAccordion">
         <ng-container *ngSwitchCase="'language'">
           <app-language-accordion
-            [selectedLanguage]="selectedLanguage"
+            [lang]="selectedLanguage || 'en'"
             (ionChange)="onLanguageChange($event)"
           ></app-language-accordion>
         </ng-container>
         <ng-container *ngSwitchCase="'emails'">
-          <app-email-maintenance-accordion></app-email-maintenance-accordion>
+          <app-email-maintenance-accordion
+            [lang]="selectedLanguage || 'en'"
+          ></app-email-maintenance-accordion>
         </ng-container>
         <ng-container *ngSwitchCase="'z-control'">
-          <app-feedback-accordion></app-feedback-accordion>
+          <app-feedback-accordion
+            [lang]="selectedLanguage || 'en'"
+          ></app-feedback-accordion>
         </ng-container>
         <ng-container *ngSwitchCase="'privacy-policy'">
           <app-privacy-policy-accordion
-            [selectedLanguage]="selectedLanguage"
+            [selectedLanguage]="selectedLanguage || 'en'"
           ></app-privacy-policy-accordion>
         </ng-container>
         <ng-container *ngSwitchCase="'change-log'">
           <app-change-log-accordion
+          [lang]="selectedLanguage || 'en'"
             [versionInfo]="versionInfo"
             (ionChange)="openChangelog()"
           ></app-change-log-accordion>
