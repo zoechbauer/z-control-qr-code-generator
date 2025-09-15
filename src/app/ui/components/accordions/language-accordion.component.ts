@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import {
   IonAccordion,
   IonItem,
@@ -20,11 +21,17 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     IonSelect,
     IonSelectOption,
     TranslateModule,
-    CommonModule
+    CommonModule,
+    FormsModule,
   ],
 })
 export class LanguageAccordionComponent {
   @Input() lang?: string;
+  @Output() ionChange = new EventEmitter<string>();
 
   constructor(public translate: TranslateService) {}
+
+  onLanguageChange(event: any) {
+    this.ionChange.emit(this.lang);
+  }
 }

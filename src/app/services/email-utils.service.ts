@@ -8,6 +8,7 @@ import { lastValueFrom } from 'rxjs';
 import { FileUtilsService } from './file-utils.service';
 import { LocalStorageService } from './local-storage.service';
 import { QrUtilsService } from './qr-utils.service';
+import { PrintUtilsService } from './print-utils.service';
 
 export const EMAIL_COMPOSER = 'EMAIL_COMPOSER';
 
@@ -23,6 +24,7 @@ export class EmailUtilsService {
     private readonly qrService: QrUtilsService,
     private readonly fileService: FileUtilsService,
     private readonly localStorage: LocalStorageService,
+    private readonly printUtilsService: PrintUtilsService,
     @Inject(EMAIL_COMPOSER) private readonly emailComposer: any
   ) {}
 
@@ -48,20 +50,34 @@ export class EmailUtilsService {
     const mailBodyPrefix = this.translate.instant(
       'EMAIL_SERVICE_MAIL_BODY_PREFIX'
     );
-    const printingInfo = this.translate.instant(
-      'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO'
+    const printingInfo1 = this.translate.instant(
+      'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_1'
+    );
+    const printingInfo2 = this.translate.instant(
+      'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_2'
+    );
+    const printingInfo3 = this.translate.instant(
+      'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_3'
     );
 
-    const mailSubject =
+    const mailSubject = 
       mailSubjectPrefix +
       this.qrService.myAngularxQrCode.length +
-      mailSubjectSuffix;
+      mailSubjectSuffix +
+      ' ' + this.printUtilsService.getConvertedPrintSettings();
     const mailBody =
       mailBodyPrefix +
       lineBreak +
       lineBreak +
       this.qrService.myAngularxQrCode +
-      printingInfo;
+      lineBreak +
+      lineBreak +
+      printingInfo1 +
+      ' ' + this.printUtilsService.getConvertedPrintSettings() + ' ' +
+      printingInfo2 +
+      lineBreak +
+      lineBreak +
+      printingInfo3;
 
     const attachmentPng: Attachment = {
       path: filePathPng,

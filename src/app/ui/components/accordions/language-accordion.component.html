@@ -4,8 +4,13 @@
   </ion-item>
   <div class="ion-padding" slot="content">
     <ion-item>
-      <ion-label>{{ "LANGUAGE" | translate }}</ion-label>
-      <ion-select interface="popover" [value]="lang">
+      <ion-select
+        label='{{ "LANGUAGE" | translate }}'
+        label-placement="stacked"
+        [(ngModel)]="lang"
+        (ionChange)="onLanguageChange($event)"
+        interface="popover"
+      >
         <ion-select-option value="en">{{
           "LANGUAGE_EN" | translate
         }}</ion-select-option>

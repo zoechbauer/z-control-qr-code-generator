@@ -190,4 +190,10 @@ ion-title {
     margin-top: 32px;
     text-align: left;
   }
+
+  .input-item-count-margin-top {
+    margin-top: -16px;
+    z-index: 1;
+    background: transparent;
+  }
 }

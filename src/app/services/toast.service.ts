@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 
-import { Toast } from '../enums';
 import { UtilsService } from './utils.service';
 
 @Injectable({
@@ -34,26 +33,10 @@ export class ToastService {
     await toast.present();
   }
 
-  showToast(toastType: Toast): void {
-    const translatedToastMessage = this.getToastMessage(toastType);
-
+  showToast(translatedToastMessage: string): void {
     this.showToastMessage(translatedToastMessage).catch((error) => {
       console.error('Error presenting toast:', error);
     });
-  }
-
-  private getToastMessage(toastType: Toast): string {
-    switch (toastType) {
-      case Toast.TrailingBlanksRemoved:
-        return this.translate.instant('TOAST_TRAILING_BLANKS_REMOVED');
-      case Toast.QRCodeDeletedAfterInputChange:
-        return this.translate.instant(
-          'TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE'
-        );
-      default:
-        console.warn('Unknown toast type:', toastType);
-        return 'undefined toast type';
-    }
   }
 
   async showToastMessage(translatedToastMessage: string) {

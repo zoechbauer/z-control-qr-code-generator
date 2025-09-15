@@ -9,14 +9,12 @@
     (ionValueChange)="onAccordionGroupChange($event, content)"
   >
     <!-- Show all accordions and section title  -->
-    <ng-container *ngIf="showAllAccordions">
+    <ng-container *ngIf="showAllAccordions && !openAccordion">
       <h5 class="ion-text-center settings-section-title">
         {{'SETTINGS' | translate}}
       </h5>
-      <app-language-accordion
-        [lang]="selectedLanguage"
-        (ionChange)="onLanguageChange($event)"
-      ></app-language-accordion>
+      <app-language-accordion></app-language-accordion>
+      <app-print-accordion></app-print-accordion>
       <app-email-maintenance-accordion></app-email-maintenance-accordion>
 
       <h5 class="ion-text-center settings-section-title">
@@ -46,6 +44,11 @@
             (ionChange)="onLanguageChange($event)"
           ></app-language-accordion>
         </ng-container>
+        <ng-container *ngSwitchCase="'print'">
+          <app-print-accordion
+            [lang]="selectedLanguage || 'en'"
+          ></app-print-accordion>
+        </ng-container>
         <ng-container *ngSwitchCase="'emails'">
           <app-email-maintenance-accordion
             [lang]="selectedLanguage || 'en'"
@@ -63,7 +66,7 @@
         </ng-container>
         <ng-container *ngSwitchCase="'change-log'">
           <app-change-log-accordion
-          [lang]="selectedLanguage || 'en'"
+            [lang]="selectedLanguage || 'en'"
             [versionInfo]="versionInfo"
             (ionChange)="openChangelog()"
           ></app-change-log-accordion>

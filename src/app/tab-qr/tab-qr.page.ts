@@ -23,7 +23,7 @@ import { environment } from 'src/environments/environment';
 import { AlertService } from '../services/alert.service';
 import { UtilsService } from '../services/utils.service';
 import { ToastService } from '../services/toast.service';
-import { LogoType, Tab, Toast } from '../enums';
+import { LogoType, Tab } from '../enums';
 
 enum Workflow {
   StepEnterText = 'WORKFLOW_STEP_ENTER_TEXT',
@@ -41,7 +41,6 @@ export class TabQrPage implements OnInit, OnDestroy {
   @ViewChild('qrDataInput') qrDataInput!: IonTextarea;
 
   LogoType = LogoType;
-  Toast = Toast;
   Tab = Tab;
   screenWidth: number = window.innerWidth;
   nbrOfInitialRows: number = 1;
@@ -296,7 +295,7 @@ export class TabQrPage implements OnInit, OnDestroy {
 
     if (data.length !== trimmedData.length) {
       this.qrDataInput.value = trimmedData;
-      this.toastService.showToast(Toast.TrailingBlanksRemoved);
+      this.toastService.showToast(this.translate.instant('TOAST_TRAILING_BLANKS_REMOVED'));
     }
     return trimmedData;
   }
@@ -316,7 +315,9 @@ export class TabQrPage implements OnInit, OnDestroy {
     if (this.hasInputChangedAfterGeneration()) {
       this.emailService.clearEmailSent();
       this.qrService.clearQrFields();
-      this.toastService.showToast(Toast.QRCodeDeletedAfterInputChange);
+      this.toastService.showToast(this.translate.instant(
+          'TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE'
+        ));
     }
   }
 

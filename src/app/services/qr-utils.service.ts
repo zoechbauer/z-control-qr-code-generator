@@ -1,16 +1,14 @@
 import { Injectable, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import jsPDF from 'jspdf';
 
 import { FileUtilsService } from './file-utils.service';
 import { AlertService } from './alert.service';
+import { PrintUtilsService } from './print-utils.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QrUtilsService {
-  // info see qrcode tag in home.page.html
-
   myAngularxQrCode: string = '';
   qrCodeDownloadLink: string = '';
   isQrCodeGenerated = false;
@@ -18,7 +16,8 @@ export class QrUtilsService {
   constructor(
     private readonly sanitizer: DomSanitizer,
     private readonly fileUtilsService: FileUtilsService,
-    private readonly alertService: AlertService
+    private readonly alertService: AlertService,
+    private readonly printUtilsService: PrintUtilsService
   ) {}
 
   generateQRCode(data: string | null | undefined) {
@@ -41,18 +40,8 @@ export class QrUtilsService {
       if (canvas) {
         const dataUrl = canvas.toDataURL('image/png');
 
-        // create pdf
-        const pdf = new jsPDF({
-          orientation: 'portrait',
-          unit: 'mm',
-          format: 'a4',
-        });
+        const pdfBlob = await this.printUtilsService.printQRCode(dataUrl);
 
-        // add QR-Code
-        pdf.addImage(dataUrl, 'PNG', 10, 10, 190, 190);
-
-        // store PDF as blob
-        const pdfBlob = pdf.output('blob');
         const base64Data = await this.fileUtilsService.blobToBase64(pdfBlob);
 
         try {

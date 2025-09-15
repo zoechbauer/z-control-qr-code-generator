@@ -1,0 +1,164 @@
+<ion-accordion value="print" id="print">
+  <ion-item slot="header" color="light">
+    <ion-label
+      >{{ "SET_QR_CODE_SIZE" | translate }} {{ getPrintSettings() }}</ion-label
+    >
+  </ion-item>
+  <div class="ion-padding" slot="content">
+    <!-- qr code size -->
+    <ion-item>
+      <ion-select
+        label="{{ 'QR_CODE_SIZE' | translate }}"
+        label-placement="stacked"
+        [(ngModel)]="selectedQrCodeSize"
+        (ionChange)="onPrintSettingChange()"
+        interface="popover"
+      >
+        <ion-select-option
+          *ngFor="let size of qrCodeSizes"
+          [value]="size.value"
+        >
+          {{ size.label }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- qr code gap size -->
+    <ion-item>
+      <ion-select
+        label="{{ 'QR_CODE_GAP' | translate }}"
+        label-placement="stacked"
+        [(ngModel)]="selectedQrCodeGapSize"
+        (ionChange)="onPrintSettingChange()"
+        interface="popover"
+      >
+        <ion-select-option
+          *ngFor="let gap of qrCodeGapSizes"
+          [value]="gap.value"
+        >
+          {{ gap.label }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- how many qr codes -->
+    <ion-item>
+      <ion-select
+        label="{{ 'NUMBER_OF_QR_CODES_PER_PAGE' | translate }}"
+        label-placement="stacked"
+        [(ngModel)]="selectedTypeOfQrCodesPerPage"
+        (ionChange)="onPrintSettingChange()"
+        interface="popover"
+      >
+        <ion-select-option
+          *ngFor="let countType of qrCodesCountPerPages"
+          [value]="countType.value"
+        >
+          {{ countType.label }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <div
+      *ngIf="selectedTypeOfQrCodesPerPage === QrCodesCountPerPage.CUSTOM_NUMBER"
+    >
+      <ion-item>
+        <ion-label
+          >{{ "NUMBER_OF_QR_CODES" | translate }} [1-{{
+            maxCalculatedNumberOfQrCodesPerPage
+          }}]</ion-label
+        >
+      </ion-item>
+      <ion-item class="input-item-count-margin-top">
+        <ion-input
+          [(ngModel)]="selectedNumberOfQrCodesPerPage"
+          (ionInput)="onNumberOfQrCodesChange($event)"
+          [max]="maxCalculatedNumberOfQrCodesPerPage"
+          type="number"
+        ></ion-input>
+      </ion-item>
+    </div>
+
+    <ion-item
+      *ngIf="selectedTypeOfQrCodesPerPage === QrCodesCountPerPage.FULL_PAGE"
+    >
+      <ion-label
+        >{{ "CALCULATED_NUMBER_OF_QR_CODES" | translate }}:&nbsp;&nbsp;&nbsp;{{
+          calculatedNumberOfQrCodesPerPage
+        }}</ion-label
+      >
+    </ion-item>
+
+    <ion-item>
+      <ion-label
+        >{{ "RESULT" | translate }}: {{ getPrintSettings() }}</ion-label
+      >
+    </ion-item>
+
+    <ng-container *ngIf="lang === 'de'; else englishTemplate">
+      <ng-container *ngTemplateOutlet="germanTemplate"></ng-container>
+    </ng-container>
+
+    <!-- E N G L I S H   T E M P L A T E -->
+
+    <ng-template #englishTemplate>
+      <div class="notes">
+        <p>Note</p>
+        <p>
+          The number of QR codes per A4 page depends on the selected size and
+          gap.
+        </p>
+        <p>
+          You can set the number in the “Number of QR codes per A4 page”
+          selection. The “As many as possible” option calculates the maximum
+          number per page based on size and gap. The “I want to enter the
+          number” option lets you set a lower number.
+        </p>
+        <p>
+          The result of your selection is shown in the result line and in the
+          settings panel in the format [Size / Gap / Number] or [Size / 1].
+        </p>
+        <p>
+          After sending the email, you can change the settings here and resend
+          the email.
+        </p>
+        <p>
+          For more information, see the help page in the chapter “Print QR code
+          in a specific size”.
+        </p>
+      </div>
+    </ng-template>
+
+    <!-- G E R M A N   T E M P L A T E -->
+
+    <ng-template #germanTemplate>
+      <div class="notes">
+        <p>Hinweis</p>
+        <p>
+          Die Anzahl der QR-Codes pro A4-Seite hängt von der gewählten Größe und
+          dem Abstand ab.
+        </p>
+        <p>
+          Sie können die Anzahl in der Auswahl „Anzahl QR-Codes pro A4-Seite“
+          festlegen. Mit der Option „So viele wie möglich“ wird die maximale
+          Anzahl pro Seite basierend auf Größe und Abstand berechnet. Mit der
+          Option „Ich möchte die Anzahl eingeben“ können Sie eine geringere
+          Anzahl festlegen.
+        </p>
+        <p>
+          Das Ergebnis Ihrer Auswahl wird in der Ergebniszeile und im
+          Einstellungs-Panel im Format [Größe / Abstand / Anzahl] oder [Größe /
+          1] angezeigt.
+        </p>
+        <p>
+          Nach dem Versenden der E-Mail können Sie die Einstellungen hier ändern
+          und die E-Mail erneut versenden.
+        </p>
+        <p>
+          Weitere Informationen finden Sie auf der Hilfeseite im Kapitel
+          „QR-Code in einer bestimmten Größe drucken“.
+        </p>
+      </div>
+    </ng-template>
+  </div>
+</ion-accordion>

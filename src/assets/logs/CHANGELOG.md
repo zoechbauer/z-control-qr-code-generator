@@ -1,11 +1,3 @@
-# What's New
-
-All recent updates and improvements to our **z-control QR Code Generator** app.
-
-# What's New?
-
-All recent updates and improvements to our **z-control QR Code Generator** app.
-
 # What's New?
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
@@ -14,7 +6,10 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### ✨ New Features
 
-- …
+- **Flexible QR Code Printing:** Users can now print QR codes in various sizes, with customizable options for size, gap, and quantity. The app automatically calculates the number of QR codes to print, or users can manually enter their preferred amount.
+- **Enhanced Print Options Management:** A dedicated accordion has been added to the Settings page for managing print options, making it easier to configure and review printing preferences.
+- **Email Integration Improvements:** Selected print options are now appended to the email subject line, and the email body has been updated to provide clearer information about the chosen print settings.
+- **Documentation Updates:** The FAQ and user help pages have been revised to include detailed instructions and tips for using the new print features.
 
 ### 🚀 Improvements
 
@@ -24,9 +19,6 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 ### 🐛 Fixes
 
 - Reverted the reduction of header height in landscape mode due to display issues on Huawei phones and tablets.
-
-only for commit
-- Removed obsolete empty files and the unused `home` folder. All relevant objects had previously been relocated, but the old folder was not deleted.
 
 ### 🛡 Security
 

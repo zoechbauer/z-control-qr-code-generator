@@ -1,5 +1,15 @@
 {
-  "-- TODO remove EMAIL_ADDRESS_BUTTON": "-------",
+  "------ enums": "-------",
+  "QrCodesCountPerPage.FULL_PAGE": "As many as possible",
+  "QrCodesCountPerPage.CUSTOM_NUMBER": "I want to enter the number",
+  "QrCodeSize.XSMALL": "Very small [XS] (~1.5cm)",
+  "QrCodeSize.SMALL": "Small [S] (~3cm)",
+  "QrCodeSize.MEDIUM": "Medium [M] (~5cm)",
+  "QrCodeSize.LARGE": "Large [L] (~7.5cm)",
+  "QrCodeSize.XLARGE": "Very large [XL] (~14cm)",
+  "QrCodeGapSize.SMALL": "Small [S] (~0.5cm)",
+  "QrCodeGapSize.MEDIUM": "Medium [M] (~2cm)",
+  "QrCodeGapSize.LARGE": "Large [L] (~5cm)",
 
   "------ settings page": "-------",
   "SETTINGS": "Settings",
@@ -7,6 +17,7 @@
   "LANGUAGE_EN": "English",
   "LANGUAGE_DE": "German",
   "CLOSE": "Close",
+  "SET_QR_CODE_SIZE": "Set QR Code Size for PDF",
   "EMAIL_ADDRESSES": "Manage Email Addresses",
   "SELECT_LANGUAGE": "Select Language",
   "FEEDBACK": "Feedback",
@@ -15,6 +26,15 @@
   "PRIVACY_POLICY": "Privacy Policy",
   "GET_SOURCE_CODE": "Get Source Code",
   "INSTALL_MOBILE_APP": "Install Mobile App",
+
+  "------ print settings": "-------",
+  "QR_CODE_SIZE": "Size of QR Code",
+  "QR_CODE_GAP": "Gap between QR Codes",
+  "NUMBER_OF_QR_CODES_PER_PAGE": "Number of QR Codes per A4 Page",
+  "NUMBER_OF_QR_CODES": "Number of QR Codes",
+  "CALCULATED_NUMBER_OF_QR_CODES": "Calculated Number of QR Codes",
+  "RESULT": "Result",
+  "TOAST_INVALID_VALUE_ENTERED": "Invalid value entered. Please enter a number between 1 and {{max}}.",
 
   "------ QR code page": "-------",
   "GENERATE": "Generate",
@@ -45,7 +65,7 @@
   "TOOLTIP_EMAIL_INVALID_ADDRESS": "Please enter a valid email address",
   "TOOLTIP_NAVIGATION_CLEAR_TEXT_TO_SWITCH": "Please clear the text field before switching to email maintenance",
 
-"------ Clear Input Text Confirmation": "-------",
+  "------ Clear Input Text Confirmation": "-------",
   "CLEAR_CONFIRMATION_HEADER": "Clear Text?",
   "CLEAR_CONFIRMATION_MESSAGE": "This will clear all entered text. Continue?",
   "CLEAR_CONFIRMATION_BUTTON": "Clear",
@@ -62,11 +82,13 @@
 
   "------ email service": "-------",
   "EMAIL_SERVICE_MAIL_SUBJECT_PREFIX": "Generated z-control QR Code of your text with ",
-  "EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX": " characters",
+  "EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX": " characters and the print option ",
   "EMAIL_SERVICE_MAIL_BODY_PREFIX": "This text is contained in the QR code:",
   "EMAIL_SERVICE_MAIL_BODY_PREFIX_WEB": "Note: If the QR code contains leading spaces, they may not be displayed when opening the email, as leading spaces are automatically removed by the browser when using the mailto link.",
-  "EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO": "\n\nPRINTING INSTRUCTIONS:\nThe attached PDF prints a large QR code (almost full A4 width). For different sizes or detailed printing instructions, see the 'How to print QR Code in a specific size?' section in the app's help page (? icon).\n\nQuick tip: For optimal scanning, QR codes should be at least 2.5 cm x 2.5 cm. Use 'Actual Size' scaling when printing.",
-
+  "EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_1": "PRINTING INSTRUCTIONS:\nThe attached PDF contains one or multiple QR codes, arranged and sized according to your selected print option",
+  "EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_2": ".",
+  "EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_3": "You can print these QR codes directly from the PDF. For best results, use the 'Actual Size' or '100%' scaling option in your print dialog to ensure correct dimensions. The actual size of the printed QR code may differ slightly from the size specified in the print options. It depends on the length of the QR text and your printer settings.\n\nIf you need a size that is not available in the print options, use the attached PNG image. Insert it into a document (e.g., Word or Google Docs) and adjust the image size individually to your preference before printing.\n\nFor more detailed instructions, see the 'How to print QR Code in a specific size?' section in the app's help page.",
+  
   "------ mobile web email options": "-------",
   "MOBILE_WEB_EMAIL_TITLE": "Email Options",
   "MOBILE_WEB_EMAIL_MESSAGE": "On mobile web browsers, email clients may not open automatically. Choose an option:",

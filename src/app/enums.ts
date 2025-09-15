@@ -8,12 +8,26 @@ export enum LogoType {
   Company = 'company',
 }
 
-export enum Toast {
-  TrailingBlanksRemoved = 'toast_trailing_blanks_removed',
-  QRCodeDeletedAfterInputChange = 'toast_qr_code_deleted_after_input_change',
-}
-
 export enum Modal {
   Changelog = 'changelog_modal',
   Help = 'help_modal',
+}
+
+export enum QrCodeSize {
+  XSMALL = 1.5, // cm
+  SMALL = 3,
+  MEDIUM = 5,
+  LARGE = 7.5,
+  XLARGE = 14,
+}
+
+export enum QrCodeGapSize {
+  SMALL = 0.5, // cm
+  MEDIUM = 2,
+  LARGE = 5,
+}
+
+export enum QrCodesCountPerPage {
+  FULL_PAGE = 'Full Page',
+  CUSTOM_NUMBER = 'Custom Number',
 }

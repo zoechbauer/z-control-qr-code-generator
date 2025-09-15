@@ -8,6 +8,7 @@ import { LocalStorageService } from '../services/local-storage.service';
 import { environment } from 'src/environments/environment';
 import { UtilsService } from '../services/utils.service';
 import { LogoType, Tab } from '../enums';
+import { PrintSettings } from '../services/print-utils.service';
 
 @Component({
   selector: 'app-tab-settings',
@@ -66,12 +67,7 @@ export class TabSettingsPage implements OnInit, OnDestroy {
 
   onAccordionGroupChange(event: CustomEvent, content: IonContent) {
     this.openAccordion = event.detail.value;
-    this.showAllAccordions = !this.openAccordion ? true : false;
-  }
-
-  showAll() {
-    this.openAccordion = null;
-    this.showAllAccordions = true;
+    this.showAllAccordions = this.openAccordion == null;
   }
 
   onLanguageChange(event: any) {
@@ -79,6 +75,15 @@ export class TabSettingsPage implements OnInit, OnDestroy {
     this.localStorage.saveSelectedLanguage(lang);
     this.translate.use(lang);
     this.translate.setDefaultLang(lang);
+  }
+
+  onPrintSettingsChange(event: PrintSettings) {
+    this.localStorage.savePrintSettings(event);
+  }
+
+  showAll() {
+    this.openAccordion = null;
+    this.showAllAccordions = true;
   }
 
   async openChangelog() {

@@ -3,9 +3,12 @@ import { Storage } from '@ionic/storage-angular';
 import { BehaviorSubject } from 'rxjs';
 
 import { ValidationService } from './validation.service';
+import { PrintSettings } from './print-utils.service';
+import { QrCodeGapSize, QrCodesCountPerPage, QrCodeSize } from '../enums';
 
 enum LocalStorage {
   SavedEmailAddresses = 'savedEmailAddresses',
+  SavedPrintSettings = 'savedPrintSettings',
   SelectedLanguage = 'selectedLanguage',
 }
 
@@ -16,7 +19,11 @@ export class LocalStorageService {
   savedEmailAddresses: string[] = [];
   savedEmailAddressesSubject = new BehaviorSubject<string[]>([]);
   savedEmailAddresses$ = this.savedEmailAddressesSubject.asObservable();
-  
+
+  savedPrintSettings!: PrintSettings;
+  savedPrintSettingsSubject = new BehaviorSubject<PrintSettings>(this.defaultPrintSettings);
+  savedPrintSettings$ = this.savedPrintSettingsSubject.asObservable();
+
   selectedLanguageSubject = new BehaviorSubject<string>(
     this.getMobileDefaultLanguage()
   );
@@ -34,6 +41,7 @@ export class LocalStorageService {
   private async initStorage() {
     await this.storage.create();
     await this.loadSavedEmailAddresses();
+    await this.loadPrintSettings();
     await this.loadSelectedOrDefaultLanguage();
   }
 
@@ -110,4 +118,40 @@ export class LocalStorageService {
       console.error('Error saving email:', error);
     }
   }
+
+  async loadPrintSettings() {
+    const printSettings = await this.storage.get(
+      LocalStorage.SavedPrintSettings
+    );
+    if (printSettings) {
+      this.savedPrintSettings = JSON.parse(printSettings);
+    } else {
+
+      this.savePrintSettings(this.defaultPrintSettings);
+      this.savedPrintSettings = this.defaultPrintSettings;
+    }
+    this.savedPrintSettingsSubject.next(this.savedPrintSettings);
+  }
+
+    async savePrintSettings(settings: PrintSettings) {
+    try {
+      await this.storage.set(
+        LocalStorage.SavedPrintSettings,
+        JSON.stringify(settings)
+      );
+      this.savedPrintSettingsSubject.next(settings);
+    } catch (error) {
+      console.error('Error saving print settings:', error);
+    }
+  }
+
+  private get defaultPrintSettings(): PrintSettings {
+    return {
+      size: QrCodeSize.MEDIUM,
+      gap: QrCodeGapSize.MEDIUM,
+      typeOfQrCodesPerPage: QrCodesCountPerPage.FULL_PAGE,
+      numberOfQrCodesPerPage: -1,  // indicates full page
+    };
+  }
+
 }

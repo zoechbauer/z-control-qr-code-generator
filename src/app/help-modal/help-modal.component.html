@@ -169,9 +169,27 @@
       <li>
         <b>How can I print the QR code in a specific size?</b>
         <p>
-          Open the attached PDF or image, and use your printer’s scaling options
-          or insert the image into a document to set the desired size. In the
-          "How to print QR Code?" section, you will find detailed instructions.
+          The app allows you to print QR codes in your desired size and
+          quantity. In the "Settings" tab in the footer, use the "Set QR code
+          size for PDF" option to select the size, spacing, and number per A4
+          page. The "As many as possible" option calculates the maximum number
+          per page, while "I want to enter the quantity" allows for a smaller
+          amount.
+        </p>
+        <p>
+          For best scanning, QR codes should be at least
+          <b>2.5 cm x 2.5 cm (1 inch x 1 inch)</b>. Always use
+          <b>'Actual Size'</b> or <b>'100%'</b> scaling when printing to
+          maintain correct dimensions.
+        </p>
+        <p>
+          To print, open the attached PDF and use your printer’s scaling
+          options. You can also use the PNG image: insert it into a document
+          (e.g., Word or Google Docs), then set the image size before printing.
+        </p>
+        <p>
+          For step-by-step instructions, see the “How to print QR Code in a
+          specific size?” section in the help page.
         </p>
       </li>
       <li>
@@ -437,24 +455,25 @@
     <p>In the <b>Settings</b> section, you can use the following features:</p>
     <ol>
       <li>Select language</li>
+      <li>Set QR code size for PDF</li>
       <li>Manage email addresses</li>
       <li>Send feedback to z-control</li>
     </ol>
-    <p>
-      Additionally, you will find this information in the settings:
-    </p>
+    <p>Additionally, you will find this information in the settings:</p>
     <ol>
       <li>Privacy policy</li>
       <li>App version and changes (Release Notes)</li>
-      <li>Installation of the <i>mobile app</i> (visible only in the web version)</li>
       <li>
-      Access to the <i>source code</i> to see how your data is processed
+        Installation of the <i>mobile app</i> (visible only in the web version)
+      </li>
+      <li>
+        Access to the <i>source code</i> to see how your data is processed
       </li>
     </ol>
     <p>You will find the respective descriptions directly at each item.</p>
     <p>
-      You can switch between QR Code creation and settings at any time.
-      The entered QR Code data remains when switching.
+      You can switch between QR Code creation and settings at any time. The
+      entered QR Code data remains when switching.
     </p>
 
     <h3 id="web-version">Using the Web Version for Longer Texts</h3>
@@ -632,43 +651,103 @@
       </p>
     </div>
     <p>
-      The app generates QR codes as PDF files which can be printed in different
-      sizes...
+      The app generates PDF files containing multiple QR codes per page, based
+      on your selected size and quantity in the print options. You can print
+      these QR codes directly from the PDF.
     </p>
     <p>
-      There are several ways to print the QR code in a specific size. This
-      depends on the installed printer software and printer. This example is
-      intended to help you print the QR code in your desired size.
+      If you want to print QR codes in different sizes, you can change the print
+      options after sending by email, adjust the desired settings, and then
+      return to QR code creation. Press "Email QR code" again to generate a new
+      PDF with the updated settings, which will be attached to the email. You
+      can repeat this process as often as you like.
+    </p>
+    <p>
+      If you need a different size or want to print a single QR code, use the
+      attached PNG image. Insert it into a document (e.g., Word or Google Docs),
+      then adjust the image size to your preference before printing.
     </p>
     <h5>Printing the PDF document</h5>
     <ol>
-      <li>Open the PDF document on your device</li>
-      <li>Select <i>Print</i> in your PDF viewer</li>
+      <li>Open the PDF document on your device.</li>
+      <li>Select <i>Print</i> in your PDF viewer.</li>
       <li>
-        Calculate the scaling from the printout according to the email
-        attachment and your desired QR code size
-      </li>
-      <li>
-        In the print dialog, select the option
-        <i>Custom scale</i> and enter the scaling factor
+        In the print dialog, select <i>Actual Size</i> or <i>100%</i> scaling to
+        ensure the QR codes are printed at the correct dimensions.
       </li>
     </ol>
+    <p>
+      The actual size of the printed QR code may differ slightly from the size
+      specified in the print options. It depends on the length of the QR text
+      and your printer settings. For the most accurate size, always select
+      “Actual Size” or “100%” scaling in the print dialog.
+    </p>
     <h5>Printing the image (filename.png)</h5>
     <ol>
-      <li>Open the image on your device</li>
-      <li>Copy the image</li>
-      <li>Open a word processor (e.g. Google Docs or Word)</li>
-      <li>Paste the image into the document</li>
+      <li>Open the PNG image on your device.</li>
+      <li>Copy the image.</li>
+      <li>Open a word processor (e.g., Google Docs or Word).</li>
+      <li>Paste the image into the document.</li>
       <li>
-        Select the image and choose the option
-        <i>Size and Position</i> from the context menu
+        Select the image and choose <i>Size and Position</i> from the context
+        menu
         <ion-icon name="albums"></ion-icon>
       </li>
       <li>
-        You can now either enter the height and width in cm or, as with the PDF
-        document, calculate and enter the scaling
+        Enter your desired height and width in cm, or scale the image as needed
+        before printing.
       </li>
     </ol>
+    <h5>Scan distances of QR Code sizes</h5>
+    <table>
+      <thead>
+        <tr>
+          <th>QR Code Size</th>
+          <th>Scan Distance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            Very small [XS]<br />
+            (~1.5 cm)
+          </td>
+          <td>~15 cm</td>
+        </tr>
+        <tr>
+          <td>
+            Small [S]<br />
+            (~3 cm)
+          </td>
+          <td>~30 cm</td>
+        </tr>
+        <tr>
+          <td>
+            Medium [M]<br />
+            (~5 cm)
+          </td>
+          <td>~50 cm</td>
+        </tr>
+        <tr>
+          <td>
+            Large [L]<br />
+            (~7.5 cm)
+          </td>
+          <td>~75 cm</td>
+        </tr>
+        <tr>
+          <td>
+            Very large [XL]<br />
+            (~14 cm)
+          </td>
+          <td>~140 cm</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      <b>Note:</b> The recommended scan distance in centimeters is approximately
+      <b>10 × QR code size in cm</b>.
+    </p>
 
     <h3 id="floating-keyboard">How to enable floating keyboard on Android:</h3>
     <p>
@@ -793,8 +872,8 @@
       integrated into the standard camera app.
     </p>
     <p>
-      <b>Saved Email addresses</b> are stored on the phone in local storage
-      (IndexedDB or Local Storage).
+      <b>Saved email addresses</b> and <b>selected print options</b> are stored
+      on your device in local storage (IndexedDB or Local Storage).
     </p>
     <p>
       The <b>generated QR code files</b> are attached to the Email and are
@@ -980,10 +1059,35 @@
       <li>
         <b>Wie kann ich den QR Code in einer bestimmten Größe drucken?</b>
         <p>
-          Öffnen Sie das angehängte PDF oder Bild und nutzen Sie die
-          Skalierungsoptionen Ihres Druckers oder fügen Sie das Bild in ein
-          Dokument ein, um die gewünschte Größe einzustellen. Im Abschnitt "QR
-          Code drucken" finden Sie detaillierte Anleitungen.
+          Die App ermöglicht es Ihnen, QR Codes in Ihrer gewünschten Größe und
+          Anzahl zu drucken. Über den Tab "Einstellungen" in der Fußzeile können
+          Sie über den Punkt "QR-Code Größe für PDF festlegen" die Größe, den
+          Abstand und die Anzahl pro A4-Seite auswählen. Die Option „So viele
+          wie möglich“ berechnet die maximale Anzahl pro Seite, während „Ich
+          möchte die Anzahl eingeben“ eine geringere Menge erlaubt.
+        </p>
+        <p>
+          Für optimales Scannen sollten QR Codes mindestens
+          <b>2,5 cm x 2,5 cm (1 Zoll x 1 Zoll)</b> groß sein. Verwenden Sie
+          immer <b>'Originalgröße'</b> oder <b>'100%'</b> Skalierung beim
+          Drucken, um die korrekten Abmessungen beizubehalten.
+        </p>
+        <p>
+          Eine Schritt-für-Schritt-Anleitung finden Sie im Abschnitt „QR Code in
+          einer bestimmten Größe drucken“ auf der Hilfeseite.
+        </p>
+      </li>
+      <li>
+        <b>Warum wird der QR Code dem Mail als PDF und als PNG angehängt?</b>
+        <p>
+          Der QR Code wird sowohl als PDF als auch als PNG angehängt, um Ihnen
+          Flexibilität beim Drucken und Teilen zu bieten. Die PDF-Version ist
+          ideal für den Druck, während das PNG-Bild einfach in digitale
+          Dokumente eingefügt werden kann.
+        </p>
+        <p>
+          Eine Schritt-für-Schritt-Anleitung finden Sie im Abschnitt „QR Code in
+          einer bestimmten Größe drucken“ auf der Hilfeseite.
         </p>
       </li>
       <li>
@@ -1262,27 +1366,33 @@
       </li>
     </ol>
     <h5>Details zu Einstellungen verwalten</h5>
-    <p>Im Bereich <b>Einstellungen</b> können Sie folgende Funktionen nutzen:</p>
+    <p>
+      Im Bereich <b>Einstellungen</b> können Sie folgende Funktionen nutzen:
+    </p>
     <ol>
       <li>Sprache auswählen</li>
+      <li>QR Code Größe für PDF festlegen</li>
       <li>E-Mail-Adressen verwalten</li>
       <li>Feedback an z-control senden</li>
     </ol>
-    <p>
-      Zusätzlich finden Sie in den Einstellungen diese Informationen:
-    </p>
+    <p>Zusätzlich finden Sie in den Einstellungen diese Informationen:</p>
     <ol>
       <li>Datenschutzbestimmungen</li>
       <li>App-Version und Änderungen (Release Notes)</li>
-      <li>Installation der <i>mobilen App</i> (nur in der Web-Version sichtbar)</li>
       <li>
-      Zugriff auf den <i>Quellcode</i>, um nachzuvollziehen, wie Ihre Daten verarbeitet werden
+        Installation der <i>mobilen App</i> (nur in der Web-Version sichtbar)
+      </li>
+      <li>
+        Zugriff auf den <i>Quellcode</i>, um nachzuvollziehen, wie Ihre Daten
+        verarbeitet werden
       </li>
     </ol>
-    <p>Die jeweiligen Beschreibungen finden Sie direkt bei den einzelnen Punkten.</p>
     <p>
-      Sie können jederzeit zwischen QR Code Erstellung und Einstellungen wechseln.
-      Die eingegebenen QR Code Daten bleiben beim Wechsel erhalten.
+      Die jeweiligen Beschreibungen finden Sie direkt bei den einzelnen Punkten.
+    </p>
+    <p>
+      Sie können jederzeit zwischen QR Code Erstellung und Einstellungen
+      wechseln. Die eingegebenen QR Code Daten bleiben beim Wechsel erhalten.
     </p>
 
     <h3 id="web-version-DE">Web-Version für längere Texte verwenden</h3>
@@ -1488,44 +1598,107 @@
       </p>
     </div>
     <p>
-      Die App generiert QR-Codes als PDF-Dateien, die in verschiedenen Größen
-      gedruckt werden können...
+      Die App erstellt PDF-Dateien mit mehreren QR-Codes pro Seite, basierend
+      auf den von Ihnen gewählten Größen und der gewünschten Anzahl in den
+      <i>Einstellungen/QR Code Größe für PDF festlegen</i>. Sie können diese
+      QR-Codes direkt aus der PDF drucken.
     </p>
     <p>
-      Zum Drucken des QR Codes in einer bestimmten Größe gibt es mehrere
-      Möglichkeiten. Diese hängen von der installierten Drucksoftware und
-      Drucker ab. Dieses Beispiel soll Ihnen helfen, den QR Code in der
-      gewünschten Größe zu drucken.
+      Falls Sie QR Codes in unterschiedlichen Größen drucken möchten, können Sie
+      nach dem Versand per E-Mail zu den Druckeinstellungen wechseln, dort die
+      gewünschten Optionen anpassen und anschließend wieder zur QR Code
+      Erstellung zurückkehren. Drücken Sie dann erneut "QR Code mailen". Es wird
+      eine neue PDF mit den aktualisierten Einstellungen erstellt und der E-Mail
+      angehängt. Diesen Vorgang können Sie beliebig oft wiederholen.
+    </p>
+    <p>
+      Falls Sie eine andere Größe benötigen oder nur einen einzelnen QR-Code
+      drucken möchten, verwenden Sie das angehängte PNG-Bild. Fügen Sie dieses
+      in ein Dokument (z. B. Word oder Google Docs) ein und passen Sie die
+      Bildgröße nach Ihren Wünschen an, bevor Sie drucken.
     </p>
     <h5>Drucken des PDF-Dokuments</h5>
     <ol>
-      <li>Öffnen Sie das PDF-Dokument auf Ihrem Gerät</li>
-      <li>Wählen <i>Drucken</i> in Ihrem PDF-Viewer</li>
+      <li>Öffnen Sie das PDF-Dokument auf Ihrem Gerät.</li>
+      <li>Wählen Sie <i>Drucken</i> in Ihrem PDF-Viewer.</li>
       <li>
-        Berechnen Sie die Skalierung vom Ausdruck lt. Mailanhang und Ihrer
-        gewünschten QR-Code Größe
-      </li>
-      <li>
-        Wählen Sie im Druckdiaglog die Option
-        <i>Benutzerdefinierter Maßstab</i> und geben Sie den Skalierungsfaktor
-        ein
+        Wählen Sie im Druckdialog <i>Originalgröße</i> oder
+        <i>100%</i> Skalierung, damit die QR-Codes in den korrekten Abmessungen
+        gedruckt werden.
       </li>
     </ol>
+    <p>
+      Die tatsächliche Größe des gedruckten QR Codes kann geringfügig von der in
+      den Druckoptionen angegebenen Größe abweichen. Sie hängt von der Länge des
+      QR-Textes und den Druckereinstellungen ab. Für eine möglichst exakte Größe
+      wählen Sie im Druckdialog immer „Originalgröße“ oder „100%“ Skalierung.
+    </p>
     <h5>Drucken des Bildes (Dateiname.png)</h5>
     <ol>
-      <li>Öffnen Sie das Bild auf Ihrem Gerät</li>
-      <li>Kopieren Sie das Bild</li>
-      <li>Öffnen Sie eine Textverarbeitung (z.B. Google Docs oder Word)</li>
-      <li>Fügen Sie das Bild in das Dokument ein</li>
+      <li>Öffnen Sie das PNG-Bild auf Ihrem Gerät.</li>
+      <li>Kopieren Sie das Bild.</li>
+      <li>Öffnen Sie eine Textverarbeitung (z. B. Google Docs oder Word).</li>
+      <li>Fügen Sie das Bild in das Dokument ein.</li>
       <li>
-        Selektieren Sie das Bild und wählen Sie aus dem Kontextmenü die Option
-        <i>Größe und Position</i> <ion-icon name="albums"></ion-icon>
+        Selektieren Sie das Bild und wählen Sie <i>Größe und Position</i> im
+        Kontextmenü
+        <ion-icon name="albums"></ion-icon>
       </li>
       <li>
-        Sie können nun entweder die Höhe und Breite absolut in cm eingeben oder
-        wie beim PDF-Dokument die Skalierung berechnen und eingeben
+        Geben Sie die gewünschte Höhe und Breite in cm ein oder skalieren Sie
+        das Bild nach Bedarf, bevor Sie drucken.
       </li>
     </ol>
+    <h5>Scan-Entfernungen für QR-Code-Größen</h5>
+    <table>
+      <thead>
+        <tr>
+          <th>QR-Code-Größe</th>
+          <th>Scan-Entfernung</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            Sehr klein [XS]<br />
+            (~1,5 cm)
+          </td>
+          <td>~15 cm</td>
+        </tr>
+        <tr>
+          <td>
+            Klein [S]<br />
+            (~3 cm)
+          </td>
+          <td>~30 cm</td>
+        </tr>
+        <tr>
+          <td>
+            Mittel [M]<br />
+            (~5 cm) (~5 cm)
+          </td>
+          <td>~50cm</td>
+        </tr>
+        <tr>
+          <td>
+            Groß [L]<br />
+            (~7,5 cm)
+          </td>
+          <td>~75 cm</td>
+        </tr>
+        <tr>
+          <td>
+            Sehr groß [XL]<br />
+            (~14 cm)
+          </td>
+          <td>~140 cm</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      <b>Hinweis:</b> Die empfohlene Scan-Entfernung in Zentimetern beträgt etwa
+      <b>10 × QR-Code-Größe in cm</b>.
+    </p>
 
     <h3 id="floating-keyboard-DE">
       Schwebende Tastatur auf Android aktivieren
@@ -1654,8 +1827,8 @@
       Code-Scan-Funktion bereits in der Standard-Kamera-App integriert.
     </p>
     <p>
-      <b>Erfasste Mailadressen</b> werden im Handy in Local Storage (IndexedDB
-      bzw. Local Storage) gespeichert.
+      <b>Erfasste Mailadressen</b> und <b>ausgewählte Druck-Optionen</b> werden
+      im Handy in Local Storage (IndexedDB bzw. Local Storage) gespeichert.
     </p>
     <p>
       Die <b>generierten QR Code Dateien</b> werden dem E-Mail als Anhang

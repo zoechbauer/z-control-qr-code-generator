@@ -19,6 +19,7 @@ import { ChangeLogAccordionComponent } from "../ui/components/accordions/change-
 import { GetSourceAccordionComponent } from '../ui/components/accordions/get-source-accordion.component';
 import { GetMobileAppAccordionComponent } from "../ui/components/accordions/get-mobile-app-accordion.component";
 import { EmailMaintenanceAccordionComponent } from '../ui/components/accordions/email-maintenance-accordion.component';
+import { PrintAccordionComponent } from '../ui/components/accordions/print-accordion.component';
 
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ import { EmailMaintenanceAccordionComponent } from '../ui/components/accordions/
     GetSourceAccordionComponent,
     GetMobileAppAccordionComponent,
     EmailMaintenanceAccordionComponent,
+    PrintAccordionComponent
 ],
   declarations: [TabSettingsPage],
 })
