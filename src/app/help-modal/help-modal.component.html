@@ -3,7 +3,7 @@
 </ng-container>
 
 <!-- *********************************** -->
-<!-- E N G L I S H   T E M P L A T E -->
+<!-- E N G L I S H   T E M P L A T E     -->
 <!-- *********************************** -->
 
 <ng-template #englishTemplate>
@@ -43,9 +43,9 @@
         <li>
           <a
             href="#"
-            (click)="utilsService.scrollTo('faq', $event)"
+            (click)="utilsService.scrollTo('general-usage', $event)"
             class="toc-link-normal-height"
-            >Frequently Asked Questions (FAQ)</a
+            >General Usage</a
           >
         </li>
         <li>
@@ -77,7 +77,7 @@
             >Select Email app</a
           >
         </li>
-        <li>
+        <li *ngIf="isNative">
           <a
             href="#"
             (click)="utilsService.scrollTo('reset-default-app', $event)"
@@ -92,7 +92,7 @@
             >How to print QR Code in a specific size?</a
           >
         </li>
-        <li class="toc-increase-margin-top">
+        <li class="toc-increase-margin-top" *ngIf="isNative">
           <a
             href="#"
             (click)="utilsService.scrollTo('floating-keyboard', $event)"
@@ -112,12 +112,21 @@
             >Technical information</a
           >
         </li>
+        <li class="toc-increase-margin-top">
+          <a
+            href="#"
+            (click)="utilsService.scrollTo('troubleshooting', $event)"
+            class="toc-link-normal-height"
+          >
+            Troubleshooting & Problem Solving
+          </a>
+        </li>
       </ol>
     </div>
 
     <!-- Add this after your Table of Contents and before the first <h3> section in both English and German templates -->
 
-    <h3 id="faq">Frequently Asked Questions (FAQ)</h3>
+    <h3 id="general-usage">General Usage</h3>
     <ol>
       <li>
         <b>What can I use this app for?</b>
@@ -169,7 +178,7 @@
       <li>
         <b>How can I print the QR code in a specific size?</b>
         <p>
-          The app allows you to print QR codes in your desired size and
+          The app allows you to print QR codes in defined sizes and your desired
           quantity. In the "Settings" tab in the footer, use the "Set QR code
           size for PDF" option to select the size, spacing, and number per A4
           page. The "As many as possible" option calculates the maximum number
@@ -177,19 +186,23 @@
           amount.
         </p>
         <p>
-          For best scanning, QR codes should be at least
-          <b>2.5 cm x 2.5 cm (1 inch x 1 inch)</b>. Always use
-          <b>'Actual Size'</b> or <b>'100%'</b> scaling when printing to
-          maintain correct dimensions.
-        </p>
-        <p>
-          To print, open the attached PDF and use your printer’s scaling
-          options. You can also use the PNG image: insert it into a document
-          (e.g., Word or Google Docs), then set the image size before printing.
+          To print, open the attached PDF file and print it at actual size
+          (=100% scaling). You can also use the PNG image: insert it into a
+          document (e.g., Word or Google Docs), then set the image size before
+          printing.
         </p>
         <p>
           For step-by-step instructions, see the “How to print QR Code in a
           specific size?” section in the help page.
+        </p>
+      </li>
+      <li>
+        <b>Why is the QR code attached to the email as both PDF and PNG?</b>
+        <p>
+          The QR code is attached as both a PDF and a PNG to give you
+          flexibility for printing and sharing. The PDF version is ideal for
+          printing, while the PNG image can easily be inserted into digital
+          documents.
         </p>
       </li>
       <li>
@@ -204,40 +217,9 @@
         </p>
       </li>
       <li>
-        <b
-          >The keyboard covers the input field or buttons - how do I fix
-          this?</b
-        >
-        <p>
-          On smaller screens or older Android devices, the keyboard might cover
-          important buttons or input fields.
-        </p>
-        <p>Solution - Enable floating keyboard:</p>
-        <ol>
-          <li>Tap the three dots (...) right above the keyboard</li>
-          <li>Select "Modes" (Modi)</li>
-          <li>Choose "Floating keyboard" (Schwebende Tastatur)</li>
-        </ol>
-        <p>
-          This makes the keyboard smaller and moveable, so you can position it
-          where it doesn't cover the app interface.
-        </p>
-        <p>
-          <b>Alternative:</b> Use the web version on a tablet or PC for
-          comfortable typing of longer texts.
-        </p>
-      </li>
-      <li>
-        <b>Is my data private?</b>
-        <p>
-          Yes, all data is stored locally on your device. No data is sent to
-          external servers.
-        </p>
-      </li>
-      <li>
         <b>How do I change the app language?</b>
         <p>
-          In the "Settings" tab in the footer, you can use the "Select Language"
+          {{ languageChangeButtonHelpText }} you can use the "Select Language"
           option to switch between English and German. The change takes effect
           immediately.
         </p>
@@ -251,61 +233,13 @@
         </p>
       </li>
       <li>
-        <b>Why is the email body missing when I send a QR code?</b>
-        <p>
-          Some third-party email apps (such as Bluemail) may not display the
-          pre-filled email body text when sending emails with attachments. This
-          is a limitation of those email apps. We recommend using standard email
-          apps like Gmail or Outlook for the best experience.
-        </p>
-      </li>
-      <li>
-        <b
-          >Why do I get "Storage Permission Required" error and how do I fix
-          it?</b
-        >
-        <p>
-          If you see this error when saving or mailing QR codes, you need to
-          grant storage permissions to the app:
-        </p>
-        <p>Solution:</p>
-        <ol>
-          <li>Go to Settings</li>
-          <li>Select Apps</li>
-          <li>Find z-control QR Code Generator</li>
-          <li>Tap Permissions</li>
-          <li>Enable Storage permission</li>
-        </ol>
-        <p>
-          This error typically occurs on older Android versions (e.g., Android
-          9). When you first start the app, you'll be asked to allow permissions
-          to access photos, media, and files. If you previously denied
-          permissions and selected "Don't ask again", you'll get this error and
-          need to manually enable them in your device settings.
-        </p>
-        <p>
-          On certain devices, such as Samsung Galaxy S8/S9 models, it may still
-          not work despite these settings. In that case, please use the web
-          version of this app.
-        </p>
-      </li>
-      <li>
-        <b>Why doesn't email work the same way in the web version?</b>
-        <p>
-          Browser security restrictions prevent web apps from automatically
-          attaching files to emails. In the web version, QR codes download to
-          your Downloads folder and must be manually attached to emails. The
-          native mobile app handles this automatically.
-        </p>
-      </li>
-      <li>
         <b>How can I provide feedback or contact support?</b>
         <p>
-          You can quickly send us feedback, questions, or suggestions using the
-          email link in "Settings". Simply click the logo in the header to open
-          "Feedback to z-control" in the settings, then click the "z-control
-          Support & Feedback" link. Your email app will open automatically,
-          allowing you to contact us directly.
+          You can send us feedback, questions, or suggestions using the email
+          link in the “Settings” section. Simply click the logo in the header to
+          open “Feedback to z-control” in Settings. Then click the “z-control
+          Support & Feedback” link. Your email app will open automatically so
+          you can contact us directly.
         </p>
       </li>
     </ol>
@@ -325,6 +259,10 @@
       in case you create multiple QR codes.
     </p>
     <p>
+      You can set the <b>size of the QR code for printing</b> and the
+      <b>number per A4 page</b> in the settings.
+    </p>
+    <p>
       To avoid having to enter the Email address every time you send an Email,
       <b>you can save Email addresses</b>.
     </p>
@@ -335,15 +273,15 @@
     <ul>
       <li><b>QR Code:</b> For creating and sending QR codes.</li>
       <li>
-        <b>Settings:</b> For managing email addresses, changing language, and
-        accessing app info.
+        <b>Settings:</b> For managing QR code size for PDFs, email addresses,
+        language settings, and viewing app information.
       </li>
     </ul>
     <p>
       <b>Navigation:</b>
     </p>
     <ul>
-      <li>
+      <li *ngIf="isNative">
         <b>On mobile devices in portrait mode:</b> Use the tabs at the bottom of
         the screen to switch between QR Code and Settings.
       </li>
@@ -356,11 +294,15 @@
 
     <h5>Overview</h5>
     <ol>
-      <li>Go to the <b>QR Code</b> tab and enter your text or link.</li>
-      <li>Generate your QR code and send it by email if desired.</li>
+      <li>Go to <b>QR Code</b> and enter your text or link.</li>
       <li>
-        Switch to the <b>Settings</b> tab to manage email addresses or change
-        the language.
+        Generate your QR code and send it by email. If you send the QR codes to
+        yourself, you can conveniently manage them in your email inbox, since
+        the content of the generated QR code is included in the email body.
+      </li>
+      <li>
+        Switch to <b>Settings</b> to manage QR code size for PDFs, email
+        addresses, or language.
       </li>
     </ol>
     <h5>Details on generating QR code</h5>
@@ -424,14 +366,16 @@
           you have added them using <b>Settings / Manage Email Addresses</b>.
           Otherwise, you need to enter them manually.
         </p>
+        <p><i>Subject: </i>{{ emailSubjectHelpText }}</p>
         <p>
-          <i>Subject: </i>Generated z-control QR Code of your text with the
-          length of the entered text. Example: Generated z-control QR Code of
-          your text with 512 characters
-        </p>
-        <p>
-          <i>Text: </i>The text contained in the QR code as well as tips and
-          instructions for printing the QR code.
+          <i>Body: </i
+          ><span *ngIf="!isNative"
+            >A note explaining which two files from the download folder must be
+            manually attached to the email. For security reasons, browsers are
+            not allowed to do this automatically. In the mobile version, the
+            files are automatically attached. Additionally, </span
+          ><span *ngIf="isNative">It </span>includes the text contained in the
+          QR code as well as instructions and tips for printing the QR code.
         </p>
       </li>
       <li>
@@ -442,7 +386,8 @@
           <b>notification</b> will be displayed for 3 seconds. You must then
           generate a new QR code from the changed text.<br /><br />
           To allow the text to be changed even after sending, e.g. for small
-          adjustments, the text is not cleared after sending.<br /><br />
+          adjustments or other QR code sizes, the text is not cleared after
+          sending.<br /><br />
           The text can be removed using the <i>Delete input</i> button. For
           longer texts (from 100 characters), a safety prompt appears asking if
           you really want to delete the text. After deletion, the generated QR
@@ -463,7 +408,7 @@
     <ol>
       <li>Privacy policy</li>
       <li>App version and changes (Release Notes)</li>
-      <li>
+      <li *ngIf="!isNative">
         Installation of the <i>mobile app</i> (visible only in the web version)
       </li>
       <li>
@@ -490,27 +435,29 @@
       but with some platform-specific limitations.
     </p>
 
-    <h5>How to access the web version:</h5>
-    <ol>
-      <li>Open your web browser (Chrome, Firefox, Safari, etc.)</li>
-      <li>
-        Navigate to:
-        <a
-          class="external-link"
-          href="https://z-control-qr-code.web.app/home"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          https://z-control-qr-code.web.app/home
-          <ion-icon
-            name="open-outline"
-            style="vertical-align: text-bottom; margin-left: 2px"
-          ></ion-icon>
-        </a>
-      </li>
-      <li>Use the app with your computer's keyboard for easier text input</li>
-      <li>Generate QR codes just like in the mobile app</li>
-    </ol>
+    <div *ngIf="isNative">
+      <h5>How to access the web version:</h5>
+      <ol>
+        <li>Open your web browser (Chrome, Firefox, Safari, etc.)</li>
+        <li>
+          Navigate to:
+          <a
+            class="external-link"
+            href="https://z-control-qr-code.web.app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://z-control-qr-code.web.app
+            <ion-icon
+              name="open-outline"
+              style="vertical-align: text-bottom; margin-left: 2px"
+            ></ion-icon>
+          </a>
+        </li>
+        <li>Use the app with your computer's keyboard for easier text input</li>
+        <li>Generate QR codes just like in the mobile app</li>
+      </ol>
+    </div>
 
     <h5>Benefits of the web version:</h5>
     <ul>
@@ -525,7 +472,6 @@
       </li>
       <li><b>Cross-Platform:</b> Works on any device with a browser</li>
       <li><b>Multi-Language:</b> Available in English and German</li>
-      <li><b>No storage required:</b> No app installation needed</li>
     </ul>
 
     <h5>Web version limitations:</h5>
@@ -547,7 +493,7 @@
 
     <h5>How email functionality works on different platforms:</h5>
 
-    <h6>Desktop Web (Windows, Mac, Linux):</h6>
+    <h6 style="font-weight: bold">Desktop Web (Windows, Mac, Linux):</h6>
     <ol>
       <li>Click "Email QR Code" button</li>
       <li>QR code files download to your Downloads folder</li>
@@ -556,7 +502,7 @@
       <li>Manually attach the downloaded QR code files and send</li>
     </ol>
 
-    <h6>Android Web Browsers:</h6>
+    <h6 style="font-weight: bold">Android Web Browsers:</h6>
     <ol>
       <li>Click "Email QR Code" button</li>
       <li>
@@ -574,23 +520,23 @@
       <li>Choose your preferred option to share the QR code</li>
     </ol>
 
-    <h6>iOS Safari/Browsers:</h6>
-    <p>
-      <b>Limited functionality:</b> QR code downloads but email options dialog
-      may not appear due to iOS browser restrictions. You can still generate and
-      download QR codes, but email integration is limited.
-    </p>
-
-    <p>
-      <b>Pro Tip:</b> The native mobile app handles file management and email
-      attachments automatically for a seamless experience.
-    </p>
-
-    <p>
-      <b>Note:</b> Your saved email addresses are stored locally on each device,
-      so you may need to re-enter them when switching between mobile and web
-      versions.
-    </p>
+    <h6 style="font-weight: bold">iOS Safari/Browsers:</h6>
+    <ul>
+      <li>
+        <i>Limited functionality:</i> QR code downloads but email options dialog
+        may not appear due to iOS browser restrictions. You can still generate
+        and download QR codes, but email integration is limited.
+      </li>
+      <li>
+        <i>Pro Tip:</i> The native mobile app handles file management and email
+        attachments automatically for a seamless experience.
+      </li>
+      <li>
+        <i>Note:</i> Your saved email addresses are stored locally on each
+        device, so you may need to re-enter them when switching between mobile
+        and web versions.
+      </li>
+    </ul>
 
     <h3 id="select-email-client">Select Email app</h3>
     <p>
@@ -613,33 +559,35 @@
       <i>Reset default app</i>.
     </p>
 
-    <h3 id="reset-default-app">Reset default app</h3>
-    <p>
-      If you accidentally selected a program that is not an Email app (e.g.
-      WhatsApp) as the default for sending emails and chose the
-      <i>Always</i> option, you can reset this selection in the
-      <b>Android settings</b>.
-    </p>
-    <i>Step-by-step instructions</i>
-    <ol>
-      <li>Open the settings on your Android device.</li>
-      <li>Scroll down and tap on "Apps" or "Applications".</li>
-      <li>
-        Find and select the program from the list (e.g. WhatsApp) that you
-        selected for sending emails.
-      </li>
-      <li>
-        Scroll down to "Set as default" (it may also say "Open by default" or
-        similar) and tap on it.
-      </li>
-      <li>Tap on "Clear defaults" or "Reset defaults".</li>
-      <li>Close the settings on your Android device.</li>
-    </ol>
-    <p>
-      The link is now removed and the next time you open a mailto link or click
-      on <i>Send Email</i>, you will be asked again which app should open the
-      link.
-    </p>
+    <div *ngIf="isNative">
+      <h3 id="reset-default-app">Reset default app</h3>
+      <p>
+        If you accidentally selected a program that is not an Email app (e.g.
+        WhatsApp) as the default for sending emails and chose the
+        <i>Always</i> option, you can reset this selection in the
+        <b>Android settings</b>.
+      </p>
+      <i>Step-by-step instructions</i>
+      <ol>
+        <li>Open the settings on your Android device.</li>
+        <li>Scroll down and tap on "Apps" or "Applications".</li>
+        <li>
+          Find and select the program from the list (e.g. WhatsApp) that you
+          selected for sending emails.
+        </li>
+        <li>
+          Scroll down to "Set as default" (it may also say "Open by default" or
+          similar) and tap on it.
+        </li>
+        <li>Tap on "Clear defaults" or "Reset defaults".</li>
+        <li>Close the settings on your Android device.</li>
+      </ol>
+      <p>
+        The link is now removed and the next time you open a mailto link or
+        click on <i>Send Email</i>, you will be asked again which app should
+        open the link.
+      </p>
+    </div>
 
     <h3 id="print-qr-code">How to print QR Code in a specific size?</h3>
     <div class="quick-tip">
@@ -651,9 +599,10 @@
       </p>
     </div>
     <p>
-      The app generates PDF files containing multiple QR codes per page, based
-      on your selected size and quantity in the print options. You can print
-      these QR codes directly from the PDF.
+      The app generates a PDF file with one or more QR codes per page—according
+      to the size and quantity you selected in <i>Settings</i> under
+      <i>Set QR code size for PDF</i>. You can print these QR codes directly
+      from the PDF.
     </p>
     <p>
       If you want to print QR codes in different sizes, you can change the print
@@ -703,44 +652,25 @@
       <thead>
         <tr>
           <th>QR Code Size</th>
-          <th>Scan Distance</th>
+          <th>Recommended Scan Distance</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>
-            Very small [XS]<br />
-            (~1.5 cm)
-          </td>
+          <td>~3 cm</td>
+          <td>Up to ~30 cm</td>
+        </tr>
+        <tr>
+          <td>~5 cm</td>
+          <td>Up to ~50 cm</td>
+        </tr>
+        <tr>
+          <td>~10 cm</td>
+          <td>Up to ~100 cm</td>
+        </tr>
+        <tr>
           <td>~15 cm</td>
-        </tr>
-        <tr>
-          <td>
-            Small [S]<br />
-            (~3 cm)
-          </td>
-          <td>~30 cm</td>
-        </tr>
-        <tr>
-          <td>
-            Medium [M]<br />
-            (~5 cm)
-          </td>
-          <td>~50 cm</td>
-        </tr>
-        <tr>
-          <td>
-            Large [L]<br />
-            (~7.5 cm)
-          </td>
-          <td>~75 cm</td>
-        </tr>
-        <tr>
-          <td>
-            Very large [XL]<br />
-            (~14 cm)
-          </td>
-          <td>~140 cm</td>
+          <td>Up to ~150 cm</td>
         </tr>
       </tbody>
     </table>
@@ -749,35 +679,39 @@
       <b>10 × QR code size in cm</b>.
     </p>
 
-    <h3 id="floating-keyboard">How to enable floating keyboard on Android:</h3>
-    <p>
-      <b>Samsung devices:</b>
-    </p>
-    <ol>
-      <li>Open any app with text input</li>
-      <li>
-        When keyboard appears, look for the keyboard settings icon (usually 3
-        dots or gear)
-      </li>
-      <li>Tap "Modes and layout" or "Keyboard layout"</li>
-      <li>Select "Floating keyboard" or "One-handed mode"</li>
-      <li>The keyboard becomes movable and smaller</li>
-    </ol>
+    <div *ngIf="isNative">
+      <h3 id="floating-keyboard">
+        How to enable floating keyboard on Android:
+      </h3>
+      <p>
+        <b>Samsung devices:</b>
+      </p>
+      <ol>
+        <li>Open any app with text input</li>
+        <li>
+          When keyboard appears, look for the keyboard settings icon (usually 3
+          dots or gear)
+        </li>
+        <li>Tap "Modes and layout" or "Keyboard layout"</li>
+        <li>Select "Floating keyboard" or "One-handed mode"</li>
+        <li>The keyboard becomes movable and smaller</li>
+      </ol>
 
-    <p>
-      <b>Other Android devices:</b>
-    </p>
-    <ol>
-      <li>Go to Settings → System → Languages & input</li>
-      <li>Select your keyboard (like Gboard)</li>
-      <li>Look for "Floating" or "One-handed" mode</li>
-      <li>Enable the floating option</li>
-    </ol>
+      <p>
+        <b>Other Android devices:</b>
+      </p>
+      <ol>
+        <li>Go to Settings → System → Languages & input</li>
+        <li>Select your keyboard (like Gboard)</li>
+        <li>Look for "Floating" or "One-handed" mode</li>
+        <li>Enable the floating option</li>
+      </ol>
 
-    <p>
-      <b>Alternative solution:</b> Use the web version on a tablet or PC for
-      comfortable typing of longer texts.
-    </p>
+      <p>
+        <b>Alternative solution:</b> Use the web version on a tablet or PC for
+        comfortable typing of longer texts.
+      </p>
+    </div>
 
     <h3 id="qr-code-explained">QR codes explained</h3>
     <h5>What are QR codes?</h5>
@@ -818,20 +752,28 @@
     <h5>How does it work?</h5>
     <ol>
       <li>
-        <b>Enter your text:</b> Type or paste any text (up to
+        <b>Enter text:</b> Enter any text you like (up to
         {{ maxInputLength }} characters).
       </li>
       <li>
-        <b>Generate the QR code:</b> Tap the "Generate" button to create a QR
-        code from your text.
+        <b>Generate QR code:</b> Tap "Generate" to create a QR code from your
+        text.
       </li>
       <li>
-        <b>Send or print:</b> You can email the QR code as an image or PDF, or
-        print it for use on labels, cards, or documents.
+        <b>Set size and quantity:</b> In the settings, you can specify the size
+        and how many QR codes per PDF page are created.
       </li>
       <li>
-        <b>Scan to retrieve:</b> Anyone can scan the QR code with a standard QR
-        code reader to view the plain text you entered.
+        <b>Send and print:</b> Send the QR code as an image and PDF by email or
+        print it directly.
+      </li>
+      <li>
+        You can switch between the "QR Code" and "Settings" tabs at any time,
+        make adjustments, and resend.
+      </li>
+      <li>
+        <b>Scan:</b> Anyone can scan the QR code with a standard app and read
+        the entered text.
       </li>
     </ol>
     <h5>Why use plain text QR codes?</h5>
@@ -847,15 +789,20 @@
         <b>Flexibility:</b> Use QR codes for any purpose where sharing plain
         text is helpful.
       </li>
+      <li>
+        <b>Custom printing:</b> QR codes can be printed in different sizes and
+        any quantity—suitable for every use case.
+      </li>
     </ul>
     <p>
-      <b>In summary:</b> This app is designed for users who want a simple,
-      reliable way to generate and share QR codes containing plain text—no more,
-      no less.
+      <b>In summary:</b> This app is for anyone who wants a straightforward,
+      dependable way to generate, print, or share QR codes containing plain
+      text—quickly and in different sizes or quantities you need. No unnecessary
+      extras—just simple, effective QR code creation.
     </p>
 
     <h3 id="technical-info">Technical information</h3>
-    <p>
+    <p *ngIf="isNative">
       <b>Voice input:</b> If you enable voice input in the phone settings, a
       microphone icon will appear on the keyboard. By tapping on this icon, you
       switch to voice input. You can switch flexibly between keyboard and voice
@@ -872,14 +819,27 @@
       integrated into the standard camera app.
     </p>
     <p>
-      <b>Saved email addresses</b> and <b>selected print options</b> are stored
-      on your device in local storage (IndexedDB or Local Storage).
+      <b>Consistent QR Code Print Size:</b> The app uses a new scaling algorithm
+      with linear interpolation to ensure that the printed QR code always
+      matches the selected physical size, regardless of how much text you enter.
+      This means your QR codes will be the correct size for printing, whether
+      they contain a short or long message.
     </p>
     <p>
-      The <b>generated QR code files</b> are attached to the Email and are
-      stored on the phone in the documents folder. Automatic deletion only
-      occurs while the app is open—no background service runs. After 3 hours or
-      when the app restarts, they are automatically deleted.
+      <b>Saved email addresses</b> and <b>selected print options</b> are stored
+      on your {{ deviceText }} in local storage (IndexedDB or Local Storage).
+    </p>
+    <p *ngIf="isNative">
+      The <b>generated QR code files</b> are attached to the email and
+      temporarily stored on the phone in the "Documents" folder. Automatic
+      deletion occurs when the app is restarted; all files older than 3 hours
+      are deleted. No background service runs.
+    </p>
+    <p *ngIf="!isNative">
+      The <b>generated QR code files</b> are attached to the email and saved in
+      your browser's download folder. For privacy reasons, browsers are not
+      allowed to delete these files automatically—so you must manually remove
+      the QR code files if needed.
     </p>
     <p>
       The <b>QR code file names</b> contain the text <i>qrcode</i> and the
@@ -887,12 +847,113 @@
       <i>qrcode_YYYYMMDD_HHMMSS.png</i><br />
       <i>qrcode_YYYYMMDD_HHMMSS.pdf</i>
     </p>
+
+    <h3 id="troubleshooting">Troubleshooting & Problem Solving</h3>
+    <ol>
+      <li *ngIf="isNative">
+        <b
+          >The keyboard covers the input field or buttons - how do I fix
+          this?</b
+        >
+        <p>
+          On smaller screens or older Android devices, the keyboard might cover
+          important buttons or input fields.
+        </p>
+        <p>Solution - Enable floating keyboard:</p>
+        <ol>
+          <li>Tap the three dots (...) right above the keyboard</li>
+          <li>Select "Modes" (Modi)</li>
+          <li>Choose "Floating keyboard" (Schwebende Tastatur)</li>
+        </ol>
+        <p>
+          This makes the keyboard smaller and moveable, so you can position it
+          where it doesn't cover the app interface.
+        </p>
+        <p>
+          <b>Alternative:</b> Use the web version on a tablet or PC for
+          comfortable typing of longer texts.
+        </p>
+      </li>
+      <li *ngIf="isNative">
+        <b>Why is the email body missing when I send a QR code?</b>
+        <p>
+          Some third-party email apps (such as Bluemail) may not display the
+          pre-filled email body text when sending emails with attachments. This
+          is a limitation of those email apps. We recommend using standard email
+          apps like Gmail or Outlook for the best experience.
+        </p>
+      </li>
+      <li *ngIf="isNative">
+        <b
+          >Why do I get "Storage Permission Required" error and how do I fix
+          it?</b
+        >
+        <p>
+          If you see this error when saving or mailing QR codes, you need to
+          grant storage permissions to the app:
+        </p>
+        <p>Solution:</p>
+        <ol>
+          <li>Go to Settings</li>
+          <li>Select Apps</li>
+          <li>Find z-control QR Code Generator</li>
+          <li>Tap Permissions</li>
+          <li>Enable Storage permission</li>
+        </ol>
+        <p>
+          This error typically occurs on older Android versions (e.g., Android
+          9). When you first start the app, you'll be asked to allow permissions
+          to access photos, media, and files. If you previously denied
+          permissions and selected "Don't ask again", you'll get this error and
+          need to manually enable them in your device settings.
+        </p>
+        <p>
+          On certain devices, such as Samsung Galaxy S8/S9 models, it may still
+          not work despite these settings. In that case, please use the web
+          version of this app.
+        </p>
+      </li>
+      <li *ngIf="!isNative">
+        <b>Why does email work differently in the web version?</b>
+        <p>
+          For security reasons, browsers do not allow web apps to automatically
+          attach files to emails. In the web version, QR codes are therefore
+          saved to your download folder and must be manually attached to emails.
+          The native mobile app handles this automatically.
+        </p>
+        <p>
+          Due to browser restrictions, the email body in the web version is
+          shortened: For long texts, only an excerpt of the generated QR text is
+          shown, and some instructions that appear in the native app's email are
+          omitted due to length limits.
+        </p>
+      </li>
+      <li *ngIf="!isNative">
+        <b
+          >Why are both files not attached on the first try in the web version's
+          email client?</b
+        >
+        <p>
+          Sometimes, when you try to attach both the PNG and PDF files to an
+          email in the web version, only the PNG file is attached on the first
+          attempt. If this happens, simply try attaching the PDF file again—then
+          both files will be attached correctly.
+        </p>
+      </li>
+      <li>
+        <b>Is my data private?</b>
+        <p>
+          Yes, all data is stored locally on your device. No data is sent to
+          external servers.
+        </p>
+      </li>
+    </ol>
     <p class="empty-last-item"></p>
   </ion-content>
 </ng-template>
 
 <!-- *********************************** -->
-<!-- G E R M A N   T E M P L A T E -->
+<!-- G E R M A N   T E M P L A T E       -->
 <!-- *********************************** -->
 
 <ng-template #germanTemplate>
@@ -930,9 +991,9 @@
         <li>
           <a
             href="#"
-            (click)="utilsService.scrollTo('faq-DE', $event)"
+            (click)="utilsService.scrollTo('general-usage-DE', $event)"
             class="toc-link-normal-height"
-            >Häufig gestellte Fragen (FAQ)</a
+            >Allgemeine Nutzung</a
           >
         </li>
         <li>
@@ -964,7 +1025,7 @@
             >E-Mail Programm auswählen</a
           >
         </li>
-        <li>
+        <li *ngIf="isNative">
           <a
             href="#"
             (click)="utilsService.scrollTo('reset-default-app-DE', $event)"
@@ -979,7 +1040,7 @@
             >QR Code in einer bestimmten Größe drucken</a
           >
         </li>
-        <li class="toc-increase-margin-top">
+        <li class="toc-increase-margin-top" *ngIf="isNative">
           <a
             href="#"
             (click)="utilsService.scrollTo('floating-keyboard-DE', $event)"
@@ -1001,10 +1062,19 @@
             >Technische Informationen</a
           >
         </li>
+        <li class="toc-increase-margin-top">
+          <a
+            href="#"
+            (click)="utilsService.scrollTo('troubleshooting-DE', $event)"
+            class="toc-link-normal-height"
+          >
+            Fehlerbehebung & Problemlösung
+          </a>
+        </li>
       </ol>
     </div>
 
-    <h3 id="faq-DE">Häufig gestellte Fragen (FAQ)</h3>
+    <h3 id="general-usage-DE">Allgemeine Nutzung</h3>
     <ol>
       <li>
         <b>Wofür kann ich die App verwenden?</b>
@@ -1059,18 +1129,18 @@
       <li>
         <b>Wie kann ich den QR Code in einer bestimmten Größe drucken?</b>
         <p>
-          Die App ermöglicht es Ihnen, QR Codes in Ihrer gewünschten Größe und
-          Anzahl zu drucken. Über den Tab "Einstellungen" in der Fußzeile können
-          Sie über den Punkt "QR-Code Größe für PDF festlegen" die Größe, den
-          Abstand und die Anzahl pro A4-Seite auswählen. Die Option „So viele
-          wie möglich“ berechnet die maximale Anzahl pro Seite, während „Ich
-          möchte die Anzahl eingeben“ eine geringere Menge erlaubt.
+          Die App ermöglicht es Ihnen, QR Codes in definierten Größen und Ihrer
+          gewünschten Anzahl zu drucken. Über den Tab "Einstellungen" in der
+          Fußzeile können Sie über den Punkt "QR-Code Größe für PDF festlegen"
+          die Größe, den Abstand und die Anzahl pro A4-Seite auswählen. Die
+          Option „So viele wie möglich“ berechnet die maximale Anzahl pro Seite,
+          während „Ich möchte die Anzahl eingeben“ eine geringere Menge erlaubt.
         </p>
         <p>
-          Für optimales Scannen sollten QR Codes mindestens
-          <b>2,5 cm x 2,5 cm (1 Zoll x 1 Zoll)</b> groß sein. Verwenden Sie
-          immer <b>'Originalgröße'</b> oder <b>'100%'</b> Skalierung beim
-          Drucken, um die korrekten Abmessungen beizubehalten.
+          Zum Drucken öffnen Sie die angehängte PDF-Datei und drucken sie in der
+          Originalgröße (=100% Skalierung). Sie können auch das PNG-Bild
+          verwenden: Fügen Sie es in ein Dokument (z. B. Word oder Google Docs)
+          ein und stellen Sie dann die Bildgröße vor dem Drucken ein.
         </p>
         <p>
           Eine Schritt-für-Schritt-Anleitung finden Sie im Abschnitt „QR Code in
@@ -1084,10 +1154,6 @@
           Flexibilität beim Drucken und Teilen zu bieten. Die PDF-Version ist
           ideal für den Druck, während das PNG-Bild einfach in digitale
           Dokumente eingefügt werden kann.
-        </p>
-        <p>
-          Eine Schritt-für-Schritt-Anleitung finden Sie im Abschnitt „QR Code in
-          einer bestimmten Größe drucken“ auf der Hilfeseite.
         </p>
       </li>
       <li>
@@ -1103,42 +1169,11 @@
         </p>
       </li>
       <li>
-        <b
-          >Die Tastatur verdeckt das Eingabefeld oder Buttons - wie behebe ich
-          das?</b
-        >
-        <p>
-          Auf kleineren Bildschirmen oder älteren Android-Geräten kann die
-          Tastatur wichtige Schaltflächen oder Eingabefelder verdecken.
-        </p>
-        <p>Lösung - Schwebende Tastatur aktivieren:</p>
-        <ol>
-          <li>Tippen Sie auf die drei Punkte (...) rechts über der Tastatur</li>
-          <li>Wählen Sie "Modi"</li>
-          <li>Wählen Sie "Schwebende Tastatur"</li>
-        </ol>
-        <p>
-          Dadurch wird die Tastatur kleiner und verschiebbar, sodass Sie sie
-          positionieren können, wo sie die App-Oberfläche nicht verdeckt.
-        </p>
-        <p>
-          <b>Alternative:</b> Verwenden Sie die Web-Version auf einem Tablet
-          oder PC für komfortables Tippen längerer Texte.
-        </p>
-      </li>
-      <li>
-        <b>Sind meine Daten privat?</b>
-        <p>
-          Ja, alle Daten werden lokal auf Ihrem Gerät gespeichert. Es werden
-          keine Daten an externe Server gesendet.
-        </p>
-      </li>
-      <li>
         <b>Wie ändere ich die App-Sprache?</b>
         <p>
-          Über den Tab "Einstellungen" in der Fußzeile können Sie über den Punkt
-          "Sprache auswählen" zwischen Deutsch und Englisch wechseln. Die
-          Änderung wird sofort wirksam.
+          {{ languageChangeButtonHelpText }} können Sie über den Punkt "Sprache
+          auswählen" zwischen Deutsch und Englisch wechseln. Die Änderung wird
+          sofort wirksam.
         </p>
       </li>
       <li>
@@ -1151,66 +1186,14 @@
         </p>
       </li>
       <li>
-        <b>Warum fehlt der E-Mail-Text, wenn ich einen QR Code versende?</b>
-        <p>
-          Einige E-Mail-Apps von Drittanbietern (wie Bluemail) zeigen den
-          vorbefüllten E-Mail-Text beim Versand von E-Mails mit Anhängen
-          möglicherweise nicht an. Dies ist eine Einschränkung dieser
-          E-Mail-Programme. Für die beste Erfahrung empfehlen wir die Verwendung
-          von Standard-Mailprogrammen wie Gmail oder Outlook.
-        </p>
-      </li>
-      <li>
-        <b
-          >Warum erhalte ich die Fehlermeldung "Speicherberechtigung
-          erforderlich" und wie behebe ich das?</b
-        >
-        <p>
-          Falls beim Speichern oder Versenden von QR-Codes dieser Fehler
-          auftritt, müssen Sie der App Speicherberechtigungen erteilen:
-        </p>
-        <p>Lösung:</p>
-        <ol>
-          <li>Gehen Sie zu Einstellungen</li>
-          <li>Wählen Sie Apps</li>
-          <li>Suchen Sie z-control QR Code Generator</li>
-          <li>Tippen Sie auf Berechtigungen</li>
-          <li>Aktivieren Sie die Speicherberechtigung</li>
-        </ol>
-        <p>
-          Dieser Fehler tritt typischerweise bei älteren Android-Versionen (z.B.
-          Android 9) auf. Beim ersten Start der App werden Sie gefragt, ob Sie
-          Berechtigungen für den Zugriff auf Fotos, Medien und Dateien erteilen
-          möchten. Falls Sie zuvor die Berechtigung verweigert und "Nicht mehr
-          fragen" ausgewählt haben, erhalten Sie diese Fehlermeldung und müssen
-          die Berechtigung manuell in den Geräteeinstellungen aktivieren.
-        </p>
-        <p>
-          Bei bestimmten Geräten, wie zum Beispiel dem Samsung Galaxy S8/S9,
-          kann es vorkommen, dass es trotz korrekter Einstellungen weiterhin
-          nicht funktioniert. In diesem Fall nutzen Sie bitte die Web-Version
-          dieser App.
-        </p>
-      </li>
-      <li>
-        <b>Warum funktioniert E-Mail in der Web-Version anders?</b>
-        <p>
-          Browser-Sicherheitseinschränkungen verhindern, dass Web-Apps
-          automatisch Dateien an E-Mails anhängen. In der Web-Version werden
-          QR-Codes in Ihren Download-Ordner heruntergeladen und müssen manuell
-          an E-Mails angehängt werden. Die native mobile App erledigt dies
-          automatisch.
-        </p>
-      </li>
-      <li>
         <b>Wie kann ich Feedback geben oder den Support kontaktieren?</b>
         <p>
-          Sie können uns schnell Feedback, Fragen oder Vorschläge über den
-          E-Mail-Link in den „Einstellungen“ senden. Klicken Sie einfach auf das
-          Logo in der Kopfzeile, um „Feedback an z-control“ in den Einstellungen
-          zu öffnen, und klicken Sie dann auf den Link „z-control Support &
-          Feedback“. Ihr E-Mail-Programm öffnet sich automatisch, sodass Sie uns
-          direkt kontaktieren können.
+          Sie können uns Feedback, Fragen oder Vorschläge über den E-Mail-Link
+          in den „Einstellungen“ senden. Klicken Sie einfach auf das Logo in der
+          Kopfzeile, damit „Feedback an z-control“ in den Einstellungen geöffnet
+          wird. Klicken Sie dann auf den Link „z-control Support & Feedback“.
+          Ihr E-Mail-Programm öffnet sich automatisch, sodass Sie uns direkt
+          kontaktieren können.
         </p>
       </li>
     </ol>
@@ -1231,6 +1214,10 @@
       im QR Code enthalten ist, falls Sie mehrere QR Codes erstellen.
     </p>
     <p>
+      Sie können die <b>Größe des QR Codes für den Druck</b> und die
+      <b>Anzahl pro A4-Seite</b> in den Einstellungen festlegen.
+    </p>
+    <p>
       Damit Sie beim Mailversand nicht immer die Mailadresse erfassen müssen,
       können Sie <b>E-Mail-Adressen anlegen</b>.
     </p>
@@ -1241,15 +1228,15 @@
     <ul>
       <li><b>QR Code:</b> Zum Erstellen und Versenden von QR Codes.</li>
       <li>
-        <b>Einstellungen:</b> Zum Verwalten von E-Mail-Adressen, Ändern der
-        Sprache und Anzeigen von App-Informationen.
+        <b>Einstellungen:</b> Zum Verwalten der QR-Code-Größe für PDFs,
+        E-Mail-Adressen, Spracheinstellungen und Anzeigen von App-Informationen.
       </li>
     </ul>
     <p>
       <b>Navigation:</b>
     </p>
     <ul>
-      <li>
+      <li *ngIf="isNative">
         <b>Auf Mobilgeräten im Hochformat:</b> Verwenden Sie die Tabs am unteren
         Bildschirmrand, um zwischen QR Code und Einstellungen zu wechseln.
       </li>
@@ -1263,16 +1250,17 @@
     <h5>Überblick</h5>
     <ol>
       <li>
-        Wechseln Sie zum Tab <b>QR Code</b> und geben Sie Ihren Text oder Link
-        ein.
+        Wechseln Sie zu <b>QR Code</b> und geben Sie Ihren Text oder Link ein.
       </li>
       <li>
-        Generieren Sie Ihren QR Code und versenden Sie ihn bei Bedarf per
-        E-Mail.
+        Generieren Sie Ihren QR Code und versenden Sie ihn per E-Mail. Wenn Sie
+        sich die QR Codes selbst zusenden, können Sie diese bequem in Ihrem
+        E-Mail-Postfach verwalten, da der Inhalt des generierten QR Codes im
+        Mailtext angegeben ist.
       </li>
       <li>
-        Wechseln Sie zum Tab <b>Einstellungen</b>, um E-Mail-Adressen zu
-        verwalten oder die Sprache zu ändern.
+        Wechseln Sie zu <b>Einstellungen</b>, um die QR-Code-Größe für PDFs,
+        E-Mail-Adressen oder die Sprache zu verwalten.
       </li>
     </ol>
     <h5>Details zu QR Code generieren</h5>
@@ -1339,14 +1327,17 @@
           <b>Einstellungen / E-Mail Adressen verwalten</b> angelegt wurden.
           Sonst müssen sie erfasst werden.
         </p>
+        <p><i>Betreff: </i>{{ emailSubjectHelpText }}</p>
         <p>
-          <i>Betreff: </i>Generierter z-control QR-Code Ihres Textes mit Angabe
-          der Textlänge des erfassten Textes. Beispiel: Generierter z-control
-          QR-Code Ihres Textes mit 512 Zeichen
-        </p>
-        <p>
-          <i>Text: </i>Der im QR Code enthaltene Text sowie Hinweise und Tipps
-          zum Drucken des QR Codes.
+          <i>Text: </i
+          ><span *ngIf="!isNative"
+            >Ein Hinweis, welche beiden Dateien aus dem Download-Verzeichnis
+            manuell der E-Mail hinzugefügt werden müssen. Aus Sicherheitsgründen
+            dürfen Browser dies nicht automatisch erledigen. In der mobilen
+            Version werden die Dateien automatisch als Anhang hinzugefügt.
+            Zusätzlich </span
+          ><span *ngIf="isNative">Es </span>sind der im QR Code enthaltene Text
+          sowie Hinweise und Tipps zum Drucken des QR Codes enthalten.
         </p>
       </li>
       <li>
@@ -1356,8 +1347,8 @@
           gelöscht und ein <b>Hinweis</b> 3 Sekunden lang angezeigt. Sie müssen
           den geänderten Text danach wieder in einen QR Code generieren.<br /><br />
           Damit der Text auch nach dem Senden noch geändert werden kann, z.B.
-          wegen kleiner Abweichungen im Text, wird der Text nach dem Senden
-          nicht gelöscht.<br /><br />
+          wegen kleiner Abweichungen im Text oder anderer QR Code Größen, wird
+          der Text nach dem Senden nicht gelöscht.<br /><br />
           Der Text kann mit der Schaltfläche <i>Eingabe löschen</i> entfernt
           werden. Bei längeren Texten (ab 100 Zeichen) erscheint eine
           Sicherheitsabfrage, ob der Text wirklich gelöscht werden soll. Nach
@@ -1379,7 +1370,7 @@
     <ol>
       <li>Datenschutzbestimmungen</li>
       <li>App-Version und Änderungen (Release Notes)</li>
-      <li>
+      <li *ngIf="!isNative">
         Installation der <i>mobilen App</i> (nur in der Web-Version sichtbar)
       </li>
       <li>
@@ -1410,30 +1401,32 @@
       plattformspezifischen Einschränkungen.
     </p>
 
-    <h5>So greifen Sie auf die Web-Version zu:</h5>
-    <ol>
-      <li>Öffnen Sie Ihren Webbrowser (Chrome, Firefox, Safari, etc.)</li>
-      <li>
-        Navigieren Sie zu:
-        <a
-          class="external-link"
-          href="https://z-control-qr-code.web.app/home"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          https://z-control-qr-code.web.app/home
-          <ion-icon
-            name="open-outline"
-            style="vertical-align: text-bottom; margin-left: 2px"
-          ></ion-icon>
-        </a>
-      </li>
-      <li>
-        Verwenden Sie die App mit der Tastatur Ihres Computers für einfachere
-        Texteingabe
-      </li>
-      <li>Generieren Sie QR-Codes genau wie in der mobilen App</li>
-    </ol>
+    <div *ngIf="isNative">
+      <h5>So greifen Sie auf die Web-Version zu:</h5>
+      <ol>
+        <li>Öffnen Sie Ihren Webbrowser (Chrome, Firefox, Safari, etc.)</li>
+        <li>
+          Navigieren Sie zu:
+          <a
+            class="external-link"
+            href="https://z-control-qr-code.web.app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://z-control-qr-code.web.app
+            <ion-icon
+              name="open-outline"
+              style="vertical-align: text-bottom; margin-left: 2px"
+            ></ion-icon>
+          </a>
+        </li>
+        <li>
+          Verwenden Sie die App mit der Tastatur Ihres Computers für einfachere
+          Texteingabe
+        </li>
+        <li>Generieren Sie QR-Codes genau wie in der mobilen App</li>
+      </ol>
+    </div>
 
     <h5>Vorteile der Web-Version:</h5>
     <ul>
@@ -1450,9 +1443,6 @@
         <b>Plattformübergreifend:</b> Funktioniert auf jedem Gerät mit Browser
       </li>
       <li><b>Mehrsprachig:</b> Verfügbar in Deutsch und Englisch</li>
-      <li>
-        <b>Kein Speicherplatz nötig:</b> Keine App-Installation erforderlich
-      </li>
     </ul>
 
     <h5>Einschränkungen der Web-Version:</h5>
@@ -1476,7 +1466,7 @@
       Wie die E-Mail-Funktionalität auf verschiedenen Plattformen funktioniert:
     </h5>
 
-    <h6>Desktop-Web (Windows, Mac, Linux):</h6>
+    <h6 style="font-weight: bold">Desktop-Web (Windows, Mac, Linux):</h6>
     <ol>
       <li>Klicken Sie auf "QR Code mailen"</li>
       <li>QR-Code-Dateien werden in Ihren Download-Ordner heruntergeladen</li>
@@ -1490,7 +1480,7 @@
       </li>
     </ol>
 
-    <h6>Android-Web-Browser:</h6>
+    <h6 style="font-weight: bold">Android-Web-Browser:</h6>
     <ol>
       <li>Klicken Sie auf "QR Code mailen"</li>
       <li>
@@ -1512,24 +1502,24 @@
       <li>Wählen Sie Ihre bevorzugte Option zum Teilen des QR-Codes</li>
     </ol>
 
-    <h6>iOS Safari/Browser:</h6>
-    <p>
-      <b>Eingeschränkte Funktionalität:</b> QR-Code wird heruntergeladen, aber
-      der E-Mail-Optionsdialog erscheint möglicherweise nicht aufgrund von
-      iOS-Browser-Beschränkungen. Sie können weiterhin QR-Codes generieren und
-      herunterladen, aber die E-Mail-Integration ist begrenzt.
-    </p>
-
-    <p>
-      <b>Profi-Tipp:</b> Die native mobile App verwaltet Dateien und
-      E-Mail-Anhänge automatisch für eine nahtlose Erfahrung.
-    </p>
-
-    <p>
-      <b>Hinweis:</b> Ihre gespeicherten E-Mail-Adressen werden lokal auf jedem
-      Gerät gespeichert. Beim Wechsel zwischen mobiler und Web-Version müssen
-      Sie diese möglicherweise erneut eingeben.
-    </p>
+    <h6 style="font-weight: bold">iOS Safari/Browser:</h6>
+    <ul>
+      <li>
+        <i>Eingeschränkte Funktionalität:</i> QR-Code wird heruntergeladen, aber
+        der E-Mail-Optionsdialog erscheint möglicherweise nicht aufgrund von
+        iOS-Browser-Beschränkungen. Sie können weiterhin QR-Codes generieren und
+        herunterladen, aber die E-Mail-Integration ist begrenzt.
+      </li>
+      <li>
+        <i>Profi-Tipp:</i> Die native mobile App verwaltet Dateien und
+        E-Mail-Anhänge automatisch für eine nahtlose Erfahrung.
+      </li>
+      <li>
+        <i>Hinweis:</i> Ihre gespeicherten E-Mail-Adressen werden lokal auf
+        jedem Gerät gespeichert. Beim Wechsel zwischen mobiler und Web-Version
+        müssen Sie diese möglicherweise erneut eingeben.
+      </li>
+    </ul>
 
     <h3 id="select-email-client-DE">E-Mail Programm auswählen</h3>
     <p>
@@ -1554,39 +1544,41 @@
       <i>Standard App zurücksetzen</i> erklärt.
     </p>
 
-    <h3 id="reset-default-app-DE">Standard App zurücksetzen</h3>
-    <p>
-      Falls Sie irrtümlich kein Mailprogramm (z.B. WhatsApp) als
-      Standardprogramm zum Versenden von Mails ausgewählt haben und die
-      Schaltfläche
-      <i>Immer</i> gewählt haben, können Sie diese Auswahl in den
-      <b>Android-Einstellungen</b> zurücksetzen.
-    </p>
-    <i>Schritt-für-Schritt-Anleitung</i>
-    <ol>
-      <li>Öffnen Sie die Einstellungen auf Ihrem Android-Gerät.</li>
-      <li>
-        Scrollen Sie nach unten und tippen Sie auf „Apps“ oder „Anwendungen“.
-      </li>
-      <li>
-        Suchen und wählen Sie das Programm aus der Liste (z.B. WhatsApp), das
-        Sie beim E-Mail senden ausgewählt haben.
-      </li>
-      <li>
-        Scrollen Sie nach unten zu „Als Standard festlegen“ (ggf. steht dort
-        auch „Standardmäßig öffnen“ oder ähnlich) und klicken Sie darauf.
-      </li>
-      <li>
-        Tippen Sie auf „Standardeinstellungen löschen“ bzw. „Standards
-        zurücksetzen“.
-      </li>
-      <li>Schließen Sie die Einstellungen auf Ihrem Android-Gerät.</li>
-    </ol>
-    <p>
-      Jetzt ist die Verknüpfung aufgehoben und beim nächsten Öffnen eines
-      Mailto-Links bzw. beim nächsten Klick auf <i>E-Mail senden</i> werden Sie
-      wieder gefragt, mit welcher App der Link geöffnet werden soll.
-    </p>
+    <div *ngIf="isNative">
+      <h3 id="reset-default-app-DE">Standard App zurücksetzen</h3>
+      <p>
+        Falls Sie irrtümlich kein Mailprogramm (z.B. WhatsApp) als
+        Standardprogramm zum Versenden von Mails ausgewählt haben und die
+        Schaltfläche
+        <i>Immer</i> gewählt haben, können Sie diese Auswahl in den
+        <b>Android-Einstellungen</b> zurücksetzen.
+      </p>
+      <i>Schritt-für-Schritt-Anleitung</i>
+      <ol>
+        <li>Öffnen Sie die Einstellungen auf Ihrem Android-Gerät.</li>
+        <li>
+          Scrollen Sie nach unten und tippen Sie auf „Apps“ oder „Anwendungen“.
+        </li>
+        <li>
+          Suchen und wählen Sie das Programm aus der Liste (z.B. WhatsApp), das
+          Sie beim E-Mail senden ausgewählt haben.
+        </li>
+        <li>
+          Scrollen Sie nach unten zu „Als Standard festlegen“ (ggf. steht dort
+          auch „Standardmäßig öffnen“ oder ähnlich) und klicken Sie darauf.
+        </li>
+        <li>
+          Tippen Sie auf „Standardeinstellungen löschen“ bzw. „Standards
+          zurücksetzen“.
+        </li>
+        <li>Schließen Sie die Einstellungen auf Ihrem Android-Gerät.</li>
+      </ol>
+      <p>
+        Jetzt ist die Verknüpfung aufgehoben und beim nächsten Öffnen eines
+        Mailto-Links bzw. beim nächsten Klick auf <i>E-Mail senden</i> werden
+        Sie wieder gefragt, mit welcher App der Link geöffnet werden soll.
+      </p>
+    </div>
 
     <h3 id="print-qr-code-DE">QR Code in einer bestimmten Größe drucken</h3>
     <div class="quick-tip">
@@ -1598,10 +1590,10 @@
       </p>
     </div>
     <p>
-      Die App erstellt PDF-Dateien mit mehreren QR-Codes pro Seite, basierend
-      auf den von Ihnen gewählten Größen und der gewünschten Anzahl in den
-      <i>Einstellungen/QR Code Größe für PDF festlegen</i>. Sie können diese
-      QR-Codes direkt aus der PDF drucken.
+      Die App erzeugt eine PDF-Datei mit einem oder mehreren QR-Codes pro Seite
+      – entsprechend der von Ihnen in den <i>Einstellungen</i> unter
+      <i>QR Code Größe für PDF festlegen</i> gewählten Größe und Anzahl. Diese
+      QR-Codes können Sie direkt aus der PDF heraus drucken.
     </p>
     <p>
       Falls Sie QR Codes in unterschiedlichen Größen drucken möchten, können Sie
@@ -1654,44 +1646,25 @@
       <thead>
         <tr>
           <th>QR-Code-Größe</th>
-          <th>Scan-Entfernung</th>
+          <th>Empfohlene Scan-Entfernung</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>
-            Sehr klein [XS]<br />
-            (~1,5 cm)
-          </td>
+          <td>~3 cm</td>
+          <td>bis ca. 30 cm</td>
+        </tr>
+        <tr>
+          <td>~5 cm</td>
+          <td>bis ca. 50 cm</td>
+        </tr>
+        <tr>
+          <td>~10 cm</td>
+          <td>bis ca. 100 cm</td>
+        </tr>
+        <tr>
           <td>~15 cm</td>
-        </tr>
-        <tr>
-          <td>
-            Klein [S]<br />
-            (~3 cm)
-          </td>
-          <td>~30 cm</td>
-        </tr>
-        <tr>
-          <td>
-            Mittel [M]<br />
-            (~5 cm) (~5 cm)
-          </td>
-          <td>~50cm</td>
-        </tr>
-        <tr>
-          <td>
-            Groß [L]<br />
-            (~7,5 cm)
-          </td>
-          <td>~75 cm</td>
-        </tr>
-        <tr>
-          <td>
-            Sehr groß [XL]<br />
-            (~14 cm)
-          </td>
-          <td>~140 cm</td>
+          <td>bis ca. 150 cm</td>
         </tr>
       </tbody>
     </table>
@@ -1700,37 +1673,39 @@
       <b>10 × QR-Code-Größe in cm</b>.
     </p>
 
-    <h3 id="floating-keyboard-DE">
-      Schwebende Tastatur auf Android aktivieren
-    </h3>
-    <p>
-      <b>Samsung-Geräte:</b>
-    </p>
-    <ol>
-      <li>Öffnen Sie eine App mit Texteingabe</li>
-      <li>
-        Wenn die Tastatur erscheint, suchen Sie das Tastatur-Einstellungssymbol
-        (meist 3 Punkte oder Zahnrad)
-      </li>
-      <li>Tippen Sie auf "Modi und Layout" oder "Tastaturlayout"</li>
-      <li>Wählen Sie "Schwebende Tastatur" oder "Einhändiger Modus"</li>
-      <li>Die Tastatur wird beweglich und kleiner</li>
-    </ol>
+    <div *ngIf="isNative">
+      <h3 id="floating-keyboard-DE">
+        Schwebende Tastatur auf Android aktivieren
+      </h3>
+      <p>
+        <b>Samsung-Geräte:</b>
+      </p>
+      <ol>
+        <li>Öffnen Sie eine App mit Texteingabe</li>
+        <li>
+          Wenn die Tastatur erscheint, suchen Sie das
+          Tastatur-Einstellungssymbol (meist 3 Punkte oder Zahnrad)
+        </li>
+        <li>Tippen Sie auf "Modi und Layout" oder "Tastaturlayout"</li>
+        <li>Wählen Sie "Schwebende Tastatur" oder "Einhändiger Modus"</li>
+        <li>Die Tastatur wird beweglich und kleiner</li>
+      </ol>
 
-    <p>
-      <b>Andere Android-Geräte:</b>
-    </p>
-    <ol>
-      <li>Gehen Sie zu Einstellungen → System → Sprachen & Eingabe</li>
-      <li>Wählen Sie Ihre Tastatur (z.B. Gboard)</li>
-      <li>Suchen Sie nach "Schwebend" oder "Einhändig"-Modus</li>
-      <li>Aktivieren Sie die schwebende Option</li>
-    </ol>
+      <p>
+        <b>Andere Android-Geräte:</b>
+      </p>
+      <ol>
+        <li>Gehen Sie zu Einstellungen → System → Sprachen & Eingabe</li>
+        <li>Wählen Sie Ihre Tastatur (z.B. Gboard)</li>
+        <li>Suchen Sie nach "Schwebend" oder "Einhändig"-Modus</li>
+        <li>Aktivieren Sie die schwebende Option</li>
+      </ol>
 
-    <p>
-      <b>Alternative Lösung:</b> Verwenden Sie die Web-Version auf einem Tablet
-      oder PC für komfortables Tippen längerer Texte.
-    </p>
+      <p>
+        <b>Alternative Lösung:</b> Verwenden Sie die Web-Version auf einem
+        Tablet oder PC für komfortables Tippen längerer Texte.
+      </p>
+    </div>
 
     <h3 id="qr-code-explained-DE">QR Code kurz erklärt</h3>
     <h5>Was sind QR Codes?</h5>
@@ -1780,8 +1755,17 @@
         Text einen QR Code zu erstellen.
       </li>
       <li>
-        <b>Senden oder drucken:</b> Sie können den QR Code als Bild oder PDF per
-        E-Mail versenden oder ausdrucken.
+        <b>Größe und Anzahl festlegen:</b> In den Einstellungen können Sie
+        bestimmen, welche Größe und wie viele QR Codes pro PDF-Seite erstellt
+        werden.
+      </li>
+      <li>
+        <b>Senden und drucken:</b> Versenden Sie den QR Code als Bild und PDF
+        per E-Mail oder drucken Sie ihn direkt aus.
+      </li>
+      <li>
+        Sie können jederzeit zwischen den Tabs „QR Code“ und „Einstellungen“
+        wechseln, Anpassungen vornehmen und erneut senden.
       </li>
       <li>
         <b>Scannen:</b> Jeder kann den QR Code mit einer Standard-App scannen
@@ -1802,15 +1786,22 @@
         <b>Flexibilität:</b> QR Codes für jeden Zweck, bei dem das Teilen von
         Klartext hilfreich ist.
       </li>
+      <li>
+        <b>Individuelles Drucken:</b> QR Codes können in verschiedenen Größen
+        und beliebiger Anzahl gedruckt werden – passend für jeden
+        Anwendungsfall.
+      </li>
     </ul>
     <p>
-      <b>Zusammengefasst:</b> Diese App ist für Nutzer gedacht, die einfach und
-      zuverlässig QR Codes mit Klartext erstellen und teilen möchten – nicht
-      mehr und nicht weniger.
+      <b>Fazit:</b> Diese App ist für alle, die eine unkomplizierte und
+      zuverlässige Möglichkeit suchen, QR Codes mit Klartext schnell zu
+      erstellen, zu drucken oder zu teilen – in verschiedenen Größen und Mengen.
+      Keine unnötigen Extras – einfach, effektiv und auf das Wesentliche
+      fokussiert.
     </p>
 
     <h3 id="technical-info-DE">Technische Informationen</h3>
-    <p>
+    <p *ngIf="isNative">
       <b>Spracheingabe:</b> Wenn Sie in den Handy-Einstellungen die
       Spracheingabe aktivieren, erscheint im Tastaturfeld ein Mikrofon-Symbol.
       Durch Tippen auf dieses Symbol wechseln Sie zur Spracheingabe. Sie können
@@ -1827,15 +1818,29 @@
       Code-Scan-Funktion bereits in der Standard-Kamera-App integriert.
     </p>
     <p>
-      <b>Erfasste Mailadressen</b> und <b>ausgewählte Druck-Optionen</b> werden
-      im Handy in Local Storage (IndexedDB bzw. Local Storage) gespeichert.
+      <b>Konsistente QR-Code-Druckgröße:</b> Die App verwendet einen neuen
+      Skalierungsalgorithmus mit linearer Interpolation, sodass der gedruckte
+      QR-Code immer exakt der ausgewählten Größe entspricht – unabhängig davon,
+      wie viel Text Sie eingeben. Ihre QR-Codes haben somit beim Drucken stets
+      die korrekten Abmessungen, egal ob sie kurze oder lange Texte enthalten.
     </p>
     <p>
-      Die <b>generierten QR Code Dateien</b> werden dem E-Mail als Anhang
-      übergeben und im Handy im Ordner "Dokumente" temporär gespeichert. Die
-      automatische Löschung erfolgt jedoch nur, solange die App geöffnet ist –
-      es läuft kein Hintergrunddienst. Nach 3 Stunden oder beim Neustart der App
-      werden sie automatisch gelöscht.
+      <b>Erfasste Mailadressen</b> und <b>ausgewählte Druck-Optionen</b> werden
+      im {{ deviceText }} in Local Storage (IndexedDB bzw. Local Storage)
+      gespeichert.
+    </p>
+    <p *ngIf="isNative">
+      Die <b>generierten QR-Code-Dateien</b> werden als Anhang an die E-Mail
+      übergeben und auf dem Handy im Ordner "Dokumente" temporär gespeichert.
+      Die automatische Löschung erfolgt beim Neustart der App; dabei werden alle
+      Dateien gelöscht, die älter als 3 Stunden sind. Es läuft kein
+      Hintergrunddienst.
+    </p>
+    <p *ngIf="!isNative">
+      Die <b>generierten QR-Code-Dateien</b> werden als Anhang an die E-Mail
+      übergeben und im Download-Ordner Ihres Browsers gespeichert. Aus
+      Datenschutzgründen dürfen Browser diese Dateien nicht automatisch löschen
+      – Sie müssen die QR-Code-Dateien daher bei Bedarf manuell entfernen.
     </p>
     <p>
       Die <b>QR Code Datei Namen</b> enthalten den Text <i>qrcode</i> und den
@@ -1843,6 +1848,113 @@
       <i>qrcode_YYYYMMDD_HHMMSS.png</i><br />
       <i>qrcode_YYYYMMDD_HHMMSS.pdf</i>
     </p>
+
+    <h3 id="troubleshooting-DE">Fehlerbehebung & Problemlösung</h3>
+    <ol>
+      <li *ngIf="isNative">
+        <b
+          >Die Tastatur verdeckt das Eingabefeld oder Buttons - wie behebe ich
+          das?</b
+        >
+        <p>
+          Auf kleineren Bildschirmen oder älteren Android-Geräten kann die
+          Tastatur wichtige Schaltflächen oder Eingabefelder verdecken.
+        </p>
+        <p>Lösung - Schwebende Tastatur aktivieren:</p>
+        <ol>
+          <li>Tippen Sie auf die drei Punkte (...) rechts über der Tastatur</li>
+          <li>Wählen Sie "Modi"</li>
+          <li>Wählen Sie "Schwebende Tastatur"</li>
+        </ol>
+        <p>
+          Dadurch wird die Tastatur kleiner und verschiebbar, sodass Sie sie
+          positionieren können, wo sie die App-Oberfläche nicht verdeckt.
+        </p>
+        <p>
+          <b>Alternative:</b> Verwenden Sie die Web-Version auf einem Tablet
+          oder PC für komfortables Tippen längerer Texte.
+        </p>
+      </li>
+      <li *ngIf="isNative">
+        <b>Warum fehlt der E-Mail-Text, wenn ich einen QR Code versende?</b>
+        <p>
+          Einige E-Mail-Apps von Drittanbietern (wie Bluemail) zeigen den
+          vorbefüllten E-Mail-Text beim Versand von E-Mails mit Anhängen
+          möglicherweise nicht an. Dies ist eine Einschränkung dieser
+          E-Mail-Programme. Für die beste Erfahrung empfehlen wir die Verwendung
+          von Standard-Mailprogrammen wie Gmail oder Outlook.
+        </p>
+      </li>
+      <li *ngIf="isNative">
+        <b
+          >Warum erhalte ich die Fehlermeldung "Speicherberechtigung
+          erforderlich" und wie behebe ich das?</b
+        >
+        <p>
+          Falls beim Speichern oder Versenden von QR-Codes dieser Fehler
+          auftritt, müssen Sie der App Speicherberechtigungen erteilen:
+        </p>
+        <p>Lösung:</p>
+        <ol>
+          <li>Gehen Sie zu Einstellungen</li>
+          <li>Wählen Sie Apps</li>
+          <li>Suchen Sie z-control QR Code Generator</li>
+          <li>Tippen Sie auf Berechtigungen</li>
+          <li>Aktivieren Sie die Speicherberechtigung</li>
+        </ol>
+        <p>
+          Dieser Fehler tritt typischerweise bei älteren Android-Versionen (z.B.
+          Android 9) auf. Beim ersten Start der App werden Sie gefragt, ob Sie
+          Berechtigungen für den Zugriff auf Fotos, Medien und Dateien erteilen
+          möchten. Falls Sie zuvor die Berechtigung verweigert und "Nicht mehr
+          fragen" ausgewählt haben, erhalten Sie diese Fehlermeldung und müssen
+          die Berechtigung manuell in den Geräteeinstellungen aktivieren.
+        </p>
+        <p>
+          Bei bestimmten Geräten, wie zum Beispiel dem Samsung Galaxy S8/S9,
+          kann es vorkommen, dass es trotz korrekter Einstellungen weiterhin
+          nicht funktioniert. In diesem Fall nutzen Sie bitte die Web-Version
+          dieser App.
+        </p>
+      </li>
+      <li *ngIf="!isNative">
+        <b>Warum funktioniert E-Mail in der Web-Version anders?</b>
+        <p>
+          Aus Sicherheitsgründen erlauben Browser nicht, dass Web-Apps
+          automatisch Dateien an E-Mails anhängen. In der Web-Version werden
+          QR-Codes daher in Ihren Download-Ordner gespeichert und müssen manuell
+          an E-Mails angehängt werden. Die native mobile App übernimmt dies
+          automatisch.
+        </p>
+        <p>
+          Aufgrund von Browser-Beschränkungen ist der E-Mail-Text in der
+          Web-Version gekürzt: Bei langen Texten wird nur ein Auszug des
+          generierten QR-Textes angezeigt und einige Hinweise, die in der
+          nativen App im E-Mail-Text stehen, entfallen wegen der
+          Längenbegrenzung.
+        </p>
+      </li>
+      <li *ngIf="!isNative">
+        <b
+          >Warum werden in der Web Version beim ersten Versuch im Mail-Programm
+          nicht beide Dateien angehängt?</b
+        >
+        <p>
+          Es kann vorkommen, dass beim ersten Versuch nur die PNG-Datei
+          angehängt wird, wenn Sie sowohl die PNG- als auch die PDF-Datei zu
+          einer E-Mail hinzufügen möchten. Versuchen Sie in diesem Fall einfach,
+          die PDF-Datei erneut anzuhängen – dann werden beide Dateien korrekt
+          angehängt.
+        </p>
+      </li>
+      <li>
+        <b>Sind meine Daten privat?</b>
+        <p>
+          Ja, alle Daten werden lokal auf Ihrem Gerät gespeichert. Es werden
+          keine Daten an externe Server gesendet.
+        </p>
+      </li>
+    </ol>
     <p class="empty-last-item"></p>
   </ion-content>
 </ng-template>

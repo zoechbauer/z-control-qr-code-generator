@@ -1,6 +1,6 @@
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonAccordion,
@@ -9,6 +9,7 @@ import {
   IonSelect,
   IonSelectOption,
   IonInput,
+  IonIcon,
 } from '@ionic/angular/standalone';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
@@ -22,13 +23,14 @@ import {
   PrintUtilsService,
 } from 'src/app/services/print-utils.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { Subscription } from 'rxjs';
 
-interface QrCodeSizes {
+export interface QrCodeSizes {
   label: string;
   value: QrCodeSize;
 }
 
-interface QrCodeGapSizes {
+export interface QrCodeGapSizes {
   label: string;
   value: QrCodeGapSize;
 }
@@ -43,6 +45,7 @@ interface QrCodesCountPerPages {
   templateUrl: './print-accordion.component.html',
   standalone: true,
   imports: [
+    IonIcon,
     IonInput,
     IonAccordion,
     IonItem,
@@ -54,18 +57,20 @@ interface QrCodesCountPerPages {
     FormsModule,
   ],
 })
-export class PrintAccordionComponent implements OnInit {
+export class PrintAccordionComponent implements OnInit, OnDestroy {
   @Input() lang?: string;
 
   QrCodesCountPerPage = QrCodesCountPerPage;
   qrCodeSizes!: QrCodeSizes[];
   qrCodeGapSizes: QrCodeGapSizes[] = [];
   qrCodesCountPerPages: QrCodesCountPerPages[] = [];
-  selectedQrCodeSize: QrCodeSize = QrCodeSize.XSMALL;
+  selectedQrCodeSize: QrCodeSize = QrCodeSize.MEDIUM;
   selectedQrCodeGapSize: QrCodeGapSize = QrCodeGapSize.SMALL;
-  selectedTypeOfQrCodesPerPage: QrCodesCountPerPage = QrCodesCountPerPage.FULL_PAGE;
+  selectedTypeOfQrCodesPerPage: QrCodesCountPerPage =
+    QrCodesCountPerPage.FULL_PAGE;
   selectedNumberOfQrCodesPerPage: number = 1;
   private saveddNumberOfQrCodesPerPage!: number;
+  private readonly subs = new Subscription();
 
   constructor(
     public translate: TranslateService,
@@ -76,7 +81,21 @@ export class PrintAccordionComponent implements OnInit {
 
   ngOnInit() {
     this.loadAvailablePrintSettings();
-    this.loadPrintSettings();
+    this.setupSubscriptions();
+  }
+
+  private setupSubscriptions() {
+    this.subs.add(
+      this.localStorageService.savedPrintSettings$.subscribe((settings) => {
+        this.selectedQrCodeSize = settings.size;
+        this.selectedQrCodeGapSize = settings.gap;
+        this.selectedTypeOfQrCodesPerPage = settings.typeOfQrCodesPerPage;
+        this.selectedNumberOfQrCodesPerPage = settings.numberOfQrCodesPerPage;
+
+        this.saveddNumberOfQrCodesPerPage =
+          this.printUtilsService.getEffectiveNumberOfQrCodesPerPage();
+      })
+    );
   }
 
   getPrintSettings(): string {
@@ -84,22 +103,37 @@ export class PrintAccordionComponent implements OnInit {
   }
 
   get calculatedNumberOfQrCodesPerPage(): number {
-    if (this.selectedTypeOfQrCodesPerPage === QrCodesCountPerPage.CUSTOM_NUMBER) {
+    if (
+      this.selectedTypeOfQrCodesPerPage === QrCodesCountPerPage.CUSTOM_NUMBER
+    ) {
       return this.printUtilsService.getEffectiveNumberOfQrCodesPerPage();
     }
-    return this.printUtilsService.getCalculatedNumberOfQrCodesPerPage(this.selectedQrCodeSize, this.selectedQrCodeGapSize);
+    return this.printUtilsService.getCalculatedNumberOfQrCodesPerPage(
+      this.selectedQrCodeSize,
+      this.selectedQrCodeGapSize
+    );
   }
 
   get maxCalculatedNumberOfQrCodesPerPage(): number {
-    return this.printUtilsService.getCalculatedNumberOfQrCodesPerPage(this.selectedQrCodeSize, this.selectedQrCodeGapSize);
+    return this.printUtilsService.getCalculatedNumberOfQrCodesPerPage(
+      this.selectedQrCodeSize,
+      this.selectedQrCodeGapSize
+    );
   }
 
   onPrintSettingChange() {
-    let numberOfQrCodes = this.maxCalculatedNumberOfQrCodesPerPage; 
-    if (this.selectedTypeOfQrCodesPerPage === QrCodesCountPerPage.CUSTOM_NUMBER) {
-      if (this.selectedNumberOfQrCodesPerPage > 0 && this.selectedNumberOfQrCodesPerPage <= numberOfQrCodes) {
+    let numberOfQrCodes = this.maxCalculatedNumberOfQrCodesPerPage;
+    if (
+      this.selectedTypeOfQrCodesPerPage === QrCodesCountPerPage.CUSTOM_NUMBER
+    ) {
+      if (
+        this.selectedNumberOfQrCodesPerPage > 0 &&
+        this.selectedNumberOfQrCodesPerPage <= numberOfQrCodes
+      ) {
         numberOfQrCodes = this.selectedNumberOfQrCodesPerPage;
       }
+    } else {
+      numberOfQrCodes = -1; // indicates full page
     }
 
     const settings: PrintSettings = {
@@ -140,35 +174,24 @@ export class PrintAccordionComponent implements OnInit {
   }
 
   private loadAvailablePrintSettings() {
-    this.qrCodeSizes = [
-      { label: this.translate.instant('QrCodeSize.XSMALL'), value: QrCodeSize.XSMALL },
-      { label: this.translate.instant('QrCodeSize.SMALL'), value: QrCodeSize.SMALL },
-      { label: this.translate.instant('QrCodeSize.MEDIUM'), value: QrCodeSize.MEDIUM },
-      { label: this.translate.instant('QrCodeSize.LARGE'), value: QrCodeSize.LARGE },
-      { label: this.translate.instant('QrCodeSize.XLARGE'), value: QrCodeSize.XLARGE },
-    ];
-
-    this.qrCodeGapSizes = [
-      { label: this.translate.instant('QrCodeGapSize.SMALL'), value: QrCodeGapSize.SMALL },
-      { label: this.translate.instant('QrCodeGapSize.MEDIUM'), value: QrCodeGapSize.MEDIUM },
-      { label: this.translate.instant('QrCodeGapSize.LARGE'), value: QrCodeGapSize.LARGE },
-    ];
+    const { qrCodeSizes, qrCodeGapSizes } =
+      this.printUtilsService.getAvailableQrCodeSizesAndGapSizes();
+    this.qrCodeSizes = qrCodeSizes;
+    this.qrCodeGapSizes = qrCodeGapSizes;
 
     this.qrCodesCountPerPages = [
-      { label: this.translate.instant('QrCodesCountPerPage.FULL_PAGE'), value: QrCodesCountPerPage.FULL_PAGE },
-      { label: this.translate.instant('QrCodesCountPerPage.CUSTOM_NUMBER'), value: QrCodesCountPerPage.CUSTOM_NUMBER },
+      {
+        label: this.translate.instant('QrCodesCountPerPage.FULL_PAGE'),
+        value: QrCodesCountPerPage.FULL_PAGE,
+      },
+      {
+        label: this.translate.instant('QrCodesCountPerPage.CUSTOM_NUMBER'),
+        value: QrCodesCountPerPage.CUSTOM_NUMBER,
+      },
     ];
   }
 
-  private async loadPrintSettings() {
-    this.localStorageService.savedPrintSettings$.subscribe((settings) => {
-      this.selectedQrCodeSize = settings.size;
-      this.selectedQrCodeGapSize = settings.gap;
-      this.selectedTypeOfQrCodesPerPage = settings.typeOfQrCodesPerPage;
-      this.selectedNumberOfQrCodesPerPage = settings.numberOfQrCodesPerPage;
-
-      this.saveddNumberOfQrCodesPerPage =
-        this.printUtilsService.getEffectiveNumberOfQrCodesPerPage();
-    });
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }

@@ -84,7 +84,10 @@
         </ng-container>
         <!-- Button to show all accordions -->
         <div class="ion-padding ion-text-center accordion-close-button">
-          <ion-button (click)="showAll()">{{ 'CLOSE' | translate }}</ion-button>
+          <ion-button (click)="showAll()" expand="block">
+            <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+            {{ 'CLOSE' | translate }}
+          </ion-button>
         </div>
       </ng-container>
     </ng-container>

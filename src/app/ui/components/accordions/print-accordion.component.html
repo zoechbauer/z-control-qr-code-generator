@@ -1,7 +1,9 @@
 <ion-accordion value="print" id="print">
   <ion-item slot="header" color="light">
     <ion-label
-      >{{ "SET_QR_CODE_SIZE" | translate }} {{ getPrintSettings() }}</ion-label
+      >{{ "SET_QR_CODE_SIZE" | translate }}<br />{{
+        getPrintSettings()
+      }}</ion-label
     >
   </ion-item>
   <div class="ion-padding" slot="content">
@@ -83,7 +85,8 @@
       *ngIf="selectedTypeOfQrCodesPerPage === QrCodesCountPerPage.FULL_PAGE"
     >
       <ion-label
-        >{{ "CALCULATED_NUMBER_OF_QR_CODES" | translate }}:&nbsp;&nbsp;&nbsp;{{
+        >{{ "NUMBER_OF_QR_CODES" | translate }}
+        <ion-icon name="calculator-outline"></ion-icon><br />{{
           calculatedNumberOfQrCodesPerPage
         }}</ion-label
       >
@@ -91,7 +94,7 @@
 
     <ion-item>
       <ion-label
-        >{{ "RESULT" | translate }}: {{ getPrintSettings() }}</ion-label
+        >{{ "RESULT" | translate }}<br />{{ getPrintSettings() }}</ion-label
       >
     </ion-item>
 
@@ -105,8 +108,8 @@
       <div class="notes">
         <p>Note</p>
         <p>
-          The number of QR codes per A4 page depends on the selected size and
-          gap.
+            The number of QR codes per A4 page depends on the selected size,
+            the gap between the QR codes, and the amount of text entered.
         </p>
         <p>
           You can set the number in the “Number of QR codes per A4 page”
@@ -116,7 +119,7 @@
         </p>
         <p>
           The result of your selection is shown in the result line and in the
-          settings panel in the format [Size / Gap / Number] or [Size / 1].
+          settings panel in the format [ Size / Gap / Number ] or [Size / 1].
         </p>
         <p>
           After sending the email, you can change the settings here and resend
@@ -135,8 +138,8 @@
       <div class="notes">
         <p>Hinweis</p>
         <p>
-          Die Anzahl der QR-Codes pro A4-Seite hängt von der gewählten Größe und
-          dem Abstand ab.
+          Die Anzahl der QR-Codes pro A4-Seite hängt von der gewählten Größe,
+          dem Abstand zwischen den QR Codes und der erfassten Textmenge ab.
         </p>
         <p>
           Sie können die Anzahl in der Auswahl „Anzahl QR-Codes pro A4-Seite“
@@ -147,8 +150,8 @@
         </p>
         <p>
           Das Ergebnis Ihrer Auswahl wird in der Ergebniszeile und im
-          Einstellungs-Panel im Format [Größe / Abstand / Anzahl] oder [Größe /
-          1] angezeigt.
+          Einstellungs-Panel im Format [ Größe / Abstand / Anzahl ] oder [ Größe
+          / 1] angezeigt.
         </p>
         <p>
           Nach dem Versenden der E-Mail können Sie die Einstellungen hier ändern

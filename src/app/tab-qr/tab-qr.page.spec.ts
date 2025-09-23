@@ -127,7 +127,7 @@ describe('TabQrPage', () => {
   );
   const localStorageSpy = jasmine.createSpyObj<Partial<LocalStorageService>>(
     'LocalStorageService',
-    ['loadSelectedOrDefaultLanguage', 'init', 'saveEmail'],
+    ['loadSelectedOrDefaultLanguage', 'init', 'saveEmailAddress'],
     {
       selectedLanguage$: of('en'),
     }
@@ -143,8 +143,7 @@ describe('TabQrPage', () => {
       'clearNowFormatted',
       'setNowFormatted',
       'downloadQRCode',
-      'deleteFilesAfterSpecifiedTime',
-      'deleteAllQrCodeFiles',
+      'deleteAllQrCodeFilesAfterSpecifiedTime',
     ]
   );
   const alertSpy = jasmine.createSpyObj<Partial<AlertService>>(
@@ -779,13 +778,13 @@ describe('TabQrPage', () => {
   //     const localStorageService = TestBed.inject(
   //       LocalStorageService
   //     ) as jasmine.SpyObj<LocalStorageService>;
-  //     const email = 'test@example.com';
+  //     const emailAddress = 'test@example.com';
 
   //     // Act
-  //     component.addEmailAddress(email);
+  //     component.addEmailAddress(emailAddress);
 
   //     // Assert
-  //     expect(localStorageService?.saveEmail).toHaveBeenCalledWith(email);
+  //     expect(localStorageService?.saveEmailAddress).toHaveBeenCalledWith(emailAddress);
   //   });
   // });
 
@@ -896,11 +895,6 @@ describe('TabQrPage', () => {
       fileUtilsService.downloadQRCode = jasmine
         .createSpy('downloadQRCode')
         .and.returnValue(Promise.resolve(true));
-      fileUtilsService.deleteFilesAfterSpecifiedTime = jasmine.createSpy(
-        'deleteFilesAfterSpecifiedTime'
-      );
-      fileUtilsService.clearNowFormatted =
-        jasmine.createSpy('clearNowFormatted');
       qrUtilsService.printQRCode = jasmine
         .createSpy('printQRCode')
         .and.returnValue(Promise.resolve());
@@ -927,7 +921,6 @@ describe('TabQrPage', () => {
       );
       expect(qrUtilsService.printQRCode).toHaveBeenCalled();
       expect(emailUtilsService.sendEmail).toHaveBeenCalled();
-      expect(fileUtilsService.deleteFilesAfterSpecifiedTime).toHaveBeenCalled();
       expect(fileUtilsService.clearNowFormatted).toHaveBeenCalled();
     });
   });
@@ -1141,7 +1134,7 @@ describe('TabQrPage', () => {
       localStorageService.loadSelectedOrDefaultLanguage.and.returnValue(
         Promise.resolve()
       );
-      fileUtilsService.deleteAllQrCodeFiles.and.returnValue(Promise.resolve());
+      fileUtilsService.deleteAllQrCodeFilesAfterSpecifiedTime.and.returnValue(Promise.resolve());
     });
 
     it('should initialize component without errors', () => {

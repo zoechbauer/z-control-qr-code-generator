@@ -40,7 +40,7 @@ export class QrUtilsService {
       if (canvas) {
         const dataUrl = canvas.toDataURL('image/png');
 
-        const pdfBlob = await this.printUtilsService.printQRCode(dataUrl);
+        const pdfBlob = this.printUtilsService.printQRCode(dataUrl);
 
         const base64Data = await this.fileUtilsService.blobToBase64(pdfBlob);
 

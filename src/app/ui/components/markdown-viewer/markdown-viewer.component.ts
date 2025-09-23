@@ -12,8 +12,6 @@ import {
   ModalController,
   IonSpinner,
 } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { closeOutline } from 'ionicons/icons';
 import { Capacitor } from '@capacitor/core';
 import { NgIf } from '@angular/common';
 
@@ -50,9 +48,7 @@ export class MarkdownViewerComponent implements OnInit {
     private readonly http: HttpClient,
     private readonly modalController: ModalController,
     public readonly utilsService: UtilsService
-  ) {
-    this.registerIcons();
-  }
+  ) {}
 
   get isNative(): boolean {
     return Capacitor.isNativePlatform();
@@ -68,12 +64,6 @@ export class MarkdownViewerComponent implements OnInit {
 
   scrollToTop() {
     this.content.scrollToTop(300);
-  }
-
-  private registerIcons() {
-    addIcons({
-      'close-outline': closeOutline,
-    });
   }
 
   private loadMarkdownChangelog() {

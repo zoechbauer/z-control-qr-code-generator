@@ -6,6 +6,7 @@ import { Capacitor } from '@capacitor/core';
 
 import { LocalStorageService } from '../services/local-storage.service';
 import { UtilsService } from './../services/utils.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-help-modal',
@@ -13,8 +14,7 @@ import { UtilsService } from './../services/utils.service';
   styleUrls: ['./help-modal.component.scss'],
 })
 export class HelpModalComponent implements OnInit, OnDestroy {
-  @Input() maxInputLength!: number;
-  @Input() scrollToSection?: string; // for direct section navigation
+  @Input() scrollToSection?: string; // Optional: ID of the section to scroll to when the modal opens (e.g., 'floating-keyboard' or 'web-version')
 
   readonly scrollToTopObj = {
     id: 'toc-DE',
@@ -22,6 +22,7 @@ export class HelpModalComponent implements OnInit, OnDestroy {
   };
   selectedLanguage: string = 'de';
   isPortrait = window.matchMedia('(orientation: portrait)').matches;
+  maxInputLength: number = environment.maxInputLength ?? 1000;
 
   private langSub?: Subscription;
 
@@ -33,7 +34,7 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     public readonly utilsService: UtilsService,
     private readonly modalController: ModalController,
     private readonly translate: TranslateService,
-    private readonly localStorage: LocalStorageService,
+    private readonly localStorage: LocalStorageService
   ) {}
 
   get isNative(): boolean {
@@ -81,4 +82,19 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     window.removeEventListener('resize', this.orientationListener);
     window.removeEventListener('orientationchange', this.orientationListener);
   }
+
+  get emailSubjectHelpText(): string {
+    const key = this.isNative ? 'HELP_EMAIL_SUBJECT' : 'HELP_EMAIL_SUBJECT_WEB';
+    return this.translate.instant(key);
+  }
+
+  get languageChangeButtonHelpText(): string {
+    const key = this.isNative ? 'HELP_LANGUAGE_CHANGE_BUTTON' : 'HELP_LANGUAGE_CHANGE_WEB_BUTTON';
+    return this.translate.instant(key);
+  }
+  get deviceText(): string {
+    const key = this.isNative ? 'HELP_DEVICE_TEXT' : 'HELP_DEVICE_TEXT_WEB';
+    return this.translate.instant(key);
+  }
+
 }

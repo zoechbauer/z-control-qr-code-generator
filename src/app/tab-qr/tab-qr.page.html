@@ -1,5 +1,8 @@
 <app-header [currentTab]="Tab.Qr"></app-header>
-<ion-content class="qr-code-content" [class.landscape]="!utilsService.isPortrait">
+<ion-content
+  class="qr-code-content"
+  [class.landscape]="!utilsService.isPortrait"
+>
   <ion-card class="qr-code">
     <ion-card-header>
       <ion-card-title class="ion-text-center"
@@ -20,6 +23,7 @@
           [rows]="nbrOfInitialRows"
           maxlength="{{maxInputLength}}"
           (ionInput)="onTextareaInput()"
+          (ionBlur)="onQrDataInputBlur()"
         ></ion-textarea>
       </ion-item>
 
@@ -75,8 +79,6 @@
           <ion-button
             [class.landscape]="!utilsService.isPortrait"
             fill="clear"
-            (keydown.enter)="storeMailAndDeleteQRCode()"
-            (keydown.space)="storeMailAndDeleteQRCode()"
             [class.pseudo-disabled]="qrService.qrCodeDownloadLink === '' || hasInputChangedAfterGeneration()"
             [disabled]="false"
             >{{ 'MAIL_QR_CODE' | translate}}</ion-button

@@ -3,7 +3,6 @@ import { SafeUrl } from '@angular/platform-browser';
 import {
   IonTextarea,
   ModalController,
-  PopoverController,
   Platform,
   AlertController,
 } from '@ionic/angular';
@@ -24,6 +23,7 @@ import { AlertService } from '../services/alert.service';
 import { UtilsService } from '../services/utils.service';
 import { ToastService } from '../services/toast.service';
 import { LogoType, Tab } from '../enums';
+import { PrintUtilsService } from '../services/print-utils.service';
 
 enum Workflow {
   StepEnterText = 'WORKFLOW_STEP_ENTER_TEXT',
@@ -60,11 +60,11 @@ export class TabQrPage implements OnInit, OnDestroy {
     private readonly modalController: ModalController,
     public readonly utilsService: UtilsService,
     private readonly fileService: FileUtilsService,
-    private readonly popoverController: PopoverController,
     private readonly platform: Platform,
     private readonly alertController: AlertController,
     private readonly alertService: AlertService,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly printUtilsService: PrintUtilsService,
   ) {
     this.setNumberOfRows();
     this.langSub = this.localStorage.selectedLanguage$.subscribe((lang) => {
@@ -134,7 +134,7 @@ export class TabQrPage implements OnInit, OnDestroy {
 
       // Non-critical operation - can fail silently
       try {
-        await this.fileService.deleteAllQrCodeFiles();
+        await this.fileService.deleteAllQrCodeFilesAfterSpecifiedTime();
       } catch (cleanupError) {
         console.warn('File cleanup failed:', cleanupError);
       }
@@ -295,7 +295,9 @@ export class TabQrPage implements OnInit, OnDestroy {
 
     if (data.length !== trimmedData.length) {
       this.qrDataInput.value = trimmedData;
-      this.toastService.showToast(this.translate.instant('TOAST_TRAILING_BLANKS_REMOVED'));
+      this.toastService.showToast(
+        this.translate.instant('TOAST_TRAILING_BLANKS_REMOVED')
+      );
     }
     return trimmedData;
   }
@@ -315,9 +317,9 @@ export class TabQrPage implements OnInit, OnDestroy {
     if (this.hasInputChangedAfterGeneration()) {
       this.emailService.clearEmailSent();
       this.qrService.clearQrFields();
-      this.toastService.showToast(this.translate.instant(
-          'TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE'
-        ));
+      this.toastService.showToast(
+        this.translate.instant('TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE')
+      );
     }
   }
 
@@ -346,8 +348,6 @@ export class TabQrPage implements OnInit, OnDestroy {
       await this.qrService.printQRCode();
       await this.handleEmailBasedOnPlatform();
 
-      this.fileService.deleteFilesAfterSpecifiedTime();
-      this.fileService.clearNowFormatted();
       this.showSpinner = false;
     } catch (error) {
       console.error('Email workflow failed:', error);
@@ -544,6 +544,12 @@ export class TabQrPage implements OnInit, OnDestroy {
         }, 500);
       }
     }
+  }
+
+  onQrDataInputBlur(): void {
+    const value = this.qrDataInput?.value || '1';
+    const trimmedData = value.replace(/\s+$/, '');
+    this.printUtilsService.qrDataInputSub.next(trimmedData.length);
   }
 
   private shouldShowKeyboardAlert(text: string): boolean {

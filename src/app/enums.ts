@@ -8,23 +8,28 @@ export enum LogoType {
   Company = 'company',
 }
 
+export enum EmailAddressStatus {
+  Added = 'added',
+  Duplicate = 'duplicate',
+  Removed = 'removed',
+  NotFound = 'not_found',
+}
+
 export enum Modal {
   Changelog = 'changelog_modal',
   Help = 'help_modal',
 }
 
 export enum QrCodeSize {
-  XSMALL = 1.5, // cm
-  SMALL = 3,
+  SMALL = 3,  // cm
   MEDIUM = 5,
-  LARGE = 7.5,
-  XLARGE = 14,
+  LARGE = 10,
+  XLARGE = 15,
 }
 
 export enum QrCodeGapSize {
   SMALL = 0.5, // cm
-  MEDIUM = 2,
-  LARGE = 5,
+  LARGE = 2,
 }
 
 export enum QrCodesCountPerPage {

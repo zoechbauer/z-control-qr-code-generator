@@ -32,14 +32,14 @@ describe('EmailUtilsService', () => {
     ]);
     localStorageSpy = jasmine.createSpyObj<LocalStorageService>(
       'LocalStorageService',
-      ['loadSavedEmailAddresses', 'init', 'saveEmail'],
+      ['loadSavedEmailAddresses', 'init', 'saveEmailAddress'],
       {
         selectedLanguage$: of('en'),
       }
     );
     localStorageSpy.savedEmailAddresses = ['test@example.com'];
     localStorageSpy.loadSavedEmailAddresses.and.resolveTo();
-    localStorageSpy.saveEmail.and.resolveTo();
+    localStorageSpy.saveEmailAddress.and.resolveTo();
 
     // Alert and Filesystem
     alertServiceSpy = jasmine.createSpyObj('AlertService', [

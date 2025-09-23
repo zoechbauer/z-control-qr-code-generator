@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   IonLabel,
   IonInput,
@@ -15,18 +15,33 @@ import { FormsModule } from '@angular/forms';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { ValidationService } from 'src/app/services/validation.service';
+import { EmailAddressStatus } from 'src/app/enums';
 
 @Component({
   selector: 'app-email-maintenance',
   templateUrl: './email-maintenance.component.html',
   styleUrls: ['./email-maintenance.component.scss'],
   standalone: true,
-  imports: [FormsModule, NgIf, NgFor, AsyncPipe, TranslateModule, IonCard, IonLabel, IonInput, IonButton, IonIcon, IonItem, IonList],
+  imports: [
+    FormsModule,
+    NgIf,
+    NgFor,
+    AsyncPipe,
+    TranslateModule,
+    IonCard,
+    IonLabel,
+    IonInput,
+    IonButton,
+    IonIcon,
+    IonItem,
+    IonList,
+  ],
 })
 export class EmailMaintenanceComponent implements OnInit {
   newEmailAddressValue: string = '';
 
   constructor(
+    public translate: TranslateService,
     public readonly validationService: ValidationService,
     public localStorage: LocalStorageService,
     public toastService: ToastService
@@ -56,7 +71,29 @@ export class EmailMaintenanceComponent implements OnInit {
 
   async addEmailAddress(newEmailAddress: string) {
     if (typeof newEmailAddress === 'string') {
-      await this.localStorage.saveEmail(newEmailAddress);
+      const result: EmailAddressStatus = await this.localStorage.saveEmailAddress(newEmailAddress);
+      if (result === EmailAddressStatus.Added) {
+        this.toastService.showToast(
+          this.translate.instant('TOAST_EMAIL_ADDRESS_ADDED')
+        );
+      } else {
+        this.toastService.showToast(
+          this.translate.instant('TOAST_EMAIL_ADDRESS_EXIST')
+        );
+      }
+    }
+  }
+
+  async deleteEmailAddress(index: number) {
+    if (typeof index === 'number') {
+      const result: EmailAddressStatus = await this.localStorage.deleteMailAddress(index);
+      if (result === EmailAddressStatus.Removed) {
+        this.toastService.showToast(
+          this.translate.instant('TOAST_EMAIL_ADDRESS_REMOVED')
+        );
+      } else {
+        console.error('Error removing email address: Not found');
+      }
     }
   }
 }

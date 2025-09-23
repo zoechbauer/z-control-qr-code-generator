@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { ValidationService } from './validation.service';
 import { PrintSettings } from './print-utils.service';
-import { QrCodeGapSize, QrCodesCountPerPage, QrCodeSize } from '../enums';
+import { EmailAddressStatus, QrCodeGapSize, QrCodesCountPerPage, QrCodeSize } from '../enums';
 
 enum LocalStorage {
   SavedEmailAddresses = 'savedEmailAddresses',
@@ -21,7 +21,9 @@ export class LocalStorageService {
   savedEmailAddresses$ = this.savedEmailAddressesSubject.asObservable();
 
   savedPrintSettings!: PrintSettings;
-  savedPrintSettingsSubject = new BehaviorSubject<PrintSettings>(this.defaultPrintSettings);
+  savedPrintSettingsSubject = new BehaviorSubject<PrintSettings>(
+    this.defaultPrintSettings
+  );
   savedPrintSettings$ = this.savedPrintSettingsSubject.asObservable();
 
   selectedLanguageSubject = new BehaviorSubject<string>(
@@ -88,7 +90,7 @@ export class LocalStorageService {
     this.savedEmailAddressesSubject.next(this.savedEmailAddresses);
   }
 
-  async deleteMailAddress(index: number) {
+  async deleteMailAddress(index: number): Promise<EmailAddressStatus> {
     if (index >= 0 && index < this.savedEmailAddresses.length) {
       this.savedEmailAddresses.splice(index, 1);
       await this.storage.set(
@@ -96,27 +98,39 @@ export class LocalStorageService {
         JSON.stringify(this.savedEmailAddresses)
       );
       this.savedEmailAddressesSubject.next(this.savedEmailAddresses);
+      return EmailAddressStatus.Removed;
     }
+    return EmailAddressStatus.NotFound;
   }
 
-  async saveEmail(email: string) {
+  async saveEmailAddress(emailAddress: string): Promise<EmailAddressStatus> {
     try {
-      const sanitizedEmail = this.validationService.sanitizeEmail(email);
+      const sanitizedEmailAddress =
+        this.validationService.sanitizeEmail(emailAddress);
 
       if (
-        sanitizedEmail &&
-        !this.savedEmailAddresses.includes(sanitizedEmail)
+        sanitizedEmailAddress &&
+        this.savedEmailAddresses.includes(sanitizedEmailAddress)
       ) {
-        this.savedEmailAddresses.push(sanitizedEmail);
+        return EmailAddressStatus.Duplicate;
+      }
+
+      if (
+        sanitizedEmailAddress &&
+        !this.savedEmailAddresses.includes(sanitizedEmailAddress)
+      ) {
+        this.savedEmailAddresses.push(sanitizedEmailAddress);
         await this.storage.set(
           LocalStorage.SavedEmailAddresses,
           JSON.stringify(this.savedEmailAddresses)
         );
         this.savedEmailAddressesSubject.next(this.savedEmailAddresses);
+        return EmailAddressStatus.Added;
       }
     } catch (error) {
       console.error('Error saving email:', error);
     }
+    return EmailAddressStatus.Added;
   }
 
   async loadPrintSettings() {
@@ -126,14 +140,13 @@ export class LocalStorageService {
     if (printSettings) {
       this.savedPrintSettings = JSON.parse(printSettings);
     } else {
-
       this.savePrintSettings(this.defaultPrintSettings);
       this.savedPrintSettings = this.defaultPrintSettings;
     }
     this.savedPrintSettingsSubject.next(this.savedPrintSettings);
   }
 
-    async savePrintSettings(settings: PrintSettings) {
+  async savePrintSettings(settings: PrintSettings) {
     try {
       await this.storage.set(
         LocalStorage.SavedPrintSettings,
@@ -148,10 +161,9 @@ export class LocalStorageService {
   private get defaultPrintSettings(): PrintSettings {
     return {
       size: QrCodeSize.MEDIUM,
-      gap: QrCodeGapSize.MEDIUM,
+      gap: QrCodeGapSize.SMALL,
       typeOfQrCodesPerPage: QrCodesCountPerPage.FULL_PAGE,
-      numberOfQrCodesPerPage: -1,  // indicates full page
+      numberOfQrCodesPerPage: -1, // indicates full page
     };
   }
-
 }

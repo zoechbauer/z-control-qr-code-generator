@@ -162,7 +162,7 @@ describe('LocalStorageService', () => {
       await service.init();
 
       // Act
-      await service.saveEmail(email);
+      await service.saveEmailAddress(email);
 
       // Assert
       expect(storageSpy.set).toHaveBeenCalledWith('savedEmailAddresses', JSON.stringify([email]));

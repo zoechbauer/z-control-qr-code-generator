@@ -153,20 +153,60 @@ describe('FileUtilsService', () => {
   });
 
   describe('deleteQRCodeFiles', () => {
-    const testFileName = 'qrcode_20250826_125000';
+    const oldFileNamePng = 'qrcode_20250922_090000.png'; // 3+ hours old
+    const recentFileNamePng = 'qrcode_20250922_125000.png'; // less than 3 hours old
+    const veryOldFileNamePng = 'qrcode_20250902_080000.png'; // some days hours old
+    const oldFileNamePdf = 'qrcode_20250922_090000.pdf'; // 3+ hours old
+    const recentFileNamePdf = 'qrcode_20250922_125000.pdf'; // less than 3 hours old
+    const veryOldFileNamePdf = 'qrcode_20250902_080000.pdf'; // some days hours old
 
-    it('should delete all QR code files on native platforms', async () => {
+    it('should delete only QR code files older than 3 hours on native platforms', async () => {
       // arrange
       spyOn(console, 'error');
-      filesystemSpy.readdir.and.returnValue(Promise.resolve({ files: [{ name: testFileName }] }));
+      // Mock Date.now to 2025-09-22 14:00:00
+      const now = new Date(2025, 8, 22, 14, 0, 0).getTime();
+      spyOn(Date, 'now').and.returnValue(now);
+
+      filesystemSpy.readdir.and.returnValue(
+        Promise.resolve({
+          files: [
+            { name: oldFileNamePng },
+            { name: oldFileNamePdf },
+            { name: recentFileNamePng },
+            { name: recentFileNamePdf },
+            { name: veryOldFileNamePdf },
+            { name: veryOldFileNamePng },
+          ],
+        })
+      );
 
       // act
-      await service.deleteAllQrCodeFiles();
+      await service.deleteAllQrCodeFilesAfterSpecifiedTime();
 
       // assert
       expect(filesystemSpy.deleteFile).toHaveBeenCalledWith({
         directory: Directory.Documents,
-        path: testFileName,
+        path: oldFileNamePng,
+      });
+      expect(filesystemSpy.deleteFile).toHaveBeenCalledWith({
+        directory: Directory.Documents,
+        path: oldFileNamePdf,
+      });
+      expect(filesystemSpy.deleteFile).toHaveBeenCalledWith({
+        directory: Directory.Documents,
+        path: veryOldFileNamePng,
+      });
+      expect(filesystemSpy.deleteFile).toHaveBeenCalledWith({
+        directory: Directory.Documents,
+        path: veryOldFileNamePdf,
+      });
+      expect(filesystemSpy.deleteFile).not.toHaveBeenCalledWith({
+        directory: Directory.Documents,
+        path: recentFileNamePng,
+      });
+      expect(filesystemSpy.deleteFile).not.toHaveBeenCalledWith({
+        directory: Directory.Documents,
+        path: recentFileNamePdf,
       });
       expect(alertServiceSpy.showStoragePermissionError).not.toHaveBeenCalled();
       expect(console.error).not.toHaveBeenCalled();
@@ -176,22 +216,26 @@ describe('FileUtilsService', () => {
       // arrange
       spyOn(console, 'error');
       spyOn(console, 'log');
-      filesystemSpy.readdir.and.returnValue(Promise.resolve({ files: [{ name: testFileName }] }));
+      filesystemSpy.readdir.and.returnValue(
+        Promise.resolve({ files: [{ name: oldFileNamePdf }] })
+      );
       filesystemSpy.checkPermissions.and.returnValue(
         Promise.resolve({ publicStorage: 'denied' })
       );
 
       // act
-      await service.deleteAllQrCodeFiles();
+      await service.deleteAllQrCodeFilesAfterSpecifiedTime();
 
       // assert
       expect(filesystemSpy.deleteFile).not.toHaveBeenCalledWith({
         directory: Directory.Documents,
-        path: testFileName,
+        path: oldFileNamePdf,
       });
       expect(alertServiceSpy.showStoragePermissionError).not.toHaveBeenCalled();
       expect(console.error).not.toHaveBeenCalled();
-      expect(console.log).toHaveBeenCalledOnceWith('Storage permission not granted, skipping file deletion');
+      expect(console.log).toHaveBeenCalledOnceWith(
+        'Storage permission not granted, skipping file deletion'
+      );
     });
 
     it('should not delete QR code files on web platforms', async () => {
@@ -199,15 +243,17 @@ describe('FileUtilsService', () => {
       (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
       spyOn(console, 'error');
       spyOn(console, 'log');
-      filesystemSpy.readdir.and.returnValue(Promise.resolve({ files: [{ name: testFileName }] }));
+      filesystemSpy.readdir.and.returnValue(
+        Promise.resolve({ files: [{ name: oldFileNamePdf }] })
+      );
 
       // act
-      await service.deleteAllQrCodeFiles();
+      await service.deleteAllQrCodeFilesAfterSpecifiedTime();
 
       // assert
       expect(filesystemSpy.deleteFile).not.toHaveBeenCalledWith({
         directory: Directory.Documents,
-        path: testFileName,
+        path: oldFileNamePdf,
       });
       expect(alertServiceSpy.showStoragePermissionError).not.toHaveBeenCalled();
       expect(console.error).not.toHaveBeenCalled();

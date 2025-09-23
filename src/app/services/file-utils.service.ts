@@ -12,7 +12,8 @@ import { FILESYSTEM, FilesystemLike } from './filesystem.token';
 export class FileUtilsService {
   private nowFormatted: string = '';
 
-  constructor(private readonly alertService: AlertService,
+  constructor(
+    private readonly alertService: AlertService,
     @Inject(FILESYSTEM) private readonly filesystem: FilesystemLike
   ) {}
 
@@ -86,69 +87,56 @@ export class FileUtilsService {
     }
   }
 
-  async deleteAllQrCodeFiles() {
-    if (Capacitor.isNativePlatform()) {
-      try {
-        // check permissions
-        if (!(await this.checkFilesystemPermission())) {
-          console.log('Storage permission not granted, skipping file deletion');
-          return;
-        }
-
-        // delete files
-        const files = await this.filesystem.readdir({
-          directory: Directory.Documents,
-          path: '',
-        });
-
-        const qrFiles = files.files.filter((f: { name: string }) => f.name.startsWith('qrcode'));
-
-        for (const file of qrFiles) {
-          await this.filesystem.deleteFile({
-            path: file.name,
-            directory: Directory.Documents,
-          });
-        }
-      } catch (error) {
-        console.error('Error deleting QR code files:', error);
+  async deleteAllQrCodeFilesAfterSpecifiedTime() {
+  if (Capacitor.isNativePlatform()) {
+    try {
+      // check permissions
+      if (!(await this.checkFilesystemPermission())) {
+        console.log('Storage permission not granted, skipping file deletion');
+        return;
       }
+
+      const storageDurationInHours = environment.storageDurationInHours ?? 3;
+      const storageDurationInMilliseconds = storageDurationInHours * 60 * 60 * 1000;
+      const now = Date.now();
+
+      // delete files
+      const files = await this.filesystem.readdir({
+        directory: Directory.Documents,
+        path: '',
+      });
+
+      const qrFiles = files.files.filter((f: { name: string }) =>
+        f.name.startsWith('qrcode')
+      );
+
+      for (const file of qrFiles) {
+        // Extract timestamp from filename: qrcode_YYYYMMDD_HHMMSS.ext
+        const match = file.name.match(/^qrcode_(\d{8}_\d{6})\.(png|pdf)$/);
+        if (match) {
+          const timestampStr = match[1];
+          // Parse timestamp
+          const year = parseInt(timestampStr.substring(0, 4), 10);
+          const month = parseInt(timestampStr.substring(4, 6), 10) - 1; // JS months are 0-based
+          const day = parseInt(timestampStr.substring(6, 8), 10);
+          const hour = parseInt(timestampStr.substring(9, 11), 10);
+          const minute = parseInt(timestampStr.substring(11, 13), 10);
+          const second = parseInt(timestampStr.substring(13, 15), 10);
+          const fileDate = new Date(year, month, day, hour, minute, second).getTime();
+
+          if (now - fileDate > storageDurationInMilliseconds) {
+            await this.filesystem.deleteFile({
+              path: file.name,
+              directory: Directory.Documents,
+            });
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error deleting QR code files:', error);
     }
   }
-
-  deleteFilesAfterSpecifiedTime() {
-    const fileNamePng = this.fileNamePng;
-    const fileNamePdf = this.fileNamePdf;
-
-    const storageDurationInHours = environment.storageDurationInHours ?? 3;
-    const storageDurationInMilliseconds =
-      storageDurationInHours * 60 * 60 * 1000;
-
-    setTimeout(() => {
-      this.deleteFiles(fileNamePng, fileNamePdf);
-    }, storageDurationInMilliseconds);
-  }
-
-  private async deleteFiles(fileNamePng: string, fileNamePdf: string) {
-    if (Capacitor.isNativePlatform()) {
-      try {
-        await this.filesystem.deleteFile({
-          path: fileNamePng,
-          directory: Directory.Documents,
-        });
-        await this.filesystem.deleteFile({
-          path: fileNamePdf,
-          directory: Directory.Documents,
-        });
-      } catch (error) {
-        console.error('Error deleting file:', error);
-        // as soon as we get permission qr codes are automatically deleted
-        // this.alertService.showErrorAlert('ERROR_MESSAGE_DELETE_QR');
-      }
-    } else {
-      // Browsers are not allowed to delete files
-      // i informed the user with alert on attaching files to email
-    }
-  }
+}
 
   async downloadQRCode(qrCodeDownloadLink: string): Promise<boolean> {
     if (!qrCodeDownloadLink?.trim()) {

@@ -34,21 +34,53 @@ export class EmailUtilsService {
 
   async sendEmail() {
     await this.localStorage.loadSavedEmailAddresses();
-    const lineBreak = '\n';
-
-    const filePathPng = await this.fileService.getDocumentsPath(false);
-    const filePathPdf = await this.fileService.getDocumentsPath(true);
 
     const sendTo = this.localStorage.savedEmailAddresses.join(',');
+    const mailSubject = this.buildMailSubject();
 
-    const mailSubjectPrefix = this.translate.instant(
-      'EMAIL_SERVICE_MAIL_SUBJECT_PREFIX'
-    );
-    const mailSubjectSuffix = this.translate.instant(
-      'EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX'
-    );
-    const mailBodyPrefix = this.translate.instant(
-      'EMAIL_SERVICE_MAIL_BODY_PREFIX'
+    if (Capacitor.isNativePlatform()) {
+      const mailBody = this.buildMailBodyNative();
+
+      const attachmentPng: Attachment = {
+        path: await this.fileService.getDocumentsPath(false),
+        type: 'absolute',
+      };
+      const attachmentPdf: Attachment = {
+        path: await this.fileService.getDocumentsPath(true),
+        type: 'absolute',
+      };
+
+      await this.sendNativeEmail(sendTo, mailSubject, mailBody, [
+        attachmentPng,
+        attachmentPdf,
+      ]);
+    } else {
+      const mailBody = this.buildMailBodyWeb();
+      this.sendWebEmail(sendTo, mailSubject, mailBody);
+    }
+
+    this.clearQrCodeFileNames();
+  }
+
+  private clearQrCodeFileNames() {
+    this.fileService.clearNowFormatted();
+  }
+
+  private buildMailSubject(): string {
+    const prefix = this.translate.instant('EMAIL_SERVICE_MAIL_SUBJECT_PREFIX');
+    const suffix = this.translate.instant('EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX');
+    const qrLength = this.qrService.myAngularxQrCode.length;
+    const printSettings = this.printUtilsService.getConvertedPrintSettings();
+    const webmail = Capacitor.isNativePlatform() ? '' : ' (Webmail)';
+    return `${prefix}${qrLength}${suffix} ${printSettings}${webmail}`;
+  }
+
+  private buildMailBodyNative(): string {
+    const lineBreak = '\n';
+    const qrCodeValue = this.qrService.myAngularxQrCode;
+
+    const mailBodyPrefixText = this.translate.instant(
+      'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT'
     );
     const printingInfo1 = this.translate.instant(
       'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_1'
@@ -60,76 +92,95 @@ export class EmailUtilsService {
       'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_3'
     );
 
-    const mailSubject = 
-      mailSubjectPrefix +
-      this.qrService.myAngularxQrCode.length +
-      mailSubjectSuffix +
-      ' ' + this.printUtilsService.getConvertedPrintSettings();
-    const mailBody =
-      mailBodyPrefix +
-      lineBreak +
-      lineBreak +
-      this.qrService.myAngularxQrCode +
-      lineBreak +
-      lineBreak +
-      printingInfo1 +
-      ' ' + this.printUtilsService.getConvertedPrintSettings() + ' ' +
-      printingInfo2 +
-      lineBreak +
-      lineBreak +
-      printingInfo3;
+    const qrCodeText = qrCodeValue;
+    const qrCodeTextLabel = mailBodyPrefixText;
 
-    const attachmentPng: Attachment = {
-      path: filePathPng,
-      type: 'absolute',
-    };
+    let mailBody = `${qrCodeTextLabel}${lineBreak}${lineBreak}${qrCodeText}${lineBreak}${lineBreak}`;
+    mailBody += `${printingInfo1} ${this.printUtilsService.getConvertedPrintSettings()} ${printingInfo2}${lineBreak}${lineBreak}${printingInfo3}`;
 
-    const attachmentPdf: Attachment = {
-      path: filePathPdf,
-      type: 'absolute',
-    };
+    return mailBody;
+  }
 
-    if (Capacitor.isNativePlatform()) {
-      const available = await this.emailComposer.hasAccount();
-      if (available.hasAccount) {
-        try {
-          await this.emailComposer.open({
-            to: [sendTo],
-            subject: mailSubject,
-            body: mailBody,
-            attachments: [attachmentPng, attachmentPdf],
-          });
+  private buildMailBodyWeb(): string {
+    const lineBreak = '\n';
+    const qrCodeValue = this.qrService.myAngularxQrCode;
+    const maxWebLength = 400;
 
-          for (const email of sendTo.split(',')) {
-            await this.localStorage.saveEmail(email.trim());
-          }
+    const mailBodyPrefixAttachmentsWeb = this.translate.instant(
+      'EMAIL_SERVICE_MAIL_BODY_PREFIX_ATTACHEMENT_WEB'
+    );
+    const mailBodyPrefixText = this.translate.instant(
+      'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT'
+    );
+    const mailBodyPrefixTextWeb = this.translate.instant(
+      'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT_WEB'
+    );
+    const printingInfoWebMail = this.translate.instant(
+      'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_WEBMAIL'
+    );
 
-          this.emailSent = true;
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        console.error('Email account is not available');
+    let qrCodeText: string;
+    let qrCodeTextLabel: string;
+
+    if (qrCodeValue.length <= maxWebLength) {
+      qrCodeText = qrCodeValue;
+      qrCodeTextLabel = mailBodyPrefixText;
+    } else {
+      qrCodeText = qrCodeValue.substring(0, maxWebLength) + '...';
+      qrCodeTextLabel = mailBodyPrefixTextWeb;
+    }
+
+    const attachmentLabel =
+      mailBodyPrefixAttachmentsWeb +
+      lineBreak +
+      this.fileService.fileNamePng +
+      ', ' +
+      this.fileService.fileNamePdf +
+      lineBreak +
+      lineBreak;
+
+    let mailBody = `${attachmentLabel}${qrCodeTextLabel}${lineBreak}${lineBreak}${qrCodeText}${lineBreak}${lineBreak}`;
+    mailBody += printingInfoWebMail;
+
+    return mailBody;
+  }
+
+  private async sendNativeEmail(
+    sendTo: string,
+    subject: string,
+    body: string,
+    attachments: Attachment[]
+  ) {
+    const available = await this.emailComposer.hasAccount();
+    if (available.hasAccount) {
+      try {
+        await this.emailComposer.open({
+          to: [sendTo],
+          subject,
+          body,
+          attachments,
+        });
+        this.emailSent = true;
+      } catch (error) {
+        console.error(error);
       }
     } else {
-      // Web: use mailto link
-      let mailBodyWeb =
-        this.translate.instant('EMAIL_SERVICE_MAIL_BODY_PREFIX_WEB') +
-        lineBreak +
-        lineBreak +
-        mailBody;
+      console.error('Email account is not available');
+    }
+  }
 
-      // If mailBody contains leading spaces, add info that they are not included in the mail body
-      const mailBodyToUse = /^\s+/.test(this.qrService.myAngularxQrCode)
-        ? mailBodyWeb
-        : mailBody;
+  private sendWebEmail(sendTo: string, subject: string, body: string) {
+    try {
       const mailto = `mailto:${encodeURIComponent(
         sendTo
-      )}?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(
-        mailBodyToUse
+      )}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+        body
       )}`;
+
       this.navigateTo(mailto);
       this.emailSent = true;
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -149,7 +200,7 @@ export class EmailUtilsService {
       this.translate.get('INFO_ALERT_MESSAGE_MAIL_ATTACHMENT')
     );
     const okButton = await lastValueFrom(
-      this.translate.get('ERROR_ALERT_BUTTON_OK')
+      this.translate.get('ERROR_ALERT_OPEN_EMAIL_BUTTON')
     );
 
     const alert = await this.alertController.create({

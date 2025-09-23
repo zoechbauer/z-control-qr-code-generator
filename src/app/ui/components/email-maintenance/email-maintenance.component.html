@@ -48,26 +48,26 @@
     <div class="saved-emails-section">
       <h6 class="ion-text-center">
         {{'EMAIL_PAGE_TITLE' | translate}} <br />
-        {{ ((localStorage?.savedEmailAddresses$ | async)?.length || 0) > 0 ? (localStorage?.savedEmailAddresses$ | async)?.length : '' }}
+        {{ ((localStorage.savedEmailAddresses$ | async)?.length || 0) > 0 ? (localStorage.savedEmailAddresses$ | async)?.length : '' }}
       </h6>
       <div class="email-page-info ion-text-center">
         {{'EMAIL_PAGE_INFOTEXT' | translate}}
       </div>
       <ion-list
         class="email-list"
-        *ngIf="((localStorage?.savedEmailAddresses$ | async)?.length || 0) > 0"
+        *ngIf="((localStorage.savedEmailAddresses$ | async)?.length || 0) > 0"
       >
         <ion-item
           class="saved-email-address"
-          *ngFor="let email of (localStorage?.savedEmailAddresses$ | async); let i = index"
+          *ngFor="let email of (localStorage.savedEmailAddresses$ | async); let i = index"
         >
           <ion-label>{{ email }}</ion-label>
           <ion-button
             slot="end"
             fill="clear"
-            (click)="this.localStorage.deleteMailAddress(i)"
-            (keydown.enter)="this.localStorage.deleteMailAddress(i)"
-            (keydown.space)="this.localStorage.deleteMailAddress(i)"
+            (click)="deleteEmailAddress(i)"
+            (keydown.enter)="deleteEmailAddress(i)"
+            (keydown.space)="deleteEmailAddress(i)"
           >
             <ion-icon name="trash-outline"></ion-icon>
           </ion-button>
@@ -76,7 +76,7 @@
 
       <p
         class="missing-mails ion-text-center"
-        *ngIf="((localStorage?.savedEmailAddresses$ | async)?.length || 0) === 0"
+        *ngIf="((localStorage.savedEmailAddresses$ | async)?.length || 0) === 0"
       >
         {{'EMAIL_PAGE_NO_EMAIL_ADRESSES' | translate}}
       </p>

@@ -8,7 +8,6 @@ import { LocalStorageService } from '../services/local-storage.service';
 import { environment } from 'src/environments/environment';
 import { UtilsService } from '../services/utils.service';
 import { LogoType, Tab } from '../enums';
-import { PrintSettings } from '../services/print-utils.service';
 
 @Component({
   selector: 'app-tab-settings',
@@ -71,14 +70,12 @@ export class TabSettingsPage implements OnInit, OnDestroy {
   }
 
   onLanguageChange(event: any) {
-    const lang = event.detail.value;
-    this.localStorage.saveSelectedLanguage(lang);
-    this.translate.use(lang);
-    this.translate.setDefaultLang(lang);
-  }
-
-  onPrintSettingsChange(event: PrintSettings) {
-    this.localStorage.savePrintSettings(event);
+    const lang = event.detail?.value;
+    if (lang) {
+      this.localStorage.saveSelectedLanguage(lang);
+      this.translate.use(lang);
+      this.translate.setDefaultLang(lang);
+    }
   }
 
   showAll() {
