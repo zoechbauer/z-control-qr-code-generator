@@ -15,23 +15,20 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 🚀 Improvements
 
-- Opening an accordion in the Settings page now temporarily hides all other accordions, allowing users to focus on the selected section. When the accordion is closed, all sections are shown again for easy navigation.
+- **Improved User Interface:** When an accordion is opened on the Settings page, all other accordions are temporarily hidden, allowing users to focus on the selected section. Closing the accordion restores the display of all sections for easier navigation.
 - **Webmail Email Body Update:** In webmail clients, the email body now includes the file names of QR code images that need to be manually attached, along with only a snippet of the QR code text due to browser limitations with sendmail.
 - Calculated print height of qr codes so that the selected hight is allways the same for short and long texts.
-- **Improved QR Code File Deletion:** The algorithm for deleting QR code files has been updated—files are now deleted exclusively during the `ngOnInit` lifecycle event, ensuring more predictable and reliable cleanup.
+- **Improved Toast Message Visibility:** Toast notifications are now displayed below the app header, ensuring they are not obscured by the header bar on any device.
 
 ### 🐛 Fixes
 
 - Reverted the reduction of header height in landscape mode due to display issues on Huawei phones and tablets.
 - In web version the email client did not open if very long text was entered due to Browser limitations in sendmail. Now only the first 500 chars of the qr code text are printed in the email body to avoid this problem.
-
-### 🛡 Security
-
-- …
+- **Enhanced Layout on Native App:** Increased the right margin in the native app to improve visual alignment and layout consistency across various devices.
 
 ### 📦 Installations
 
-- …
+- App is hosted at Google Play for **Internal Test** group and **Closed Test** group.
 
 ## [2.1] – 2025-09-07
 

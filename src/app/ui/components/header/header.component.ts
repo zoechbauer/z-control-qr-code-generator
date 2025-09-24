@@ -44,10 +44,6 @@ export class HeaderComponent {
     private readonly router: Router
   ) {}
 
-  get isNative(): boolean {
-    return Capacitor.isNativePlatform();
-  }
-
   get isLargeScreen(): boolean {
     return !this.utilsService.isSmallScreen;
   }

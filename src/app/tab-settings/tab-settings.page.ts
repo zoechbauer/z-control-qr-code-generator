@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { Capacitor } from '@capacitor/core';
 import { IonContent } from '@ionic/angular';
 
 import { LocalStorageService } from '../services/local-storage.service';
@@ -61,7 +60,7 @@ export class TabSettingsPage implements OnInit, OnDestroy {
   }
 
   get isNative(): boolean {
-    return Capacitor.isNativePlatform();
+    return this.utilsService.isNative;
   }
 
   onAccordionGroupChange(event: CustomEvent, content: IonContent) {

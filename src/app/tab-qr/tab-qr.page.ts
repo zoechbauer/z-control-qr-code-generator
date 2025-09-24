@@ -7,7 +7,6 @@ import {
   AlertController,
 } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-import { Capacitor } from '@capacitor/core';
 import { Keyboard } from '@capacitor/keyboard';
 import { Subscription } from 'rxjs';
 
@@ -95,7 +94,7 @@ export class TabQrPage implements OnInit, OnDestroy {
   }
 
   get isNative(): boolean {
-    return Capacitor.isNativePlatform();
+    return this.utilsService.isNative;
   }
 
   ngOnInit(): void {
@@ -113,7 +112,7 @@ export class TabQrPage implements OnInit, OnDestroy {
     });
 
     // Platform-specific keyboard listeners
-    if (Capacitor.isNativePlatform()) {
+    if (this.utilsService.isNative) {
       Keyboard.addListener('keyboardWillShow', () => {
         this.isKeyboardOpen = true;
       });
@@ -358,7 +357,7 @@ export class TabQrPage implements OnInit, OnDestroy {
   }
 
   private async handleEmailBasedOnPlatform() {
-    if (Capacitor.isNativePlatform()) {
+    if (this.utilsService.isNative) {
       // Native app - full email client integration works
       await this.emailService.sendEmail();
     } else if (this.platform.is('desktop')) {
@@ -512,7 +511,7 @@ export class TabQrPage implements OnInit, OnDestroy {
   private async openHelpModalToSection(
     sectionType: 'floating-keyboard' | 'web-version'
   ): Promise<void> {
-    const isDesktop = !Capacitor.isNativePlatform();
+    const isDesktop = !this.utilsService.isNative;
     const currentLang = this.translate.currentLang || 'en';
     const sectionId = currentLang === 'de' ? `${sectionType}-DE` : sectionType;
 
@@ -592,7 +591,7 @@ export class TabQrPage implements OnInit, OnDestroy {
       this.fileService.clearNowFormatted();
 
       // Remove keyboard listeners if they exist
-      if (Capacitor.isNativePlatform()) {
+      if (this.utilsService.isNative) {
         Keyboard.removeAllListeners();
       }
     } catch (error) {

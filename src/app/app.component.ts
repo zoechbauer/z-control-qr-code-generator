@@ -1,6 +1,6 @@
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Capacitor } from '@capacitor/core';
-import { Component } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import { StatusBar, Style } from '@capacitor/status-bar';
 
 import { SafeAreaInsets } from './services/safe-area-insets';
@@ -13,12 +13,17 @@ import { SafeAreaInsets } from './services/safe-area-insets';
 export class AppComponent {
   isNativeApp = Capacitor.isNativePlatform();
 
-  constructor(private readonly safeAreaInsets: SafeAreaInsets) {
+  constructor(
+    private readonly renderer: Renderer2,
+    private readonly safeAreaInsets: SafeAreaInsets
+  ) {
     this.initializeApp();
   }
 
   initializeApp() {
     if (this.isNativeApp) {
+      this.renderer.addClass(document.body, 'native-app');
+
       SplashScreen.hide();
 
       this.safeAreaInsets.setSafeAreaInsetsFix();
@@ -40,6 +45,8 @@ export class AppComponent {
       }
 
       StatusBar.show();
+    } else {
+      this.renderer.addClass(document.body, 'web-app');
     }
   }
 }

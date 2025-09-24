@@ -45,6 +45,10 @@ export class UtilsService {
     return !Capacitor.isNativePlatform();
   }
 
+  get isNative(): boolean {
+    return Capacitor.isNativePlatform();
+  }
+
   navigateToTab(tab: Tab): void {
     this.router.navigate([`/tabs/tab-${tab}`]);
   }

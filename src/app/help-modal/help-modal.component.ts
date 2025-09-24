@@ -2,7 +2,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { Capacitor } from '@capacitor/core';
 
 import { LocalStorageService } from '../services/local-storage.service';
 import { UtilsService } from './../services/utils.service';
@@ -38,7 +37,7 @@ export class HelpModalComponent implements OnInit, OnDestroy {
   ) {}
 
   get isNative(): boolean {
-    return Capacitor.isNativePlatform();
+    return this.utilsService.isNative;
   }
 
   ngOnInit() {

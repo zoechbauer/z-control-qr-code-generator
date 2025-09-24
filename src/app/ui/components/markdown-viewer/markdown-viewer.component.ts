@@ -12,7 +12,6 @@ import {
   ModalController,
   IonSpinner,
 } from '@ionic/angular/standalone';
-import { Capacitor } from '@capacitor/core';
 import { NgIf } from '@angular/common';
 
 import { UtilsService } from 'src/app/services/utils.service';
@@ -51,7 +50,7 @@ export class MarkdownViewerComponent implements OnInit {
   ) {}
 
   get isNative(): boolean {
-    return Capacitor.isNativePlatform();
+    return this.utilsService.isNative;
   }
 
   ngOnInit() {

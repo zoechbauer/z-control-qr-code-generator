@@ -44,13 +44,13 @@ ion-app {
   padding: 0 16px;
 }
 
+.web-app ion-header {
+  margin-top: -25px !important;
+}
+
 ion-header {
   margin-right: 0;
   padding-right: 0;
-
-  &.web-app {
-    margin-top: -10px !important;
-  }
 
   ion-toolbar {
     --background: var(--ion-color-primary) !important;
@@ -97,6 +97,19 @@ ion-header ion-toolbar:first-of-type {
   }
 }
 
+@media (orientation: landscape) {
+  .native-app {
+    .buttons-last-slot {
+      margin-right: 36px;
+    }
+
+    .notes,
+    .additional-margin-right {
+      margin-right: 24px;
+    }
+  }
+}
+
 .app-header,
 .qr-code-content,
 .qr-settings-content {
@@ -121,6 +134,7 @@ ion-header ion-toolbar:first-of-type {
     max-width: calc(100vw - var(--safe-area-right-fix, 65px));
     overflow-x: auto !important;
     max-height: 100vh !important;
+    margin-right: 24px;
   }
 
   &:has(app-help-modal) {
@@ -195,5 +209,9 @@ ion-title {
     margin-top: -16px;
     z-index: 1;
     background: transparent;
+  }
+
+  .additional-right-margin {
+    margin-right: 36px;
   }
 }

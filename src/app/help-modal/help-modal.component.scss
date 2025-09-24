@@ -129,3 +129,9 @@ ion-content {
     }
   }
 }
+
+@media (orientation: landscape) {
+  ion-content {
+    margin-right: 24px;
+  }
+}

@@ -46,6 +46,7 @@ export class ToastService {
       icon: 'information-circle',
       color: 'medium',
       position: this.getToastPosition(),
+      positionAnchor: this.getToastAnchor(),
       buttons: [
         {
           icon: 'close',
@@ -60,7 +61,15 @@ export class ToastService {
     if (this.utilsService.isDesktop) {
       return 'bottom';
     }
-    // On mobile devices, display toast at the top to prevent it from being obscured by the navigation bar.
+    // On mobile devices, display toast at the top to prevent it from being obscured by the navigation bar or keyboard.
     return 'top';
+  }
+
+    private getToastAnchor(): 'app-header' | '' {
+    if (this.utilsService.isDesktop) {
+      return '';
+    }
+    // On mobile devices, display toast below the header prevent it from being obscured by the header bar.
+    return 'app-header';
   }
 }
