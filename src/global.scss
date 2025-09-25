@@ -44,6 +44,12 @@ ion-app {
   padding: 0 16px;
 }
 
+#toast-anchor-qr,
+#toast-anchor-settings {
+  margin: 0;
+  padding: 0;
+}
+
 .web-app ion-header {
   margin-top: -25px !important;
 }
@@ -97,7 +103,8 @@ ion-header ion-toolbar:first-of-type {
   }
 }
 
-@media (orientation: landscape) {
+@media (orientation: landscape) and (max-height: 500px) {
+  // exclude tablets
   .native-app {
     .buttons-last-slot {
       margin-right: 36px;

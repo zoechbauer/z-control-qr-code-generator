@@ -14,39 +14,28 @@ export class ToastService {
     private readonly utilsService: UtilsService
   ) {}
 
-  async showDisabledToast(toastMsg: string) {
+  async showDisabledToast(toastMsg: string, anchorId?: string) {
     const translatedMsg = this.translate.instant(toastMsg);
 
-    const toast = await this.toastController.create({
-      message: translatedMsg,
-      duration: 3000,
-      position: this.getToastPosition(),
-      icon: 'information-circle',
-      color: 'medium',
-      buttons: [
-        {
-          text: 'OK',
-          role: 'cancel',
-        },
-      ],
-    });
-    await toast.present();
-  }
-
-  showToast(translatedToastMessage: string): void {
-    this.showToastMessage(translatedToastMessage).catch((error) => {
+    this.showToastMessage(translatedMsg, anchorId).catch((error) => {
       console.error('Error presenting toast:', error);
     });
   }
 
-  async showToastMessage(translatedToastMessage: string) {
+  showToast(translatedToastMessage: string, anchorId?: string): void {
+    this.showToastMessage(translatedToastMessage, anchorId).catch((error) => {
+      console.error('Error presenting toast:', error);
+    });
+  }
+
+  async showToastMessage(translatedToastMessage: string, anchorId?: string) {
     const toast = await this.toastController.create({
       message: translatedToastMessage,
       duration: 3000,
       icon: 'information-circle',
       color: 'medium',
       position: this.getToastPosition(),
-      positionAnchor: this.getToastAnchor(),
+      positionAnchor: this.getToastAnchor(anchorId),
       buttons: [
         {
           icon: 'close',
@@ -65,11 +54,11 @@ export class ToastService {
     return 'top';
   }
 
-    private getToastAnchor(): 'app-header' | '' {
+  private getToastAnchor(anchorId?: string): string {
     if (this.utilsService.isDesktop) {
       return '';
     }
     // On mobile devices, display toast below the header prevent it from being obscured by the header bar.
-    return 'app-header';
+    return anchorId || 'toast-anchor-settings';
   }
 }

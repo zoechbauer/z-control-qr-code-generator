@@ -63,7 +63,7 @@ export class TabQrPage implements OnInit, OnDestroy {
     private readonly alertController: AlertController,
     private readonly alertService: AlertService,
     private readonly toastService: ToastService,
-    private readonly printUtilsService: PrintUtilsService,
+    private readonly printUtilsService: PrintUtilsService
   ) {
     this.setNumberOfRows();
     this.langSub = this.localStorage.selectedLanguage$.subscribe((lang) => {
@@ -220,7 +220,7 @@ export class TabQrPage implements OnInit, OnDestroy {
   handleSendEmailButtonClick() {
     if (!this.qrService.isQrCodeGenerated) {
       this.toastService
-        .showDisabledToast('TOOLTIP_EMAIL_NO_QR_GENERATED')
+        .showDisabledToast('TOOLTIP_EMAIL_NO_QR_GENERATED', 'toast-anchor-qr')
         .catch((error) => {
           console.error('Error presenting toast:', error);
         });
@@ -235,19 +235,28 @@ export class TabQrPage implements OnInit, OnDestroy {
     // show toast if disabled or generate qr code
     if (this.isInputFieldEmpty()) {
       this.toastService
-        .showDisabledToast('TOOLTIP_GENERATION_ENTER_TEXT_FIRST')
+        .showDisabledToast(
+          'TOOLTIP_GENERATION_ENTER_TEXT_FIRST',
+          'toast-anchor-qr'
+        )
         .catch((error) => {
           console.error('Error presenting toast:', error);
         });
     } else if (this.emailService.isEmailSent) {
       this.toastService
-        .showDisabledToast('TOOLTIP_GENERATION_EMAIL_ALREADY_SENT')
+        .showDisabledToast(
+          'TOOLTIP_GENERATION_EMAIL_ALREADY_SENT',
+          'toast-anchor-qr'
+        )
         .catch((error) => {
           console.error('Error presenting toast:', error);
         });
     } else if (this.qrService.isQrCodeGenerated) {
       this.toastService
-        .showDisabledToast('TOOLTIP_GENERATION_QR_ALREADY_GENERATED')
+        .showDisabledToast(
+          'TOOLTIP_GENERATION_QR_ALREADY_GENERATED',
+          'toast-anchor-qr'
+        )
         .catch((error) => {
           console.error('Error presenting toast:', error);
         });
@@ -295,7 +304,8 @@ export class TabQrPage implements OnInit, OnDestroy {
     if (data.length !== trimmedData.length) {
       this.qrDataInput.value = trimmedData;
       this.toastService.showToast(
-        this.translate.instant('TOAST_TRAILING_BLANKS_REMOVED')
+        this.translate.instant('TOAST_TRAILING_BLANKS_REMOVED'),
+        'toast-anchor-qr'
       );
     }
     return trimmedData;
@@ -317,7 +327,8 @@ export class TabQrPage implements OnInit, OnDestroy {
       this.emailService.clearEmailSent();
       this.qrService.clearQrFields();
       this.toastService.showToast(
-        this.translate.instant('TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE')
+        this.translate.instant('TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE'),
+        'toast-anchor-qr'
       );
     }
   }
