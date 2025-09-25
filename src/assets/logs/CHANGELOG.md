@@ -2,7 +2,7 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
-## [2.2.] – YYYY-MM-DD
+## [2.2.] – 2025-09-25
 
 ### ✨ New Features
 
@@ -24,11 +24,12 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 - Reverted the reduction of header height in landscape mode due to display issues on Huawei phones and tablets.
 - In web version the email client did not open if very long text was entered due to Browser limitations in sendmail. Now only the first 500 chars of the qr code text are printed in the email body to avoid this problem.
-- **Enhanced Layout on Native App:** Increased the right margin in the native app to improve visual alignment and layout consistency across various devices.
+- **Enhanced Layout on Native App:** Increased the right margin in the native app for phones to improve visual alignment and layout consistency across various devices.
 
 ### 📦 Installations
 
-- App is hosted at Google Play for **Internal Test** group and **Closed Test** group.
+- The app is available on Google Play for the **Internal Test** and **Closed Test** groups.
+- The web app version is hosted on **Google Firebase** and can be accessed via browser.
 
 ## [2.1] – 2025-09-07
 
@@ -43,7 +44,8 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 📦 Installations
 
-- App is hosted at Google Play for **Internal Test** group and **Closed Test** group.
+- The app is available on Google Play for the **Internal Test** and **Closed Test** groups.
+- The web app version is hosted on **Google Firebase** and can be accessed via browser.
 
 ## [2.0] – 2025-09-06
 
@@ -75,7 +77,8 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 📦 Installations
 
-- App is hosted at Google Play for **Internal Test** group and **Closed Test** group.
+- The app is available on Google Play for the **Internal Test** and **Closed Test** groups.
+- The web app version is hosted on **Google Firebase** and can be accessed via browser.
 
 ## [1.19] – 2025-08-31
 
