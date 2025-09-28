@@ -3,6 +3,7 @@ import { ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 
 import { UtilsService } from './utils.service';
+import { ToastAnchor } from '../enums';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,7 @@ export class ToastService {
     private readonly utilsService: UtilsService
   ) {}
 
-  async showDisabledToast(toastMsg: string, anchorId?: string) {
+  async showDisabledToast(toastMsg: string, anchorId?: ToastAnchor) {
     const translatedMsg = this.translate.instant(toastMsg);
 
     this.showToastMessage(translatedMsg, anchorId).catch((error) => {
@@ -22,13 +23,13 @@ export class ToastService {
     });
   }
 
-  showToast(translatedToastMessage: string, anchorId?: string): void {
+  showToast(translatedToastMessage: string, anchorId?: ToastAnchor): void {
     this.showToastMessage(translatedToastMessage, anchorId).catch((error) => {
       console.error('Error presenting toast:', error);
     });
   }
 
-  async showToastMessage(translatedToastMessage: string, anchorId?: string) {
+  async showToastMessage(translatedToastMessage: string, anchorId?: ToastAnchor) {
     const toast = await this.toastController.create({
       message: translatedToastMessage,
       duration: 3000,
@@ -54,11 +55,11 @@ export class ToastService {
     return 'top';
   }
 
-  private getToastAnchor(anchorId?: string): string {
+  private getToastAnchor(anchorId?: ToastAnchor): string {
     if (this.utilsService.isDesktop) {
       return '';
     }
     // On mobile devices, display toast below the header prevent it from being obscured by the header bar.
-    return anchorId || 'toast-anchor-settings';
+    return anchorId || ToastAnchor.SETTINGS_PAGE;
   }
 }

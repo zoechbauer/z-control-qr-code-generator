@@ -21,7 +21,7 @@ import { environment } from 'src/environments/environment';
 import { AlertService } from '../services/alert.service';
 import { UtilsService } from '../services/utils.service';
 import { ToastService } from '../services/toast.service';
-import { LogoType, Tab } from '../enums';
+import { LogoType, Tab, ToastAnchor } from '../enums';
 import { PrintUtilsService } from '../services/print-utils.service';
 
 enum Workflow {
@@ -220,7 +220,7 @@ export class TabQrPage implements OnInit, OnDestroy {
   handleSendEmailButtonClick() {
     if (!this.qrService.isQrCodeGenerated) {
       this.toastService
-        .showDisabledToast('TOOLTIP_EMAIL_NO_QR_GENERATED', 'toast-anchor-qr')
+        .showDisabledToast('TOOLTIP_EMAIL_NO_QR_GENERATED', ToastAnchor.QR_PAGE)
         .catch((error) => {
           console.error('Error presenting toast:', error);
         });
@@ -237,7 +237,7 @@ export class TabQrPage implements OnInit, OnDestroy {
       this.toastService
         .showDisabledToast(
           'TOOLTIP_GENERATION_ENTER_TEXT_FIRST',
-          'toast-anchor-qr'
+          ToastAnchor.QR_PAGE
         )
         .catch((error) => {
           console.error('Error presenting toast:', error);
@@ -246,7 +246,7 @@ export class TabQrPage implements OnInit, OnDestroy {
       this.toastService
         .showDisabledToast(
           'TOOLTIP_GENERATION_EMAIL_ALREADY_SENT',
-          'toast-anchor-qr'
+          ToastAnchor.QR_PAGE
         )
         .catch((error) => {
           console.error('Error presenting toast:', error);
@@ -255,7 +255,7 @@ export class TabQrPage implements OnInit, OnDestroy {
       this.toastService
         .showDisabledToast(
           'TOOLTIP_GENERATION_QR_ALREADY_GENERATED',
-          'toast-anchor-qr'
+          ToastAnchor.QR_PAGE
         )
         .catch((error) => {
           console.error('Error presenting toast:', error);
@@ -305,7 +305,7 @@ export class TabQrPage implements OnInit, OnDestroy {
       this.qrDataInput.value = trimmedData;
       this.toastService.showToast(
         this.translate.instant('TOAST_TRAILING_BLANKS_REMOVED'),
-        'toast-anchor-qr'
+        ToastAnchor.QR_PAGE
       );
     }
     return trimmedData;
@@ -328,7 +328,7 @@ export class TabQrPage implements OnInit, OnDestroy {
       this.qrService.clearQrFields();
       this.toastService.showToast(
         this.translate.instant('TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE'),
-        'toast-anchor-qr'
+        ToastAnchor.QR_PAGE
       );
     }
   }

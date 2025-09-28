@@ -36,3 +36,8 @@ export enum QrCodesCountPerPage {
   FULL_PAGE = 'Full Page',
   CUSTOM_NUMBER = 'Custom Number',
 }
+
+export enum ToastAnchor {
+  QR_PAGE = 'toast-anchor-qr',
+  SETTINGS_PAGE = 'toast-anchor-settings',
+}
