@@ -90,7 +90,7 @@ export class LocalStorageService {
     this.savedEmailAddressesSubject.next(this.savedEmailAddresses);
   }
 
-  async deleteMailAddress(index: number): Promise<EmailAddressStatus> {
+  async deleteEmailAddress(index: number): Promise<EmailAddressStatus> {
     if (index >= 0 && index < this.savedEmailAddresses.length) {
       this.savedEmailAddresses.splice(index, 1);
       await this.storage.set(

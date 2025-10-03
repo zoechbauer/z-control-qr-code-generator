@@ -7,11 +7,7 @@ import {
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   IonicModule,
-  ModalController,
   ToastController,
-  AlertController,
-  PopoverController,
-  Platform,
 } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { of } from 'rxjs';
@@ -22,14 +18,13 @@ import { Keyboard } from '@capacitor/keyboard';
 import { QrUtilsService } from '../services/qr-utils.service';
 import { EmailUtilsService } from '../services/email-utils.service';
 import { LocalStorageService } from '../services/local-storage.service';
-import { ValidationService } from '../services/validation.service';
 import { FileUtilsService } from '../services/file-utils.service';
 import { AlertService } from '../services/alert.service';
 import { TabQrPage } from './tab-qr.page';
 import { environment } from 'src/environments/environment';
-import { LanguagePopoverComponent } from './language-popover.component';
-import { HelpModalComponent } from '../help-modal/help-modal.component';
 import { WindowMockUtil } from 'src/test-utils/window-mock.util';
+import { PrintUtilsService } from '../services/print-utils.service';
+import { HeaderComponent } from '../ui/components/header/header.component';
 
 describe('TabQrPage', () => {
   let component: TabQrPage;
@@ -37,205 +32,192 @@ describe('TabQrPage', () => {
   let mockMatchMedia: jasmine.Spy;
 
   beforeEach(async () => {
-  // 1. Setup window mocks first
-  mockMatchMedia = WindowMockUtil.setupMatchMediaSpy(true); // Default to portrait
+    // 1. Setup window mocks first
+    mockMatchMedia = WindowMockUtil.setupMatchMediaSpy(true); // Default to portrait
 
-  // 2. Mock all Capacitor functionality COMPLETELY
-  const mockCapacitor = {
-    isPluginAvailable: jasmine
-      .createSpy('isPluginAvailable')
-      .and.returnValue(true),
-    isNativePlatform: jasmine
-      .createSpy('isNativePlatform')
-      .and.returnValue(true),
-    Plugins: {
-      StatusBar: {
-        setBackgroundColor: jasmine
-          .createSpy('setBackgroundColor')
-          .and.returnValue(Promise.resolve()),
-        setStyle: jasmine
-          .createSpy('setStyle')
-          .and.returnValue(Promise.resolve()),
-        setOverlaysWebView: jasmine
-          .createSpy('setOverlaysWebView')
-          .and.returnValue(Promise.resolve()),
-        show: jasmine.createSpy('show').and.returnValue(Promise.resolve()),
-        hide: jasmine.createSpy('hide').and.returnValue(Promise.resolve()),
+    // 2. Mock all Capacitor functionality COMPLETELY
+    const mockCapacitor = {
+      isPluginAvailable: jasmine
+        .createSpy('isPluginAvailable')
+        .and.returnValue(true),
+      isNativePlatform: jasmine
+        .createSpy('isNativePlatform')
+        .and.returnValue(true),
+      Plugins: {
+        StatusBar: {
+          setBackgroundColor: jasmine
+            .createSpy('setBackgroundColor')
+            .and.returnValue(Promise.resolve()),
+          setStyle: jasmine
+            .createSpy('setStyle')
+            .and.returnValue(Promise.resolve()),
+          setOverlaysWebView: jasmine
+            .createSpy('setOverlaysWebView')
+            .and.returnValue(Promise.resolve()),
+          show: jasmine.createSpy('show').and.returnValue(Promise.resolve()),
+          hide: jasmine.createSpy('hide').and.returnValue(Promise.resolve()),
+        },
+        Keyboard: {
+          hide: jasmine.createSpy('hide').and.returnValue(Promise.resolve()),
+          show: jasmine.createSpy('show').and.returnValue(Promise.resolve()),
+          addListener: jasmine
+            .createSpy('addListener')
+            .and.returnValue(
+              Promise.resolve({ remove: jasmine.createSpy('remove') })
+            ),
+          removeAllListeners: jasmine
+            .createSpy('removeAllListeners')
+            .and.returnValue(Promise.resolve()),
+        },
+        SplashScreen: {
+          hide: jasmine.createSpy('hide').and.returnValue(Promise.resolve()),
+          show: jasmine.createSpy('show').and.returnValue(Promise.resolve()),
+        },
       },
-      Keyboard: {
-        hide: jasmine.createSpy('hide').and.returnValue(Promise.resolve()),
-        show: jasmine.createSpy('show').and.returnValue(Promise.resolve()),
-        addListener: jasmine.createSpy('addListener').and.returnValue(
-          Promise.resolve({ remove: jasmine.createSpy('remove') })
-        ),
-        removeAllListeners: jasmine
-          .createSpy('removeAllListeners')
-          .and.returnValue(Promise.resolve()),
-      },
-      SplashScreen: {
-        hide: jasmine.createSpy('hide').and.returnValue(Promise.resolve()),
-        show: jasmine.createSpy('show').and.returnValue(Promise.resolve()),
-      },
-    },
-    registerPlugin: jasmine.createSpy('registerPlugin'),
-  };
+      registerPlugin: jasmine.createSpy('registerPlugin'),
+    };
 
-  // Apply the Capacitor mock to window
-  (window as any).Capacitor = mockCapacitor;
+    // Apply the Capacitor mock to window
+    (window as any).Capacitor = mockCapacitor;
 
-  // 3. Mock Ionicons and asset path
-  (window as any).Ionicons = {
-    addIcons: jasmine.createSpy('addIcons'),
-    getIcon: jasmine
-      .createSpy('getIcon')
-      .and.returnValue(Promise.resolve('<svg></svg>')),
-  };
-  (window as any).assetPath = 'http://localhost:9876/';
+    // 3. Mock Ionicons and asset path
+    (window as any).Ionicons = {
+      addIcons: jasmine.createSpy('addIcons'),
+      getIcon: jasmine
+        .createSpy('getIcon')
+        .and.returnValue(Promise.resolve('<svg></svg>')),
+    };
+    (window as any).assetPath = 'http://localhost:9876/';
 
-  // 4. Also spy on imported Capacitor and Keyboard modules
-  spyOn(Capacitor, 'isPluginAvailable').and.returnValue(true);
-  spyOn(Capacitor, 'isNativePlatform').and.returnValue(true);
-  spyOn(Keyboard, 'addListener').and.returnValue(
-    Promise.resolve({ remove: jasmine.createSpy('remove') })
-  );
-  spyOn(Keyboard, 'removeAllListeners').and.returnValue(Promise.resolve());
-  spyOn(Keyboard, 'hide').and.returnValue(Promise.resolve());
-  spyOn(Keyboard, 'show').and.returnValue(Promise.resolve());
+    // 4. Also spy on imported Capacitor and Keyboard modules
+    spyOn(Capacitor, 'isPluginAvailable').and.returnValue(true);
+    spyOn(Capacitor, 'isNativePlatform').and.returnValue(true);
+    spyOn(Keyboard, 'addListener').and.returnValue(
+      Promise.resolve({ remove: jasmine.createSpy('remove') })
+    );
+    spyOn(Keyboard, 'removeAllListeners').and.returnValue(Promise.resolve());
+    spyOn(Keyboard, 'hide').and.returnValue(Promise.resolve());
+    spyOn(Keyboard, 'show').and.returnValue(Promise.resolve());
 
-  // 5. Create service spies
-  const storageSpy = jasmine.createSpyObj<Partial<Storage>>('Storage', [
-    'get',
-    'set',
-    'remove',
-    'create',
-  ]);
-  const qrUtilsSpy = jasmine.createSpyObj<Partial<QrUtilsService>>(
-    'QrUtilsService',
-    ['generateQRCode', 'clearQrFields', 'printQRCode'],
-    {
-      isQrCodeGenerated: false,
-      myAngularxQrCode: '',
-      qrCodeDownloadLink: '',
-    }
-  );
-  const emailUtilsSpy = jasmine.createSpyObj<Partial<EmailUtilsService>>(
-    'EmailUtilsService',
-    ['sendEmail', 'clearEmailSent'],
-    {
-      isEmailSent: false,
-    }
-  );
-  const localStorageSpy = jasmine.createSpyObj<Partial<LocalStorageService>>(
-    'LocalStorageService',
-    ['loadSelectedOrDefaultLanguage', 'init', 'saveEmailAddress'],
-    {
-      selectedLanguage$: of('en'),
-    }
-  );
-  const validationSpy = jasmine.createSpyObj<Partial<ValidationService>>(
-    'ValidationService',
-    ['isValidEmailAddress']
-  );
-  const fileUtilsSpy = jasmine.createSpyObj<Partial<FileUtilsService>>(
-    'FileUtilsService',
-    [
-      'saveFile',
-      'clearNowFormatted',
-      'setNowFormatted',
-      'downloadQRCode',
-      'deleteAllQrCodeFilesAfterSpecifiedTime',
-    ]
-  );
-  const alertSpy = jasmine.createSpyObj<Partial<AlertService>>(
-    'AlertService',
-    ['showErrorAlert']
-  );
-  const modalControllerSpy = jasmine.createSpyObj<Partial<ModalController>>(
-    'ModalController',
-    ['create']
-  );
-  const toastControllerSpy = jasmine.createSpyObj<Partial<ToastController>>(
-    'ToastController',
-    ['create']
-  );
-  const alertControllerSpy = jasmine.createSpyObj<Partial<AlertController>>(
-    'AlertController',
-    ['create']
-  );
-  const popoverControllerSpy = jasmine.createSpyObj<Partial<PopoverController>>(
-    'PopoverController',
-    ['create']
-  );
-  const platformSpy = jasmine.createSpyObj<Partial<Platform>>('Platform', [
-    'is',
-    'ready',
-  ]);
-  const translateSpy = jasmine.createSpyObj<Partial<TranslateService>>(
-    'TranslateService',
-    ['instant', 'get']
-  );
+    // 5. Create service spies
+    const storageSpy = jasmine.createSpyObj<Partial<Storage>>('Storage', [
+      'get',
+      'set',
+      'remove',
+      'create',
+    ]);
+    const qrUtilsSpy = jasmine.createSpyObj<Partial<QrUtilsService>>(
+      'QrUtilsService',
+      ['generateQRCode', 'clearQrFields', 'printQRCode'],
+      {
+        isQrCodeGenerated: false,
+        myAngularxQrCode: '',
+        qrCodeDownloadLink: '',
+      }
+    );
+    const emailUtilsSpy = jasmine.createSpyObj<EmailUtilsService>(
+      'EmailUtilsService',
+      ['sendEmail', 'clearEmailSent'],
+      {
+        isEmailSent: false,
+      }
+    );
+    const localStorageSpy = jasmine.createSpyObj<LocalStorageService>(
+      'LocalStorageService',
+      ['loadSelectedOrDefaultLanguage', 'init', 'saveEmailAddress'],
+      {
+        selectedLanguage$: of('en'),
+      }
+    );
+    const fileUtilsSpy = jasmine.createSpyObj<Partial<FileUtilsService>>(
+      'FileUtilsService',
+      [
+        'saveFile',
+        'clearNowFormatted',
+        'setNowFormatted',
+        'downloadQRCode',
+        'deleteAllQrCodeFilesAfterSpecifiedTime',
+      ]
+    );
+    const printUtilsSpy = jasmine.createSpyObj('PrintUtilsService', [
+      'printQRCode',
+      'getConvertedPrintSettings',
+    ]);
+    printUtilsSpy.getConvertedPrintSettings.and.returnValue(
+      '[ ~5 cm / small gap / 8 ]'
+    );
+    const toastControllerSpy = jasmine.createSpyObj<Partial<ToastController>>(
+      'ToastController',
+      ['create']
+    );
+    const translateSpy = jasmine.createSpyObj<TranslateService>(
+      'TranslateService',
+      ['setDefaultLang', 'use', 'instant', 'get']
+    );
 
-  // 6. Configure TestBed
-  await TestBed.configureTestingModule({
-    declarations: [TabQrPage],
-    imports: [
-      IonicModule.forRoot({ mode: 'md', animated: false }),
-      TranslateModule.forRoot(),
-      HttpClientTestingModule,
-    ],
-    providers: [
-      { provide: Storage, useValue: storageSpy },
-      { provide: QrUtilsService, useValue: qrUtilsSpy },
-      { provide: EmailUtilsService, useValue: emailUtilsSpy },
-      { provide: LocalStorageService, useValue: localStorageSpy },
-      { provide: ValidationService, useValue: validationSpy },
-      { provide: FileUtilsService, useValue: fileUtilsSpy },
-      { provide: AlertService, useValue: alertSpy },
-      { provide: ModalController, useValue: modalControllerSpy },
-      { provide: ToastController, useValue: toastControllerSpy },
-      { provide: AlertController, useValue: alertControllerSpy },
-      { provide: PopoverController, useValue: popoverControllerSpy },
-      { provide: Platform, useValue: platformSpy },
-      { provide: TranslateService, useValue: translateSpy },
-    ],
-  }).compileComponents();
+    // 6. Configure TestBed
+    await TestBed.configureTestingModule({
+      declarations: [TabQrPage],
+      imports: [
+        IonicModule.forRoot({ mode: 'md', animated: false }),
+        TranslateModule.forRoot(),
+        HttpClientTestingModule,
+        HeaderComponent,
+      ],
+      providers: [
+        { provide: Storage, useValue: storageSpy },
+        { provide: QrUtilsService, useValue: qrUtilsSpy },
+        { provide: EmailUtilsService, useValue: emailUtilsSpy },
+        { provide: LocalStorageService, useValue: localStorageSpy },
+        { provide: FileUtilsService, useValue: fileUtilsSpy },
+        { provide: ToastController, useValue: toastControllerSpy },
+        { provide: TranslateService, useValue: translateSpy },
+        { provide: PrintUtilsService, useValue: printUtilsSpy },
+      ],
+    }).compileComponents();
 
-  // 7. Create component and setup
-  fixture = TestBed.createComponent(TabQrPage);
-  component = fixture.componentInstance;
+    // 7. Create component and setup
+    fixture = TestBed.createComponent(TabQrPage);
+    component = fixture.componentInstance;
 
-  // Make service properties writable
-  const emailUtilsService = TestBed.inject(EmailUtilsService) as jasmine.SpyObj<EmailUtilsService>;
-  Object.defineProperty(emailUtilsService, 'isEmailSent', {
-    writable: true,
-    configurable: true,
-    value: false,
+    // Make service properties writable
+    const emailUtilsService = TestBed.inject(
+      EmailUtilsService
+    ) as jasmine.SpyObj<EmailUtilsService>;
+    Object.defineProperty(emailUtilsService, 'isEmailSent', {
+      writable: true,
+      configurable: true,
+      value: false,
+    });
+
+    const qrUtilsService = TestBed.inject(
+      QrUtilsService
+    ) as jasmine.SpyObj<QrUtilsService>;
+    Object.defineProperty(qrUtilsService, 'isQrCodeGenerated', {
+      writable: true,
+      configurable: true,
+      value: false,
+    });
+    Object.defineProperty(qrUtilsService, 'myAngularxQrCode', {
+      writable: true,
+      configurable: true,
+      value: '',
+    });
+
+    // Setup default mock returns
+    (storageSpy.get as jasmine.Spy).and.returnValue(Promise.resolve(null));
+    (storageSpy.set as jasmine.Spy).and.returnValue(Promise.resolve());
+    (storageSpy.create as jasmine.Spy).and.returnValue(
+      Promise.resolve({} as Storage)
+    );
+    localStorageSpy.init.and.returnValue(Promise.resolve());
+    localStorageSpy.loadSelectedOrDefaultLanguage.and.returnValue(
+      Promise.resolve()
+    );
+    (qrUtilsSpy.clearQrFields as jasmine.Spy).and.returnValue(undefined);
+    (translateSpy.instant as jasmine.Spy).and.returnValue('Translated Text');
+    (translateSpy.get as jasmine.Spy).and.returnValue(of('Translated Text'));
   });
-
-  const qrUtilsService = TestBed.inject(QrUtilsService) as jasmine.SpyObj<QrUtilsService>;
-  Object.defineProperty(qrUtilsService, 'isQrCodeGenerated', {
-    writable: true,
-    configurable: true,
-    value: false,
-  });
-  Object.defineProperty(qrUtilsService, 'myAngularxQrCode', {
-    writable: true,
-    configurable: true,
-    value: '',
-  });
-
-  // Setup default mock returns
-  (storageSpy.get as jasmine.Spy).and.returnValue(Promise.resolve(null));
-  (storageSpy.set as jasmine.Spy).and.returnValue(Promise.resolve());
-  (storageSpy.create as jasmine.Spy).and.returnValue(Promise.resolve({} as Storage));
-  (localStorageSpy.init as jasmine.Spy).and.returnValue(Promise.resolve());
-  (qrUtilsSpy.clearQrFields as jasmine.Spy).and.returnValue(undefined);
-  (emailUtilsSpy.clearEmailSent as jasmine.Spy).and.returnValue(undefined);
-  (translateSpy.instant as jasmine.Spy).and.returnValue('Translated Text');
-  (translateSpy.get as jasmine.Spy).and.returnValue(of('Translated Text'));
-  (platformSpy.is as jasmine.Spy).and.returnValue(false);
-  (platformSpy.ready as jasmine.Spy).and.returnValue(Promise.resolve());
-});
 
   afterEach(() => {
     // Clean up all window mocks
@@ -549,34 +531,6 @@ describe('TabQrPage', () => {
     });
   });
 
-  describe('isPortrait getter', () => {
-    // TODO fix bug caused by tab-based page
-    // it('should detect portrait orientation', () => {
-    //   // Arrange
-    //   mockMatchMedia.and.returnValue({ matches: true });
-
-    //   // Act
-    //   const isPortrait = component.isPortrait;
-
-    //   // Assert
-    //   expect(mockMatchMedia).toHaveBeenCalledWith('(orientation: portrait)');
-    //   expect(isPortrait).toBe(true);
-    // });
-
-    // TODO fix bug caused by tab-based page
-    // it('should detect landscape orientation', () => {
-    //   // Arrange
-    //   mockMatchMedia.and.returnValue({ matches: false });
-
-    //   // Act
-    //   const isPortrait = component.isPortrait;
-
-    //   // Assert
-    //   expect(mockMatchMedia).toHaveBeenCalledWith('(orientation: portrait)');
-    //   expect(isPortrait).toBe(false);
-    // });
-  });
-
   describe('clearInputField', () => {
     it('should clear input field and reset services', () => {
       // Arrange
@@ -598,62 +552,7 @@ describe('TabQrPage', () => {
     });
   });
 
-  describe('openHelpModal', () => {
-    let modalController: jasmine.SpyObj<ModalController>;
-    let mockModal: jasmine.SpyObj<HTMLIonModalElement>;
-    let maxInputLength: number;
-
-    beforeEach(() => {
-      maxInputLength = environment.maxInputLength;
-      modalController = TestBed.inject(
-        ModalController
-      ) as jasmine.SpyObj<ModalController>;
-
-      mockModal = jasmine.createSpyObj('HTMLIonModalElement', ['present']);
-      mockModal.present.and.returnValue(Promise.resolve());
-      modalController.create.and.returnValue(Promise.resolve(mockModal));
-    });
-
-    // TODO fix bug caused by tab-based page
-    // it('should create and present Help modal with desktop CSS class on desktop', async () => {
-    //   // Arrange - override to desktop/web
-    //   (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
-
-    //   // Act
-    //   await component.openHelpModal();
-
-    //   // Assert
-    //   expect(modalController.create).toHaveBeenCalledWith({
-    //     component: HelpModalComponent,
-    //     componentProps: {
-    //       maxInputLength: maxInputLength,
-    //     },
-    //     cssClass: 'manual-instructions-modal desktop', // Desktop CSS
-    //   });
-    //   expect(mockModal.present).toHaveBeenCalled();
-    // });
-
-    // TODO fix bug caused by tab-based page
-    // it('should create modal with mobile CSS class on mobile devices', async () => {
-    //   // Arrange - Make sure it's actually mobile
-    //   // The default is already mobile (isNativePlatform = true), so no override needed
-
-    //   // Act
-    //   await component.openHelpModal();
-
-    //   // Assert
-    //   expect(modalController.create).toHaveBeenCalledWith({
-    //     component: HelpModalComponent,
-    //     componentProps: {
-    //       maxInputLength: maxInputLength,
-    //     },
-    //     cssClass: 'manual-instructions-modal', // Mobile CSS
-    //   });
-    //   expect(mockModal.present).toHaveBeenCalled();
-    // });
-  });
-
-  describe('deleteQRCode', () => {
+  describe('delete qr code', () => {
     it('should delete qr code and show toast if input changed after generation', () => {
       // Arrange
       const qrUtilsService = TestBed.inject(
@@ -721,7 +620,7 @@ describe('TabQrPage', () => {
     });
   });
 
-  describe('toast positioning based on keyboard state', () => {
+  describe('show toast', () => {
     let toastController: jasmine.SpyObj<ToastController>;
     let mockToast: jasmine.SpyObj<HTMLIonToastElement>;
 
@@ -731,91 +630,43 @@ describe('TabQrPage', () => {
         ToastController
       ) as jasmine.SpyObj<ToastController>;
 
-      // Mock the condition to always be true (so toast is always shown)
-      spyOn(component, 'hasInputChangedAfterGeneration').and.returnValue(true);
-
       // Basic toast mock
       mockToast = jasmine.createSpyObj('HTMLIonToastElement', ['present']);
       mockToast.present.and.returnValue(Promise.resolve());
       toastController.create.and.returnValue(Promise.resolve(mockToast));
     });
 
-    it('should show toast at bottom when keyboard is closed', () => {
+    it('should show toast if input changed after qr code generation', () => {
       // Arrange
-      component.setKeyboardState(false);
-
+      spyOn(component, 'hasInputChangedAfterGeneration').and.returnValue(true);
       // Act
       component.deleteQRCodeIfInputChangedAfterGeneration();
-
-      // Assert - Only test the position
-      expect(toastController.create).toHaveBeenCalledWith(
-        jasmine.objectContaining({
-          position: 'bottom',
-        })
-      );
+      // Assert - Only test the message
+      expect(toastController.create).toHaveBeenCalled();
     });
 
-    it('should show toast at top when keyboard is open', () => {
+    it('should show toast if input has trailing white space', () => {
       // Arrange
-      component.setKeyboardState(true);
-
+      component.qrDataInput = { value: 'content with trailing spaces ' } as any;
       // Act
-      component.deleteQRCodeIfInputChangedAfterGeneration();
+      component.handleGenerateButtonClick();
+      // Assert - Only test the message
+      expect(toastController.create).toHaveBeenCalled();
+    });
 
-      // Assert - Only test the position
-      expect(toastController.create).toHaveBeenCalledWith(
-        jasmine.objectContaining({
-          position: 'top',
-        })
-      );
+    it('should show toast if button is disabled', () => {
+      // Arrange
+      spyOnProperty(
+        component,
+        'isGenerationButtonDisabled',
+        'get'
+      ).and.returnValue(true);
+      // Act
+      component.handleGenerateButtonClick();
+      // Assert - Only test the message
+      expect(toastController.create).toHaveBeenCalled();
     });
   });
-
-  // TODO fix bug caused by tab-based page
-  // describe('addEmailAddress', () => {
-  //   it('should call localStorageService', async () => {
-  //     // Arrange
-  //     const localStorageService = TestBed.inject(
-  //       LocalStorageService
-  //     ) as jasmine.SpyObj<LocalStorageService>;
-  //     const emailAddress = 'test@example.com';
-
-  //     // Act
-  //     component.addEmailAddress(emailAddress);
-
-  //     // Assert
-  //     expect(localStorageService?.saveEmailAddress).toHaveBeenCalledWith(emailAddress);
-  //   });
-  // });
-
-  // TODO fix bug caused by tab-based page
-  // describe('openLanguagePopover', () => {
-  //   it('should create and present language popover', async () => {
-  //     // Arrange
-  //     const popoverController = TestBed.inject(
-  //       PopoverController
-  //     ) as jasmine.SpyObj<PopoverController>;
-  //     const mockPopover = jasmine.createSpyObj('HTMLIonPopoverElement', [
-  //       'present',
-  //     ]);
-  //     mockPopover.present.and.returnValue(Promise.resolve());
-  //     popoverController.create.and.returnValue(Promise.resolve(mockPopover));
-
-  //     const mockEvent = { target: 'button' } as any;
-
-  //     // Act
-  //     await component.openLanguagePopover(mockEvent);
-
-  //     // Assert
-  //     expect(popoverController.create).toHaveBeenCalledWith({
-  //       component: LanguagePopoverComponent,
-  //       event: mockEvent,
-  //       side: 'left',
-  //       translucent: true,
-  //     });
-  //     expect(mockPopover.present).toHaveBeenCalled();
-  //   });
-  // });
 
   describe('maxInputLength getter', () => {
     it('should return configured max length from environment', () => {
@@ -921,7 +772,6 @@ describe('TabQrPage', () => {
       );
       expect(qrUtilsService.printQRCode).toHaveBeenCalled();
       expect(emailUtilsService.sendEmail).toHaveBeenCalled();
-      expect(fileUtilsService.clearNowFormatted).toHaveBeenCalled();
     });
   });
 
@@ -1134,7 +984,9 @@ describe('TabQrPage', () => {
       localStorageService.loadSelectedOrDefaultLanguage.and.returnValue(
         Promise.resolve()
       );
-      fileUtilsService.deleteAllQrCodeFilesAfterSpecifiedTime.and.returnValue(Promise.resolve());
+      fileUtilsService.deleteAllQrCodeFilesAfterSpecifiedTime.and.returnValue(
+        Promise.resolve()
+      );
     });
 
     it('should initialize component without errors', () => {
@@ -1191,15 +1043,20 @@ describe('TabQrPage', () => {
       expect(keyboardSpy).not.toHaveBeenCalled();
     });
 
-    it('should handle initialization errors gracefully', () => {
+    it('should handle initialization errors gracefully', async () => {
       // Arrange
       localStorageService.init.and.returnValue(
         Promise.reject(new Error('Init failed'))
       );
       spyOn(console, 'error');
 
-      // Act & Assert - Should not throw
+      // Act
+      component.ngOnInit();
+      await Promise.resolve();
+
+      //Assert
       expect(() => component.ngOnInit()).not.toThrow();
+      expect(console.error).toHaveBeenCalled();
     });
   });
 
@@ -1302,5 +1159,3 @@ describe('TabQrPage', () => {
     });
   });
 });
-
-

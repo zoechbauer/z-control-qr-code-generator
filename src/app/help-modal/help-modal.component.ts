@@ -20,14 +20,10 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     text: this.translate.instant('SCROLL_TO_TOP_DE'),
   };
   selectedLanguage: string = 'de';
-  isPortrait = window.matchMedia('(orientation: portrait)').matches;
+  isPortrait = this.utilsService.isPortrait;
   maxInputLength: number = environment.maxInputLength ?? 1000;
 
   private langSub?: Subscription;
-
-  private readonly orientationListener = () => {
-    this.isPortrait = window.matchMedia('(orientation: portrait)').matches;
-  };
 
   constructor(
     public readonly utilsService: UtilsService,
@@ -35,6 +31,10 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     private readonly translate: TranslateService,
     private readonly localStorage: LocalStorageService
   ) {}
+
+  private readonly orientationListener = () => {
+    this.isPortrait = this.utilsService.isPortrait;
+  };
 
   get isNative(): boolean {
     return this.utilsService.isNative;
@@ -88,12 +88,13 @@ export class HelpModalComponent implements OnInit, OnDestroy {
   }
 
   get languageChangeButtonHelpText(): string {
-    const key = this.isNative ? 'HELP_LANGUAGE_CHANGE_BUTTON' : 'HELP_LANGUAGE_CHANGE_WEB_BUTTON';
+    const key = this.isNative
+      ? 'HELP_LANGUAGE_CHANGE_BUTTON'
+      : 'HELP_LANGUAGE_CHANGE_WEB_BUTTON';
     return this.translate.instant(key);
   }
   get deviceText(): string {
     const key = this.isNative ? 'HELP_DEVICE_TEXT' : 'HELP_DEVICE_TEXT_WEB';
     return this.translate.instant(key);
   }
-
 }

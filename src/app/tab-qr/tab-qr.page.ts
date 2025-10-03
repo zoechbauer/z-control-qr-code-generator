@@ -72,11 +72,6 @@ export class TabQrPage implements OnInit, OnDestroy {
     });
   }
 
-  // for unit tests
-  public setKeyboardState(isOpen: boolean): void {
-    this.isKeyboardOpen = isOpen;
-  }
-
   get maxInputLength(): number {
     // 2953 = Maximum capacity for QR code version 40 with error correction level L according to Perplexity AI,
     // but scanning no longer works, therefore we are using 1000 - results determined by testing

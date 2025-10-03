@@ -29,21 +29,30 @@ export class ToastService {
     });
   }
 
-  async showToastMessage(translatedToastMessage: string, anchorId?: ToastAnchor) {
-    const toast = await this.toastController.create({
+  async showToastMessage(
+    translatedToastMessage: string,
+    anchorId?: ToastAnchor
+  ) {
+    const toastOptions: any = {
       message: translatedToastMessage,
       duration: 3000,
       icon: 'information-circle',
       color: 'medium',
       position: this.getToastPosition(),
-      positionAnchor: this.getToastAnchor(anchorId),
       buttons: [
         {
           icon: 'close',
           role: 'cancel',
         },
       ],
-    });
+    };
+
+    const anchor = this.getToastAnchor(anchorId);
+    if (anchor) {
+      toastOptions.positionAnchor = anchor;
+    }
+
+    const toast = await this.toastController.create(toastOptions);
     await toast.present();
   }
 
@@ -55,9 +64,9 @@ export class ToastService {
     return 'top';
   }
 
-  private getToastAnchor(anchorId?: ToastAnchor): string {
+  private getToastAnchor(anchorId?: ToastAnchor): string | undefined {
     if (this.utilsService.isDesktop) {
-      return '';
+      return undefined; // Do not set anchor on desktop
     }
     // On mobile devices, display toast below the header prevent it from being obscured by the header bar.
     return anchorId || ToastAnchor.SETTINGS_PAGE;

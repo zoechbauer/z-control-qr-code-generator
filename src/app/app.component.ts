@@ -30,6 +30,7 @@ export class AppComponent {
 
       StatusBar.setOverlaysWebView({ overlay: false });
 
+      // don't use utilsService.isDarkMode here to avoid broken layout
       const isDarkMode = window.matchMedia(
         '(prefers-color-scheme: dark)'
       ).matches;

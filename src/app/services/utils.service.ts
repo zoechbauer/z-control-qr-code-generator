@@ -27,6 +27,10 @@ export class UtilsService {
     });
   }
 
+  get isDarkMode(): boolean {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
   get isPortrait(): boolean {
     return window.matchMedia('(orientation: portrait)').matches;
   }
@@ -102,27 +106,31 @@ export class UtilsService {
 
   setModalLandscapeClasses(modal: HTMLIonModalElement) {
     setTimeout(() => {
-      modal.classList.remove(
-        'manual-instructions-modal',
-        'change-log-modal',
-        'desktop',
-        'landscape'
-      );
-      switch (modal.component) {
-        case HelpModalComponent:
-          modal.classList.add('manual-instructions-modal');
-          break;
-        case MarkdownViewerComponent:
-          modal.classList.add('change-log-modal');
-          break;
-        default:
-          console.error('Unknown modal component for setting landscape class');
-      }
-      if (this.isDesktop) {
-        modal.classList.add('desktop');
-      }
-      if (!this.isPortrait) {
-        modal.classList.add('landscape');
+      if (modal.classList && typeof modal.classList.remove === 'function') {
+        modal.classList.remove(
+          'manual-instructions-modal',
+          'change-log-modal',
+          'desktop',
+          'landscape'
+        );
+        switch (modal.component) {
+          case HelpModalComponent:
+            modal.classList.add('manual-instructions-modal');
+            break;
+          case MarkdownViewerComponent:
+            modal.classList.add('change-log-modal');
+            break;
+          default:
+            console.error(
+              'Unknown modal component for setting landscape class'
+            );
+        }
+        if (this.isDesktop) {
+          modal.classList.add('desktop');
+        }
+        if (!this.isPortrait) {
+          modal.classList.add('landscape');
+        }
       }
     }, 10);
   }

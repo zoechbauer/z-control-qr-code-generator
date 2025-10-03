@@ -9,8 +9,8 @@ describe('GetSourceCodeComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ GetSourceCodeComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ ],
+      imports: [IonicModule.forRoot(), GetSourceCodeComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(GetSourceCodeComponent);

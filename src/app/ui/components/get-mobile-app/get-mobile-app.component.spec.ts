@@ -9,8 +9,8 @@ describe('GetMobileAppComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ GetMobileAppComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ ],
+      imports: [IonicModule.forRoot(), GetMobileAppComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(GetMobileAppComponent);

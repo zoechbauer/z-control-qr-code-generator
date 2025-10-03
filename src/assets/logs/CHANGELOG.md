@@ -2,6 +2,16 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+## [2.3] – YYYY-MM-DD
+
+### 🚀 Improvements
+
+- Refactored codebase for better readability and maintainability, and updated unit tests to ensure continued reliability.
+
+### 🐛 Fixes
+
+- Updated unit tests to support the new tab-based layout and navigation structure.
+
 ## [2.2.] – 2025-09-25
 
 ### ✨ New Features

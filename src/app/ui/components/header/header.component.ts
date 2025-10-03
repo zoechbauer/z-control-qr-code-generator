@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Capacitor } from '@capacitor/core';
 import {
   IonHeader,
   IonToolbar,
@@ -10,7 +9,6 @@ import {
 } from '@ionic/angular/standalone';
 import { NgIf } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Router } from '@angular/router';
 
 import { LogoType, Tab } from './../../../enums';
 import { UtilsService } from 'src/app/services/utils.service';
@@ -40,8 +38,7 @@ export class HeaderComponent {
 
   constructor(
     public translate: TranslateService,
-    public readonly utilsService: UtilsService,
-    private readonly router: Router
+    public readonly utilsService: UtilsService
   ) {}
 
   get isLargeScreen(): boolean {

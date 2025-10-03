@@ -6,7 +6,6 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { HelpModalComponent } from '../help-modal/help-modal.component';
-import { LanguagePopoverComponent } from './language-popover.component';
 import { ManualInstructionsModalComponent } from './manual-instructions-modal.component';
 import { FooterComponent } from '../ui/components/footer/footer.component';
 import { TabQrPageRoutingModule } from './tab-qr-routing.module';
@@ -29,7 +28,6 @@ import { HeaderComponent } from '../ui/components/header/header.component';
   declarations: [
     TabQrPage,
     HelpModalComponent,
-    LanguagePopoverComponent,
     ManualInstructionsModalComponent,
   ],
 })

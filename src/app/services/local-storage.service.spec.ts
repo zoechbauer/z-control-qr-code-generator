@@ -202,7 +202,7 @@ describe('LocalStorageService', () => {
       await service.init();
 
       // Act
-      await service.deleteMailAddress(1);
+      await service.deleteEmailAddress(1);
 
       // Assert
       expect(storageSpy.set).toHaveBeenCalledWith('savedEmailAddresses', JSON.stringify(savedEmailAddressesAfterDeletion));

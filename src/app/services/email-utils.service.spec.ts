@@ -10,17 +10,23 @@ import { FILESYSTEM, FilesystemLike } from './filesystem.token';
 import { LocalStorageService } from './local-storage.service';
 import { QrUtilsService } from './qr-utils.service';
 import { FileUtilsService } from './file-utils.service';
+import { PrintUtilsService } from './print-utils.service';
 
 describe('EmailUtilsService', () => {
   let service: EmailUtilsService;
   let alertServiceSpy: jasmine.SpyObj<AlertService>;
   let filesystemSpy: jasmine.SpyObj<FilesystemLike>;
   let localStorageSpy: jasmine.SpyObj<LocalStorageService>;
+  let printUtilsSpy: jasmine.SpyObj<PrintUtilsService>;
   let alertControllerSpy: any;
   let fileServiceSpy: any;
   let qrServiceSpy: any;
   let translateSpy: any;
   let emailComposerMock: any;
+  const qrCodeText = '123456'; // length 6
+  const fileNamePng = 'qrcode_20250827_123000.png';
+  const fileNamePdf = 'qrcode_20250827_123000.pdf';
+  const maxWebLength = 400;
 
   beforeEach(() => {
     // Storage and LocalStorageService
@@ -69,30 +75,37 @@ describe('EmailUtilsService', () => {
     // FileUtilsService
     fileServiceSpy = jasmine.createSpyObj(
       'FileUtilsService',
-      ['getDocumentsPath'],
+      ['getDocumentsPath', 'clearNowFormatted'],
       {
-        fileNamePng: 'qrcode_20250827_123000.png',
-        fileNamePdf: 'qrcode_20250827_123000.pdf',
+        fileNamePng: fileNamePng,
+        fileNamePdf: fileNamePdf,
       }
     );
     Object.defineProperty(fileServiceSpy, 'fileNamePng', {
-      get: () => 'qrcode_20250827_123000.png',
+      get: () => fileNamePng,
     });
     Object.defineProperty(fileServiceSpy, 'fileNamePdf', {
-      get: () => 'qrcode_20250827_123000.pdf',
+      get: () => fileNamePdf,
     });
     fileServiceSpy.getDocumentsPath.and.callFake((isPdf: boolean) =>
       Promise.resolve(
-        isPdf
-          ? '/documents/qrcode_20250827_123000.pdf'
-          : '/documents/qrcode_20250827_123000.png'
+        isPdf ? `/documents/${fileNamePdf}` : `/documents/${fileNamePng}`
       )
+    );
+
+    // PrintUtilsService
+    printUtilsSpy = jasmine.createSpyObj('PrintUtilsService', [
+      'printQRCode',
+      'getConvertedPrintSettings',
+    ]);
+    printUtilsSpy.getConvertedPrintSettings.and.returnValue(
+      '[ ~5 cm / small gap / 8 ]'
     );
 
     // QrUtilsService
     qrServiceSpy = {};
     Object.defineProperty(qrServiceSpy, 'myAngularxQrCode', {
-      get: () => '123456', // length will be 6
+      get: () => qrCodeText, // length will be 6
       configurable: true,
     });
 
@@ -121,6 +134,7 @@ describe('EmailUtilsService', () => {
         { provide: FILESYSTEM, useValue: filesystemSpy },
         { provide: FileUtilsService, useValue: fileServiceSpy },
         { provide: QrUtilsService, useValue: qrServiceSpy },
+        { provide: PrintUtilsService, useValue: printUtilsSpy },
       ],
     });
     service = TestBed.inject(EmailUtilsService);
@@ -132,7 +146,7 @@ describe('EmailUtilsService', () => {
     });
   });
 
-  describe('sendEmail', () => {
+  describe('send Email', () => {
     it('should load saved email addresses and include them in the "to" field when sending email on native platform', async () => {
       // Arrange
       localStorageSpy.savedEmailAddresses = [
@@ -156,21 +170,27 @@ describe('EmailUtilsService', () => {
     });
 
     it('should not send email if no email account is available', async () => {
+      spyOn(console, 'error');
       emailComposerMock.hasAccount.and.resolveTo({ hasAccount: false });
 
       await service.sendEmail();
 
       expect(emailComposerMock.open).not.toHaveBeenCalled();
       expect(service.isEmailSent).toBeFalse();
+      expect(console.error).toHaveBeenCalledWith(
+        'Email account is not available'
+      );
     });
 
     it('should handle errors thrown by EmailComposer.open', async () => {
       emailComposerMock.open.and.rejectWith(new Error('fail'));
+      spyOn(console, 'error');
 
       await service.sendEmail();
 
       expect(emailComposerMock.open).toHaveBeenCalled();
       expect(service.isEmailSent).toBeFalse();
+      expect(console.error).toHaveBeenCalled();
     });
 
     it('should use mailto on web platform', async () => {
@@ -197,10 +217,11 @@ describe('EmailUtilsService', () => {
       expect(service.isEmailSent).toBeTrue();
     });
 
-    it('should use the correct subject in mail on web platform', async () => {
+    it('should use the correct translated subject in mail on web platform', async () => {
       // Arrange
       (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
       spyOn(service as any, 'navigateTo');
+      const printingInfo = '[ ~5 cm / small gap / 8 ]';
 
       // Act
       await service.sendEmail();
@@ -213,13 +234,15 @@ describe('EmailUtilsService', () => {
       const subject =
         'EMAIL_SERVICE_MAIL_SUBJECT_PREFIX_translated' +
         qrServiceSpy.myAngularxQrCode.length +
-        'EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX_translated';
+        'EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX_translated ' +
+        printingInfo;
       expect(decodedMailToUrl).toContain(subject);
       expect(service.isEmailSent).toBeTrue();
     });
 
     it('should use the correct translated subject in mail on native platform', async () => {
       // Arrange
+      const printingInfo = '[ ~5 cm / small gap / 8 ]';
 
       // Act
       await service.sendEmail();
@@ -233,13 +256,15 @@ describe('EmailUtilsService', () => {
       const subject =
         'EMAIL_SERVICE_MAIL_SUBJECT_PREFIX_translated' +
         qrServiceSpy.myAngularxQrCode.length +
-        'EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX_translated';
+        'EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX_translated ' +
+        printingInfo;
       expect(decodedMailToUrl).toContain(subject);
       expect(service.isEmailSent).toBeTrue();
     });
 
     it('should use the correct translated body in mail on native platform', async () => {
       // Arrange
+      const printingInfo = ' [ ~5 cm / small gap / 8 ] ';
 
       // Act
       await service.sendEmail();
@@ -252,11 +277,19 @@ describe('EmailUtilsService', () => {
       const decodedMailToUrl = decodeURIComponent(mailToUrl.body);
       const lineBreak = '\n';
       const mailBody =
-        'EMAIL_SERVICE_MAIL_BODY_PREFIX_translated' +
+        'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT_translated' +
         lineBreak +
         lineBreak +
         qrServiceSpy.myAngularxQrCode +
-        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_translated';
+        lineBreak +
+        lineBreak +
+        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_1_translated' +
+        printingInfo +
+        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_2_translated' +
+        lineBreak +
+        lineBreak +
+        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_3_translated';
+
       expect(decodedMailToUrl).toContain(mailBody);
       expect(service.isEmailSent).toBeTrue();
     });
@@ -275,23 +308,36 @@ describe('EmailUtilsService', () => {
       const mailToUrl = (service as any).navigateTo.calls.mostRecent().args[0];
       const decodedMailToUrl = decodeURIComponent(mailToUrl);
       const lineBreak = '\n';
+
+      const attachmentLabel =
+        'EMAIL_SERVICE_MAIL_BODY_PREFIX_ATTACHEMENT_WEB_translated' +
+        lineBreak +
+        `${fileNamePng}, ${fileNamePdf}`;
+
       const mailBody =
-        'EMAIL_SERVICE_MAIL_BODY_PREFIX_translated' +
+        attachmentLabel +
+        lineBreak +
+        lineBreak +
+        'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT_translated' +
         lineBreak +
         lineBreak +
         qrServiceSpy.myAngularxQrCode +
-        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_translated';
+        lineBreak +
+        lineBreak +
+        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_WEBMAIL_translated';
       expect(decodedMailToUrl).toContain(mailBody);
+
       expect(service.isEmailSent).toBeTrue();
     });
 
-    it('should add info to the body if qr code contains leading spaces in mail on web platform', async () => {
+    it('should display shortened qr-text if very long text on web platform', async () => {
       // Arrange
       (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
       spyOn(service as any, 'navigateTo');
-      // Set leading spaces in the QR code value
+      // QrUtilsService
+      const longQrCodeText = 'A'.repeat(500); // length 500
       Object.defineProperty(qrServiceSpy, 'myAngularxQrCode', {
-        get: () => '   123456', // 3 leading spaces
+        get: () => longQrCodeText,
         configurable: true,
       });
 
@@ -303,19 +349,30 @@ describe('EmailUtilsService', () => {
 
       const mailToUrl = (service as any).navigateTo.calls.mostRecent().args[0];
       const decodedMailToUrl = decodeURIComponent(mailToUrl);
+
+      // check mailbody
       const lineBreak = '\n';
+      const attachmentLabel =
+        'EMAIL_SERVICE_MAIL_BODY_PREFIX_ATTACHEMENT_WEB_translated' +
+        lineBreak +
+        `${fileNamePng}, ${fileNamePdf}`;
+
+      const shortendedQrCodeText =
+        qrServiceSpy.myAngularxQrCode.substring(0, maxWebLength) + '...';
+
       const mailBody =
-        'EMAIL_SERVICE_MAIL_BODY_PREFIX_translated' +
+        attachmentLabel +
         lineBreak +
         lineBreak +
-        qrServiceSpy.myAngularxQrCode +
-        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_translated';
-      const mailBodyWeb =
-        'EMAIL_SERVICE_MAIL_BODY_PREFIX_WEB_translated' +
+        'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT_WEB_translated' +
         lineBreak +
         lineBreak +
-        mailBody;
-      expect(decodedMailToUrl).toContain(mailBodyWeb);
+        shortendedQrCodeText +
+        lineBreak +
+        lineBreak +
+        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_WEBMAIL_translated';
+      expect(decodedMailToUrl).toContain(mailBody);
+
       expect(service.isEmailSent).toBeTrue();
     });
 
@@ -335,14 +392,14 @@ describe('EmailUtilsService', () => {
       // Collect all attachment paths
       const paths = attachments.map((a) => a.path);
 
-      expect(paths.some(p => p.endsWith('qrcode_20250827_123000.png'))).toBeTrue();
-      expect(paths.some(p => p.endsWith('qrcode_20250827_123000.pdf'))).toBeTrue();
+      expect(paths.some((p) => p.endsWith(fileNamePdf))).toBeTrue();
+      expect(paths.some((p) => p.endsWith(fileNamePng))).toBeTrue();
       expect(attachments.length).toBe(2);
 
       expect(service.isEmailSent).toBeTrue();
     });
 
-    it('should add no attachments in mail on web platform', async () => {
+    it('should add no attachments in mail on web platform and add info about files to attach', async () => {
       // Arrange
       (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
       spyOn(service as any, 'navigateTo');
@@ -354,23 +411,29 @@ describe('EmailUtilsService', () => {
       expect((service as any).navigateTo).toHaveBeenCalled();
 
       const mailToUrl = (service as any).navigateTo.calls.mostRecent().args[0];
-      console.table('table', mailToUrl);
-      console.dir('dir', mailToUrl);
       const decodedMailToUrl = decodeURIComponent(mailToUrl);
 
       // check mailbody
       const lineBreak = '\n';
+      const attachmentLabel =
+        'EMAIL_SERVICE_MAIL_BODY_PREFIX_ATTACHEMENT_WEB_translated' +
+        lineBreak +
+        `${fileNamePng}, ${fileNamePdf}`;
+
       const mailBody =
-        'EMAIL_SERVICE_MAIL_BODY_PREFIX_translated' +
+        attachmentLabel +
+        lineBreak +
+        lineBreak +
+        'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT_translated' +
         lineBreak +
         lineBreak +
         qrServiceSpy.myAngularxQrCode +
-        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_translated';
+        lineBreak +
+        lineBreak +
+        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_WEBMAIL_translated';
       expect(decodedMailToUrl).toContain(mailBody);
 
       // Assert no attachments
-      expect(decodedMailToUrl).not.toContain('qrcode_20250827_123000.png');
-      expect(decodedMailToUrl).not.toContain('qrcode_20250827_123000.pdf');
       expect(decodedMailToUrl).not.toContain('attachments');
 
       expect(service.isEmailSent).toBeTrue();
@@ -392,14 +455,12 @@ describe('EmailUtilsService', () => {
       expect(alertArgs.header).toBe(
         'INFO_ALERT_TITLE_MAIL_ATTACHMENT_translated'
       );
-      expect(alertArgs.subHeader).toBe(
-        'qrcode_20250827_123000.png, qrcode_20250827_123000.pdf'
-      );
+      expect(alertArgs.subHeader).toBe(`${fileNamePng}, ${fileNamePdf}`);
       expect(alertArgs.message).toBe(
         'INFO_ALERT_MESSAGE_MAIL_ATTACHMENT_translated'
       );
       expect(alertArgs.buttons[0].text).toBe(
-        'ERROR_ALERT_BUTTON_OK_translated'
+        'ERROR_ALERT_OPEN_EMAIL_BUTTON_translated'
       );
       // Call the handler
       alertArgs.buttons[0].handler();

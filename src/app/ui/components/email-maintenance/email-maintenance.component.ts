@@ -86,7 +86,7 @@ export class EmailMaintenanceComponent implements OnInit {
 
   async deleteEmailAddress(index: number) {
     if (typeof index === 'number') {
-      const result: EmailAddressStatus = await this.localStorage.deleteMailAddress(index);
+      const result: EmailAddressStatus = await this.localStorage.deleteEmailAddress(index);
       if (result === EmailAddressStatus.Removed) {
         this.toastService.showToast(
           this.translate.instant('TOAST_EMAIL_ADDRESS_REMOVED')
