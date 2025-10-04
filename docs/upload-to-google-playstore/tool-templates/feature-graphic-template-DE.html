@@ -33,32 +33,70 @@
         text-align: center;
         border: none;
         margin: 0 auto;
+        padding-left: 0;
+        padding-right: 0;
       }
 
       .content-center {
         z-index: 2;
-        max-width: 720px;
-        padding: 0 60px;
+        max-width: 700px;
+        padding: 0;;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        height: 100%;
       }
 
       .app-title {
         font-size: 48px;
         font-weight: bold;
-        margin: 0 0 20px 0;
+        margin: 0 0 10px 0;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        letter-spacing: 1px;
       }
 
       .app-subtitle {
         font-size: 24px;
-        margin: 0 0 20px 0;
+        margin: 0 0 18px 0;
         opacity: 0.95;
-        font-weight: 300;
+        font-weight: 400;
+        letter-spacing: 0.5px;
       }
 
-      .features {
-        font-size: 20px;
-        opacity: 0.9;
+      .promo-text {
+        font-size: 19px;
+        margin: 0 0 18px 0;
+        font-weight: 400;
+        opacity: 0.95;
+        text-align: left;
+        max-width: 600px;
+      }
+
+      .highlights {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 12px 24px;
+        margin-bottom: 18px;
+      }
+
+      .highlight-badge {
+        background: rgba(255,255,255,0.13);
+        border-radius: 20px;
+        padding: 7px 18px;
+        font-size: 17px;
         font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      }
+
+      .icon {
+        font-size: 20px;
+        vertical-align: middle;
       }
 
       .brand {
@@ -103,6 +141,28 @@
             transparent
           );
         background-size: 24px 24px;
+      }
+
+      .qr-visual {
+        position: absolute;
+        left: 770px;;
+        top: 48%;
+        transform: translateY(-50%);
+        width: 113px;
+        height: 113px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 3;
+      }
+
+      .qr-visual img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
       }
 
       .size-indicator {
@@ -153,16 +213,31 @@
         margin: 8px 0;
       }
     </style>
+    <!-- Optionally, you can use Ionicons CDN for icons -->
+    <link rel="stylesheet" href="https://unpkg.com/ionicons@7.2.2/dist/ionicons/ionicons.css">
   </head>
   <body>
     <div class="container">
       <div class="feature-graphic">
         <div class="content-center">
-          <h1 class="app-title">z-control QR Code Generator</h1>
-          <p class="app-subtitle">Generate • Share • Manage</p>
-          <p class="features">
-            ✓ Instant QR Codes ✓ Email Integration ✓ Easy Sharing
-          </p>
+          <h1 class="app-title">z-control QR-Code Generator</h1>
+          <div class="app-subtitle">QR-Codes erstellen, teilen & drucken — schnell, einfach sicher!</div>
+          <div class="promo-text">
+            Wandeln Sie Text oder Weblinks schnell in QR-Codes um und versenden Sie diese direkt per E-Mail (als Bild oder PDF).<br>
+            Wählen Sie Größe und Anzahl der QR-Codes und drucken Sie auf A4.<br>
+            Perfekt für kleine Unternehmen, Vereine, Studierende und Kreative.
+          </div>
+          <div class="highlights">
+            <span class="highlight-badge"><span class="icon">⚡</span> QR-Code-Erstellung</span>
+            <span class="highlight-badge"><span class="icon">📧</span> Versand als PNG/PDF</span>
+            <span class="highlight-badge"><span class="icon">🖨️</span> Druck auf A4</span>
+            <span class="highlight-badge"><span class="icon">🌙</span> Hell-/Dunkelmodus</span>
+            <span class="highlight-badge"><span class="icon">🌐</span> DE/EN & Hilfe</span>
+            <span class="highlight-badge"><span class="icon">🔒</span> Keine Datenerfassung</span>
+          </div>
+        </div>
+        <div class="qr-visual">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=HelloWorld" alt="QR-Code Beispiel" />
         </div>
         <div class="qr-pattern"></div>
         <div class="grid-overlay"></div>
@@ -175,14 +250,14 @@
     </div>
 
     <div class="instructions">
-      <h3>� Exact Size Template - Multiple Options!</h3>
+      <h3>🎯 Exact Size Template - Multiple Options!</h3>
 
       <h4>📱 Option 1: Direct Screenshot (NO RESIZING!)</h4>
       <ol>
         <li><strong>Open this HTML file in your browser</strong></li>
         <li><strong>Use Snipping Tool</strong> (Windows + Shift + S)</li>
         <li>
-          <strong>Capture ONLY the green area</strong> (inside the black border)
+          <strong>Capture ONLY the green area</strong> (inside the graphic)
         </li>
         <li><strong>Save as PNG</strong> - it's exactly 1024×500!</li>
         <li><strong>Upload directly</strong> - no Paint needed!</li>
@@ -213,12 +288,10 @@
         <li><strong>Option 1:</strong> No resizing = perfect centering</li>
         <li><strong>Option 2:</strong> Paint 3D has better resize controls</li>
         <li><strong>Option 3:</strong> Online tools force exact dimensions</li>
-        <li><strong>Black border:</strong> Shows exactly what to capture</li>
       </ul>
 
       <p>
-        <strong>🎯 The banner above is exactly 1024×500 pixels</strong> -
-        capture just the green area!
+        <strong>🎯 The banner above is exactly 1024×500 pixels</strong> - capture just the green area!
       </p>
     </div>
   </body>
