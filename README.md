@@ -1,17 +1,38 @@
 # z-control QR Code Generator
 
-A modern, user-friendly QR code generator app built with Ionic and Angular.  
-Easily create QR codes, share them via email, and enjoy multi-language support.
+Create, share & print QR codes from text or links — fast, easy, and secure!
+
+z-control QR Code Generator is a modern, user-friendly app built with Ionic and Angular.  
+Easily convert text or web links into QR codes in seconds, send them directly via email (as image or PDF), and print them in your preferred format.  
+Perfect for small businesses, clubs, students, and creative minds.  
+Enjoy a clean, accessible design, step-by-step workflow, and integrated help — all with privacy in mind.
 
 ## Features
 
-- Generate QR codes from text input
-- Share QR codes via email with attachments
-- Multi-language support (English, German)
-- Dark and light theme support
-- Clean, responsive UI
-- Offline functionality
-- Change log
+- **Fast QR code creation**: Instantly generate QR codes from text or links (up to 1000 characters)
+- **Share via email**: Send QR codes as image (PNG) or PDF attachments with pre-filled emails and recipient management
+- **Print functionality**: Choose size and quantity, and print QR codes easily on A4 paper
+- **Step-by-step workflow**: Guided process from text entry to QR generation, sharing, and printing
+- **Integrated help**: Built-in help modal and manual instructions for every step
+- **Multi-language support**: English and German
+- **Modern, accessible UI**: Clean design with light/dark mode and responsive layout
+- **Offline functionality**: Works without an internet connection
+- **Automatic file cleanup**: Keeps your device tidy by removing old QR code files
+- **Privacy-first**: No data collection — everything stays local on your device
+
+Download now for free and create, share & print QR codes with ease!
+
+## Download & Online Access
+
+- **Google Play:**  
+  [![Get it on Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=at.zcontrol.zoe.qrcodeapp)
+  <br>
+  [Download from Google Play](https://play.google.com/store/apps/details?id=at.zcontrol.zoe.qrcodeapp)
+
+- **Web App:**  
+  [Run the app online (Firebase Hosting)](https://z-control-qr-code.web.app/)
+
+---
 
 ## 🛠️ Tech Stack
 
@@ -35,14 +56,100 @@ qr-code/
 │   └── README.md                # Docs folder overview
 ├── ressources/                  # Icons & splashscreens
 ├── src/
+│   ├── android-config.txt
+│   ├── declarations.d.ts
+│   ├── global.scss
+│   ├── index.html
+│   ├── main.ts
+│   ├── polyfills.ts
+│   ├── test.ts
+│   ├── zone-flags.ts
+│   │
 │   ├── app/
-│   │   ├── help-modal/          # Help page
-│   │   ├── home/                # Main QR code page
-│   │   └── services/            # Application services
-│   ├── assets/                  # Static assets
-│   │   └── logs/                # CHANGELOG.md
-│   ├── environments/            # Environment configurations
-│   └── theme/                   # Global styling
+│   │   ├── app-routing.module.ts
+│   │   ├── app.component.*
+│   │   ├── app.module.ts
+│   │   ├── enums.ts
+│   │   │
+│   │   ├── help-modal/
+│   │   │   └── help-modal.component.*
+│   │   │
+│   │   ├── services/
+│   │   │   ├── alert.service.*
+│   │   │   ├── email-utils.service.*
+│   │   │   ├── file-utils.service.*
+│   │   │   ├── filesystem.token.ts
+│   │   │   ├── local-storage.service.*
+│   │   │   ├── print-utils.service.*
+│   │   │   ├── qr-utils.service.ts
+│   │   │   ├── safe-area-insets.ts
+│   │   │   ├── toast.service.*
+│   │   │   ├── utils.service.*
+│   │   │   ├── validation.service.*
+│   │   │
+│   │   ├── tab-qr/
+│   │   │   ├── manual-instructions-modal.component.ts
+│   │   │   ├── tab-qr-routing.module.ts
+│   │   │   ├── tab-qr.module.ts
+│   │   │   ├── tab-qr.page.*
+│   │   │
+│   │   ├── tab-settings/
+│   │   │   ├── tab-settings-routing.module.ts
+│   │   │   ├── tab-settings.module.ts
+│   │   │   ├── tab-settings.page.*
+│   │   │
+│   │   ├── tabs/
+│   │   │   ├── tabs-routing.module.ts
+│   │   │   ├── tabs.module.ts
+│   │   │   ├── tabs.page.*
+│   │   │
+│   │   └── ui/
+│   │       └── components/
+│   │           ├── accordions/
+│   │           │   ├── change-log-accordion.component.*
+│   │           │   ├── email-maintenance-accordion.component.*
+│   │           │   ├── feedback-accordion.component.*
+│   │           │   ├── get-mobile-app-accordion.component.*
+│   │           │   ├── get-source-accordion.component.*
+│   │           │   ├── language-accordion.component.*
+│   │           │   ├── print-accordion.component.*
+│   │           │   └── privacy-policy-accordion.component.*
+│   │           ├── email-maintenance/
+│   │           │   └── email-maintenance.component.*
+│   │           ├── footer/
+│   │           │   └── footer.component.*
+│   │           ├── get-mobile-app/
+│   │           │   └── get-mobile-app.component.*
+│   │           ├── get-source-code/
+│   │           │   └── get-source-code.component.*
+│   │           ├── header/
+│   │           │   └── header.component.*
+│   │           ├── logo/
+│   │           │   └── logo.component.*
+│   │           ├── markdown-viewer/
+│   │           │   └── markdown-viewer.component.*
+│   │           └── privacy-policy/
+│   │               └── privacy-policy.component.*
+│   │
+│   ├── assets/
+│   │   ├── i18n/
+│   │   │   ├── de.json
+│   │   │   └── en.json
+│   │   ├── icon/
+│   │   │   └── z-control-qrcode-generator-logo-32px.png
+│   │   └── logs/
+│   │       └── CHANGELOG.md
+│   │
+│   ├── environments/
+│   │   ├── environment.prod.ts
+│   │   └── environment.ts
+│   │
+│   ├── test-utils/
+│   │   └── window-mock.util.ts
+│   │
+│   └── theme/
+│       └── variables.scss
+│
 ├── tools/                       # Project-wide dev tools (e.g., backup scripts, CHANGELOG-Templates)
 ├── README.md                    # Project overview (root)
 
