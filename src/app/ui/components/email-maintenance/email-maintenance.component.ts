@@ -65,13 +65,15 @@ export class EmailMaintenanceComponent implements OnInit {
     }
 
     // Add email and clear input
-    this.addEmailAddress(this.newEmailAddressValue);
-    this.newEmailAddressValue = '';
+    this.addEmailAddress(this.newEmailAddressValue).then(() => {
+      this.newEmailAddressValue = '';
+    });
   }
 
   async addEmailAddress(newEmailAddress: string) {
     if (typeof newEmailAddress === 'string') {
-      const result: EmailAddressStatus = await this.localStorage.saveEmailAddress(newEmailAddress);
+      const result: EmailAddressStatus =
+        await this.localStorage.saveEmailAddress(newEmailAddress);
       if (result === EmailAddressStatus.Added) {
         this.toastService.showToast(
           this.translate.instant('TOAST_EMAIL_ADDRESS_ADDED')
@@ -86,7 +88,8 @@ export class EmailMaintenanceComponent implements OnInit {
 
   async deleteEmailAddress(index: number) {
     if (typeof index === 'number') {
-      const result: EmailAddressStatus = await this.localStorage.deleteEmailAddress(index);
+      const result: EmailAddressStatus =
+        await this.localStorage.deleteEmailAddress(index);
       if (result === EmailAddressStatus.Removed) {
         this.toastService.showToast(
           this.translate.instant('TOAST_EMAIL_ADDRESS_REMOVED')

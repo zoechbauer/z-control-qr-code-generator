@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -7,6 +7,7 @@ import { EmailMaintenanceComponent } from './email-maintenance.component';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { EmailAddressStatus } from 'src/app/enums';
+import { ValidationService } from 'src/app/services/validation.service';
 
 describe('EmailMaintenanceComponent', () => {
   let component: EmailMaintenanceComponent;
@@ -18,8 +19,16 @@ describe('EmailMaintenanceComponent', () => {
       selectedLanguage$: of('de'),
     }
   );
-  let mockLocalStorageService: jasmine.SpyObj<LocalStorageService>;
-
+  localStorageServiceSpy.getEmailAddresses.and.returnValue([
+    'test@example.com',
+    'test2@example.com',
+  ]);
+  const validationServiceSpy = jasmine.createSpyObj('ValidationService', [
+    'isValidEmailAddress',
+  ]);
+  validationServiceSpy.isValidEmailAddress.and.callFake((email: string) => {
+    return email.includes('@');
+  });
   const toastServiceSpy = jasmine.createSpyObj('ToastService', [
     'showToast',
     'showDisabledToast',
@@ -36,6 +45,7 @@ describe('EmailMaintenanceComponent', () => {
       providers: [
         { provide: LocalStorageService, useValue: localStorageServiceSpy },
         { provide: ToastService, useValue: toastServiceSpy },
+        { provide: ValidationService, useValue: validationServiceSpy },
       ],
     }).compileComponents();
 
@@ -51,6 +61,8 @@ describe('EmailMaintenanceComponent', () => {
   describe('add email address', () => {
     beforeEach(() => {
       toastServiceSpy.showToast.calls.reset();
+      toastServiceSpy.showDisabledToast.calls.reset();
+      toastServiceSpy.showDisabledToast.and.returnValue(Promise.resolve());
       localStorageServiceSpy.saveEmailAddress.calls.reset();
     });
 
@@ -87,6 +99,41 @@ describe('EmailMaintenanceComponent', () => {
         'TOAST_EMAIL_ADDRESS_EXIST'
       );
     });
+
+    it('should display toast invalid email message if no email address is provided', () => {
+      component.newEmailAddressValue = '';
+      component.handleAddEmailAddressButtonClick();
+      expect(toastServiceSpy.showDisabledToast).toHaveBeenCalledWith(
+        'TOOLTIP_EMAIL_INVALID_ADDRESS'
+      );
+    });
+
+    it('should add email and clear input if email address is valid', async () => {
+      component.newEmailAddressValue = 'test@example.com';
+      component.handleAddEmailAddressButtonClick();
+      expect(
+        await localStorageServiceSpy.saveEmailAddress
+      ).toHaveBeenCalledWith(component.newEmailAddressValue);
+    });
+
+    it('should log an error if showDisabledToast throws in handleAddEmailAddressButtonClick', fakeAsync(() => {
+      // Arrange
+      const error = new Error('Toast failed');
+      toastServiceSpy.showDisabledToast.and.returnValue(Promise.reject(error));
+      spyOn(console, 'error');
+      component.newEmailAddressValue = ''; // invalid email triggers the toast
+      // Act
+      component.handleAddEmailAddressButtonClick();
+      tick();
+      // Assert
+      expect(component.toastService.showDisabledToast).toHaveBeenCalledWith(
+        'TOOLTIP_EMAIL_INVALID_ADDRESS'
+      );
+      expect(console.error).toHaveBeenCalledWith(
+        'Error presenting toast:',
+        error
+      );
+    }));
   });
 
   describe('delete email address', () => {
@@ -126,7 +173,9 @@ describe('EmailMaintenanceComponent', () => {
         index
       );
       expect(toastServiceSpy.showToast).not.toHaveBeenCalled();
-      expect(console.error).toHaveBeenCalledWith('Error removing email address: Not found');
+      expect(console.error).toHaveBeenCalledWith(
+        'Error removing email address: Not found'
+      );
     });
   });
 });

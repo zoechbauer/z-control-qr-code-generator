@@ -4,6 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { UtilsService } from './utils.service';
 import { WindowMockUtil } from 'src/test-utils/window-mock.util';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
+import { MarkdownViewerComponent } from '../ui/components/markdown-viewer/markdown-viewer.component';
 
 describe('UtilsService', () => {
   let service: UtilsService;
@@ -79,7 +80,56 @@ describe('UtilsService', () => {
     });
   });
 
-  describe('openHelpModal', () => {
+  describe('openChangelog method', () => {
+    let modal: any;
+
+    beforeEach(() => {
+      modal = jasmine.createSpyObj('HTMLIonModalElement', [
+        'present',
+        'classList',
+      ]);
+      modal.classList = jasmine.createSpyObj('classList', ['add', 'remove']);
+      modal.component = MarkdownViewerComponent;
+      modalControllerSpy.create.and.returnValue(Promise.resolve(modal));
+    });
+
+    it('should create and present the changelog modal', async () => {
+      await service.openChangelog();
+
+      expect(modalControllerSpy.create).toHaveBeenCalledWith({
+        component: MarkdownViewerComponent,
+        componentProps: {
+          fullChangeLogPath: 'assets/logs/CHANGELOG.md',
+        },
+      });
+      expect(modal.present).toHaveBeenCalled();
+    });
+
+    it('should add desktop class when on desktop', fakeAsync(async () => {
+      spyOnProperty(service, 'isDesktop').and.returnValue(true);
+      spyOnProperty(service, 'isPortrait').and.returnValue(true);
+
+      await service.openChangelog();
+      tick(20);
+
+      expect(modal.classList.add).toHaveBeenCalledWith('change-log-modal');
+      expect(modal.classList.add).toHaveBeenCalledWith('desktop');
+    }));
+
+    it('should not add desktop class when on mobile', fakeAsync(async () => {
+      spyOnProperty(service, 'isDesktop').and.returnValue(false);
+      spyOnProperty(service, 'isPortrait').and.returnValue(false);
+
+      await service.openChangelog();
+      tick(20);
+
+      expect(modal.classList.add).toHaveBeenCalledWith('change-log-modal');
+      expect(modal.classList.add).not.toHaveBeenCalledWith('desktop');
+      expect(modal.classList.add).toHaveBeenCalledWith('landscape');
+    }));
+  });
+
+  describe('openHelpModal method', () => {
     let modal: any;
 
     beforeEach(() => {
