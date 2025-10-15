@@ -24,7 +24,7 @@ import { ToastService } from '../services/toast.service';
 import { LogoType, Tab, ToastAnchor } from '../enums';
 import { PrintUtilsService } from '../services/print-utils.service';
 
-enum Workflow {
+export enum Workflow {
   StepEnterText = 'WORKFLOW_STEP_ENTER_TEXT',
   StepGenerate = 'WORKFLOW_STEP_GENERATE',
   StepMail = 'WORKFLOW_STEP_MAIL',
@@ -265,7 +265,7 @@ export class TabQrPage implements OnInit, OnDestroy {
 
   private generateMarginForButtonsIfNeeded(): void {
     const isSmallDevice = this.utilsService.isSmallDevice;
-    if (isSmallDevice) return;
+    if (isSmallDevice || !this.isNative) return;
 
     const element = document.querySelector('.no-generation-buttons');
     if (!element?.classList.contains('extra-margin-bottom')) {

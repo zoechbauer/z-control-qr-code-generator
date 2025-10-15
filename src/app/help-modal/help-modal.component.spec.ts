@@ -1,4 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -35,7 +40,7 @@ describe('HelpModalComponent', () => {
       ['scrollToElement'],
       {
         isPortrait: true,
-        isNative: false,
+        isNative: true,
       }
     );
 
@@ -51,6 +56,7 @@ describe('HelpModalComponent', () => {
 
     fixture = TestBed.createComponent(HelpModalComponent);
     component = fixture.componentInstance;
+
     mockModalController = TestBed.inject(
       ModalController
     ) as jasmine.SpyObj<ModalController>;
@@ -97,6 +103,17 @@ describe('HelpModalComponent', () => {
 
       expect((component as any).setScrollToTopObj).toHaveBeenCalled();
     });
+
+    it('should scroll to section if exists', fakeAsync(() => {
+      component.scrollToSection = 'toc-section';
+
+      component.ngOnInit();
+      tick(600);
+
+      expect(mockUtilsService.scrollToElement).toHaveBeenCalledWith(
+        'toc-section'
+      );
+    }));
   });
 
   describe('ngOnDestroy', () => {
@@ -185,6 +202,72 @@ describe('HelpModalComponent', () => {
       );
 
       expect(newComponent.isPortrait).toBe(true);
+    });
+  });
+
+  describe('getters', () => {
+    it('should return isNative from utilsService', () => {
+      expect(component.isNative).toBe(true);
+    });
+
+    it('should return email subject help text for native app', () => {
+      spyOnProperty(component, 'isNative', 'get').and.returnValue(true);
+
+      expect(component.isNative).toBe(true);
+      expect(component.emailSubjectHelpText).toBe('Translated Text');
+      expect(mockTranslateService.instant).toHaveBeenCalledWith(
+        'HELP_EMAIL_SUBJECT'
+      );
+    });
+
+    it('should return email subject help text for web app', () => {
+      spyOnProperty(component, 'isNative', 'get').and.returnValue(false);
+
+      expect(component.isNative).toBe(false);
+      expect(component.emailSubjectHelpText).toBe('Translated Text');
+      expect(mockTranslateService.instant).toHaveBeenCalledWith(
+        'HELP_EMAIL_SUBJECT_WEB'
+      );
+    });
+
+    it('should return device text for native app', () => {
+      spyOnProperty(component, 'isNative', 'get').and.returnValue(true);
+
+      expect(component.isNative).toBe(true);
+      expect(component.deviceText).toBe('Translated Text');
+      expect(mockTranslateService.instant).toHaveBeenCalledWith(
+        'HELP_DEVICE_TEXT'
+      );
+    });
+
+    it('should return device text for web app', () => {
+      spyOnProperty(component, 'isNative', 'get').and.returnValue(false);
+
+      expect(component.isNative).toBe(false);
+      expect(component.deviceText).toBe('Translated Text');
+      expect(mockTranslateService.instant).toHaveBeenCalledWith(
+        'HELP_DEVICE_TEXT_WEB'
+      );
+    });
+
+    it('should return language change button help text for native app', () => {
+      spyOnProperty(component, 'isNative', 'get').and.returnValue(true);
+
+      expect(component.isNative).toBe(true);
+      expect(component.languageChangeButtonHelpText).toBe('Translated Text');
+      expect(mockTranslateService.instant).toHaveBeenCalledWith(
+        'HELP_LANGUAGE_CHANGE_BUTTON'
+      );
+    });
+
+    it('should return language change button help text for web app', () => {
+      spyOnProperty(component, 'isNative', 'get').and.returnValue(false);
+
+      expect(component.isNative).toBe(false);
+      expect(component.languageChangeButtonHelpText).toBe('Translated Text');
+      expect(mockTranslateService.instant).toHaveBeenCalledWith(
+        'HELP_LANGUAGE_CHANGE_WEB_BUTTON'
+      );
     });
   });
 });

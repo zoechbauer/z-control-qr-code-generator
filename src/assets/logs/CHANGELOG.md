@@ -8,7 +8,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 - Refactored codebase for better readability and maintainability, and updated unit tests to ensure continued reliability.
 - Improved mouse pointer behavior: The cursor now changes to a pointer when hovering over the header logo in the web app.
-- The app title in the browser tab has been updated to "z-control QR Code Generator" for improved branding and consistency.
+- Removed extra bottom margin after the action buttons in the web app, as there is no navigation bar that could obscure them.
 
 ### 🐛 Fixes
 

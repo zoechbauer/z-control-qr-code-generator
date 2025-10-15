@@ -111,8 +111,8 @@ describe('EmailUtilsService', () => {
 
     // TranslateService
     translateSpy = jasmine.createSpyObj('TranslateService', ['instant', 'get']);
-    translateSpy.instant.and.callFake((key: string) => key + '_translated');
-    translateSpy.get.and.callFake((key: string) => of(key + '_translated'));
+    translateSpy.instant.and.callFake((key: string) => key);
+    translateSpy.get.and.callFake((key: string) => of(key));
 
     // EmailComposer
     emailComposerMock = {
@@ -232,9 +232,9 @@ describe('EmailUtilsService', () => {
       const mailToUrl = (service as any).navigateTo.calls.mostRecent().args[0];
       const decodedMailToUrl = decodeURIComponent(mailToUrl);
       const subject =
-        'EMAIL_SERVICE_MAIL_SUBJECT_PREFIX_translated' +
+        'EMAIL_SERVICE_MAIL_SUBJECT_PREFIX' +
         qrServiceSpy.myAngularxQrCode.length +
-        'EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX_translated ' +
+        'EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX ' +
         printingInfo;
       expect(decodedMailToUrl).toContain(subject);
       expect(service.isEmailSent).toBeTrue();
@@ -254,9 +254,9 @@ describe('EmailUtilsService', () => {
       const mailToUrl = emailComposerMock.open.calls.mostRecent().args[0];
       const decodedMailToUrl = decodeURIComponent(mailToUrl.subject);
       const subject =
-        'EMAIL_SERVICE_MAIL_SUBJECT_PREFIX_translated' +
+        'EMAIL_SERVICE_MAIL_SUBJECT_PREFIX' +
         qrServiceSpy.myAngularxQrCode.length +
-        'EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX_translated ' +
+        'EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX ' +
         printingInfo;
       expect(decodedMailToUrl).toContain(subject);
       expect(service.isEmailSent).toBeTrue();
@@ -277,18 +277,18 @@ describe('EmailUtilsService', () => {
       const decodedMailToUrl = decodeURIComponent(mailToUrl.body);
       const lineBreak = '\n';
       const mailBody =
-        'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT_translated' +
+        'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT' +
         lineBreak +
         lineBreak +
         qrServiceSpy.myAngularxQrCode +
         lineBreak +
         lineBreak +
-        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_1_translated' +
+        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_1' +
         printingInfo +
-        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_2_translated' +
+        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_2' +
         lineBreak +
         lineBreak +
-        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_3_translated';
+        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_3';
 
       expect(decodedMailToUrl).toContain(mailBody);
       expect(service.isEmailSent).toBeTrue();
@@ -310,7 +310,7 @@ describe('EmailUtilsService', () => {
       const lineBreak = '\n';
 
       const attachmentLabel =
-        'EMAIL_SERVICE_MAIL_BODY_PREFIX_ATTACHEMENT_WEB_translated' +
+        'EMAIL_SERVICE_MAIL_BODY_PREFIX_ATTACHEMENT_WEB' +
         lineBreak +
         `${fileNamePng}, ${fileNamePdf}`;
 
@@ -318,13 +318,13 @@ describe('EmailUtilsService', () => {
         attachmentLabel +
         lineBreak +
         lineBreak +
-        'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT_translated' +
+        'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT' +
         lineBreak +
         lineBreak +
         qrServiceSpy.myAngularxQrCode +
         lineBreak +
         lineBreak +
-        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_WEBMAIL_translated';
+        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_WEBMAIL';
       expect(decodedMailToUrl).toContain(mailBody);
 
       expect(service.isEmailSent).toBeTrue();
@@ -353,7 +353,7 @@ describe('EmailUtilsService', () => {
       // check mailbody
       const lineBreak = '\n';
       const attachmentLabel =
-        'EMAIL_SERVICE_MAIL_BODY_PREFIX_ATTACHEMENT_WEB_translated' +
+        'EMAIL_SERVICE_MAIL_BODY_PREFIX_ATTACHEMENT_WEB' +
         lineBreak +
         `${fileNamePng}, ${fileNamePdf}`;
 
@@ -364,13 +364,13 @@ describe('EmailUtilsService', () => {
         attachmentLabel +
         lineBreak +
         lineBreak +
-        'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT_WEB_translated' +
+        'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT_WEB' +
         lineBreak +
         lineBreak +
         shortendedQrCodeText +
         lineBreak +
         lineBreak +
-        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_WEBMAIL_translated';
+        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_WEBMAIL';
       expect(decodedMailToUrl).toContain(mailBody);
 
       expect(service.isEmailSent).toBeTrue();
@@ -416,7 +416,7 @@ describe('EmailUtilsService', () => {
       // check mailbody
       const lineBreak = '\n';
       const attachmentLabel =
-        'EMAIL_SERVICE_MAIL_BODY_PREFIX_ATTACHEMENT_WEB_translated' +
+        'EMAIL_SERVICE_MAIL_BODY_PREFIX_ATTACHEMENT_WEB' +
         lineBreak +
         `${fileNamePng}, ${fileNamePdf}`;
 
@@ -424,13 +424,13 @@ describe('EmailUtilsService', () => {
         attachmentLabel +
         lineBreak +
         lineBreak +
-        'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT_translated' +
+        'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT' +
         lineBreak +
         lineBreak +
         qrServiceSpy.myAngularxQrCode +
         lineBreak +
         lineBreak +
-        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_WEBMAIL_translated';
+        'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_WEBMAIL';
       expect(decodedMailToUrl).toContain(mailBody);
 
       // Assert no attachments
@@ -453,14 +453,14 @@ describe('EmailUtilsService', () => {
       // Simulate clicking OK button
       const alertArgs = alertControllerSpy.create.calls.mostRecent().args[0];
       expect(alertArgs.header).toBe(
-        'INFO_ALERT_TITLE_MAIL_ATTACHMENT_translated'
+        'INFO_ALERT_TITLE_MAIL_ATTACHMENT'
       );
       expect(alertArgs.subHeader).toBe(`${fileNamePng}, ${fileNamePdf}`);
       expect(alertArgs.message).toBe(
-        'INFO_ALERT_MESSAGE_MAIL_ATTACHMENT_translated'
+        'INFO_ALERT_MESSAGE_MAIL_ATTACHMENT'
       );
       expect(alertArgs.buttons[0].text).toBe(
-        'ERROR_ALERT_OPEN_EMAIL_BUTTON_translated'
+        'ERROR_ALERT_OPEN_EMAIL_BUTTON'
       );
       // Call the handler
       alertArgs.buttons[0].handler();

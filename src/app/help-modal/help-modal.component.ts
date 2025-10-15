@@ -32,13 +32,29 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     private readonly localStorage: LocalStorageService
   ) {}
 
-  private readonly orientationListener = () => {
-    this.isPortrait = this.utilsService.isPortrait;
-  };
-
   get isNative(): boolean {
     return this.utilsService.isNative;
   }
+
+  get emailSubjectHelpText(): string {
+    const key = this.isNative ? 'HELP_EMAIL_SUBJECT' : 'HELP_EMAIL_SUBJECT_WEB';
+    return this.translate.instant(key);
+  }
+
+  get languageChangeButtonHelpText(): string {
+    const key = this.isNative
+      ? 'HELP_LANGUAGE_CHANGE_BUTTON'
+      : 'HELP_LANGUAGE_CHANGE_WEB_BUTTON';
+    return this.translate.instant(key);
+  }
+  get deviceText(): string {
+    const key = this.isNative ? 'HELP_DEVICE_TEXT' : 'HELP_DEVICE_TEXT_WEB';
+    return this.translate.instant(key);
+  }
+
+  private readonly orientationListener = () => {
+    this.isPortrait = this.utilsService.isPortrait;
+  };
 
   ngOnInit() {
     // Scroll to specific section if provided
@@ -80,21 +96,5 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     this.langSub?.unsubscribe();
     window.removeEventListener('resize', this.orientationListener);
     window.removeEventListener('orientationchange', this.orientationListener);
-  }
-
-  get emailSubjectHelpText(): string {
-    const key = this.isNative ? 'HELP_EMAIL_SUBJECT' : 'HELP_EMAIL_SUBJECT_WEB';
-    return this.translate.instant(key);
-  }
-
-  get languageChangeButtonHelpText(): string {
-    const key = this.isNative
-      ? 'HELP_LANGUAGE_CHANGE_BUTTON'
-      : 'HELP_LANGUAGE_CHANGE_WEB_BUTTON';
-    return this.translate.instant(key);
-  }
-  get deviceText(): string {
-    const key = this.isNative ? 'HELP_DEVICE_TEXT' : 'HELP_DEVICE_TEXT_WEB';
-    return this.translate.instant(key);
   }
 }
