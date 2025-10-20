@@ -2,7 +2,7 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
-## [2.3] – YYYY-MM-DD
+## [2.3] – 2025-10-20 (Web-only release – Firebase)
 
 ### 🚀 Improvements
 
@@ -13,6 +13,11 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 ### 🐛 Fixes
 
 - Updated unit tests to support the new tab-based layout and navigation structure.
+
+### 📦 Installations
+
+- **Web**: The web app version (Firebase) has been updated for v2.3 and is available via the hosting URL.
+- **Mobile (Google Play)**: No mobile APK/AAB was published for v2.3 because changes are web-only (unit tests and web-specific UI tweaks). Google Play remains at the previous published mobile version.
 
 ## [2.2.] – 2025-09-25
 
@@ -40,8 +45,8 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 📦 Installations
 
-- The app is available on Google Play for the **Internal Test** and **Closed Test** groups.
-- The web app version is hosted on **Google Firebase** and can be accessed via browser.
+- **Web**: The web app version is hosted on Google Firebase and can be accessed via browser.
+- **Mobile (Google Play)**: the app is available on Google Play (Internal Test, Closed Test groups and **production**).
 
 ## [2.1] – 2025-09-07
 
