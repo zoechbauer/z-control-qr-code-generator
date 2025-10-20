@@ -146,7 +146,7 @@ describe('EmailUtilsService', () => {
     });
   });
 
-  describe('send Email', () => {
+  describe('send Email on native platform', () => {
     it('should load saved email addresses and include them in the "to" field when sending email on native platform', async () => {
       // Arrange
       localStorageSpy.savedEmailAddresses = [
@@ -191,53 +191,6 @@ describe('EmailUtilsService', () => {
       expect(emailComposerMock.open).toHaveBeenCalled();
       expect(service.isEmailSent).toBeFalse();
       expect(console.error).toHaveBeenCalled();
-    });
-
-    it('should use mailto on web platform', async () => {
-      // Arrange
-      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
-      spyOn(service as any, 'navigateTo');
-      localStorageSpy.savedEmailAddresses = [
-        'test1@example.com',
-        'test2@example.com',
-      ];
-
-      // Act
-      await service.sendEmail();
-
-      // Assert
-      expect(localStorageSpy.loadSavedEmailAddresses).toHaveBeenCalled();
-      expect((service as any).navigateTo).toHaveBeenCalled();
-
-      const mailToUrl = (service as any).navigateTo.calls.mostRecent().args[0];
-      const decodedMailToUrl = decodeURIComponent(mailToUrl);
-      expect(decodedMailToUrl).toContain(
-        'mailto:test1@example.com,test2@example.com'
-      );
-      expect(service.isEmailSent).toBeTrue();
-    });
-
-    it('should use the correct translated subject in mail on web platform', async () => {
-      // Arrange
-      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
-      spyOn(service as any, 'navigateTo');
-      const printingInfo = '[ ~5 cm / small gap / 8 ]';
-
-      // Act
-      await service.sendEmail();
-
-      // Assert
-      expect((service as any).navigateTo).toHaveBeenCalled();
-
-      const mailToUrl = (service as any).navigateTo.calls.mostRecent().args[0];
-      const decodedMailToUrl = decodeURIComponent(mailToUrl);
-      const subject =
-        'EMAIL_SERVICE_MAIL_SUBJECT_PREFIX' +
-        qrServiceSpy.myAngularxQrCode.length +
-        'EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX ' +
-        printingInfo;
-      expect(decodedMailToUrl).toContain(subject);
-      expect(service.isEmailSent).toBeTrue();
     });
 
     it('should use the correct translated subject in mail on native platform', async () => {
@@ -291,6 +244,119 @@ describe('EmailUtilsService', () => {
         'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_3';
 
       expect(decodedMailToUrl).toContain(mailBody);
+      expect(service.isEmailSent).toBeTrue();
+    });
+
+    it('should attach 2 files to mail on native platform', async () => {
+      // Act
+      await service.sendEmail();
+
+      // Assert
+      expect(emailComposerMock.hasAccount).toHaveBeenCalled();
+      expect(emailComposerMock.open).toHaveBeenCalled();
+
+      const mailToUrl = emailComposerMock.open.calls.mostRecent().args[0];
+      const attachments: any[] = mailToUrl.attachments;
+
+      // Collect all attachment paths
+      const paths = attachments.map((a) => a.path);
+
+      expect(paths.some((p) => p.endsWith(fileNamePdf))).toBeTrue();
+      expect(paths.some((p) => p.endsWith(fileNamePng))).toBeTrue();
+      expect(attachments.length).toBe(2);
+
+      expect(service.isEmailSent).toBeTrue();
+    });
+  });
+
+  describe('send Email on web platform', () => {
+    it('should use mailto on web platform', async () => {
+      // Arrange
+      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
+      spyOn(service as any, 'navigateTo');
+      localStorageSpy.savedEmailAddresses = [
+        'test1@example.com',
+        'test2@example.com',
+      ];
+
+      // Act
+      await service.sendEmail();
+
+      // Assert
+      expect(localStorageSpy.loadSavedEmailAddresses).toHaveBeenCalled();
+      expect((service as any).navigateTo).toHaveBeenCalled();
+
+      const mailToUrl = (service as any).navigateTo.calls.mostRecent().args[0];
+      const decodedMailToUrl = decodeURIComponent(mailToUrl);
+      expect(decodedMailToUrl).toContain(
+        'mailto:test1@example.com,test2@example.com'
+      );
+      expect(service.isEmailSent).toBeTrue();
+    });
+
+    it('should log error if navigateTo fails on web platform', async () => {
+      // Arrange
+      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
+      spyOn(service as any, 'navigateTo').and.throwError('Navigation failed');
+      spyOn(console, 'error');
+      localStorageSpy.savedEmailAddresses = [
+        'test1@example.com',
+        'test2@example.com',
+      ];
+
+      // Act
+      await service.sendEmail();
+
+      // Assert
+      expect(console.error).toHaveBeenCalledWith(jasmine.any(Error));
+      const errArg = (console.error as jasmine.Spy).calls.mostRecent().args[0];
+      expect(errArg.message).toBe('Navigation failed');
+      expect(service.isEmailSent).toBeFalse();
+    });
+
+    it('sendWebEmail calls navigateTo with encoded mailto URL', () => {
+      // Arrange
+      const sendTo = 'test1@example.com,test2@example.com';
+      const subject = 'My Subject';
+      const body = 'Line1\nLine2';
+      const expected = `mailto:${encodeURIComponent(
+        sendTo
+      )}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+        body
+      )}`;
+      
+      const navigateSpy = spyOn<any>(service, 'navigateTo').and.callFake(
+        () => {}
+      );
+
+      // Act: call the private helper directly
+      (service as any).sendWebEmail(sendTo, subject, body);
+
+      // Assert
+      expect(navigateSpy).toHaveBeenCalledWith(expected);
+      expect(service.isEmailSent).toBeTrue();
+    });
+
+    it('should use the correct translated subject in mail on web platform', async () => {
+      // Arrange
+      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
+      spyOn(service as any, 'navigateTo');
+      const printingInfo = '[ ~5 cm / small gap / 8 ]';
+
+      // Act
+      await service.sendEmail();
+
+      // Assert
+      expect((service as any).navigateTo).toHaveBeenCalled();
+
+      const mailToUrl = (service as any).navigateTo.calls.mostRecent().args[0];
+      const decodedMailToUrl = decodeURIComponent(mailToUrl);
+      const subject =
+        'EMAIL_SERVICE_MAIL_SUBJECT_PREFIX' +
+        qrServiceSpy.myAngularxQrCode.length +
+        'EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX ' +
+        printingInfo;
+      expect(decodedMailToUrl).toContain(subject);
       expect(service.isEmailSent).toBeTrue();
     });
 
@@ -376,29 +442,6 @@ describe('EmailUtilsService', () => {
       expect(service.isEmailSent).toBeTrue();
     });
 
-    it('should attach 2 files to mail on native platform', async () => {
-      // Arrange
-
-      // Act
-      await service.sendEmail();
-
-      // Assert
-      expect(emailComposerMock.hasAccount).toHaveBeenCalled();
-      expect(emailComposerMock.open).toHaveBeenCalled();
-
-      const mailToUrl = emailComposerMock.open.calls.mostRecent().args[0];
-      const attachments: any[] = mailToUrl.attachments;
-
-      // Collect all attachment paths
-      const paths = attachments.map((a) => a.path);
-
-      expect(paths.some((p) => p.endsWith(fileNamePdf))).toBeTrue();
-      expect(paths.some((p) => p.endsWith(fileNamePng))).toBeTrue();
-      expect(attachments.length).toBe(2);
-
-      expect(service.isEmailSent).toBeTrue();
-    });
-
     it('should add no attachments in mail on web platform and add info about files to attach', async () => {
       // Arrange
       (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
@@ -452,16 +495,10 @@ describe('EmailUtilsService', () => {
       expect(alertControllerSpy.create).toHaveBeenCalled();
       // Simulate clicking OK button
       const alertArgs = alertControllerSpy.create.calls.mostRecent().args[0];
-      expect(alertArgs.header).toBe(
-        'INFO_ALERT_TITLE_MAIL_ATTACHMENT'
-      );
+      expect(alertArgs.header).toBe('INFO_ALERT_TITLE_MAIL_ATTACHMENT');
       expect(alertArgs.subHeader).toBe(`${fileNamePng}, ${fileNamePdf}`);
-      expect(alertArgs.message).toBe(
-        'INFO_ALERT_MESSAGE_MAIL_ATTACHMENT'
-      );
-      expect(alertArgs.buttons[0].text).toBe(
-        'ERROR_ALERT_OPEN_EMAIL_BUTTON'
-      );
+      expect(alertArgs.message).toBe('INFO_ALERT_MESSAGE_MAIL_ATTACHMENT');
+      expect(alertArgs.buttons[0].text).toBe('ERROR_ALERT_OPEN_EMAIL_BUTTON');
       // Call the handler
       alertArgs.buttons[0].handler();
       expect(callback).toHaveBeenCalled();

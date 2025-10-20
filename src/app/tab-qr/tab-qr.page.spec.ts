@@ -285,26 +285,20 @@ describe('TabQrPage', () => {
     });
 
     it('should not generate QR code for empty input', () => {
-      // Arrange
       if (component.qrDataInput) {
         component.qrDataInput.value = '';
       }
 
-      // Act
       component.sanitizeInputAndGenerateQRCode('');
 
-      // Assert
       expect(qrUtilsService.generateQRCode).not.toHaveBeenCalled();
     });
 
     it('should handle whitespace-only input', () => {
-      // Arrange
       const whitespaceInput = '   \n\t   ';
 
-      // Act
       component.sanitizeInputAndGenerateQRCode(whitespaceInput);
 
-      // Assert
       expect(qrUtilsService.generateQRCode).not.toHaveBeenCalled();
     });
 
@@ -319,7 +313,6 @@ describe('TabQrPage', () => {
 
       // Act
       component.sanitizeInputAndGenerateQRCode(trimTrailingWhitespace);
-
       // Flush all async operations
       tick();
 
@@ -368,7 +361,6 @@ describe('TabQrPage', () => {
       qrUtilsService.isQrCodeGenerated = true;
       qrUtilsService.myAngularxQrCode = 'generated qr code';
       component.qrDataInput.value = '   '; // whitespace
-
       // Mock isInputFieldEmpty to return true for whitespace
       (component.isInputFieldEmpty as jasmine.Spy).and.returnValue(true);
 
@@ -433,7 +425,7 @@ describe('TabQrPage', () => {
     });
 
     it('should return true when input has extra spaces compared to generated QR code', () => {
-      // Arrange - Test whitespace differences
+      // Arrange
       qrUtilsService.isQrCodeGenerated = true;
       qrUtilsService.myAngularxQrCode = 'content';
       component.qrDataInput.value = ' content ';
@@ -479,7 +471,6 @@ describe('TabQrPage', () => {
       // Arrange
       spyOn(component, 'hasInputChangedAfterGeneration').and.returnValue(false);
       spyOn(component, 'isInputFieldEmpty').and.returnValue(false);
-
       emailUtilsService.isEmailSent = true;
 
       // Act
@@ -493,7 +484,6 @@ describe('TabQrPage', () => {
       // Arrange
       spyOn(component, 'hasInputChangedAfterGeneration').and.returnValue(false);
       spyOn(component, 'isInputFieldEmpty').and.returnValue(false);
-
       emailUtilsService.isEmailSent = true;
       qrUtilsService.isQrCodeGenerated = true;
 
@@ -508,7 +498,6 @@ describe('TabQrPage', () => {
       // Arrange
       spyOn(component, 'hasInputChangedAfterGeneration').and.returnValue(true);
       spyOn(component, 'isInputFieldEmpty').and.returnValue(false);
-
       emailUtilsService.isEmailSent = true;
       qrUtilsService.isQrCodeGenerated = true;
 
@@ -523,7 +512,6 @@ describe('TabQrPage', () => {
       // Arrange
       spyOn(component, 'hasInputChangedAfterGeneration').and.returnValue(false);
       spyOn(component, 'isInputFieldEmpty').and.returnValue(false);
-
       emailUtilsService.isEmailSent = false;
       qrUtilsService.isQrCodeGenerated = false;
 
@@ -569,7 +557,27 @@ describe('TabQrPage', () => {
       expect(showClearConfirmationSpy).toHaveBeenCalled();
     });
 
+    it('should use 100 chars for showClearConfirmation if environment setting is missing', () => {
+      // Arrange - temporarily set environment value to undefined
+      const originalMaxLength = environment.maxInputLength;
+      (environment as any).maxInputLength = undefined;
+
+      component.qrDataInput = { value: 'x'.repeat(101) } as any;
+      const showClearConfirmationSpy = spyOn<any>(
+        component,
+        'showClearConfirmation'
+      ).and.returnValue(Promise.resolve());
+
+      // Act
+      component.clearInputField();
+
+      // Assert
+      expect(showClearConfirmationSpy).toHaveBeenCalled();
+      (environment as any).maxInputLength = originalMaxLength; // Restore original value
+    });
+
     it('should not clear input field and reset services for long input', () => {
+      // Arrange
       component.qrDataInput = { value: 'x'.repeat(101) } as any;
       const qrUtilsService = TestBed.inject(
         QrUtilsService
@@ -596,8 +604,10 @@ describe('TabQrPage', () => {
         'present',
       ]);
       alertController.create.and.returnValue(Promise.resolve(mockAlert));
+
       // Act
       await (component as any).showClearConfirmation();
+
       // Assert
       expect(alertController.create).toHaveBeenCalled();
       expect(mockAlert.present).toHaveBeenCalled();
@@ -708,7 +718,9 @@ describe('TabQrPage', () => {
 
     it('should show toast if input changed after qr code generation', () => {
       spyOn(component, 'hasInputChangedAfterGeneration').and.returnValue(true);
+
       component.deleteQRCodeIfInputChangedAfterGeneration();
+
       expect(toastService.showToast).toHaveBeenCalledWith(
         'TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE',
         jasmine.anything()
@@ -719,7 +731,9 @@ describe('TabQrPage', () => {
       component.qrDataInput = {
         value: 'content with trailing spaces ',
       } as any;
+
       component.handleGenerateButtonClick();
+
       expect(toastService.showToast).toHaveBeenCalledWith(
         'TOAST_TRAILING_BLANKS_REMOVED',
         jasmine.anything()
@@ -732,7 +746,9 @@ describe('TabQrPage', () => {
         'isGenerationButtonDisabled',
         'get'
       ).and.returnValue(true);
+
       component.handleGenerateButtonClick();
+
       expect(toastService.showDisabledToast).toHaveBeenCalled();
     });
   });
@@ -745,6 +761,22 @@ describe('TabQrPage', () => {
       // Assert
       expect(maxLength).toBe(environment.maxInputLength); // Test actual value
       expect(typeof maxLength).toBe('number');
+    });
+
+    it('should return 1000 chars if max length from environment is missing', () => {
+      // Arrange - temporarily set environment value to undefined
+      const originalMaxLength = environment.maxInputLength;
+      (environment as any).maxInputLength = undefined;
+
+      // Act
+      const maxLength = component.maxInputLength;
+
+      // Assert
+      expect(maxLength).toBe(1000); // Default value
+      expect(typeof maxLength).toBe('number');
+
+      // Restore original value
+      (environment as any).maxInputLength = originalMaxLength;
     });
 
     it('should return isNative from utilsService', () => {
@@ -762,32 +794,29 @@ describe('TabQrPage', () => {
     });
 
     it('should handle empty input', () => {
-      // Arrange
       component.qrDataInput = { value: '' } as any;
-      // Act
+      
       component.sanitizeInputAndGenerateQRCode('');
-      // Assert
+      
       expect(component.qrDataInput.value).toBe('');
       expect(qrUtilsService.generateQRCode).not.toHaveBeenCalled();
     });
 
     it('should handle maximum length input', () => {
-      // Arrange
       const maxInput = 'a'.repeat(environment.maxInputLength);
       component.qrDataInput = { value: maxInput } as any;
-      // Act
+      
       component.sanitizeInputAndGenerateQRCode(maxInput);
-      // Assert
+      
       expect(qrUtilsService.generateQRCode).toHaveBeenCalledWith(maxInput);
     });
 
     it('should handle special characters', () => {
-      // Arrange
       const specialChars = "%$&'()*+,-./:;<=>?@[]^_`{|}~";
       component.qrDataInput = { value: specialChars } as any;
-      // Act
+      
       component.sanitizeInputAndGenerateQRCode(specialChars);
-      // Assert
+      
       expect(qrUtilsService.generateQRCode).toHaveBeenCalledWith(specialChars);
     });
   });
@@ -875,7 +904,7 @@ describe('TabQrPage', () => {
       // Act
       await expectAsync(component.storeMailAndDeleteQRCode()).toBeResolved();
 
-      // Assert - print & send QR Code were not executed
+      // Assert
       expect(fileUtilsService.setNowFormatted).toHaveBeenCalled();
       expect(fileUtilsService.downloadQRCode).toHaveBeenCalledWith(
         'mock-download-link'
@@ -961,7 +990,7 @@ describe('TabQrPage', () => {
       // Spy on console.error
       spyOn(console, 'error');
 
-      // Act - Should resolve gracefully, not reject
+      // Act
       await expectAsync(component.storeMailAndDeleteQRCode()).toBeResolved();
 
       // Assert - Verify error was handled gracefully
@@ -1008,10 +1037,10 @@ describe('TabQrPage', () => {
         .and.returnValue(Promise.resolve());
       spyOn(console, 'error');
 
-      // Act - Should resolve gracefully
+      // Act
       await expectAsync(component.storeMailAndDeleteQRCode()).toBeResolved();
 
-      // Assert - Verify error handling
+      // Assert
       expect(console.error).toHaveBeenCalledWith(
         'Email workflow failed:',
         jasmine.any(Error)
@@ -1020,8 +1049,6 @@ describe('TabQrPage', () => {
         'ERROR_MESSAGE_EMAIL_WORKFLOW'
       );
       expect(fileUtilsService.clearNowFormatted).toHaveBeenCalled();
-
-      // Verify setup was called
       expect(fileUtilsService.setNowFormatted).toHaveBeenCalled();
       expect(fileUtilsService.downloadQRCode).toHaveBeenCalledWith(
         'mock-download-link'
@@ -1056,10 +1083,10 @@ describe('TabQrPage', () => {
         .and.returnValue(Promise.resolve());
       spyOn(console, 'error');
 
-      // Act - Should resolve gracefully
+      // Act
       await expectAsync(component.storeMailAndDeleteQRCode()).toBeResolved();
 
-      // Assert - Verify error handling
+      // Assert
       expect(console.error).toHaveBeenCalledWith(
         'Email workflow failed:',
         jasmine.any(Error)
@@ -1100,15 +1127,12 @@ describe('TabQrPage', () => {
     });
 
     it('should initialize component without errors', () => {
-      // Act & Assert - Should not throw
       expect(() => component.ngOnInit()).not.toThrow();
     });
 
     it('should call localStorage initialization', () => {
-      // Act
       component.ngOnInit();
 
-      // Assert
       expect(localStorageService.init).toHaveBeenCalled();
     });
 
@@ -1127,8 +1151,8 @@ describe('TabQrPage', () => {
       expect(widthTestComponent.screenWidth).toBe(1024);
     });
 
-    it('should set initial number of rows based on orientation', () => {
-      // Arrange - Portrait orientation
+    it('should set initial number of rows for portrait orientation', () => {
+      // Arrange
       mockMatchMedia.and.returnValue({ matches: true });
 
       const freshFixture = TestBed.createComponent(TabQrPage);
@@ -1141,23 +1165,31 @@ describe('TabQrPage', () => {
       expect(freshComponent.nbrOfInitialRows).toBe(6); // Portrait = 6 rows
     });
 
-    it('should not add keyboard listeners on web platforms', () => {
+    it('should set initial number of rows for landscape orientation', () => {
       // Arrange
+      mockMatchMedia.and.returnValue({ matches: false });
+      const freshFixture = TestBed.createComponent(TabQrPage);
+      const freshComponent = freshFixture.componentInstance;
+
+      // Act
+      freshComponent.ngOnInit();
+
+      // Assert
+      expect(freshComponent.nbrOfInitialRows).toBe(1); // Landscape = 1 row
+    });
+
+    it('should not add keyboard listeners on web platforms', () => {
       (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
       const keyboardSpy = spyOn(Keyboard, 'addListener');
 
-      // Act
       component.ngOnInit();
 
-      // Assert
       expect(keyboardSpy).not.toHaveBeenCalled();
     });
 
-    it('should handle initialization errors gracefully', async () => {
+    it('should log initialization errors', async () => {
       // Arrange
-      localStorageService.init.and.returnValue(
-        Promise.reject(new Error('Init failed'))
-      );
+      localStorageService.init.and.returnValue(Promise.reject('Init failed'));
       spyOn(console, 'error');
 
       // Act
@@ -1166,7 +1198,30 @@ describe('TabQrPage', () => {
 
       //Assert
       expect(() => component.ngOnInit()).not.toThrow();
-      expect(console.error).toHaveBeenCalled();
+      expect(console.error).toHaveBeenCalledWith(
+        'App initialization failed:',
+        'Init failed'
+      );
+    });
+
+    it('should log delete qr code file errors', async () => {
+      // Arrange
+      fileUtilsService.deleteAllQrCodeFilesAfterSpecifiedTime.and.returnValue(
+        Promise.reject('Delete failed')
+      );
+      spyOn(console, 'warn');
+
+      // Act
+      component.ngOnInit();
+      // wait for all pending microtasks/macrotasks created by ngOnInit
+      await fixture.whenStable();
+
+      // Assert
+      expect(() => component.ngOnInit()).not.toThrow();
+      expect(console.warn).toHaveBeenCalledWith(
+        'File cleanup failed:',
+        'Delete failed'
+      );
     });
   });
 
@@ -1295,6 +1350,7 @@ describe('TabQrPage', () => {
     });
 
     it('should call displayEmailAttachmentAlert for desktop platforms', async () => {
+      // Arrange
       spyOnProperty(utilsService, 'isNative', 'get').and.returnValue(false);
 
       platform.is = jasmine
@@ -1304,13 +1360,16 @@ describe('TabQrPage', () => {
         cb()
       );
 
+      // Act
       await (component as any).handleEmailBasedOnPlatform();
 
+      // Assert
       expect(emailService.displayEmailAttachmentAlert).toHaveBeenCalled();
       expect(emailService.sendEmail).toHaveBeenCalled();
     });
 
     it('should call showMobileWebEmailOptions for other platforms', async () => {
+      // Arrange
       spyOnProperty(utilsService, 'isNative', 'get').and.returnValue(false);
       platform.is = jasmine.createSpy().and.returnValue(false);
       const showMobileWebEmailOptionsSpy = spyOn<any>(
@@ -1318,8 +1377,10 @@ describe('TabQrPage', () => {
         'showMobileWebEmailOptions'
       ).and.returnValue(Promise.resolve());
 
+      // Act
       await (component as any).handleEmailBasedOnPlatform();
 
+      // Assert
       expect(showMobileWebEmailOptionsSpy).toHaveBeenCalled();
       expect(emailService.sendEmail).not.toHaveBeenCalled();
       expect(emailService.displayEmailAttachmentAlert).not.toHaveBeenCalled();
@@ -1469,7 +1530,9 @@ describe('TabQrPage', () => {
 
     it('should call deleteQRCodeIfInputChangedAfterGeneration and showWorkflowStepGenerate on textarea input', () => {
       component.qrDataInput.value = 'test';
+
       component.onTextareaInput();
+
       expect(
         (component as any).deleteQRCodeIfInputChangedAfterGeneration
       ).toHaveBeenCalled();
@@ -1480,15 +1543,19 @@ describe('TabQrPage', () => {
 
     it('should show keyboard alert if criteria met and not shown before', fakeAsync(() => {
       component.qrDataInput.value = 'trigger';
+
       component.onTextareaInput();
       tick(600);
+
       expect((component as any).showKeyboardAlert).toHaveBeenCalled();
     }));
 
     it('should not show keyboard alert if already shown', () => {
       (component as any).hasShownKeyboardAlert = true;
       component.qrDataInput.value = 'trigger';
+
       component.onTextareaInput();
+
       expect((component as any).showKeyboardAlert).not.toHaveBeenCalled();
     });
 
@@ -1515,7 +1582,9 @@ describe('TabQrPage', () => {
       QrUtilsService
     ) as jasmine.SpyObj<QrUtilsService>;
     qrUtilsService.setDownloadLink.and.stub();
+
     component.onChangeURL(url);
+
     expect(qrUtilsService.setDownloadLink).toHaveBeenCalledWith(url);
   });
 
@@ -1848,7 +1917,9 @@ describe('TabQrPage', () => {
         called = true;
         return Promise.resolve();
       };
+
       await (component as any).showManualInstructions();
+
       const config = modalController.create.calls.mostRecent().args[0];
       const copyCallback =
         config.componentProps && config.componentProps['copyCallback'];
@@ -1886,8 +1957,8 @@ describe('TabQrPage', () => {
 
     it('should create and present the help instructions modal with correct props for native apps', async () => {
       spyOnProperty(component, 'maxInputLength', 'get').and.returnValue(123);
-      await (component as any).openHelpModalToSection('floating-keyboard');
 
+      await (component as any).openHelpModalToSection('floating-keyboard');
       const config = modalController.create.calls.mostRecent().args[0];
 
       expect(config.component).toBeDefined();
@@ -1904,6 +1975,7 @@ describe('TabQrPage', () => {
     it('should create and present the help instructions modal with correct props for desktop apps', async () => {
       spyOnProperty(component, 'maxInputLength', 'get').and.returnValue(123);
       spyOnProperty(utilsService, 'isNative', 'get').and.returnValue(false);
+
       await (component as any).openHelpModalToSection('web-version');
 
       const config = modalController.create.calls.mostRecent().args[0];
@@ -2017,6 +2089,7 @@ describe('TabQrPage', () => {
         called = true;
         return Promise.resolve();
       };
+
       await (component as any).showKeyboardAlert();
 
       const config = alertController.create.calls.mostRecent().args[0] || {};
@@ -2037,6 +2110,7 @@ describe('TabQrPage', () => {
         component,
         'openHelpModalToSection'
       ).and.returnValue(Promise.resolve());
+
       await (component as any).showKeyboardAlert();
 
       const config = alertController.create.calls.mostRecent().args[0] || {};
@@ -2060,6 +2134,7 @@ describe('TabQrPage', () => {
         component,
         'openHelpModalToSection'
       ).and.returnValue(Promise.resolve());
+
       await (component as any).showKeyboardAlert();
 
       const config = alertController.create.calls.mostRecent().args[0] || {};
@@ -2123,6 +2198,7 @@ describe('TabQrPage', () => {
     it('should present an alert with truncated text if copiedText is long', async () => {
       const maxPreviewLength = environment.maxPreviewLengthOfCopiedText ?? 50;
       const longText = 'a'.repeat(maxPreviewLength + 10);
+
       await (component as any).showCopySuccessAlert(longText);
 
       const config = alertController.create.calls.mostRecent().args[0] || {};
@@ -2137,6 +2213,7 @@ describe('TabQrPage', () => {
 
     it('should handle empty copiedText gracefully', async () => {
       await (component as any).showCopySuccessAlert('');
+      
       const config = alertController.create.calls.mostRecent().args[0] || {};
       expect(config.message).toContain('""');
       expect(mockAlert.present).toHaveBeenCalled();

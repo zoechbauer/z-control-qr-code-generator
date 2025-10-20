@@ -1,9 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ManualInstructionsModalComponent } from './manual-instructions-modal.component';
-import {
-  ModalController,
-  IonicModule,
-} from '@ionic/angular';
+import { ModalController, IonicModule } from '@ionic/angular';
 
 describe('ManualInstructionsModalComponent', () => {
   let component: ManualInstructionsModalComponent;
@@ -33,12 +30,17 @@ describe('ManualInstructionsModalComponent', () => {
   });
 
   it('should call copyCallback and then dismiss when copyAndDismiss is called', async () => {
+    // Arrange
     const copyCallbackSpy = jasmine
       .createSpy('copyCallback')
       .and.returnValue(Promise.resolve());
     component.copyCallback = copyCallbackSpy;
     spyOn(component, 'dismiss');
+
+    // Act
     await component.copyAndDismiss();
+
+    // Assert
     expect(copyCallbackSpy).toHaveBeenCalled();
     expect(component.dismiss).toHaveBeenCalled();
   });
@@ -46,6 +48,7 @@ describe('ManualInstructionsModalComponent', () => {
   it('should call dismiss even if copyCallback is not set', async () => {
     spyOn(component, 'dismiss');
     component.copyCallback = undefined as any;
+    
     await component.copyAndDismiss();
     expect(component.dismiss).toHaveBeenCalled();
   });

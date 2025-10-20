@@ -54,6 +54,46 @@ describe('QrUtilsService', () => {
       expect(service.myAngularxQrCode).toBe('');
       expect(service.isQrCodeGenerated).toBeTrue();
     });
+
+    it('should handle errors and reset fields', () => {
+      // Arrange
+      spyOn(console, 'error');
+
+      // save original descriptor/value so we can restore later
+      const originalDesc = Object.getOwnPropertyDescriptor(service, 'myAngularxQrCode');
+      const originalValue = service.myAngularxQrCode;
+
+      // create a setter that throws on first assignment, then accepts subsequent assignments
+      let thrown = false;
+      let internal = originalValue;
+      Object.defineProperty(service, 'myAngularxQrCode', {
+        configurable: true,
+        get: () => internal,
+        set: (v: any) => {
+          if (!thrown) {
+            thrown = true;
+            throw new Error('forced test error');
+          }
+          internal = v;
+        },
+      });
+
+      // Act
+      service.generateQRCode('force-error');
+
+      // Assert
+      expect(console.error).toHaveBeenCalled();
+      expect(service.myAngularxQrCode).toBe('');
+      expect(service.isQrCodeGenerated).toBeFalse();
+
+      // restore original property
+      if (originalDesc) {
+        Object.defineProperty(service, 'myAngularxQrCode', originalDesc);
+      } else {
+        delete (service as any).myAngularxQrCode;
+        service.myAngularxQrCode = originalValue;
+      }
+    });
   });
 
   describe('setDownloadLink', () => {
@@ -119,8 +159,10 @@ describe('QrUtilsService', () => {
       printUtilsServiceSpy.printQRCode.and.returnValue(new Blob(['pdf']));
       fileUtilsServiceSpy.blobToBase64.and.returnValue(Promise.resolve('base64data'));
       fileUtilsServiceSpy.saveFile.and.returnValue(Promise.resolve());
+
       // Act
       await service.printQRCode();
+
       // Assert
       expect(printUtilsServiceSpy.printQRCode).toHaveBeenCalled();
       expect(fileUtilsServiceSpy.blobToBase64).toHaveBeenCalled();
@@ -141,8 +183,10 @@ describe('QrUtilsService', () => {
       printUtilsServiceSpy.printQRCode.and.returnValue(new Blob(['pdf']));
       fileUtilsServiceSpy.blobToBase64.and.returnValue(Promise.resolve('base64data'));
       fileUtilsServiceSpy.saveFile.and.returnValue(Promise.reject('error'));
+
       // Act
       await service.printQRCode();
+
       // Assert
       expect(alertServiceSpy.showStoragePermissionError).toHaveBeenCalled();
 
@@ -154,6 +198,7 @@ describe('QrUtilsService', () => {
       const div = document.createElement('div');
       div.id = 'qrcode';
       document.body.appendChild(div);
+      
       // Act & Assert
       await expectAsync(service.printQRCode()).toBeRejectedWithError('Canvas not found');
 

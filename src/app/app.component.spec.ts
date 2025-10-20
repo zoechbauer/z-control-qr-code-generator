@@ -50,10 +50,8 @@ describe('AppComponent', () => {
     });
 
     it('should call window.matchMedia with dark mode query', () => {
-      // Act
       component.initializeApp();
 
-      // Assert
       expect(mockMatchMedia).toHaveBeenCalledWith(
         '(prefers-color-scheme: dark)'
       );
@@ -63,7 +61,7 @@ describe('AppComponent', () => {
       // Arrange
       mockMatchMedia.and.returnValue({ matches: false }); // Light mode
 
-      // Act & Assert - should not throw
+      // Act & Assert
       expect(() => component.initializeApp()).not.toThrow();
       expect(mockMatchMedia).toHaveBeenCalledWith(
         '(prefers-color-scheme: dark)'
@@ -74,7 +72,7 @@ describe('AppComponent', () => {
       // Arrange
       mockMatchMedia.and.returnValue({ matches: true }); // Dark mode
 
-      // Act & Assert - should not throw
+      // Act & Assert
       expect(() => component.initializeApp()).not.toThrow();
       expect(mockMatchMedia).toHaveBeenCalledWith(
         '(prefers-color-scheme: dark)'
@@ -82,8 +80,6 @@ describe('AppComponent', () => {
     });
 
     it('should detect system dark mode preference correctly', () => {
-      // Test that the logic correctly reads the matchMedia result
-
       // Test light mode
       mockMatchMedia.and.returnValue({ matches: false });
       component.initializeApp();

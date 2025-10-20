@@ -46,49 +46,72 @@ describe('FileUtilsService', () => {
     it('should be created', () => {
       expect(service).toBeTruthy();
     });
+
+    it('should clear and set nowFormatted', () => {
+      expect((service as any).nowFormatted).toBe('');
+
+      service.setNowFormatted();
+      expect((service as any).nowFormatted).toMatch(/\d{8}_\d{6}/);
+
+      service.clearNowFormatted();
+      expect((service as any).nowFormatted).toBe('');
+    });
   });
 
   describe('fileName and path generation', () => {
     it('should generate a file name with timestamp', () => {
-      // arrange
+      // Arrange
       service.setNowFormatted();
 
-      // act
+      // Act
       const generatedNamePdf = service.fileNamePdf;
       const generatedNamePng = service.fileNamePng;
 
-      // assert
+      // Assert
       expect(generatedNamePdf).toMatch(/^qrcode_\d{8}_\d{6}\.pdf$/);
       expect(generatedNamePng).toMatch(/^qrcode_\d{8}_\d{6}\.png$/);
     });
 
     it('should generate a file name with a specific timestamp when date is mocked', () => {
-      // arrange
+      // Arrange
       const fakeDate = new Date(2025, 6, 23, 15, 42, 11); // July 23, 2025, 15:42:11
       spyOn(Date, 'now').and.returnValue(fakeDate.getTime());
-
       service.setNowFormatted();
 
-      // act
+      // Act
       const generatedNamePdf = service.fileNamePdf;
       const generatedNamePng = service.fileNamePng;
 
-      // assert
+      // Assert
       expect(generatedNamePdf).toBe('qrcode_20250723_154211.pdf');
       expect(generatedNamePng).toBe('qrcode_20250723_154211.png');
     });
 
     it('should generate the correct document paths', async () => {
-      // arrange
+      // Arrange
       service.setNowFormatted();
 
-      // act
+      // Act
       const docPathPdf = await service.getDocumentsPath(true);
       const docPathPng = await service.getDocumentsPath(false);
 
-      // assert
+      // Assert
       expect(docPathPdf).toMatch(/^\/documents\/qrcode_\d{8}_\d{6}\.pdf$/i);
       expect(docPathPng).toMatch(/^\/documents\/qrcode_\d{8}_\d{6}\.png$/i);
+    });
+
+    it('should remove "file://" prefix from the documents path if present', async () => {
+      // Arrange
+      service.setNowFormatted();
+      filesystemSpy.getUri.and.returnValue(
+        Promise.resolve({ uri: 'file:///documents/qrcode_20250723_154211.pdf' })
+      );
+
+      // Act
+      const path = await service.getDocumentsPath(true);
+
+      // Assert
+      expect(path).toBe('/documents/qrcode_20250723_154211.pdf');
     });
   });
 
@@ -161,7 +184,7 @@ describe('FileUtilsService', () => {
     const veryOldFileNamePdf = 'qrcode_20250902_080000.pdf'; // some days hours old
 
     it('should delete only QR code files older than 3 hours on native platforms', async () => {
-      // arrange
+      // Arrange
       spyOn(console, 'error');
       // Mock Date.now to 2025-09-22 14:00:00
       const now = new Date(2025, 8, 22, 14, 0, 0).getTime();
@@ -180,10 +203,10 @@ describe('FileUtilsService', () => {
         })
       );
 
-      // act
+      // Act
       await service.deleteAllQrCodeFilesAfterSpecifiedTime();
 
-      // assert
+      // Assert
       expect(filesystemSpy.deleteFile).toHaveBeenCalledWith({
         directory: Directory.Documents,
         path: oldFileNamePng,
@@ -213,7 +236,7 @@ describe('FileUtilsService', () => {
     });
 
     it('should not delete QR code files on native platforms if not permitted', async () => {
-      // arrange
+      // Arrange
       spyOn(console, 'error');
       spyOn(console, 'log');
       filesystemSpy.readdir.and.returnValue(
@@ -223,10 +246,10 @@ describe('FileUtilsService', () => {
         Promise.resolve({ publicStorage: 'denied' })
       );
 
-      // act
+      // Act
       await service.deleteAllQrCodeFilesAfterSpecifiedTime();
 
-      // assert
+      // Assert
       expect(filesystemSpy.deleteFile).not.toHaveBeenCalledWith({
         directory: Directory.Documents,
         path: oldFileNamePdf,
@@ -239,7 +262,7 @@ describe('FileUtilsService', () => {
     });
 
     it('should not delete QR code files on web platforms', async () => {
-      // arrange
+      // Arrange
       (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
       spyOn(console, 'error');
       spyOn(console, 'log');
@@ -247,10 +270,10 @@ describe('FileUtilsService', () => {
         Promise.resolve({ files: [{ name: oldFileNamePdf }] })
       );
 
-      // act
+      // Act
       await service.deleteAllQrCodeFilesAfterSpecifiedTime();
 
-      // assert
+      // Assert
       expect(filesystemSpy.deleteFile).not.toHaveBeenCalledWith({
         directory: Directory.Documents,
         path: oldFileNamePdf,
@@ -258,6 +281,335 @@ describe('FileUtilsService', () => {
       expect(alertServiceSpy.showStoragePermissionError).not.toHaveBeenCalled();
       expect(console.error).not.toHaveBeenCalled();
       expect(console.log).not.toHaveBeenCalled();
+    });
+
+    it('should log errors during file deletion', async () => {
+      // Arrange
+      spyOn(console, 'error');
+      filesystemSpy.readdir.and.returnValue(
+        Promise.resolve({ files: [{ name: oldFileNamePdf }] })
+      );
+      filesystemSpy.deleteFile.and.returnValue(
+        Promise.reject(new Error('Deletion failed'))
+      );
+      // Act
+      await service.deleteAllQrCodeFilesAfterSpecifiedTime();
+      // Assert
+      expect(console.error).toHaveBeenCalledWith(
+        'Error deleting QR code files:',
+        jasmine.any(Error)
+      );
+    });
+  });
+
+  describe('checkFilesystemPermission method', () => {
+    it('should return true immediately on web platforms', async () => {
+      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
+      const result = await (service as any).checkFilesystemPermission();
+      expect(result).toBeTrue();
+    });
+
+    it('should return true on native platforms if permission is granted', async () => {
+      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(true);
+      filesystemSpy.checkPermissions.and.returnValue(
+        Promise.resolve({ publicStorage: 'granted' })
+      );
+
+      const result = await (service as any).checkFilesystemPermission();
+      expect(result).toBeTrue();
+    });
+
+    it('should return false on native platforms if permission is denied', async () => {
+      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(true);
+      filesystemSpy.checkPermissions.and.returnValue(
+        Promise.resolve({ publicStorage: 'denied' })
+      );
+
+      const result = await (service as any).checkFilesystemPermission();
+      expect(result).toBeFalse();
+    });
+  });
+
+  describe('checkAndRequestFilesystemPermission method', () => {
+    it('should return true immediately on web platforms', async () => {
+      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
+      const result = await (
+        service as any
+      ).checkAndRequestFilesystemPermission();
+      expect(result).toBeTrue();
+    });
+
+    it('should return true on native platforms if permission is granted', async () => {
+      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(true);
+      filesystemSpy.checkPermissions.and.returnValue(
+        Promise.resolve({ publicStorage: 'granted' })
+      );
+
+      const result = await (
+        service as any
+      ).checkAndRequestFilesystemPermission();
+      expect(result).toBeTrue();
+    });
+
+    it('should return false and show storage permission error on native platforms if permission is denied', async () => {
+      // Arrange
+      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(true);
+      filesystemSpy.checkPermissions.and.returnValue(
+        Promise.resolve({ publicStorage: 'denied' })
+      );
+      filesystemSpy.requestPermissions.and.returnValue(
+        Promise.resolve({ publicStorage: 'denied' })
+      );
+      spyOn(console, 'error');
+      alertServiceSpy.showStoragePermissionError.calls.reset();
+      // Act
+      const result = await (
+        service as any
+      ).checkAndRequestFilesystemPermission();
+      // Assert
+      expect(result).toBeFalse();
+      expect(alertServiceSpy.showStoragePermissionError).toHaveBeenCalled();
+      expect(console.error).toHaveBeenCalledWith(
+        'Storage permission denied by user'
+      );
+    });
+
+    it('should return true on native platforms if requestPermissions is granted', async () => {
+      // Arrange
+      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(true);
+      filesystemSpy.checkPermissions.and.returnValue(
+        Promise.resolve({ publicStorage: 'denied' })
+      );
+      filesystemSpy.requestPermissions.and.returnValue(
+        Promise.resolve({ publicStorage: 'granted' })
+      );
+      spyOn(console, 'error');
+      alertServiceSpy.showStoragePermissionError.calls.reset();
+      // Act
+      const result = await (
+        service as any
+      ).checkAndRequestFilesystemPermission();
+      // Assert
+      expect(result).toBeTrue();
+      expect(alertServiceSpy.showStoragePermissionError).not.toHaveBeenCalled();
+      expect(console.error).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('downloadQRCode method', () => {
+    let qrCodeUrl: string;
+
+    beforeEach(() => {
+      qrCodeUrl = '/documents/qrcode_20250723_154211.pdf';
+      alertServiceSpy.showStoragePermissionError.calls.reset();
+      alertServiceSpy.showErrorAlert.calls.reset();
+      spyOn(console, 'error').and.callThrough();
+      (console.error as jasmine.Spy).calls.reset();
+    });
+
+    it('should download the QR code file', async () => {
+      // Arrange
+      filesystemSpy.writeFile.and.returnValue(Promise.resolve());
+      spyOn(service, 'blobToBase64').and.returnValue(
+        Promise.resolve('data:application/octet-stream;base64,Tk9UIEZPVU5E')
+      );
+      spyOn(window, 'fetch').and.returnValue(
+        Promise.resolve({
+          blob: () =>
+            Promise.resolve(
+              new Blob(['NOT FOUND'], { type: 'application/octet-stream' })
+            ),
+        }) as any
+      );
+
+      // Act
+      await service.downloadQRCode(qrCodeUrl);
+
+      // Assert
+      expect(filesystemSpy.writeFile).toHaveBeenCalledWith({
+        path: service.fileNamePng,
+        data: 'data:application/octet-stream;base64,Tk9UIEZPVU5E',
+        directory: Directory.Documents,
+      });
+    });
+
+    it('should return false, log error and show alert if qrCodeDownloadLink is empty', async () => {
+      // Arrange
+      filesystemSpy.writeFile.and.returnValue(Promise.resolve());
+      spyOn(service, 'blobToBase64').and.returnValue(
+        Promise.resolve('data:application/octet-stream;base64,Tk9UIEZPVU5E')
+      );
+      spyOn(window, 'fetch').and.returnValue(
+        Promise.resolve({
+          blob: () =>
+            Promise.resolve(
+              new Blob(['NOT FOUND'], { type: 'application/octet-stream' })
+            ),
+        }) as any
+      );
+      spyOn(
+        service as any,
+        'checkAndRequestFilesystemPermission'
+      ).and.returnValue(Promise.resolve(true));
+      qrCodeUrl = '   ';
+
+      // Act
+      const result = await service.downloadQRCode(qrCodeUrl);
+
+      // Assert
+      expect(filesystemSpy.writeFile).not.toHaveBeenCalled();
+      expect(result).toBeFalse();
+      expect(console.error).toHaveBeenCalledWith(
+        'QR Code URL is not available'
+      );
+      expect(alertServiceSpy.showErrorAlert).toHaveBeenCalledWith(
+        'ERROR_MESSAGE_MISSING_QR_URL'
+      );
+    });
+
+    it('should return false on missing permissions', async () => {
+      // Arrange
+      filesystemSpy.writeFile.and.returnValue(Promise.resolve());
+      spyOn(service, 'blobToBase64').and.returnValue(
+        Promise.resolve('data:application/octet-stream;base64,Tk9UIEZPVU5E')
+      );
+      spyOn(window, 'fetch').and.returnValue(
+        Promise.resolve({
+          blob: () =>
+            Promise.resolve(
+              new Blob(['NOT FOUND'], { type: 'application/octet-stream' })
+            ),
+        }) as any
+      );
+      spyOn(
+        service as any,
+        'checkAndRequestFilesystemPermission'
+      ).and.returnValue(Promise.resolve(false));
+
+      // Act
+      const result = await service.downloadQRCode(qrCodeUrl);
+
+      // Assert
+      expect(filesystemSpy.writeFile).not.toHaveBeenCalled();
+      expect(result).toBeFalse();
+    });
+
+    it('should handle errors in saveFile when downloading the QR code file', async () => {
+      // Arrange
+      filesystemSpy.writeFile.and.returnValue(
+        Promise.reject(new Error('Download failed'))
+      );
+      spyOn(service, 'blobToBase64').and.returnValue(
+        Promise.resolve('data:application/octet-stream;base64,Tk9UIEZPVU5E')
+      );
+      spyOn(window, 'fetch').and.returnValue(
+        Promise.resolve({
+          blob: () =>
+            Promise.resolve(
+              new Blob(['NOT FOUND'], { type: 'application/octet-stream' })
+            ),
+        }) as any
+      );
+
+      // Act
+      await service.downloadQRCode(qrCodeUrl);
+
+      // Assert
+      expect(filesystemSpy.writeFile).toHaveBeenCalledWith({
+        path: service.fileNamePng,
+        data: 'data:application/octet-stream;base64,Tk9UIEZPVU5E',
+        directory: Directory.Documents,
+      });
+      expect(console.error).toHaveBeenCalledWith(
+        'Error saving file:',
+        jasmine.any(Error)
+      );
+      expect(alertServiceSpy.showStoragePermissionError).toHaveBeenCalled();
+    });
+
+    it('should handle errors in fetch when downloading the QR code file', async () => {
+      // Arrange
+      filesystemSpy.writeFile.and.returnValue(
+        Promise.reject(new Error('Download failed'))
+      );
+      spyOn(service, 'blobToBase64').and.returnValue(
+        Promise.reject('error in blobToBase64')
+      );
+      spyOn(window, 'fetch').and.returnValue(Promise.reject('Fetch failed'));
+
+      // Act
+      await service.downloadQRCode(qrCodeUrl);
+
+      // Assert
+      expect(filesystemSpy.writeFile).not.toHaveBeenCalled();
+      expect(console.error).toHaveBeenCalledWith(
+        'Error saving file in downloadQRCode:',
+        'Fetch failed'
+      );
+      expect(alertServiceSpy.showStoragePermissionError).toHaveBeenCalled();
+    });
+
+    it('should handle errors in blobToBase64 when downloading the QR code file', async () => {
+      // Arrange
+      filesystemSpy.writeFile.and.returnValue(
+        Promise.reject(new Error('Download failed'))
+      );
+      spyOn(service, 'blobToBase64').and.returnValue(
+        Promise.reject('Error in blobToBase64')
+      );
+      spyOn(window, 'fetch').and.returnValue(
+        Promise.resolve({
+          blob: () =>
+            Promise.resolve(
+              new Blob(['NOT FOUND'], { type: 'application/octet-stream' })
+            ),
+        }) as any
+      );
+
+      // Act
+      await service.downloadQRCode(qrCodeUrl);
+
+      // Assert
+      expect(filesystemSpy.writeFile).not.toHaveBeenCalled();
+      expect(console.error).toHaveBeenCalledWith(
+        'Error saving file in downloadQRCode:',
+        'Error in blobToBase64'
+      );
+      expect(alertServiceSpy.showStoragePermissionError).toHaveBeenCalled();
+    });
+  });
+
+  describe('base64 and blob conversion', () => {
+    it('blobToBase64 should convert a Blob to a data URL (base64)', async () => {
+      // Arrange
+      const text = 'hello world';
+      const blob = new Blob([text], { type: 'text/plain' });
+      // Act
+      const dataUrl = await service.blobToBase64(blob);
+      // Assert
+      expect(typeof dataUrl).toBe('string');
+      expect(dataUrl.startsWith('data:text/plain;base64,')).toBeTrue();
+
+      const base64Part = dataUrl.split(',')[1];
+      const decoded = atob(base64Part);
+      expect(decoded).toBe(text);
+    });
+
+    it('base64ToBlob should convert a data URL to a Blob with correct content and type', async () => {
+      // Arrange
+      const text = 'hello base64';
+      const base64 = btoa(text);
+      const dataUrl = `data:text/plain;base64,${base64}`;
+      // Act
+      const blob = (service as any).base64ToBlob(dataUrl) as Blob;
+      // Assert
+      expect(blob).toBeDefined();
+      expect(blob instanceof Blob).toBeTrue();
+      expect(blob.type).toBe('application/octet-stream');
+
+      // read blob content
+      const blobText = await blob.text();
+      expect(blobText).toBe(text);
     });
   });
 });

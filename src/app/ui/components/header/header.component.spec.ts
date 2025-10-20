@@ -16,6 +16,7 @@ describe('HeaderComponent', () => {
   const modalControllerSpy = jasmine.createSpyObj('ModalController', [
     'create',
   ]);
+
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [],
@@ -77,7 +78,7 @@ describe('HeaderComponent', () => {
     setTimeout(() => {
       expect(utilsService.logoClickedSub.next).toHaveBeenCalledWith(true);
       done();
-    }, 510); // Slightly more than 500ms to ensure the timeout has fired
+    }, 510);
   });
 
   it('should return true for isLargeScreen if utilsService.isSmallScreen is false', () => {

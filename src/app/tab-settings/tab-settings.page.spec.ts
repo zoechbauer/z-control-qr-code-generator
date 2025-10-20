@@ -114,7 +114,9 @@ describe('TabSettingsPage', () => {
       spyOn(component['utilsService'], 'showOrHideIonTabBar');
       spyOn(component as any, 'setupEventListeners');
       spyOn(component as any, 'setupSubscriptions');
+
       component.ngOnInit();
+
       expect(component['utilsService'].showOrHideIonTabBar).toHaveBeenCalled();
       expect((component as any).setupEventListeners).toHaveBeenCalled();
       expect((component as any).setupSubscriptions).toHaveBeenCalled();
@@ -125,7 +127,9 @@ describe('TabSettingsPage', () => {
       const sub1 = { unsubscribe: jasmine.createSpy('unsubscribe') };
       const sub2 = { unsubscribe: jasmine.createSpy('unsubscribe') };
       (component as any).subscriptions.push(sub1 as any, sub2 as any);
+
       component.ngOnDestroy();
+
       expect(sub1.unsubscribe).toHaveBeenCalled();
       expect(sub2.unsubscribe).toHaveBeenCalled();
     });
@@ -135,13 +139,17 @@ describe('TabSettingsPage', () => {
     it('should set openAccordion and showAllAccordions on onAccordionGroupChange', () => {
       const event = { detail: { value: 'test' } } as CustomEvent;
       component.showAllAccordions = false;
+
       component.onAccordionGroupChange(event, {} as any);
+
       expect(component.openAccordion).toBe('test');
       expect(component.showAllAccordions).toBeFalse();
 
       // Test with null value
       const eventNull = { detail: { value: null } } as CustomEvent;
+
       component.onAccordionGroupChange(eventNull, {} as any);
+
       expect(component.openAccordion).toBeNull();
       expect(component.showAllAccordions).toBeTrue();
     });
@@ -149,16 +157,20 @@ describe('TabSettingsPage', () => {
     it('should set openAccordion to null and showAllAccordions to true on showAll', () => {
       component.openAccordion = 'something';
       component.showAllAccordions = false;
+
       component.showAll();
+
       expect(component.openAccordion).toBeNull();
       expect(component.showAllAccordions).toBeTrue();
     });
 
     it('should set openAccordion to "z-control" after logoClickedSub emits and timeout', fakeAsync(() => {
       const utilsService = TestBed.inject(UtilsService);
+
       component.ngOnInit();
       utilsService.logoClickedSub.next(true);
       tick(600);
+
       expect(component.openAccordion).toBe('z-control');
     }));
   });
@@ -192,6 +204,7 @@ describe('TabSettingsPage', () => {
 
     it('should handle language change', () => {
       const event = { detail: { value: 'en' } };
+      
       component.onLanguageChange(event);
 
       expect(localStorage.saveSelectedLanguage).toHaveBeenCalledWith('en');

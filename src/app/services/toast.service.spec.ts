@@ -59,11 +59,10 @@ describe('ToastService', () => {
     });
 
     it('should show toast at bottom on desktop', () => {
-      // Arrange
       spyOnProperty(utilsService, 'isDesktop', 'get').and.returnValue(true);
-      // Act
+      
       service.showToast('Test Message');
-      // Assert - Only test the position
+      
       expect(toastController.create).toHaveBeenCalledWith(
         jasmine.objectContaining({
           position: 'bottom',
@@ -72,16 +71,103 @@ describe('ToastService', () => {
     });
 
     it('should show toast at top on mobile', () => {
-      // Arrange
       spyOnProperty(utilsService, 'isDesktop', 'get').and.returnValue(false);
-      // Act
+      
       service.showToast('Test Message');
-      // Assert - Only test the position
+      
       expect(toastController.create).toHaveBeenCalledWith(
         jasmine.objectContaining({
           position: 'top',
         })
       );
+    });
+  });
+
+  describe('showToast method', () => {
+    let toastController: jasmine.SpyObj<ToastController>;
+    let mockToast: jasmine.SpyObj<HTMLIonToastElement>;
+
+    beforeEach(() => {
+      toastController = TestBed.inject(
+        ToastController
+      ) as jasmine.SpyObj<ToastController>;
+
+      // Basic toast mock
+      mockToast = jasmine.createSpyObj('HTMLIonToastElement', ['present']);
+      mockToast.present.and.returnValue(Promise.resolve());
+      toastController.create.and.returnValue(Promise.resolve(mockToast));
+    });
+
+    it('should show toast', () => {
+      // Arrange
+      const message = 'Test Message';
+      const duration = 3000;
+      translateServiceSpy.instant.and.returnValue(message);
+      // Act
+      service.showToast(message);
+      // Assert
+      expect(toastController.create).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          message,
+          duration,
+        })
+      );
+    });
+
+    it('should handle error when toast presentation fails', async () => {
+      // Arrange
+      const message = 'Test Message';
+      translateServiceSpy.instant.and.returnValue(message);
+      spyOn(service, 'showToastMessage').and.returnValue(Promise.reject('Toast creation failed'));
+      const consoleErrorSpy = spyOn(console, 'error');
+      // Act
+      await service.showToast(message);
+      // Assert
+      expect(consoleErrorSpy).toHaveBeenCalledWith('Error presenting toast:', 'Toast creation failed');
+    });
+  });
+
+  describe('showDisabledToast method', () => {
+    let toastController: jasmine.SpyObj<ToastController>;
+    let mockToast: jasmine.SpyObj<HTMLIonToastElement>;
+
+    beforeEach(() => {
+      toastController = TestBed.inject(
+        ToastController
+      ) as jasmine.SpyObj<ToastController>;
+
+      // Basic toast mock
+      mockToast = jasmine.createSpyObj('HTMLIonToastElement', ['present']);
+      mockToast.present.and.returnValue(Promise.resolve());
+      toastController.create.and.returnValue(Promise.resolve(mockToast));
+    });
+
+    it('should show disabled toast', () => {
+      // Arrange
+      const message = 'Test Message';
+      const duration = 3000;
+      translateServiceSpy.instant.and.returnValue(message);
+      // Act
+      service.showDisabledToast(message);
+      // Assert
+      expect(toastController.create).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          message,
+          duration,
+        })
+      );
+    });
+
+    it('should handle error when toast presentation fails', async () => {
+      // Arrange
+      const message = 'Test Message';
+      translateServiceSpy.instant.and.returnValue(message);
+      spyOn(service, 'showToastMessage').and.returnValue(Promise.reject('Toast creation failed'));
+      const consoleErrorSpy = spyOn(console, 'error');
+      // Act
+      await service.showDisabledToast(message);
+      // Assert
+      expect(consoleErrorSpy).toHaveBeenCalledWith('Error presenting toast:','Toast creation failed');
     });
   });
 });

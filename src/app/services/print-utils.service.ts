@@ -105,8 +105,12 @@ export class PrintUtilsService implements OnDestroy {
     return '';
   }
 
+  protected createPdf(options?: any): any {
+    return new (jsPDF as any)(options);
+  }
+
   printQRCode(dataUrl: string): Blob {
-    const pdf = new jsPDF({
+    const pdf = this.createPdf({
       orientation: 'portrait',
       unit: 'mm',
       format: 'a4',
@@ -172,6 +176,8 @@ export class PrintUtilsService implements OnDestroy {
   private interpolateQrSizeFor15cm(x: number): number {
     // measured sizes for 15cm, tested by setting getPrintSize.return = 1;
     // x= text length, y= size in mm
+    if (!Number.isFinite(x)) return 150; // default for invalid numbers
+
     const points = [
       { x: 1, y: 108.5 },
       { x: 4, y: 108.7 },
@@ -194,7 +200,7 @@ export class PrintUtilsService implements OnDestroy {
       { x: 1000, y: 141.4 },
     ];
 
-    if (x <= points[1].x) return points[1].y; // min chars
+    if (x <= points[0].x) return points[0].y; // min chars
     if (x >= points[points.length - 1].x) return points[points.length - 1].y;
 
     for (let i = 1; i < points.length; i++) {
@@ -207,7 +213,7 @@ export class PrintUtilsService implements OnDestroy {
         return y0 + ((y1 - y0) * (x - x0)) / (x1 - x0);
       }
     }
-    return 150; // Fallback
+    return 150; // fallback
   }
 
   loadAvailableQrCodeSizesAndGapSizes() {

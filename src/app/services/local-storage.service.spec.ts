@@ -2,6 +2,13 @@ import { TestBed } from '@angular/core/testing';
 import { Storage } from '@ionic/storage-angular';
 import { LocalStorageService } from './local-storage.service';
 import { take } from 'rxjs';
+import { PrintSettings } from './print-utils.service';
+import {
+  EmailAddressStatus,
+  QrCodeGapSize,
+  QrCodesCountPerPage,
+  QrCodeSize,
+} from '../enums';
 
 describe('LocalStorageService', () => {
   let service: LocalStorageService;
@@ -86,7 +93,10 @@ describe('LocalStorageService', () => {
       await service.saveSelectedLanguage(language);
 
       // Assert
-      expect(storageSpy.set).toHaveBeenCalledWith('selectedLanguage', JSON.stringify(language)); // or LocalStorage.SelectedLanguage
+      expect(storageSpy.set).toHaveBeenCalledWith(
+        'selectedLanguage',
+        JSON.stringify(language)
+      ); // or LocalStorage.SelectedLanguage
       expect(service['selectedLanguageSubject'].next).toHaveBeenCalledWith(
         language
       );
@@ -99,7 +109,6 @@ describe('LocalStorageService', () => {
         Promise.resolve(JSON.stringify(expectedLanguage))
       );
       await service.init();
-
       // Spy on the observable to verify it gets updated
       spyOn(service['selectedLanguageSubject'], 'next');
 
@@ -117,7 +126,6 @@ describe('LocalStorageService', () => {
       // Arrange
       storageSpy.get.and.returnValue(Promise.resolve(null));
       await service.init();
-
       // Mock the getMobileDefaultLanguage method
       spyOn(service, 'getMobileDefaultLanguage').and.returnValue('en');
       spyOn(service, 'saveSelectedLanguage').and.returnValue(Promise.resolve());
@@ -140,7 +148,6 @@ describe('LocalStorageService', () => {
       storageSpy.get.and.returnValue(
         Promise.resolve(JSON.stringify(expectedLanguage))
       );
-
       await service.init();
 
       // Act
@@ -153,6 +160,23 @@ describe('LocalStorageService', () => {
       const emittedLanguage = await languagePromise;
       expect(emittedLanguage).toBe(expectedLanguage);
     });
+
+    it('logs an error when saving the selected language fails', async () => {
+      // Arrange
+      const language = 'en';
+      await service.init();
+      storageSpy.set.and.returnValue(Promise.reject('Error'));
+      spyOn(console, 'error');
+
+      // Act
+      await service.saveSelectedLanguage(language);
+
+      // Assert
+      expect(console.error).toHaveBeenCalledWith(
+        'Error saving selected language:',
+        'Error'
+      );
+    });
   });
 
   describe('email management', () => {
@@ -162,16 +186,58 @@ describe('LocalStorageService', () => {
       await service.init();
 
       // Act
-      await service.saveEmailAddress(email);
+      const result = await service.saveEmailAddress(email);
 
       // Assert
-      expect(storageSpy.set).toHaveBeenCalledWith('savedEmailAddresses', JSON.stringify([email]));
+      expect(storageSpy.set).toHaveBeenCalledWith(
+        'savedEmailAddresses',
+        JSON.stringify([email])
+      );
+      expect(result).toBe(EmailAddressStatus.Added);
+    });
+
+    it('should not save email address for duplicate', async () => {
+      // Arrange
+      const savedEmailAddresses = ['test1@example.com', 'test2@example.com'];
+      storageSpy.get.and.returnValue(
+        Promise.resolve(JSON.stringify(savedEmailAddresses))
+      );
+      await service.init();
+
+      // Act
+      const result = await service.saveEmailAddress('test1@example.com');
+
+      // Assert
+      expect(storageSpy.set).not.toHaveBeenCalled();
+      expect(result).toBe(EmailAddressStatus.Duplicate);
+    });
+
+    it('logs error if save email fails', async () => {
+      // Arrange
+      storageSpy.set.and.returnValue(
+        Promise.reject('Error')
+      );
+      spyOn(console, 'error');
+      await service.init();
+
+      // Act
+      const result = await service.saveEmailAddress('test1@example.com');
+
+      // Assert
+      expect(storageSpy.set).toHaveBeenCalled();
+      expect(console.error).toHaveBeenCalledWith(
+        'Error saving email:',
+        'Error'
+      );
+      expect(result).toBe(EmailAddressStatus.Added);
     });
 
     it('should load saved email addresses into member variable', async () => {
       // Arrange
       const expectedEmails = ['user1@test.com', 'user2@test.com'];
-      storageSpy.get.and.returnValue(Promise.resolve(JSON.stringify(expectedEmails)));
+      storageSpy.get.and.returnValue(
+        Promise.resolve(JSON.stringify(expectedEmails))
+      );
       await service.init();
 
       // Act
@@ -194,18 +260,112 @@ describe('LocalStorageService', () => {
       expect(service.savedEmailAddresses).toEqual([]);
     });
 
-        it('should delete email address', async () => {
+    it('should delete email address', async () => {
       // Arrange
-      const savedEmailAddresses = ['test1@example.com', 'test2@example.com', 'test3@example.com'];
-      storageSpy.get.and.returnValue(Promise.resolve(JSON.stringify(savedEmailAddresses)));
-      const savedEmailAddressesAfterDeletion = ['test1@example.com', 'test3@example.com'];
+      const savedEmailAddresses = [
+        'test1@example.com',
+        'test2@example.com',
+        'test3@example.com',
+      ];
+      storageSpy.get.and.returnValue(
+        Promise.resolve(JSON.stringify(savedEmailAddresses))
+      );
+      const savedEmailAddressesAfterDeletion = [
+        'test1@example.com',
+        'test3@example.com',
+      ];
       await service.init();
 
       // Act
-      await service.deleteEmailAddress(1);
+      const result = await service.deleteEmailAddress(1);
 
       // Assert
-      expect(storageSpy.set).toHaveBeenCalledWith('savedEmailAddresses', JSON.stringify(savedEmailAddressesAfterDeletion));
+      expect(storageSpy.set).toHaveBeenCalledWith(
+        'savedEmailAddresses',
+        JSON.stringify(savedEmailAddressesAfterDeletion)
+      );
+      expect(result).toBe(EmailAddressStatus.Removed);
+    });
+
+    it('should not delete email address for invalid index', async () => {
+      // Arrange
+      const savedEmailAddresses = ['test1@example.com', 'test2@example.com'];
+      storageSpy.get.and.returnValue(
+        Promise.resolve(JSON.stringify(savedEmailAddresses))
+      );
+      await service.init();
+
+      // Act
+      const result = await service.deleteEmailAddress(5);
+
+      // Assert
+      expect(storageSpy.set).not.toHaveBeenCalled();
+      expect(result).toBe(EmailAddressStatus.NotFound);
+    });
+  });
+
+  describe('print settings management', () => {
+    it('should save print settings', async () => {
+      // Arrange
+      const settings: PrintSettings = {
+        size: QrCodeSize.MEDIUM,
+        gap: QrCodeGapSize.SMALL,
+        typeOfQrCodesPerPage: QrCodesCountPerPage.FULL_PAGE,
+        numberOfQrCodesPerPage: -1,
+      };
+      await service.init();
+
+      // Act
+      await service.savePrintSettings(settings);
+
+      // Assert
+      expect(storageSpy.set).toHaveBeenCalledWith(
+        'savedPrintSettings',
+        JSON.stringify(settings)
+      );
+    });
+
+    it('logs error if saving print settings fails', async () => {
+      // Arrange
+      const settings: PrintSettings = {
+        size: QrCodeSize.MEDIUM,
+        gap: QrCodeGapSize.SMALL,
+        typeOfQrCodesPerPage: QrCodesCountPerPage.FULL_PAGE,
+        numberOfQrCodesPerPage: -1,
+      };
+      await service.init();
+      storageSpy.set.and.returnValue(Promise.reject('Error'));
+      spyOn(console, 'error');
+
+      // Act
+      await service.savePrintSettings(settings);
+
+      // Assert
+      expect(console.error).toHaveBeenCalledWith(
+        'Error saving print settings:',
+        'Error'
+      );
+    });
+
+    it('should load print settings', async () => {
+      // Arrange
+      const expectedSettings: PrintSettings = {
+        size: QrCodeSize.MEDIUM,
+        gap: QrCodeGapSize.SMALL,
+        typeOfQrCodesPerPage: QrCodesCountPerPage.FULL_PAGE,
+        numberOfQrCodesPerPage: -1,
+      };
+      storageSpy.get.and.returnValue(
+        Promise.resolve(JSON.stringify(expectedSettings))
+      );
+      await service.init();
+
+      // Act
+      await service.loadPrintSettings();
+      
+      // Assert
+      expect(storageSpy.get).toHaveBeenCalledWith('savedPrintSettings');
+      expect(service.savedPrintSettings).toEqual(expectedSettings);
     });
   });
 });
