@@ -539,25 +539,41 @@
     </ul>
 
     <h3 id="select-email-client">Select Email app</h3>
-    <p>
-      By pressing the <i><b>Email QR code</b></i> button, the
-      <i>standard selection dialog of Android devices</i> opens and you can
-      <b>select your Email app</b> (e.g. Gmail or Outlook). The options
-      <i>Just Once</i> and <i>Always</i> are offered.
-    </p>
-    <p>
-      If you select <i>Always</i>, this selected program will always be used and
-      the Email app will open immediately. If you select <i>Just Once</i>, you
-      will be prompted to select an Email app each time you send an Email.
-    </p>
-    <p>
-      <b>Important:</b> You must select a
-      <b>valid Email app (e.g. Gmail or Outlook)</b> to use all functions of the
-      z-control QR Code Generator app. If you accidentally selected another
-      program with the <i>Always</i> option, you can reset this selection in the
-      Android settings. This is explained in the next section
-      <i>Reset default app</i>.
-    </p>
+    <div *ngIf="!isNative">
+      <p>
+        When you click the <i><b>MAIL CODE</b></i> button in the web app,
+        the browser/operating system opens the registered email client. On
+        desktop this is the system's default email client or a webmail client
+        configured in the browser.
+      </p>
+      <p>
+        For privacy and security reasons, browsers cannot automatically attach
+        files to emails. Therefore, in the web version you must manually attach
+        the QR code files to the email.
+      </p>
+    </div>
+
+    <div *ngIf="isNative">
+      <p>
+        By pressing the <i><b>Email QR code</b></i> button, the
+        <i>standard selection dialog of Android devices</i> opens and you can
+        <b>select your Email app</b> (e.g. Gmail or Outlook). The options
+        <i>Just Once</i> and <i>Always</i> are offered.
+      </p>
+      <p>
+        If you select <i>Always</i>, this selected program will always be used
+        and the Email app will open immediately. If you select <i>Just Once</i>,
+        you will be prompted to select an Email app each time you send an Email.
+      </p>
+      <p>
+        <b>Important:</b> You must select a
+        <b>valid Email app (e.g. Gmail or Outlook)</b> to use all functions of
+        the z-control QR Code Generator app. If you accidentally selected
+        another program with the <i>Always</i> option, you can reset this
+        selection in the Android settings. This is explained in the next section
+        <i>Reset default app</i>.
+      </p>
+    </div>
 
     <div *ngIf="isNative">
       <h3 id="reset-default-app">Reset default app</h3>
@@ -1522,28 +1538,43 @@
     </ul>
 
     <h3 id="select-email-client-DE">E-Mail Programm auswählen</h3>
-    <p>
-      Mittels Schaltfläche <i><b>QR Code mailen</b></i> wird die
-      <i>Standardauswahl von Android-Geräten</i> geöffnet und Sie können Ihr
-      <b>Mailprogramm auswählen</b> (z.B. Gmail oder Outlook). Es werden die
-      Schaltflächen <i>Nur Diesmal</i> und <i>Immer</i> angeboten.
-    </p>
-    <p>
-      Wenn Sie <i>Immer</i> auswählen, wird immer dieses ausgewählte Programm
-      verwenden, und es wird sofort das Mailprogramm geöffnet. Wenn Sie
-      <i>Nur Diesmal</i> auswählen, werden Sie bei jedem Mailversand
-      aufgefordert, ein Mailprogramm auszuwählen.
-    </p>
-    <p>
-      <b>Wichtig:</b> Sie müssen ein
-      <b>gültiges Mailprogramm (z.B. Gmail oder Outlook) auswählen</b>, damit
-      Sie alle Funktionen von QR-Code App verwenden können. Sollten Sie
-      versehentlich ein anderes Programm mit der Auswahl <i>Immer</i> ausgewählt
-      haben, dann können Sie diese Auswahl in den Android-Einstellungen
-      zurücksetzen. Dies wird im nächsten Abschnitt
-      <i>Standard App zurücksetzen</i> erklärt.
-    </p>
-
+    <div *ngIf="!isNative">
+      <p>
+        Wenn Sie in der Web-App auf die Schaltfläche
+        <i><b>QR Code mailen</b></i>
+        klicken, öffnet der Browser/das Betriebssystem den registrierten
+        E-Mail-Client. Auf dem Desktop ist dies der Standard-E-Mail-Client des
+        Systems oder ein im Browser konfigurierter Webmail-Client.
+      </p>
+      <p>
+        Browser können aus Datenschutz- und Sicherheitsgründen keine Dateien
+        automatisch an E-Mails anhängen. Daher müssen Sie in der Web-Version die
+        QR-Code-Dateien manuell an die E-Mail anhängen.
+      </p>
+    </div>
+    <div *ngIf="isNative">
+      <p>
+        Mittels Schaltfläche <i><b>QR Code mailen</b></i> wird die
+        <i>Standardauswahl von Android-Geräten</i> geöffnet und Sie können Ihr
+        <b>Mailprogramm auswählen</b> (z.B. Gmail oder Outlook). Es werden die
+        Schaltflächen <i>Nur Diesmal</i> und <i>Immer</i> angeboten.
+      </p>
+      <p>
+        Wenn Sie <i>Immer</i> auswählen, wird immer dieses ausgewählte Programm
+        verwenden, und es wird sofort das Mailprogramm geöffnet. Wenn Sie
+        <i>Nur Diesmal</i> auswählen, werden Sie bei jedem Mailversand
+        aufgefordert, ein Mailprogramm auszuwählen.
+      </p>
+      <p>
+        <b>Wichtig:</b> Sie müssen ein
+        <b>gültiges Mailprogramm (z.B. Gmail oder Outlook) auswählen</b>, damit
+        Sie alle Funktionen von QR-Code App verwenden können. Sollten Sie
+        versehentlich ein anderes Programm mit der Auswahl
+        <i>Immer</i> ausgewählt haben, dann können Sie diese Auswahl in den
+        Android-Einstellungen zurücksetzen. Dies wird im nächsten Abschnitt
+        <i>Standard App zurücksetzen</i> erklärt.
+      </p>
+    </div>
     <div *ngIf="isNative">
       <h3 id="reset-default-app-DE">Standard App zurücksetzen</h3>
       <p>

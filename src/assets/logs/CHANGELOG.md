@@ -2,6 +2,17 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+## [2.4] – 2025-10-26 (Web-only release – Firebase)
+
+### 🚀 Improvements
+
+- Improved the "Select Email App" section in the User Help page (web): explained differences between webmail and native mail apps.
+
+### 📦 Installations
+
+- **Web (Firebase)**: The web app version has been updated and is available via the hosting URL.
+- **Mobile (Google Play)**: No mobile APK/AAB was published because changes are web-only.
+
 ## [2.3] – 2025-10-20 (Web-only release – Firebase)
 
 ### 🚀 Improvements
@@ -16,8 +27,8 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 📦 Installations
 
-- **Web**: The web app version (Firebase) has been updated for v2.3 and is available via the hosting URL.
-- **Mobile (Google Play)**: No mobile APK/AAB was published for v2.3 because changes are web-only (unit tests and web-specific UI tweaks). Google Play remains at the previous published mobile version.
+- **Web (Firebase)**: The web app version has been updated and is available via the hosting URL.
+- **Mobile (Google Play)**: No mobile APK/AAB was published because changes are web-only (unit tests and web-specific UI tweaks). Google Play remains at the previous published mobile version.
 
 ## [2.2.] – 2025-09-25
 
