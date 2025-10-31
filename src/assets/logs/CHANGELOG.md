@@ -2,6 +2,14 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+## [2.5] – YYYY-MM-DD (Web-only release – Firebase)
+
+### 🚀 Improvements
+
+- Tooltips (web): Added descriptive tooltips to buttons and links to improve usability, accessibility, and discoverability.
+- Improved Release Notes accordion (web): made the toggle active only when clicking the "Release Notes" button to prevent accidental activation from clicking elsewhere on the row.
+- Mouse cursor (web): Use the default system cursor for disabled controls to clearly indicate they are non-interactive.
+
 ## [2.4] – 2025-10-26 (Web-only release – Firebase)
 
 ### 🚀 Improvements

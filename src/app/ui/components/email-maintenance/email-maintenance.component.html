@@ -1,84 +1,102 @@
+<ion-card class="mail-address">
+  <div class="enter-mail-address">
+    <h6 class="ion-text-center">
+      {{ "EMAIL_PAGE_ADD_EMAIL_TITLE" | translate }}
+    </h6>
+    <ion-item>
+      <ion-label position="stacked">
+        {{ "EMAIL_PAGE_ADD_EMAIL_LABEL" | translate }}
+      </ion-label>
+      <ion-input
+        [(ngModel)]="newEmailAddressValue"
+        type="email"
+        placeholder="{{ 'EMAIL_PAGE_ADD_EMAIL_PLACEHOLDER' | translate }}"
+        title="{{ 'TOOLTIP_EMAIL_MAINTENANCE.ENTER_EMAIL' | translate }}"
+      ></ion-input>
+    </ion-item>
 
-  <ion-card class="mail-address">
-    <div class="enter-mail-address">
-      <h6 class="ion-text-center">
-        {{'EMAIL_PAGE_ADD_EMAIL_TITLE' | translate}}
-      </h6>
-      <ion-item>
-        <ion-label position="stacked">
-          {{'EMAIL_PAGE_ADD_EMAIL_LABEL' | translate}}
-        </ion-label>
-        <ion-input
-          [(ngModel)]="newEmailAddressValue"
-          type="email"
-          placeholder="{{'EMAIL_PAGE_ADD_EMAIL_PLACEHOLDER' | translate}}"
-        ></ion-input>
+    <div class="mail-address-buttons">
+      <div
+        class="button-wrapper"
+        (click)="handleAddEmailAddressButtonClick()"
+        (keydown.enter)="handleAddEmailAddressButtonClick()"
+        (keydown.space)="handleAddEmailAddressButtonClick()"
+      >
+        <ion-button
+          expand="block"
+          [class.pseudo-disabled]="
+            !newEmailAddressValue ||
+            !validationService.isValidEmailAddress(newEmailAddressValue)
+          "
+          [disabled]="!newEmailAddressValue ||
+            !validationService.isValidEmailAddress(newEmailAddressValue)"
+          title="{{
+            !newEmailAddressValue ||
+            !validationService.isValidEmailAddress(newEmailAddressValue)
+              ? ''
+              : ('TOOLTIP_EMAIL_MAINTENANCE.ADD_EMAIL' | translate)
+          }}"
+        >
+          {{ "EMAIL_PAGE_ADD_BUTTON" | translate }}
+        </ion-button>
+      </div>
+
+      <div class="buttons-no-add ion-justify-content-around">
+        <ion-button
+          fill="clear"
+          (click)="newEmailAddressValue = ''"
+          (keydown.enter)="newEmailAddressValue = ''"
+          (keydown.space)="newEmailAddressValue = ''"
+          [disabled]="!newEmailAddressValue"
+        >
+          {{ "CLEAR_INPUT" | translate }}
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
+  <div class="saved-emails-section">
+    <h6 class="ion-text-center">
+      {{ "EMAIL_PAGE_TITLE" | translate }} <br />
+      {{
+        ((localStorage.savedEmailAddresses$ | async)?.length || 0) > 0
+          ? (localStorage.savedEmailAddresses$ | async)?.length
+          : ""
+      }}
+    </h6>
+    <div class="email-page-info ion-text-center">
+      {{ "EMAIL_PAGE_INFOTEXT" | translate }}
+    </div>
+    <ion-list
+      class="email-list"
+      *ngIf="((localStorage.savedEmailAddresses$ | async)?.length || 0) > 0"
+    >
+      <ion-item
+        class="saved-email-address"
+        *ngFor="
+          let email of localStorage.savedEmailAddresses$ | async;
+          let i = index
+        "
+      >
+        <ion-label>{{ email }}</ion-label>
+        <ion-button
+          slot="end"
+          fill="clear"
+          (click)="deleteEmailAddress(i)"
+          (keydown.enter)="deleteEmailAddress(i)"
+          (keydown.space)="deleteEmailAddress(i)"
+          title="{{ 'TOOLTIP_EMAIL_MAINTENANCE.DELETE_EMAIL' | translate }}"
+        >
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
       </ion-item>
+    </ion-list>
 
-      <div class="mail-address-buttons">
-        <div
-          class="button-wrapper"
-          (click)="handleAddEmailAddressButtonClick()"
-          (keydown.enter)="handleAddEmailAddressButtonClick()"
-          (keydown.space)="handleAddEmailAddressButtonClick()"
-        >
-          <ion-button
-            expand="block"
-            [class.pseudo-disabled]="!newEmailAddressValue || !validationService.isValidEmailAddress(newEmailAddressValue)"
-            [disabled]="false"
-          >
-            {{ 'EMAIL_PAGE_ADD_BUTTON' | translate }}
-          </ion-button>
-        </div>
-
-        <div class="buttons-no-add ion-justify-content-around">
-          <ion-button
-            fill="clear"
-            (click)="newEmailAddressValue = '';"
-            (keydown.enter)="newEmailAddressValue = '';"
-            (keydown.space)="newEmailAddressValue = '';"
-            [disabled]="!newEmailAddressValue"
-          >
-            {{ 'CLEAR_INPUT' | translate }}
-          </ion-button>
-        </div>
-      </div>
-    </div>
-
-    <div class="saved-emails-section">
-      <h6 class="ion-text-center">
-        {{'EMAIL_PAGE_TITLE' | translate}} <br />
-        {{ ((localStorage.savedEmailAddresses$ | async)?.length || 0) > 0 ? (localStorage.savedEmailAddresses$ | async)?.length : '' }}
-      </h6>
-      <div class="email-page-info ion-text-center">
-        {{'EMAIL_PAGE_INFOTEXT' | translate}}
-      </div>
-      <ion-list
-        class="email-list"
-        *ngIf="((localStorage.savedEmailAddresses$ | async)?.length || 0) > 0"
-      >
-        <ion-item
-          class="saved-email-address"
-          *ngFor="let email of (localStorage.savedEmailAddresses$ | async); let i = index"
-        >
-          <ion-label>{{ email }}</ion-label>
-          <ion-button
-            slot="end"
-            fill="clear"
-            (click)="deleteEmailAddress(i)"
-            (keydown.enter)="deleteEmailAddress(i)"
-            (keydown.space)="deleteEmailAddress(i)"
-          >
-            <ion-icon name="trash-outline"></ion-icon>
-          </ion-button>
-        </ion-item>
-      </ion-list>
-
-      <p
-        class="missing-mails ion-text-center"
-        *ngIf="((localStorage.savedEmailAddresses$ | async)?.length || 0) === 0"
-      >
-        {{'EMAIL_PAGE_NO_EMAIL_ADRESSES' | translate}}
-      </p>
-    </div>
-  </ion-card>
+    <p
+      class="missing-mails ion-text-center"
+      *ngIf="((localStorage.savedEmailAddresses$ | async)?.length || 0) === 0"
+    >
+      {{ "EMAIL_PAGE_NO_EMAIL_ADRESSES" | translate }}
+    </p>
+  </div>
+</ion-card>

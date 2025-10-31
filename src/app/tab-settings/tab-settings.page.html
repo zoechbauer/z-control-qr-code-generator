@@ -9,22 +9,23 @@
   <ion-accordion-group
     [value]="openAccordion"
     (ionValueChange)="onAccordionGroupChange($event, content)"
+    title="{{this.showAllAccordions ? ('TOOLTIP_SETTINGS.OPEN_ACCORDION' | translate) : ('TOOLTIP_SETTINGS.CLOSE_ACCORDION' | translate) }}"
   >
     <!-- Show all accordions and section title  -->
     <ng-container *ngIf="showAllAccordions && !openAccordion">
-      <h5 class="ion-text-center settings-section-title">
+      <h5 class="ion-text-center settings-section-title" title="">
         {{'SETTINGS' | translate}}
       </h5>
       <app-language-accordion></app-language-accordion>
       <app-print-accordion></app-print-accordion>
       <app-email-maintenance-accordion></app-email-maintenance-accordion>
 
-      <h5 class="ion-text-center settings-section-title">
+      <h5 class="ion-text-center settings-section-title" title="">
         {{ "FEEDBACK" | translate }}
       </h5>
       <app-feedback-accordion></app-feedback-accordion>
 
-      <h5 class="ion-text-center settings-section-title">
+      <h5 class="ion-text-center settings-section-title" title="">
         z-control QR Code Generator App<br />{{ "INFORMATIONS" | translate }}
       </h5>
       <app-privacy-policy-accordion></app-privacy-policy-accordion>

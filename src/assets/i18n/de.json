@@ -63,6 +63,31 @@
   "KEYBOARD_ALERT_HELP_WEB": "Hilfe anzeigen (Web-Version)",
   "KEYBOARD_ALERT_SHORT_TEXT": "Löschen & kurzen Text verwenden",
 
+  "------ Tooltips": "-------",
+  "TOOLTIP_HEADER.OPEN_FEEDBACK": "Feedback-Seite öffnen",
+  "TOOLTIP_HEADER.GOTO_QR_CODE": "Zu QR-Code-Seite wechseln",
+  "TOOLTIP_HEADER.GOTO_SETTINGS": "Zu Einstellungsseite wechseln",
+  "TOOLTIP_HEADER.OPEN_HELP": "Hilfe-Seite öffnen",
+  "TOOLTIP_QR-CODE.GENERATE_QR_CODE": "QR-Code aus eingegebenem Text generieren",
+  "TOOLTIP_QR-CODE.MAIL_QR_CODE": "Generierten QR-Code per E-Mail senden",
+  "TOOLTIP_SETTINGS.OPEN_ACCORDION": "Einstellungen öffnen",
+  "TOOLTIP_SETTINGS.CLOSE_ACCORDION": "Einstellungen schließen",
+  "TOOLTIP_SETTINGS.CHANGE_LANGUAGE": "Sprache ändern",
+  "TOOLTIP_PRINT_SETTINGS.QR_CODE_SIZE": "Größe des QR-Codes im PDF festlegen",
+  "TOOLTIP_PRINT_SETTINGS.QR_CODE_GAP": "Abstand zwischen QR-Codes im PDF festlegen",
+  "TOOLTIP_PRINT_SETTINGS.QR_CODE_NUMBER": "Anzahl der QR-Codes im PDF berechnen lassen oder selbst festlegen",
+  "TOOLTIP_PRINT_SETTINGS.CALCULATED_NUMBER": "Diese Anzahl an QR-Codes wurde basierend auf der Seitengröße, der ausgewählten QR-Code-Größe und dem Abstand berechnet.",
+  "TOOLTIP_PRINT_SETTINGS.ENTER_NUMBER": "Anzahl der QR-Codes im PDF erfassen",
+  "TOOLTIP_PRINT_SETTINGS.RESULT": "Format: [QR-Code Größe / Abstand / Anzahl QR-Codes]",
+  "TOOLTIP_EMAIL_MAINTENANCE.ENTER_EMAIL": "Mail-Adresse eingeben",
+  "TOOLTIP_EMAIL_MAINTENANCE.ADD_EMAIL": "Erfasste Mail-Adresse hinzufügen",
+  "TOOLTIP_EMAIL_MAINTENANCE.DELETE_EMAIL": "Mail-Adresse löschen",
+  "TOOLTIP_FEEDBACK.CONTACT_SUPPORT": "Support per E-Mail kontaktieren",
+  "TOOLTIP_PRIVACY.OPEN_POLICY": "Datenschutzrichtlinie in Englisch in einem neuen Tab öffnen. Verwenden Sie den EN/DE-Sprachauswahl, um die deutsche Version anzuzeigen.",
+  "TOOLTIP_CHANGELOG.OPEN_RELEASE_NOTES": "Release-Notes (Changelog) öffnen — nach Kategorien gruppiert und es werden zuerst die neuesten Einträge angezeigt.",
+  "TOOLTIP_DOWNLOAD.GET_MOBILE_APP": "Download der nativen Android-App aus dem Google Play Store",
+  "TOOLTIP_DOWNLOAD.GET_SOURCE": "GitHub-Repository in einem neuen Tab öffnen — Quellcode, Lizenz, Changelog und Dokumentation anzeigen",
+
   "------ Clear Input Text Confirmation": "-------",
   "CLEAR_CONFIRMATION_HEADER": "Text löschen?",
   "CLEAR_CONFIRMATION_MESSAGE": "Dies löscht den gesamten eingegebenen Text. Fortfahren?",
@@ -135,5 +160,4 @@
   "HELP_LANGUAGE_CHANGE_WEB_BUTTON": "Über den Button \"Einstellungen\" im Kopfbereich ",
   "HELP_DEVICE_TEXT": "Handy",
   "HELP_DEVICE_TEXT_WEB": "Webbrowser"
-
 }

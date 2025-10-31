@@ -2,7 +2,7 @@
   <ion-item slot="header" color="light">
     <ion-label>{{ "SELECT_LANGUAGE" | translate }}</ion-label>
   </ion-item>
-  <div class="ion-padding" slot="content">
+  <div class="ion-padding" slot="content" title="">
     <ion-item>
       <ion-select
         label='{{ "LANGUAGE" | translate }}'
@@ -10,6 +10,7 @@
         [(ngModel)]="lang"
         (ionChange)="onLanguageChange($event)"
         interface="popover"
+        title="{{ 'TOOLTIP_SETTINGS.CHANGE_LANGUAGE' | translate }}"
       >
         <ion-select-option value="en">{{
           "LANGUAGE_EN" | translate

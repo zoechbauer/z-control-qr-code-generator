@@ -6,7 +6,7 @@
       }}</ion-label
     >
   </ion-item>
-  <div class="ion-padding" slot="content">
+  <div class="ion-padding" slot="content" title="">
     <!-- qr code size -->
     <ion-item>
       <ion-select
@@ -15,6 +15,7 @@
         [(ngModel)]="selectedQrCodeSize"
         (ionChange)="onPrintSettingChange()"
         interface="popover"
+        title="{{ 'TOOLTIP_PRINT_SETTINGS.QR_CODE_SIZE' | translate }}"
       >
         <ion-select-option
           *ngFor="let size of qrCodeSizes"
@@ -33,6 +34,7 @@
         [(ngModel)]="selectedQrCodeGapSize"
         (ionChange)="onPrintSettingChange()"
         interface="popover"
+        title="{{ 'TOOLTIP_PRINT_SETTINGS.QR_CODE_GAP' | translate }}"
       >
         <ion-select-option
           *ngFor="let gap of qrCodeGapSizes"
@@ -51,6 +53,7 @@
         [(ngModel)]="selectedTypeOfQrCodesPerPage"
         (ionChange)="onPrintSettingChange()"
         interface="popover"
+        title="{{ 'TOOLTIP_PRINT_SETTINGS.QR_CODE_NUMBER' | translate }}"
       >
         <ion-select-option
           *ngFor="let countType of qrCodesCountPerPages"
@@ -63,6 +66,7 @@
 
     <div
       *ngIf="selectedTypeOfQrCodesPerPage === QrCodesCountPerPage.CUSTOM_NUMBER"
+      title="{{ 'TOOLTIP_PRINT_SETTINGS.ENTER_NUMBER' | translate }}"
     >
       <ion-item>
         <ion-label
@@ -83,6 +87,7 @@
 
     <ion-item
       *ngIf="selectedTypeOfQrCodesPerPage === QrCodesCountPerPage.FULL_PAGE"
+      title="{{ 'TOOLTIP_PRINT_SETTINGS.CALCULATED_NUMBER' | translate }}"
     >
       <ion-label
         >{{ "NUMBER_OF_QR_CODES" | translate }}
@@ -92,7 +97,7 @@
       >
     </ion-item>
 
-    <ion-item>
+    <ion-item title="{{ 'TOOLTIP_PRINT_SETTINGS.RESULT' | translate }}">
       <ion-label
         >{{ "RESULT" | translate }}<br />{{ getPrintSettings() }}</ion-label
       >

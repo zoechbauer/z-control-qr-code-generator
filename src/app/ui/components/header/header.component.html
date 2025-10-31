@@ -9,6 +9,7 @@
         (click)="goToSettingsAndOpenFeedback()"
         (keydown.enter)="goToSettingsAndOpenFeedback()"
         (keydown.space)="goToSettingsAndOpenFeedback()"
+        title="{{ 'TOOLTIP_HEADER.OPEN_FEEDBACK' | translate }}"
       ></app-logo>
     </ion-buttons>
     <ion-title *ngIf="onQrTab">
@@ -23,6 +24,7 @@
         (click)="goToSettings()"
         (keydown.enter)="goToSettings()"
         (keydown.space)="goToSettings()"
+        title = "{{ 'TOOLTIP_HEADER.GOTO_SETTINGS' | translate }}"
         fill="clear"
       >
         <ion-icon name="settings-outline"></ion-icon>
@@ -32,6 +34,7 @@
         (click)="goToQr()"
         (keydown.enter)="goToQr()"
         (keydown.space)="goToQr()"
+        title = "{{ 'TOOLTIP_HEADER.GOTO_QR_CODE' | translate }}"
         fill="clear"
       >
         <ion-icon name="qr-code-outline"></ion-icon>
@@ -42,6 +45,7 @@
         (click)="openHelpModal()"
         (keydown.enter)="openHelpModal()"
         (keydown.space)="openHelpModal()"
+        title = "{{ 'TOOLTIP_HEADER.OPEN_HELP' | translate }}"
       >
         <ion-icon slot="icon-only" name="help"></ion-icon>
       </ion-button>
