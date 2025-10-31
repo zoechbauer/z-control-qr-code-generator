@@ -2,13 +2,22 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
-## [2.5] – YYYY-MM-DD (Web-only release – Firebase)
+## [2.5] – 2025-10-31 (Web-only release – Firebase)
 
 ### 🚀 Improvements
 
 - Tooltips (web): Added descriptive tooltips to buttons and links to improve usability, accessibility, and discoverability.
 - Improved Release Notes accordion (web): made the toggle active only when clicking the "Release Notes" button to prevent accidental activation from clicking elsewhere on the row.
 - Mouse cursor (web): Use the default system cursor for disabled controls to clearly indicate they are non-interactive.
+
+### 🐛 Fixes
+
+- Privacy Policy (Landing Page): Fixed an issue that caused the privacy policy to always display in English. It now displays in the user's selected language on the Landing Page and in any web/mobile apps that link to it.
+
+### 📦 Installations
+
+- **Web (Firebase)**: The web app version has been updated and is available via the hosting URL.
+- **Mobile (Google Play)**: No mobile APK/AAB was published because changes are web-only.
 
 ## [2.4] – 2025-10-26 (Web-only release – Firebase)
 

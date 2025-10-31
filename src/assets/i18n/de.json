@@ -83,7 +83,7 @@
   "TOOLTIP_EMAIL_MAINTENANCE.ADD_EMAIL": "Erfasste Mail-Adresse hinzufügen",
   "TOOLTIP_EMAIL_MAINTENANCE.DELETE_EMAIL": "Mail-Adresse löschen",
   "TOOLTIP_FEEDBACK.CONTACT_SUPPORT": "Support per E-Mail kontaktieren",
-  "TOOLTIP_PRIVACY.OPEN_POLICY": "Datenschutzrichtlinie in Englisch in einem neuen Tab öffnen. Verwenden Sie den EN/DE-Sprachauswahl, um die deutsche Version anzuzeigen.",
+  "TOOLTIP_PRIVACY.OPEN_POLICY": "Datenschutzrichtlinie in einem neuen Tab öffnen.",
   "TOOLTIP_CHANGELOG.OPEN_RELEASE_NOTES": "Release-Notes (Changelog) öffnen — nach Kategorien gruppiert und es werden zuerst die neuesten Einträge angezeigt.",
   "TOOLTIP_DOWNLOAD.GET_MOBILE_APP": "Download der nativen Android-App aus dem Google Play Store",
   "TOOLTIP_DOWNLOAD.GET_SOURCE": "GitHub-Repository in einem neuen Tab öffnen — Quellcode, Lizenz, Changelog und Dokumentation anzeigen",
