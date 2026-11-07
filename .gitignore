@@ -15,7 +15,7 @@ log.txt
 
 /.sourcemaps
 /.versions
-/coverage
+coverage/
 
 # Ionic
 /.ionic
@@ -69,11 +69,21 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# secret files
+.env
+.env.local
+.env.*.local
+
+# environment files - DO NOT COMMIT
+src/environments/environment.ts
+src/environments/environment.prod.ts
+
 # Android Security - DO NOT COMMIT
 android/keystore.properties
 android/local.properties
 upload-keystore.jks
 *.keystore
 *.jks
+android/app/release/
 
 resources/android/**/*

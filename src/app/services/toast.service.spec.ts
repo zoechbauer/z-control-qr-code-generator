@@ -1,21 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalController, ToastController } from '@ionic/angular';
 
 import { ToastService } from './toast.service';
 import { UtilsService } from './utils.service';
+import { createTranslateServiceMock } from '@testing/translate-service.mock';
 
 describe('ToastService', () => {
   let service: ToastService;
   const toastControllerSpy = jasmine.createSpyObj('ToastController', [
     'create',
   ]);
-  const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
-    'instant',
-    'get',
-  ]);
-  translateServiceSpy.onLangChange = of({});
   const utilsService: any = {};
   const modalControllerSpy = jasmine.createSpyObj('ModalController', [
     'dismiss',
@@ -25,7 +20,7 @@ describe('ToastService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: TranslateService, useValue: translateServiceSpy },
+        { provide: TranslateService, useValue: createTranslateServiceMock() },
         { provide: ModalController, useValue: modalControllerSpy },
         { provide: UtilsService, useValue: utilsService },
         { provide: ToastController, useValue: toastControllerSpy },
@@ -102,7 +97,6 @@ describe('ToastService', () => {
       // Arrange
       const message = 'Test Message';
       const duration = 3000;
-      translateServiceSpy.instant.and.returnValue(message);
       // Act
       service.showToast(message);
       // Assert
@@ -117,7 +111,6 @@ describe('ToastService', () => {
     it('should handle error when toast presentation fails', async () => {
       // Arrange
       const message = 'Test Message';
-      translateServiceSpy.instant.and.returnValue(message);
       spyOn(service, 'showToastMessage').and.returnValue(Promise.reject('Toast creation failed'));
       const consoleErrorSpy = spyOn(console, 'error');
       // Act
@@ -146,7 +139,6 @@ describe('ToastService', () => {
       // Arrange
       const message = 'Test Message';
       const duration = 3000;
-      translateServiceSpy.instant.and.returnValue(message);
       // Act
       service.showDisabledToast(message);
       // Assert
@@ -161,7 +153,6 @@ describe('ToastService', () => {
     it('should handle error when toast presentation fails', async () => {
       // Arrange
       const message = 'Test Message';
-      translateServiceSpy.instant.and.returnValue(message);
       spyOn(service, 'showToastMessage').and.returnValue(Promise.reject('Toast creation failed'));
       const consoleErrorSpy = spyOn(console, 'error');
       // Act

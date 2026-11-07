@@ -3,22 +3,18 @@
   "ignorePatterns": ["projects/**/*"],
   "overrides": [
     {
-      "files": ["*.ts"],
+      "files": ["**/*.ts"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"],
       "parserOptions": {
-        "project": ["tsconfig.json"],
-        "createDefaultProgram": true
+        "project": ["./tsconfig.eslint.json"]
       },
       "extends": [
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
-        "@angular-eslint/component-class-suffix": [
-          "error",
-          {
-            "suffixes": ["Page", "Component"]
-          }
-        ],
+        "@angular-eslint/component-class-suffix": "off",
         "@angular-eslint/component-selector": [
           "error",
           {
@@ -34,11 +30,26 @@
             "prefix": "app",
             "style": "camelCase"
           }
+        ],
+        "@typescript-eslint/no-empty-function": [
+          "error",
+          {
+            "allow": [
+              "arrowFunctions",
+              "functions",
+              "generatorFunctions",
+              "asyncFunctions"
+            ]
+          }
+        ],
+        "max-len": [
+          "error",
+          { "code": 120, "ignoreComments": false, "ignoreUrls": true }
         ]
       }
     },
     {
-      "files": ["*.html"],
+      "files": ["**/*.html"],
       "extends": ["plugin:@angular-eslint/template/recommended"],
       "rules": {}
     }

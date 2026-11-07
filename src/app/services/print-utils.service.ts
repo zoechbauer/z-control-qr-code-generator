@@ -35,6 +35,11 @@ export class PrintUtilsService implements OnDestroy {
   private qrDataInputLength: number = 1;
   private readonly subs = new Subscription();
 
+
+  /**
+   * Initializes the PrintUtilsService.
+   * Loads available QR code sizes and gap sizes, and subscribes to relevant observables.
+   */
   constructor(
     public translate: TranslateService,
     private readonly localStorageService: LocalStorageService
@@ -62,6 +67,12 @@ export class PrintUtilsService implements OnDestroy {
     );
   }
 
+  /**
+   * Calculates the number of QR codes that can fit on a page based on the given size and gap.
+   * @param size The size of the QR code.
+   * @param gap The gap between QR codes.
+   * @returns The calculated number of QR codes per page.
+   */
   getCalculatedNumberOfQrCodesPerPage(
     size: QrCodeSize = this.size,
     gap: QrCodeGapSize = this.gap
@@ -81,6 +92,10 @@ export class PrintUtilsService implements OnDestroy {
     return this.cols * this.rows;
   }
 
+  /**
+   * Returns the converted print settings as a string.
+   * @returns The converted print settings string.
+   */
   getConvertedPrintSettings(): string {
     if (this.numberOfQrCodes === 1) {
       return `[ ${this.getConvertedLabel(this.size)} / 1 ]`;
@@ -91,6 +106,11 @@ export class PrintUtilsService implements OnDestroy {
     }
   }
 
+  /**
+   * Converts the given size or gap to a human-readable label.
+   * @param size The size or gap to convert.
+   * @returns The converted label.
+   */
   private getConvertedLabel(size: QrCodeSize | QrCodeGapSize): string {
     // Search in qrCodeSizes
     const sizeObj = this.qrCodeSizes.find((s) => s.value === size);
@@ -105,10 +125,20 @@ export class PrintUtilsService implements OnDestroy {
     return '';
   }
 
+  /**
+   * Creates a new PDF document.
+   * @param options The options for the PDF document.
+   * @returns The created PDF document.
+   */
   protected createPdf(options?: any): any {
     return new (jsPDF as any)(options);
   }
 
+  /**
+   * Prints the QR code to a PDF document.
+   * @param dataUrl The data URL of the QR code image.
+   * @returns The generated PDF as a Blob.
+   */
   printQRCode(dataUrl: string): Blob {
     const pdf = this.createPdf({
       orientation: 'portrait',
@@ -142,13 +172,20 @@ export class PrintUtilsService implements OnDestroy {
     return pdf.output('blob');
   }
 
-  // on initialization -1 indicates full page, convert it to actual number
+  /**
+   * Returns the effective number of QR codes per page, converting -1 (full page) to the actual number.
+   * @returns The effective number of QR codes per page.
+   */
   getEffectiveNumberOfQrCodesPerPage(): number {
     return this.numberOfQrCodes === -1
       ? this.getCalculatedNumberOfQrCodesPerPage()
       : this.numberOfQrCodes;
   }
 
+  /**
+   * Returns the available QR code sizes and gap sizes.
+   * @returns An object containing arrays of available QR code sizes and gap sizes.
+   */
   getAvailableQrCodeSizesAndGapSizes(): {
     qrCodeSizes: QrCodeSizes[];
     qrCodeGapSizes: QrCodeGapSizes[];
@@ -159,14 +196,24 @@ export class PrintUtilsService implements OnDestroy {
     };
   }
 
+  /**
+   * My assumptions:
+   * The created QR code size is linearly dependent on the text length, regardless of the print size.
+   * Therefore, I created an interpolation table for a 15cm QR code size and
+   * scale the QR code size according to the text length.
+   * This way, the print size is always the same, whether the text is short or long.
+   * The actual size of the printed QR code may differ slightly from the size specified in the print options.
+   *
+   * @returns scaling factor for QR code size based on text length
+   */
   private scalingFactor(): number {
-    // My assumptions: The created QR code size is linearly dependent on the text length, regardless of the print size.
-    // Therefore, I created an interpolation table for a 15cm QR code size and scale the QR code size according to the text length.
-    // This way, the print size is always the same, whether the text is short or long.
-    // The actual size of the printed QR code may differ slightly from the size specified in the print options.
     return this.getPrintSize();
   }
 
+  /**
+   * Returns the print size for the QR code based on text length.
+   * @returns The print size in millimeters.
+   */
   private getPrintSize(): number {
     const measuredSize = this.interpolateQrSizeFor15cm(this.qrDataInputLength);
     const targetSize = 150; // mm
@@ -201,7 +248,7 @@ export class PrintUtilsService implements OnDestroy {
     ];
 
     if (x <= points[0].x) return points[0].y; // min chars
-    if (x >= points[points.length - 1].x) return points[points.length - 1].y;
+    if (x >= points.at(-1)!.x) return points.at(-1)!.y;
 
     for (let i = 1; i < points.length; i++) {
       if (x < points[i].x) {
@@ -216,6 +263,9 @@ export class PrintUtilsService implements OnDestroy {
     return 150; // fallback
   }
 
+  /**
+   * Loads the available QR code sizes and gap sizes.
+   */
   loadAvailableQrCodeSizesAndGapSizes() {
     this.qrCodeSizes = [
       {
@@ -248,6 +298,9 @@ export class PrintUtilsService implements OnDestroy {
     ];
   }
 
+  /**
+   * Cleans up resources when the service is destroyed.
+   */
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

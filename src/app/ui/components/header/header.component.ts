@@ -10,7 +10,7 @@ import {
 import { NgIf } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { LogoType, Tab } from './../../../enums';
+import { LogoType, Tab } from '@app/enums';
 import { UtilsService } from 'src/app/services/utils.service';
 import { LogoComponent } from '../logo/logo.component';
 
@@ -41,28 +41,46 @@ export class HeaderComponent {
     public readonly utilsService: UtilsService
   ) {}
 
+  /**
+   * Returns true if the screen is large.
+   */
   get isLargeScreen(): boolean {
     return !this.utilsService.isSmallScreen;
   }
 
+  /**
+   * Returns true if the current tab is the QR tab.
+   */
   get onQrTab(): boolean {
     return this.currentTab === Tab.Qr;
   }
 
+  /**
+   * Returns true if the current tab is the Settings tab.
+   */
   get onSettingsTab(): boolean {
     return this.currentTab === Tab.Settings;
   }
 
-  goToSettings() {
-    this.utilsService.navigateToTab(Tab.Settings);
+  /**
+   * Navigates to the Settings tab.
+   */
+  async goToSettings() {
+    await this.utilsService.navigateToTab(Tab.Settings);
   }
 
-  goToQr() {
-    this.utilsService.navigateToTab(Tab.Qr);
+  /**
+   * Navigates to the QR tab.
+   */
+  async goToQr() {
+    await this.utilsService.navigateToTab(Tab.Qr);
   }
 
-  goToSettingsAndOpenFeedback() {
-    this.utilsService.navigateToTabWithParams(Tab.Settings, {
+  /**
+   * Navigates to the Settings tab and opens the feedback section.
+   */
+  async goToSettingsAndOpenFeedback() {
+    await this.utilsService.navigateToTabWithParams(Tab.Settings, {
       open: 'z-control',
     });
     setTimeout(() => {
@@ -70,7 +88,10 @@ export class HeaderComponent {
     }, 500);
   }
 
+  /**
+   * Opens the help modal.
+   */
   async openHelpModal() {
-    this.utilsService.openHelpModal();
+    await this.utilsService.openHelpModal();
   }
 }

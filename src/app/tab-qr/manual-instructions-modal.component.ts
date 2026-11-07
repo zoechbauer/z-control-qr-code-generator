@@ -115,14 +115,20 @@ export class ManualInstructionsModalComponent {
 
   constructor(private readonly modalController: ModalController) {}
 
-  dismiss() {
-    this.modalController.dismiss();
+  /**
+   * Dismisses the modal.
+   */
+  async dismiss() {
+    await this.modalController.dismiss();
   }
 
+  /**
+   * Copies the QR text and dismisses the modal.
+   */
   async copyAndDismiss() {
     if (this.copyCallback) {
       await this.copyCallback();
     }
-    this.dismiss();
+    await this.dismiss();
   }
 }

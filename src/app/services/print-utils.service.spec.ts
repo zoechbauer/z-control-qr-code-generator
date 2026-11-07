@@ -1,17 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { PrintUtilsService } from './print-utils.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { of } from 'rxjs';
+
 import { QrCodeGapSize, QrCodeSize } from '../enums';
+import { PrintUtilsService } from './print-utils.service';
+import { createTranslateServiceMock } from '@testing/translate-service.mock';
+import { LocalStorageService } from '@app/services/local-storage.service';
 
 describe('PrintUtilsService', () => {
   let service: PrintUtilsService;
-  const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
-    'instant',
-    'get',
-  ]);
-  translateServiceSpy.onLangChange = of({});
+  const translateServiceSpy = createTranslateServiceMock();
   const localStorageServiceSpy = jasmine.createSpyObj('LocalStorageService', [
     'init',
   ]);
@@ -143,7 +141,7 @@ describe('PrintUtilsService', () => {
       // Act
       service.loadAvailableQrCodeSizesAndGapSizes();
       // Assert
-      expect(service['qrCodeSizes'].length).toBe(4);
+      expect(service['qrCodeSizes']).toHaveSize(4);
       testData.forEach((data) => {
         expect(
           service['qrCodeSizes'].some((s) => s.label === data.label)
@@ -164,7 +162,7 @@ describe('PrintUtilsService', () => {
       // Act
       service.loadAvailableQrCodeSizesAndGapSizes();
       // Assert
-      expect(service['qrCodeGapSizes'].length).toBe(2);
+      expect(service['qrCodeGapSizes']).toHaveSize(2);
       testData.forEach((data) => {
         expect(
           service['qrCodeGapSizes'].some((s) => s.label === data.label)
@@ -184,7 +182,8 @@ describe('PrintUtilsService', () => {
 
     beforeEach(() => {
       validPngDataUrl =
-        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=';
+        'data:image/png;base64,' + 
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=';
 
       addImageSpy = jasmine.createSpy('addImage');
       fakeBlob = new Blob(['PDF'], { type: 'application/pdf' });

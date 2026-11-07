@@ -30,6 +30,9 @@ export class ChangeLogAccordionComponent {
 
   constructor(public translate: TranslateService) {}
 
+  /**
+   * Emits an event to open the changelog.
+   */
   openChangelog() {
     this.ionChange.emit();
   }

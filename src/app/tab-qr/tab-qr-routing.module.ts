@@ -3,6 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { TabQrPage } from './tab-qr.page';
 
+/**
+ * Routing module for the Tab QR page.
+ */
 const routes: Routes = [
   {
     path: '',

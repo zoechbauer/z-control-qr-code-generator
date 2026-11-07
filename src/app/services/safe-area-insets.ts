@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class SafeAreaInsets {
-  constructor() {}
 
   setSafeAreaInsetsFix() {
     const insets = this.getSafeAreaInsets();
@@ -25,12 +24,12 @@ export class SafeAreaInsets {
     const rightStr = getComputedStyle(
       document.documentElement
     ).getPropertyValue('env(safe-area-inset-right)');
-    const bottom = parseInt(bottomStr, 10);
-    const right = parseInt(rightStr, 10);
+    const bottom = Number.parseInt(bottomStr, 10);
+    const right = Number.parseInt(rightStr, 10);
 
     // console.log(`Raw insets from env - bottom: ${bottomStr}, right: ${rightStr}`);
 
-    if (isNaN(bottom) || bottom === 0 || isNaN(right) || right === 0) {
+    if (Number.isNaN(bottom) || bottom === 0 || Number.isNaN(right) || right === 0) {
       // set default values for screen sizes
       let fallbackBottom;
       let fallbackRight;
@@ -70,7 +69,8 @@ export class SafeAreaInsets {
         fallbackBottom = 0;
         fallbackRight = 0;
       }
-      // console.log(`Fixed device insets - screenWidth: ${screenWidth}px, user agent: ${userAgent}, bottom: ${fallbackBottom}px, right: ${fallbackRight}px`);
+      // console.log(`Fixed device insets - screenWidth: ${screenWidth}px, user agent: ${userAgent}, ` + 
+      // `bottom: ${fallbackBottom}px, right: ${fallbackRight}px`);
       return { bottom: fallbackBottom, right: fallbackRight };
     }
     // console.log(`Detected insets from env - bottom: ${bottom}px, right: ${right}px`);

@@ -1,4 +1,4 @@
-import { WindowMockUtil } from 'src/test-utils/window-mock.util';
+import { WindowMockUtil } from '@testing/window-mock.util';
 import { SafeAreaInsets } from './safe-area-insets';
 
 describe('SafeAreaInsets', () => {

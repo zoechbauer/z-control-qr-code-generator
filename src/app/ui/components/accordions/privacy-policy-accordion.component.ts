@@ -6,8 +6,8 @@ import {
 } from '@ionic/angular/standalone';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { LogoType } from 'src/app/enums';
-import { PrivacyPolicyComponent } from './../privacy-policy/privacy-policy.component';
+import { LogoType } from '@app/enums';
+import { PrivacyPolicyComponent } from '../privacy-policy/privacy-policy.component';
 
 @Component({
   selector: 'app-privacy-policy-accordion',

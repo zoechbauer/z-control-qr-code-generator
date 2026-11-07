@@ -49,22 +49,37 @@ export class MarkdownViewerComponent implements OnInit {
     public readonly utilsService: UtilsService
   ) {}
 
+  /**
+   * Returns true if the app is running in a native environment.
+   */
   get isNative(): boolean {
     return this.utilsService.isNative;
   }
 
+  /**
+   * Initializes the component and loads the markdown changelog.
+   */
   ngOnInit() {
     this.loadMarkdownChangelog();
   }
 
-  closeModal() {
-    this.modalController.dismiss();
+  /**
+   * Closes the modal.
+   */
+  async closeModal() {
+    await this.modalController.dismiss();
   }
 
-  scrollToTop() {
-    this.content.scrollToTop(300);
+  /**
+   * Scrolls the content to the top.
+   */
+  async scrollToTop() {
+    await this.content.scrollToTop(300);
   }
 
+  /**
+   * Loads the markdown changelog from the specified path.
+   */
   private loadMarkdownChangelog() {
     this.http.get(this.fullChangeLogPath, { responseType: 'text' }).subscribe({
       next: (data) => {

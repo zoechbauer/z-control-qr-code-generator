@@ -15,7 +15,4 @@ import { LogoType } from 'src/app/enums';
 export class GetSourceCodeComponent  {
   @Input() lang: string = 'en';
   LogoType = LogoType;
-
-  constructor() { }
-
 }

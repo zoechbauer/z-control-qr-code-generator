@@ -1,16 +1,19 @@
 import { TestBed } from '@angular/core/testing';
-import { TranslateService, TranslateStore } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Capacitor } from '@capacitor/core';
 import { Directory } from '@capacitor/filesystem';
 
 import { FILESYSTEM, FilesystemLike } from './filesystem.token';
 import { FileUtilsService } from './file-utils.service';
 import { AlertService } from './alert.service';
+import { createTranslateServiceMock } from '@testing/translate-service.mock';
+
 
 describe('FileUtilsService', () => {
   let service: FileUtilsService;
   let alertServiceSpy: jasmine.SpyObj<AlertService>;
   let filesystemSpy: jasmine.SpyObj<FilesystemLike>;
+  let translateServiceMock = createTranslateServiceMock();
 
   beforeEach(() => {
     alertServiceSpy = jasmine.createSpyObj('AlertService', [
@@ -34,8 +37,7 @@ describe('FileUtilsService', () => {
       providers: [
         FileUtilsService,
         { provide: AlertService, useValue: alertServiceSpy },
-        { provide: TranslateService, useValue: {} },
-        TranslateStore,
+        { provide: TranslateService, useValue: translateServiceMock },
         { provide: FILESYSTEM, useValue: filesystemSpy },
       ],
     });
@@ -351,7 +353,7 @@ describe('FileUtilsService', () => {
       expect(result).toBeTrue();
     });
 
-    it('should return false and show storage permission error on native platforms if permission is denied', async () => {
+    it('should return false and show storage permission error on native platform if permission is denied', async () => {
       // Arrange
       (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(true);
       filesystemSpy.checkPermissions.and.returnValue(

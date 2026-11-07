@@ -15,6 +15,4 @@ import { LogoType } from 'src/app/enums';
 export class GetMobileAppComponent {
   @Input() lang: string | undefined = 'en';
   LogoType = LogoType;
-
-  constructor() {}
 }

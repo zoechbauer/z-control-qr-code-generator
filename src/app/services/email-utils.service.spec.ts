@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { AlertController } from '@ionic/angular';
 import { Capacitor } from '@capacitor/core';
-import { TranslateService, TranslateStore } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
+import { createTranslateServiceMock } from '@testing/translate-service.mock';
 import { EMAIL_COMPOSER, EmailUtilsService } from './email-utils.service';
 import { AlertService } from './alert.service';
 import { FILESYSTEM, FilesystemLike } from './filesystem.token';
@@ -110,9 +111,7 @@ describe('EmailUtilsService', () => {
     });
 
     // TranslateService
-    translateSpy = jasmine.createSpyObj('TranslateService', ['instant', 'get']);
-    translateSpy.instant.and.callFake((key: string) => key);
-    translateSpy.get.and.callFake((key: string) => of(key));
+    translateSpy = createTranslateServiceMock();
 
     // EmailComposer
     emailComposerMock = {
@@ -129,7 +128,6 @@ describe('EmailUtilsService', () => {
         { provide: AlertService, useValue: alertServiceSpy },
         { provide: AlertController, useValue: alertControllerSpy },
         { provide: TranslateService, useValue: translateSpy },
-        TranslateStore,
         { provide: EMAIL_COMPOSER, useValue: emailComposerMock },
         { provide: FILESYSTEM, useValue: filesystemSpy },
         { provide: FileUtilsService, useValue: fileServiceSpy },
@@ -147,7 +145,9 @@ describe('EmailUtilsService', () => {
   });
 
   describe('send Email on native platform', () => {
-    it('should load saved email addresses and include them in the "to" field when sending email on native platform', async () => {
+    const TEST_NAME = 'should load saved email addresses and include them in the "to" field ' + 
+    'when sending email on native platform';
+    it(TEST_NAME, async () => {
       // Arrange
       localStorageSpy.savedEmailAddresses = [
         'test1@example.com',
@@ -263,7 +263,7 @@ describe('EmailUtilsService', () => {
 
       expect(paths.some((p) => p.endsWith(fileNamePdf))).toBeTrue();
       expect(paths.some((p) => p.endsWith(fileNamePng))).toBeTrue();
-      expect(attachments.length).toBe(2);
+      expect(attachments).toHaveSize(2);
 
       expect(service.isEmailSent).toBeTrue();
     });

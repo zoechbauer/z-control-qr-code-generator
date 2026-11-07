@@ -3,7 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 import { UtilsService } from './utils.service';
-import { WindowMockUtil } from 'src/test-utils/window-mock.util';
+import { WindowMockUtil } from '@testing/window-mock.util';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
 import { MarkdownViewerComponent } from '../ui/components/markdown-viewer/markdown-viewer.component';
 import { Tab } from '../enums';

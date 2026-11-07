@@ -47,11 +47,17 @@ export class EmailMaintenanceComponent implements OnInit {
     public toastService: ToastService
   ) {}
 
+  /**
+   * Initializes the component and local storage.
+   */
   ngOnInit() {
-    this.localStorage.init();
+    void this.localStorage.init();
   }
 
-  handleAddEmailAddressButtonClick() {
+  /**
+   * Handles the click event for adding a new email address.
+   */
+  async handleAddEmailAddressButtonClick() {
     if (
       !this.newEmailAddressValue ||
       !this.validationService.isValidEmailAddress(this.newEmailAddressValue)
@@ -65,11 +71,13 @@ export class EmailMaintenanceComponent implements OnInit {
     }
 
     // Add email and clear input
-    this.addEmailAddress(this.newEmailAddressValue).then(() => {
-      this.newEmailAddressValue = '';
-    });
+    await this.addEmailAddress(this.newEmailAddressValue);
+    this.newEmailAddressValue = '';
   }
 
+  /**
+   * Adds a new email address to the local storage.
+   */
   async addEmailAddress(newEmailAddress: string) {
     if (typeof newEmailAddress === 'string') {
       const result: EmailAddressStatus =
@@ -86,6 +94,9 @@ export class EmailMaintenanceComponent implements OnInit {
     }
   }
 
+  /**
+   * Deletes an email address from the local storage.
+   */
   async deleteEmailAddress(index: number) {
     if (typeof index === 'number') {
       const result: EmailAddressStatus =

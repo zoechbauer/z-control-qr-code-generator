@@ -19,14 +19,15 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Capacitor } from '@capacitor/core';
 import { Keyboard } from '@capacitor/keyboard';
 
+import { createTranslateServiceMock } from '@testing/translate-service.mock';
 import { QrUtilsService } from '../services/qr-utils.service';
 import { EmailUtilsService } from '../services/email-utils.service';
 import { LocalStorageService } from '../services/local-storage.service';
 import { FileUtilsService } from '../services/file-utils.service';
 import { AlertService } from '../services/alert.service';
 import { TabQrPage, Workflow } from './tab-qr.page';
-import { environment } from 'src/environments/environment';
-import { WindowMockUtil } from 'src/test-utils/window-mock.util';
+import { environment } from '@env/environment';
+import { WindowMockUtil } from '@testing/window-mock.util';
 import { PrintUtilsService } from '../services/print-utils.service';
 import { HeaderComponent } from '../ui/components/header/header.component';
 import { UtilsService } from '../services/utils.service';
@@ -156,10 +157,6 @@ describe('TabQrPage', () => {
       'showToast',
       'showDisabledToast',
     ]);
-    const translateSpy = jasmine.createSpyObj<TranslateService>(
-      'TranslateService',
-      ['setDefaultLang', 'use', 'instant', 'get']
-    );
     const alertControllerSpy = jasmine.createSpyObj('AlertController', [
       'create',
     ]);
@@ -183,7 +180,7 @@ describe('TabQrPage', () => {
         { provide: LocalStorageService, useValue: localStorageSpy },
         { provide: FileUtilsService, useValue: fileUtilsSpy },
         { provide: ToastService, useValue: toastServiceSpy },
-        { provide: TranslateService, useValue: translateSpy },
+        { provide: TranslateService, useValue: createTranslateServiceMock() },
         { provide: PrintUtilsService, useValue: printUtilsSpy },
         { provide: AlertController, useValue: alertControllerSpy },
         { provide: ModalController, useValue: modalControllerSpy },
@@ -229,8 +226,6 @@ describe('TabQrPage', () => {
       Promise.resolve()
     );
     (qrUtilsSpy.clearQrFields as jasmine.Spy).and.returnValue(undefined);
-    translateSpy.instant.and.callFake((key: string) => key);
-    translateSpy.get.and.callFake((key: string) => of(key));
   });
 
   afterEach(() => {
@@ -795,9 +790,9 @@ describe('TabQrPage', () => {
 
     it('should handle empty input', () => {
       component.qrDataInput = { value: '' } as any;
-      
+
       component.sanitizeInputAndGenerateQRCode('');
-      
+
       expect(component.qrDataInput.value).toBe('');
       expect(qrUtilsService.generateQRCode).not.toHaveBeenCalled();
     });
@@ -805,18 +800,18 @@ describe('TabQrPage', () => {
     it('should handle maximum length input', () => {
       const maxInput = 'a'.repeat(environment.maxInputLength);
       component.qrDataInput = { value: maxInput } as any;
-      
+
       component.sanitizeInputAndGenerateQRCode(maxInput);
-      
+
       expect(qrUtilsService.generateQRCode).toHaveBeenCalledWith(maxInput);
     });
 
     it('should handle special characters', () => {
       const specialChars = "%$&'()*+,-./:;<=>?@[]^_`{|}~";
       component.qrDataInput = { value: specialChars } as any;
-      
+
       component.sanitizeInputAndGenerateQRCode(specialChars);
-      
+
       expect(qrUtilsService.generateQRCode).toHaveBeenCalledWith(specialChars);
     });
   });
@@ -1821,23 +1816,24 @@ describe('TabQrPage', () => {
     });
 
     it('should send email if QR code is generated', async () => {
-      spyOn(component, 'storeMailAndDeleteQRCode').and.returnValue(
-        Promise.resolve()
-      );
-      spyOn<any>(component, 'showWorkflowStep');
+      const storeMailSpy = spyOn(
+        component,
+        'storeMailAndDeleteQRCode'
+      ).and.resolveTo();
+      const wfSpy = spyOn<any>(component, 'showWorkflowStep');
       component.qrService.isQrCodeGenerated = true;
 
-      component.handleSendEmailButtonClick();
+      await component.handleSendEmailButtonClick();
 
-      expect(component.storeMailAndDeleteQRCode).toHaveBeenCalled();
-      expect((component as any).showWorkflowStep).toHaveBeenCalled();
+      expect(storeMailSpy).toHaveBeenCalled();
+      expect(wfSpy).toHaveBeenCalled();
     });
 
-    it('should show toast if QR Code is not generated', () => {
+    it('should show toast if QR Code is not generated', async () => {
       toastService.showDisabledToast.and.returnValue(Promise.resolve());
       component.qrService.isQrCodeGenerated = false;
 
-      component.handleSendEmailButtonClick();
+      await component.handleSendEmailButtonClick();
 
       expect(toastService.showDisabledToast).toHaveBeenCalledWith(
         'TOOLTIP_EMAIL_NO_QR_GENERATED',
@@ -1851,8 +1847,7 @@ describe('TabQrPage', () => {
       spyOn(console, 'error');
       component.qrService.isQrCodeGenerated = false;
 
-      component.handleSendEmailButtonClick();
-      await Promise.resolve();
+      await component.handleSendEmailButtonClick();
 
       expect(console.error).toHaveBeenCalledWith(
         'Error presenting toast:',
@@ -2129,7 +2124,10 @@ describe('TabQrPage', () => {
       expect(openHelpModalSpy).toHaveBeenCalledWith('web-version');
     });
 
-    it('should call openModalToSection with floating-keyboard when "show help floating keyboard" button is pressed', async () => {
+    const TEST_NAME =
+      'should call openModalToSection with floating-keyboard when ' +
+      '"show help floating keyboard" button is pressed';
+    it(TEST_NAME, async () => {
       const openHelpModalSpy = spyOn<any>(
         component,
         'openHelpModalToSection'
@@ -2213,7 +2211,7 @@ describe('TabQrPage', () => {
 
     it('should handle empty copiedText gracefully', async () => {
       await (component as any).showCopySuccessAlert('');
-      
+
       const config = alertController.create.calls.mostRecent().args[0] || {};
       expect(config.message).toContain('""');
       expect(mockAlert.present).toHaveBeenCalled();
@@ -2284,9 +2282,9 @@ describe('TabQrPage', () => {
         document.body,
         'appendChild'
       ).and.callThrough();
-      const removeChildSpy = spyOn(
-        document.body,
-        'removeChild'
+      const textAreaRemoveSpy = spyOn(
+        HTMLElement.prototype,
+        'remove'
       ).and.callThrough();
       const execCommandSpy = spyOn(document, 'execCommand').and.returnValue(
         true
@@ -2298,7 +2296,7 @@ describe('TabQrPage', () => {
       // Assert
       expect(appendChildSpy).toHaveBeenCalled();
       expect(execCommandSpy).toHaveBeenCalledWith('copy');
-      expect(removeChildSpy).toHaveBeenCalled();
+      expect(textAreaRemoveSpy).toHaveBeenCalled();
       expect((component as any).showCopySuccessAlert).toHaveBeenCalledWith(
         'copied QR text'
       );

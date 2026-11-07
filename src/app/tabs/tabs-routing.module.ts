@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
 
+/**
+ * Defines the routes for the tabs component.
+ */
 const routes: Routes = [
   {
     path: '',

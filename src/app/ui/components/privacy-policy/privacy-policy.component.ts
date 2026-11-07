@@ -4,7 +4,7 @@ import { NgIf, NgTemplateOutlet } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { LogoComponent } from '../logo/logo.component';
-import { LogoType } from 'src/app/enums';
+import { LogoType } from '@app/enums';
 
 @Component({
   selector: 'app-privacy-policy',
@@ -16,6 +16,4 @@ import { LogoType } from 'src/app/enums';
 export class PrivacyPolicyComponent {
   @Input() lang: string | undefined = 'en';
   LogoType = LogoType;
-
-  constructor() {}
 }

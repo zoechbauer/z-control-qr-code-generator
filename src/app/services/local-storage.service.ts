@@ -36,10 +36,17 @@ export class LocalStorageService {
     private readonly validationService: ValidationService
   ) {}
 
+  /**
+   * Initializes the local storage service.
+   * Must be called before using other methods.
+   */
   async init() {
     await this.initStorage();
   }
 
+  /**
+   * Initializes the storage by creating it and loading saved data.
+   */
   private async initStorage() {
     await this.storage.create();
     await this.loadSavedEmailAddresses();
@@ -47,11 +54,18 @@ export class LocalStorageService {
     await this.loadSelectedOrDefaultLanguage();
   }
 
+  /**
+   * Gets the mobile device's default language.
+   * @returns The default language code (e.g., "de" or "en").
+   */ 
   getMobileDefaultLanguage(): string {
     const lang = navigator.language.split('-')[0]; // e.g. "de-DE" -> "de"
     return /(de|en)/gi.test(lang) ? lang : 'en';
   }
 
+  /**
+   * Loads the selected language from storage or defaults to the mobile device's language.
+   */
   async loadSelectedOrDefaultLanguage() {
     const selectedLanguage = await this.storage.get(
       LocalStorage.SelectedLanguage
@@ -66,6 +80,10 @@ export class LocalStorageService {
     }
   }
 
+  /**
+   * Saves the selected language to storage.
+   * @param language The language code to save.
+   */
   async saveSelectedLanguage(language: string) {
     try {
       await this.storage.set(
@@ -78,6 +96,9 @@ export class LocalStorageService {
     }
   }
 
+  /**
+   * Loads the saved email addresses from storage.
+   */
   async loadSavedEmailAddresses() {
     const emailAddresses = await this.storage.get(
       LocalStorage.SavedEmailAddresses
@@ -90,6 +111,11 @@ export class LocalStorageService {
     this.savedEmailAddressesSubject.next(this.savedEmailAddresses);
   }
 
+  /**
+   * Deletes an email address at the specified index.
+   * @param index The index of the email address to delete.
+   * @returns The status of the deletion operation.
+   */
   async deleteEmailAddress(index: number): Promise<EmailAddressStatus> {
     if (index >= 0 && index < this.savedEmailAddresses.length) {
       this.savedEmailAddresses.splice(index, 1);
@@ -103,6 +129,11 @@ export class LocalStorageService {
     return EmailAddressStatus.NotFound;
   }
 
+  /**
+   * Saves a new email address to storage.
+   * @param emailAddress The email address to save.
+   * @returns The status of the save operation.
+   */
   async saveEmailAddress(emailAddress: string): Promise<EmailAddressStatus> {
     try {
       const sanitizedEmailAddress =
@@ -133,6 +164,9 @@ export class LocalStorageService {
     return EmailAddressStatus.Added;
   }
 
+  /**
+   * Loads the saved print settings from storage or defaults to the default print settings.
+   */
   async loadPrintSettings() {
     const printSettings = await this.storage.get(
       LocalStorage.SavedPrintSettings
@@ -140,12 +174,16 @@ export class LocalStorageService {
     if (printSettings) {
       this.savedPrintSettings = JSON.parse(printSettings);
     } else {
-      this.savePrintSettings(this.defaultPrintSettings);
+      await this.savePrintSettings(this.defaultPrintSettings);
       this.savedPrintSettings = this.defaultPrintSettings;
     }
     this.savedPrintSettingsSubject.next(this.savedPrintSettings);
   }
 
+  /**
+   * Saves the print settings to storage.
+   * @param settings The print settings to save.
+   */
   async savePrintSettings(settings: PrintSettings) {
     try {
       await this.storage.set(
@@ -158,6 +196,9 @@ export class LocalStorageService {
     }
   }
 
+  /**
+   * Returns the default print settings.
+   */
   private get defaultPrintSettings(): PrintSettings {
     return {
       size: QrCodeSize.MEDIUM,

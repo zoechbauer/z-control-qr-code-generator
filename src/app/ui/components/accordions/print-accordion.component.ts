@@ -17,7 +17,7 @@ import {
   QrCodeSize,
   QrCodeGapSize,
   QrCodesCountPerPage,
-} from './../../../enums';
+} from '@app/enums';
 import {
   PrintSettings,
   PrintUtilsService,
@@ -79,11 +79,18 @@ export class PrintAccordionComponent implements OnInit, OnDestroy {
     private readonly localStorageService: LocalStorageService
   ) {}
 
+  /**
+   * Initializes the component by loading available print settings and setting up subscriptions.
+   */
   ngOnInit() {
     this.loadAvailablePrintSettings();
     this.setupSubscriptions();
   }
 
+  /**
+   * Sets up subscriptions to listen for changes in saved print settings.
+   * Updates the component state accordingly.
+   */
   private setupSubscriptions() {
     this.subs.add(
       this.localStorageService.savedPrintSettings$.subscribe((settings) => {
@@ -98,10 +105,16 @@ export class PrintAccordionComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * Cleans up subscriptions when the component is destroyed.
+   */
   getPrintSettings(): string {
     return this.printUtilsService.getConvertedPrintSettings();
   }
 
+  /**
+   * Calculates the number of QR codes per page based on the selected settings.
+   */
   get calculatedNumberOfQrCodesPerPage(): number {
     if (
       this.selectedTypeOfQrCodesPerPage === QrCodesCountPerPage.CUSTOM_NUMBER
@@ -114,6 +127,9 @@ export class PrintAccordionComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * Gets the maximum calculated number of QR codes per page based on the selected settings.
+   */
   get maxCalculatedNumberOfQrCodesPerPage(): number {
     return this.printUtilsService.getCalculatedNumberOfQrCodesPerPage(
       this.selectedQrCodeSize,
@@ -121,7 +137,10 @@ export class PrintAccordionComponent implements OnInit, OnDestroy {
     );
   }
 
-  onPrintSettingChange() {
+  /**
+   * Handles changes to the print settings and updates the saved settings accordingly.
+   */
+  async onPrintSettingChange() {
     let numberOfQrCodes = this.maxCalculatedNumberOfQrCodesPerPage;
     if (
       this.selectedTypeOfQrCodesPerPage === QrCodesCountPerPage.CUSTOM_NUMBER
@@ -143,10 +162,13 @@ export class PrintAccordionComponent implements OnInit, OnDestroy {
       numberOfQrCodesPerPage: numberOfQrCodes,
     };
 
-    this.localStorageService.savePrintSettings(settings);
+    await this.localStorageService.savePrintSettings(settings);
   }
 
-  onNumberOfQrCodesChange(event: any) {
+  /**
+   * Handles changes to the number of QR codes per page and updates the saved settings accordingly.
+   */
+  async onNumberOfQrCodesChange(event: any) {
     const value = Number(event.target.value);
     const maxValue = this.maxCalculatedNumberOfQrCodesPerPage;
 
@@ -163,9 +185,12 @@ export class PrintAccordionComponent implements OnInit, OnDestroy {
       typeOfQrCodesPerPage: this.selectedTypeOfQrCodesPerPage,
       numberOfQrCodesPerPage: this.selectedNumberOfQrCodesPerPage,
     };
-    this.localStorageService.savePrintSettings(settings);
+    await this.localStorageService.savePrintSettings(settings);
   }
 
+  /**
+   * Shows an error toast indicating the maximum allowed value.
+   */
   private showErrorToast(maxValue: number) {
     const toastMessage = this.translate.instant('TOAST_INVALID_VALUE_ENTERED', {
       max: maxValue,
@@ -173,6 +198,9 @@ export class PrintAccordionComponent implements OnInit, OnDestroy {
     this.toastService.showToast(toastMessage);
   }
 
+  /**
+   * Loads the available print settings such as QR code sizes and gap sizes.
+   */
   private loadAvailablePrintSettings() {
     const { qrCodeSizes, qrCodeGapSizes } =
       this.printUtilsService.getAvailableQrCodeSizesAndGapSizes();
@@ -191,6 +219,9 @@ export class PrintAccordionComponent implements OnInit, OnDestroy {
     ];
   }
 
+  /**
+   * Cleans up any subscriptions when the component is destroyed.
+   */
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }

@@ -2,6 +2,31 @@
 
 All recent updates and improvements to our **z-control QR Code Generator** app.
 
+## [2.6] - 2026-11-08
+
+### 🔧 Internal
+
+- Cleaned up the TypeScript configuration by adding the project references section and removing outdated settings to improve module resolution and overall project consistency.
+- Updated `variables.gradle` to target Android SDK 36 and minimum SDK 24, aligning the app with the latest Android requirements and Play Store expectations.
+- Added TypeScript path aliases such as `@app`, `@env`, and `@testing` to simplify imports and make the codebase easier to navigate.
+- Updated imports across the project to use the new alias structure for better readability and maintainability.
+- Improved internal code organization with small refactors and cleanup work across the app.
+- Moved shared testing helpers from `src/test-utils` to `src/app/testing` to match the new structure and alias setup.
+- Added a reusable `createTranslateServiceMock()` test utility to streamline unit tests and keep mocking patterns consistent across the app.
+- Added missing function documentation to improve code clarity and maintainability.
+- Added documentation for upgrading to Angular 20.
+
+### 🐛 Fixes
+
+- Tightened linting rules and resolved the resulting lint and SonarQube findings.
+- Updated and stabilized unit tests after changes to the tab navigation and header behavior.
+- Test suite status: **371 specs passing with 98.9% statement coverage**.
+
+### 📦 Installations
+
+- **Web (Firebase)**: The latest web version has been published and is available via the hosting URL.
+- **Mobile (Google Play)**: A new mobile APK/AAB has been published.
+
 ## [2.5] – 2025-10-31 (Web-only release – Firebase)
 
 ### 🚀 Improvements

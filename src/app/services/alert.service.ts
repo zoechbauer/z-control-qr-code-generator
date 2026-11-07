@@ -15,6 +15,10 @@ export class AlertService {
     private readonly translate: TranslateService
   ) {}
 
+  /**
+   * Shows an error alert with a translated title and message.
+   * @param errorKey The translation key for the error message.
+   */
   async showErrorAlert(errorKey: string) {
     const errorMessage = await lastValueFrom(this.translate.get(errorKey));
     const errorTitle = await lastValueFrom(
@@ -31,6 +35,9 @@ export class AlertService {
     await alert.present();
   }
 
+  /**
+   * Shows a storage permission error alert with translated title, subheader, and message.
+   */
   async showStoragePermissionError(): Promise<void> {
     const alert = await this.alertController.create({
       header: await lastValueFrom(

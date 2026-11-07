@@ -3,9 +3,9 @@ import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
-import { LocalStorageService } from '../services/local-storage.service';
-import { UtilsService } from './../services/utils.service';
-import { environment } from 'src/environments/environment';
+import { LocalStorageService } from '@app/services/local-storage.service';
+import { UtilsService } from '@app/services/utils.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-help-modal',
@@ -13,7 +13,8 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./help-modal.component.scss'],
 })
 export class HelpModalComponent implements OnInit, OnDestroy {
-  @Input() scrollToSection?: string; // Optional: ID of the section to scroll to when the modal opens (e.g., 'floating-keyboard' or 'web-version')
+  @Input() scrollToSection?: string; // Optional: ID of the section to scroll to when the modal opens 
+  // (e.g., 'floating-keyboard' or 'web-version')
 
   readonly scrollToTopObj = {
     id: 'toc-DE',
@@ -32,30 +33,53 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     private readonly localStorage: LocalStorageService
   ) {}
 
+  /**
+   * Returns true if the app is running in a native environment, false otherwise.
+   */
   get isNative(): boolean {
     return this.utilsService.isNative;
   }
 
+  /**
+   * Returns the help text for the email subject, 
+   * depending on whether the app is running natively or on the web.
+   */
   get emailSubjectHelpText(): string {
     const key = this.isNative ? 'HELP_EMAIL_SUBJECT' : 'HELP_EMAIL_SUBJECT_WEB';
     return this.translate.instant(key);
   }
 
+  /**
+   * Returns the help text for the language change button, 
+   * depending on whether the app is running natively or on the web.
+   */
   get languageChangeButtonHelpText(): string {
     const key = this.isNative
       ? 'HELP_LANGUAGE_CHANGE_BUTTON'
       : 'HELP_LANGUAGE_CHANGE_WEB_BUTTON';
     return this.translate.instant(key);
   }
+
+  /**
+   * Returns the help text for the device information, 
+   * depending on whether the app is running natively or on the web.
+   */
   get deviceText(): string {
     const key = this.isNative ? 'HELP_DEVICE_TEXT' : 'HELP_DEVICE_TEXT_WEB';
     return this.translate.instant(key);
   }
 
+  /**
+   * Returns the help text for the floating keyboard section,
+   * depending on whether the app is running natively or on the web.
+   */
   private readonly orientationListener = () => {
     this.isPortrait = this.utilsService.isPortrait;
   };
 
+  /**
+   * Listens for orientation changes and updates the isPortrait property accordingly.
+   */
   ngOnInit() {
     // Scroll to specific section if provided
     if (this.scrollToSection) {
@@ -74,6 +98,9 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     this.orientationListener();
   }
 
+  /**
+   * Sets the scrollToTopObj based on the selected language.
+   */
   private setScrollToTopObj() {
     if (this.selectedLanguage === 'de') {
       this.scrollToTopObj.id = 'toc-DE';
@@ -84,14 +111,23 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  dismissModal() {
-    this.modalController.dismiss();
+  /**
+   * Dismisses the help modal.
+   */
+  async dismissModal() {
+    await this.modalController.dismiss();
   }
 
+  /**
+   * Scrolls to the top of the help modal based on the scrollToTopObj.
+   */
   scrollToTop() {
     this.utilsService.scrollToElement(this.scrollToTopObj.id);
   }
 
+  /**
+   * Cleans up subscriptions and event listeners when the component is destroyed.
+   */
   ngOnDestroy() {
     this.langSub?.unsubscribe();
     window.removeEventListener('resize', this.orientationListener);

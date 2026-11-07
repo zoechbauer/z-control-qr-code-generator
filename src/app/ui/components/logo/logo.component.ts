@@ -22,22 +22,34 @@ export class LogoComponent implements OnInit, OnChanges {
   rightLogoText: string = '';
   LogoType = LogoType;
 
+  /**
+   * Adds a resize event listener to update the logo text when the window is resized.
+   */
   constructor() {
     window.addEventListener('resize', () => {
       this.setLogoText();
     });
   }
 
+  /**
+   * Sets the initial logo text based on the component type and screen orientation.
+   */
   ngOnInit(): void {
     this.setLogoText();
   }
 
+  /**
+   * Responds to changes in the input properties.
+   */
   ngOnChanges(changes: SimpleChanges) {
     if (changes['type']) {
       this.setLogoText();
     }
   }
 
+  /**
+   * Sets the logo text based on the component type and screen orientation.
+   */
   private setLogoText(): void {
     this.leftLogoText = '';
     this.rightLogoText = '';
@@ -51,6 +63,9 @@ export class LogoComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Returns true if the screen is in portrait orientation.
+   */
   private get isPortrait(): boolean {
     return window.matchMedia('(orientation: portrait)').matches;
   }

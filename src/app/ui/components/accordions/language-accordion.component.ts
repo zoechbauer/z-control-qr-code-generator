@@ -31,6 +31,10 @@ export class LanguageAccordionComponent {
 
   constructor(public translate: TranslateService) {}
 
+  /**
+   * Handles changes to the selected language.
+   * @param event The event containing the new language value.
+   */
   onLanguageChange(event: any) {
     this.ionChange.emit(this.lang);
   }

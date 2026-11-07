@@ -15,20 +15,35 @@ export class ToastService {
     private readonly utilsService: UtilsService
   ) {}
 
+  /**
+   * Shows a disabled toast message with the given translation key and optional anchor ID.
+   * @param toastMsg The translation key for the toast message.
+   * @param anchorId The optional anchor ID for positioning the toast.
+   */
   async showDisabledToast(toastMsg: string, anchorId?: ToastAnchor) {
     const translatedMsg = this.translate.instant(toastMsg);
 
-    this.showToastMessage(translatedMsg, anchorId).catch((error) => {
+    await this.showToastMessage(translatedMsg, anchorId).catch((error) => {
       console.error('Error presenting toast:', error);
     });
   }
 
+  /**
+   * Shows a toast message with the given translated message and optional anchor ID.
+   * @param translatedToastMessage The translated message to display in the toast.
+   * @param anchorId The optional anchor ID for positioning the toast.
+   */
   showToast(translatedToastMessage: string, anchorId?: ToastAnchor): void {
     this.showToastMessage(translatedToastMessage, anchorId).catch((error) => {
       console.error('Error presenting toast:', error);
     });
   }
 
+  /**
+   * Shows a toast message with the given translated message and optional anchor ID.
+   * @param translatedToastMessage The translated message to display in the toast.
+   * @param anchorId The optional anchor ID for positioning the toast.
+   */
   async showToastMessage(
     translatedToastMessage: string,
     anchorId?: ToastAnchor
@@ -56,6 +71,10 @@ export class ToastService {
     await toast.present();
   }
 
+  /**
+   * Determines the position of the toast based on the device type.
+   * @returns 'top' for mobile devices and 'bottom' for desktop devices.
+   */
   private getToastPosition(): 'top' | 'bottom' {
     if (this.utilsService.isDesktop) {
       return 'bottom';
@@ -64,6 +83,11 @@ export class ToastService {
     return 'top';
   }
 
+  /**
+   * Determines the anchor element for the toast based on the device type and optional anchor ID.
+   * @param anchorId The optional anchor ID for positioning the toast.
+   * @returns The anchor element ID or undefined if no anchor should be set.
+   */
   private getToastAnchor(anchorId?: ToastAnchor): string | undefined {
     if (this.utilsService.isDesktop) {
       return undefined; // Do not set anchor on desktop

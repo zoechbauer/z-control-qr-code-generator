@@ -20,6 +20,10 @@ export class QrUtilsService {
     private readonly printUtilsService: PrintUtilsService
   ) {}
 
+  /**
+   * Generates a QR code for the given data.
+   * @param data The data to encode in the QR code.
+   */
   generateQRCode(data: string | null | undefined) {
     try {
       this.myAngularxQrCode = data ?? '';
@@ -31,6 +35,9 @@ export class QrUtilsService {
     }
   }
 
+  /**
+   * Prints the generated QR code as a PDF.
+   */
   async printQRCode() {
     const fileName = this.fileUtilsService.fileNamePdf;
 
@@ -52,7 +59,7 @@ export class QrUtilsService {
           // await Plugins.FileOpener.open({ filePath: result.uri, contentType: 'application/pdf' });
         } catch (error) {
           console.error('Error saving PDF:', error);
-          this.alertService.showStoragePermissionError();
+          await this.alertService.showStoragePermissionError();
         }
       } else {
         console.error('Canvas not found');
@@ -64,11 +71,18 @@ export class QrUtilsService {
     }
   }
 
+  /**
+   * Sets the download link for the generated QR code.
+   * @param url The safe URL of the QR code image.
+   */
   setDownloadLink(url: SafeUrl) {
     this.qrCodeDownloadLink =
       this.sanitizer.sanitize(SecurityContext.URL, url) ?? '';
   }
 
+  /**
+   * Clears the QR code fields and removes the extra margin class if present.
+   */
   clearQrFields(): void {
     this.isQrCodeGenerated = false;
     this.qrCodeDownloadLink = '';

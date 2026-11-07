@@ -1,14 +1,16 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { TranslateService } from '@ngx-translate/core';
-import { ModalController } from '@ionic/angular';
-import { of } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { IonicModule, ModalController } from '@ionic/angular';
+import { of, Subject } from 'rxjs';
 
-import * as environmentImport from 'src/environments/environment';
+import { createTranslateServiceMock } from '@testing/translate-service.mock';
+import * as environmentImport from '@env/environment';
 import { TabSettingsPage } from './tab-settings.page';
 import { LocalStorageService } from '../services/local-storage.service';
 import { UtilsService } from '../services/utils.service';
@@ -16,14 +18,9 @@ import { UtilsService } from '../services/utils.service';
 describe('TabSettingsPage', () => {
   let component: TabSettingsPage;
   let fixture: ComponentFixture<TabSettingsPage>;
+  let utilsServiceSpy: jasmine.SpyObj<UtilsService>;
 
   beforeEach(async () => {
-    const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
-      'instant',
-      'get',
-      'use',
-      'setDefaultLang',
-    ]);
     const localStorageServiceSpy = jasmine.createSpyObj(
       'LocalStorageService',
       ['saveSelectedLanguage'],
@@ -37,14 +34,27 @@ describe('TabSettingsPage', () => {
       'present',
     ]);
 
+    const logoClickedSub = new Subject<boolean>();
+    utilsServiceSpy = jasmine.createSpyObj(
+      'UtilsService',
+      ['openChangelog', 'openHelpModal', 'showOrHideIonTabBar'],
+      {
+        isNative: false,
+        logoClickedSub,
+        logoClicked$: logoClickedSub.asObservable(),
+      }
+    );
+
     await TestBed.configureTestingModule({
-      imports: [],
+      declarations: [TabSettingsPage],
+      imports: [IonicModule.forRoot(), TranslateModule.forRoot()],
       providers: [
-        { provide: TranslateService, useValue: translateServiceSpy },
+        { provide: TranslateService, useValue: createTranslateServiceMock() },
         { provide: LocalStorageService, useValue: localStorageServiceSpy },
         { provide: ModalController, useValue: modalControllerSpy },
-        UtilsService,
+        { provide: UtilsService, useValue: utilsServiceSpy },
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TabSettingsPage);
@@ -85,23 +95,17 @@ describe('TabSettingsPage', () => {
 
   describe('openChangelog method', () => {
     it('should call utilsService.openChangelog', async () => {
-      const utilsService = TestBed.inject(UtilsService);
-      spyOn(utilsService, 'openChangelog').and.returnValue(Promise.resolve());
-
+      const openChangelogSpy = utilsServiceSpy.openChangelog;
       component.openChangelog();
-
-      expect(utilsService.openChangelog).toHaveBeenCalled();
+      expect(openChangelogSpy).toHaveBeenCalled();
     });
   });
 
   describe('openHelpModal method', () => {
     it('should call utilsService.openHelpModal', async () => {
-      const utilsService = TestBed.inject(UtilsService);
-      spyOn(utilsService, 'openHelpModal').and.returnValue(Promise.resolve());
-
+      utilsServiceSpy.openHelpModal.and.returnValue(Promise.resolve());
       component.openHelpModal();
-
-      expect(utilsService.openHelpModal).toHaveBeenCalled();
+      expect(utilsServiceSpy.openHelpModal).toHaveBeenCalled();
     });
   });
 
@@ -111,13 +115,12 @@ describe('TabSettingsPage', () => {
     });
 
     it('should call showOrHideIonTabBar and setup subscriptions and event listeners on ngOnInit', () => {
-      spyOn(component['utilsService'], 'showOrHideIonTabBar');
       spyOn(component as any, 'setupEventListeners');
       spyOn(component as any, 'setupSubscriptions');
 
       component.ngOnInit();
 
-      expect(component['utilsService'].showOrHideIonTabBar).toHaveBeenCalled();
+      expect(utilsServiceSpy.showOrHideIonTabBar).toHaveBeenCalled();
       expect((component as any).setupEventListeners).toHaveBeenCalled();
       expect((component as any).setupSubscriptions).toHaveBeenCalled();
       expect(component.showAllAccordions).toBeTrue();
@@ -165,31 +168,24 @@ describe('TabSettingsPage', () => {
     });
 
     it('should set openAccordion to "z-control" after logoClickedSub emits and timeout', fakeAsync(() => {
-      const utilsService = TestBed.inject(UtilsService);
-
       component.ngOnInit();
-      utilsService.logoClickedSub.next(true);
+      utilsServiceSpy.logoClickedSub.next(true);
       tick(600);
 
       expect(component.openAccordion).toBe('z-control');
     }));
   });
 
-  describe('isNative', () => {
-    let utilsService: UtilsService;
-
-    beforeEach(() => {
-      utilsService = TestBed.inject(UtilsService);
-    });
-
-    it('should return true for isNative from utilsService', () => {
-      spyOnProperty(utilsService, 'isNative', 'get').and.returnValue(true);
-      expect(component.isNative).toBeTrue();
-    });
-
-    it('should return false for isNative from utilsService', () => {
-      spyOnProperty(utilsService, 'isNative', 'get').and.returnValue(false);
+  describe('get isNative', () => {
+    it('should return false when utilsService.isNative is false', () => {
       expect(component.isNative).toBeFalse();
+    });
+
+    it('should return true when utilsService.isNative is true', () => {
+      Object.defineProperty(utilsServiceSpy, 'isNative', {
+        get: () => true,
+      });
+      expect(component.isNative).toBeTrue();
     });
   });
 
@@ -202,22 +198,41 @@ describe('TabSettingsPage', () => {
       translate = TestBed.inject(TranslateService);
     });
 
-    it('should handle language change', () => {
+    it('should handle language change', async () => {
       const event = { detail: { value: 'en' } };
-      
-      component.onLanguageChange(event);
+
+      await component.onLanguageChange(event);
 
       expect(localStorage.saveSelectedLanguage).toHaveBeenCalledWith('en');
       expect(translate.use).toHaveBeenCalledWith('en');
       expect(translate.setDefaultLang).toHaveBeenCalledWith('en');
     });
 
-    it('should not call anything if language is missing in onLanguageChange', () => {
-      component.onLanguageChange({ detail: {} });
+    it('should not call anything if language is missing in onLanguageChange', async () => {
+      await component.onLanguageChange({ detail: {} });
 
       expect(localStorage.saveSelectedLanguage).not.toHaveBeenCalled();
       expect(translate.use).not.toHaveBeenCalled();
       expect(translate.setDefaultLang).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('setupEventListeners', () => {
+    it('should add resize event listeners', () => {
+      spyOn(window, 'addEventListener');
+
+      (component as any).setupEventListeners();
+
+      expect(window.addEventListener).toHaveBeenCalledWith(
+        'resize',
+        jasmine.any(Function)
+      );
+    });
+
+    it('should call showOrHideIonTabBar when window is resized', () => {
+      (component as any).setupEventListeners();
+      window.dispatchEvent(new Event('resize'));
+      expect(utilsServiceSpy.showOrHideIonTabBar).toHaveBeenCalled();
     });
   });
 });

@@ -28,10 +28,17 @@ export class EmailUtilsService {
     @Inject(EMAIL_COMPOSER) private readonly emailComposer: any
   ) {}
 
+  /**
+   * Returns whether an email has been sent.
+   */
   get isEmailSent(): boolean {
     return this.emailSent;
   }
 
+  /**
+   * Sends an email with the QR code attachments and appropriate subject and body.
+   * Handles both native and web platforms.
+   */
   async sendEmail() {
     await this.localStorage.loadSavedEmailAddresses();
 
@@ -62,10 +69,16 @@ export class EmailUtilsService {
     this.clearQrCodeFileNames();
   }
 
+  /**
+   * Clears the QR code file names from the file service.
+   */
   private clearQrCodeFileNames() {
     this.fileService.clearNowFormatted();
   }
 
+  /**
+   * Builds the email subject based on the QR code length, print settings, and platform.
+   */
   private buildMailSubject(): string {
     const prefix = this.translate.instant('EMAIL_SERVICE_MAIL_SUBJECT_PREFIX');
     const suffix = this.translate.instant('EMAIL_SERVICE_MAIL_SUBJECT_SUFFIX');
@@ -75,6 +88,9 @@ export class EmailUtilsService {
     return `${prefix}${qrLength}${suffix} ${printSettings}${webmail}`;
   }
 
+  /**
+   * Builds the email body for native platforms with QR code and printing information.
+   */
   private buildMailBodyNative(): string {
     const lineBreak = '\n';
     const qrCodeValue = this.qrService.myAngularxQrCode;
@@ -96,11 +112,15 @@ export class EmailUtilsService {
     const qrCodeTextLabel = mailBodyPrefixText;
 
     let mailBody = `${qrCodeTextLabel}${lineBreak}${lineBreak}${qrCodeText}${lineBreak}${lineBreak}`;
-    mailBody += `${printingInfo1} ${this.printUtilsService.getConvertedPrintSettings()} ${printingInfo2}${lineBreak}${lineBreak}${printingInfo3}`;
+    mailBody += `${printingInfo1} ${this.printUtilsService.getConvertedPrintSettings()} `;
+    mailBody += `${printingInfo2}${lineBreak}${lineBreak}${printingInfo3}`;
 
     return mailBody;
   }
 
+  /**
+   * Builds the email body for web platforms with QR code and printing information.
+   */
   private buildMailBodyWeb(): string {
     const lineBreak = '\n';
     const qrCodeValue = this.qrService.myAngularxQrCode;
@@ -145,6 +165,13 @@ export class EmailUtilsService {
     return mailBody;
   }
 
+  /**
+   * Sends a native email with the specified recipient, subject, body, and attachments.
+   * @param sendTo The recipient email address.
+   * @param subject The email subject.
+   * @param body The email body.
+   * @param attachments The email attachments.
+   */
   private async sendNativeEmail(
     sendTo: string,
     subject: string,
@@ -169,6 +196,12 @@ export class EmailUtilsService {
     }
   }
 
+  /**
+   * Sends a web email with the specified recipient, subject, and body.
+   * @param sendTo The recipient email address.
+   * @param subject The email subject.
+   * @param body The email body.
+   */
   private sendWebEmail(sendTo: string, subject: string, body: string) {
     try {
       const mailto = `mailto:${encodeURIComponent(
@@ -184,10 +217,18 @@ export class EmailUtilsService {
     }
   }
 
+  /**
+   * Navigates to the specified URL.
+   * @param url The URL to navigate to.
+   */
   private navigateTo(url: string) {
     window.location.href = url;
   }
 
+  /**
+   * Displays an alert informing the user about email attachments.
+   * @param onOkCallback The callback function to execute when the OK button is pressed.
+   */
   async displayEmailAttachmentAlert(onOkCallback: () => void) {
     const fileNamePng = this.fileService.fileNamePng;
     const fileNamePdf = this.fileService.fileNamePdf;
@@ -223,6 +264,9 @@ export class EmailUtilsService {
     await alert.present();
   }
 
+  /**
+   * Clears the email sent status.
+   */
   clearEmailSent() {
     this.emailSent = false;
   }
