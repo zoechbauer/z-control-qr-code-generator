@@ -1,5 +1,15 @@
 import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import {
+  IonToolbar,
+  IonTitle,
+  IonHeader,
+  IonIcon,
+  IonButton,
+  IonContent,
+  IonButtons,
+} from '@ionic/angular/standalone';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-manual-instructions-modal',
@@ -103,6 +113,16 @@ import { ModalController } from '@ionic/angular';
         flex-shrink: 0;
       }
     `,
+  ],
+  imports: [
+    IonButtons,
+    IonContent,
+    IonButton,
+    IonIcon,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    CommonModule,
   ],
 })
 export class ManualInstructionsModalComponent {

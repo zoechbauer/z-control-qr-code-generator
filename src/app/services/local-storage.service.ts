@@ -4,7 +4,12 @@ import { BehaviorSubject } from 'rxjs';
 
 import { ValidationService } from './validation.service';
 import { PrintSettings } from './print-utils.service';
-import { EmailAddressStatus, QrCodeGapSize, QrCodesCountPerPage, QrCodeSize } from '../enums';
+import {
+  EmailAddressStatus,
+  QrCodeGapSize,
+  QrCodesCountPerPage,
+  QrCodeSize,
+} from '../enums';
 
 enum LocalStorage {
   SavedEmailAddresses = 'savedEmailAddresses',
@@ -22,18 +27,18 @@ export class LocalStorageService {
 
   savedPrintSettings!: PrintSettings;
   savedPrintSettingsSubject = new BehaviorSubject<PrintSettings>(
-    this.defaultPrintSettings
+    this.defaultPrintSettings,
   );
   savedPrintSettings$ = this.savedPrintSettingsSubject.asObservable();
 
   selectedLanguageSubject = new BehaviorSubject<string>(
-    this.getMobileDefaultLanguage()
+    this.getMobileDefaultLanguage(),
   );
   selectedLanguage$ = this.selectedLanguageSubject.asObservable();
 
   constructor(
     private readonly storage: Storage,
-    private readonly validationService: ValidationService
+    private readonly validationService: ValidationService,
   ) {}
 
   /**
@@ -57,7 +62,7 @@ export class LocalStorageService {
   /**
    * Gets the mobile device's default language.
    * @returns The default language code (e.g., "de" or "en").
-   */ 
+   */
   getMobileDefaultLanguage(): string {
     const lang = navigator.language.split('-')[0]; // e.g. "de-DE" -> "de"
     return /(de|en)/gi.test(lang) ? lang : 'en';
@@ -68,11 +73,11 @@ export class LocalStorageService {
    */
   async loadSelectedOrDefaultLanguage() {
     const selectedLanguage = await this.storage.get(
-      LocalStorage.SelectedLanguage
+      LocalStorage.SelectedLanguage,
     );
 
     if (selectedLanguage) {
-      this.selectedLanguageSubject.next(JSON.parse(selectedLanguage));
+      this.selectedLanguageSubject.next(selectedLanguage);
     } else {
       const lang = this.getMobileDefaultLanguage();
       await this.saveSelectedLanguage(lang);
@@ -86,10 +91,7 @@ export class LocalStorageService {
    */
   async saveSelectedLanguage(language: string) {
     try {
-      await this.storage.set(
-        LocalStorage.SelectedLanguage,
-        JSON.stringify(language)
-      );
+      await this.storage.set(LocalStorage.SelectedLanguage, language);
       this.selectedLanguageSubject.next(language);
     } catch (error) {
       console.error('Error saving selected language:', error);
@@ -101,7 +103,7 @@ export class LocalStorageService {
    */
   async loadSavedEmailAddresses() {
     const emailAddresses = await this.storage.get(
-      LocalStorage.SavedEmailAddresses
+      LocalStorage.SavedEmailAddresses,
     );
     if (emailAddresses) {
       this.savedEmailAddresses = JSON.parse(emailAddresses);
@@ -121,7 +123,7 @@ export class LocalStorageService {
       this.savedEmailAddresses.splice(index, 1);
       await this.storage.set(
         LocalStorage.SavedEmailAddresses,
-        JSON.stringify(this.savedEmailAddresses)
+        JSON.stringify(this.savedEmailAddresses),
       );
       this.savedEmailAddressesSubject.next(this.savedEmailAddresses);
       return EmailAddressStatus.Removed;
@@ -153,7 +155,7 @@ export class LocalStorageService {
         this.savedEmailAddresses.push(sanitizedEmailAddress);
         await this.storage.set(
           LocalStorage.SavedEmailAddresses,
-          JSON.stringify(this.savedEmailAddresses)
+          JSON.stringify(this.savedEmailAddresses),
         );
         this.savedEmailAddressesSubject.next(this.savedEmailAddresses);
         return EmailAddressStatus.Added;
@@ -169,7 +171,7 @@ export class LocalStorageService {
    */
   async loadPrintSettings() {
     const printSettings = await this.storage.get(
-      LocalStorage.SavedPrintSettings
+      LocalStorage.SavedPrintSettings,
     );
     if (printSettings) {
       this.savedPrintSettings = JSON.parse(printSettings);
@@ -188,7 +190,7 @@ export class LocalStorageService {
     try {
       await this.storage.set(
         LocalStorage.SavedPrintSettings,
-        JSON.stringify(settings)
+        JSON.stringify(settings),
       );
       this.savedPrintSettingsSubject.next(settings);
     } catch (error) {

@@ -2,6 +2,16 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import {
+  IonToolbar,
+  IonTitle,
+  IonHeader,
+  IonIcon,
+  IonButton,
+  IonContent,
+  IonButtons,
+} from '@ionic/angular/standalone';
+import { CommonModule } from '@angular/common';
 
 import { LocalStorageService } from '@app/services/local-storage.service';
 import { UtilsService } from '@app/services/utils.service';
@@ -11,6 +21,16 @@ import { environment } from '@env/environment';
   selector: 'app-help-modal',
   templateUrl: './help-modal.component.html',
   styleUrls: ['./help-modal.component.scss'],
+    imports: [
+    IonButtons,
+    IonContent,
+    IonButton,
+    IonIcon,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    CommonModule,
+  ],
 })
 export class HelpModalComponent implements OnInit, OnDestroy {
   @Input() scrollToSection?: string; // Optional: ID of the section to scroll to when the modal opens 

@@ -36,7 +36,7 @@ Download now for free and create, share & print QR codes with ease!
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Ionic 8 with Angular 18
+- **Framework**: Ionic 8 with Angular 20
 - **Language**: TypeScript
 - **Styling**: SCSS with Ionic CSS Variables
 - **Hosting**: Firebase Hosting
@@ -66,10 +66,11 @@ qr-code/
 │   ├── zone-flags.ts
 │   │
 │   ├── app/
-│   │   ├── app-routing.module.ts
+│   │   ├── app-routes.ts
 │   │   ├── app.component.*
-│   │   ├── app.module.ts
+│   │   ├── app.config.ts
 │   │   ├── enums.ts
+│   │   ├── services.modules.ts
 │   │   │
 │   │   ├── help-modal/
 │   │   │   └── help-modal.component.*
@@ -89,18 +90,13 @@ qr-code/
 │   │   │
 │   │   ├── tab-qr/
 │   │   │   ├── manual-instructions-modal.component.ts
-│   │   │   ├── tab-qr-routing.module.ts
-│   │   │   ├── tab-qr.module.ts
 │   │   │   ├── tab-qr.page.*
 │   │   │
 │   │   ├── tab-settings/
-│   │   │   ├── tab-settings-routing.module.ts
-│   │   │   ├── tab-settings.module.ts
 │   │   │   ├── tab-settings.page.*
 │   │   │
 │   │   ├── tabs/
-│   │   │   ├── tabs-routing.module.ts
-│   │   │   ├── tabs.module.ts
+│   │   │   ├── tabs-routes.ts
 │   │   │   ├── tabs.page.*
 │   │   │
 │   │   └── ui/
@@ -144,8 +140,9 @@ qr-code/
 │   │   ├── environment.prod.ts
 │   │   └── environment.ts
 │   │
-│   ├── test-utils/
-│   │   └── window-mock.util.ts
+│   ├── testing/
+│   │   ├── translate-service.mock.ts
+│   │   └── window-mock.util.*
 │   │
 │   └── theme/
 │       └── variables.scss

@@ -1,6 +1,7 @@
-import { SplashScreen } from '@capacitor/splash-screen';
-import { Capacitor } from '@capacitor/core';
 import { Component, OnInit, Renderer2 } from '@angular/core';
+import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { Capacitor } from '@capacitor/core';
+import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style } from '@capacitor/status-bar';
 
 import { SafeAreaInsets } from './services/safe-area-insets';
@@ -9,6 +10,7 @@ import { SafeAreaInsets } from './services/safe-area-insets';
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
+  imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent implements OnInit {
   isNativeApp = Capacitor.isNativePlatform();
@@ -17,7 +19,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private readonly renderer: Renderer2,
-    private readonly safeAreaInsets: SafeAreaInsets
+    private readonly safeAreaInsets: SafeAreaInsets,
   ) {}
 
   ngOnInit(): void {
@@ -43,7 +45,7 @@ export class AppComponent implements OnInit {
 
       // don't use utilsService.isDarkMode here to avoid broken layout
       const isDarkMode = window.matchMedia(
-        '(prefers-color-scheme: dark)'
+        '(prefers-color-scheme: dark)',
       ).matches;
 
       const primaryColor = '#3880ff';

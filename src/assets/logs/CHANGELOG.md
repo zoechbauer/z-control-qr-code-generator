@@ -1,6 +1,16 @@
 # What's New?
 
-All recent updates and improvements to our **z-control QR Code Generator** app.
+All recent updates and improvements to our **z&#8209;control QR Code Generator** app.
+
+## [2.7] - YYYY-MM-DD
+
+### 🔧 Internal
+
+- **migrated to the Angular 20 / Capacitor 8 framework** to have the same framework as in all other z&#8209;control apps.
+  - removed NgModules and migrated to standalone components throughout the app.
+  - updated implementation of angularx-qrcode and routing to align with the standalone component approach.
+- updated all references of "z&#8209;control" in this changelog for consistency with the brand name, which is never split across lines.
+- updated the README and documentation to reflect the new Angular 20 / Capacitor 8 setup and standalone component structure.
 
 ## [2.6] - 2026-11-08
 
@@ -134,7 +144,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 - Created a reusable ToastService for displaying toast notifications in both the QR code and Settings pages.
 - Moved the email maintenance template and logic from the QR code page to the Settings page for better organization.
 - Removed the button logic for switching between QR code creation and email maintenance, simplifying the workflow.
-- Replaced the email button with the z-control logo on the QR code page for a cleaner and more consistent UI.
+- Replaced the email button with the z&#8209;control logo on the QR code page for a cleaner and more consistent UI.
 - The accordion header now displays the current count of stored email addresses for easier overview.
 - Updated help page to reflect the new tab-based layout, providing clearer instructions for using the QR Code and Settings
 - Various UI and UX enhancements, including interface refactoring for improved usability and visual consistency.
@@ -154,7 +164,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### ✨ New Features
 
-- Added a persistent z-control footer to the **web app**, displaying the current version number, release notes link, support email, and a direct download link for the mobile app. This provides users with quick access to important information and support resources.
+- Added a persistent z&#8209;control footer to the **web app**, displaying the current version number, release notes link, support email, and a direct download link for the mobile app. This provides users with quick access to important information and support resources.
 
 ### 🚀 Improvements
 
@@ -162,7 +172,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 - Enhanced header design: All headers now have a blue background with white text and icons for improved visibility and a modern look. In the **web app**, header height is reduced since there is no status bar, providing a more streamlined appearance.
 - Minor wording improvements for greater clarity in the user help page.
 - Revised the "QR Codes Explained" section: removed generic examples and added app-specific examples to better illustrate usage within this application.
-- Relocated the displayed version information and release notes link from the user help page to the new z-control footer for easier access.
+- Relocated the displayed version information and release notes link from the user help page to the new z&#8209;control footer for easier access.
 - Updated the Google Play link for this app from the Internal Test group to the public release link.
 - Updated the alert message explaining why QR codes are not automatically attached to emails in the web version for greater clarity.
 
@@ -224,7 +234,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 🐛 Fixes
 
-- Fixed app name display in Android Settings/Apps to show "z-control QR Code Generator"
+- Fixed app name display in Android Settings/Apps to show "z&#8209;control QR Code Generator"
 - Fixed extra space at the bottom to prevent overlap with the navigation bar when present
 - Fixed logic for detecting small mobile devices to avoid false positives in landscape mode on modern phones
 
@@ -292,7 +302,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 🚀 Improvements
 
-- Updated the z-control support email address.
+- Updated the z&#8209;control support email address.
 - Improved the height of the user help dialog when accessed from desktop devices.
 - Enhanced the initial layout for landscape mode.
 
@@ -361,7 +371,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 🐛 Fixes
 
-- Green background on desktop is now replaced with light gray for a cleaner look (global.scss updated). Note: you can run z-control QR Code Generator App on mobile and desktop via Browser.
+- Green background on desktop is now replaced with light gray for a cleaner look (global.scss updated). Note: you can run z&#8209;control QR Code Generator App on mobile and desktop via Browser.
 
 ### 📦 Installations
 
@@ -373,7 +383,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 - Added changelog display in user help page.
 - Changed order of categories in change log.
-- New wording for app name: QR code was renamed to **z-control QR Code Generator** (brand).
+- New wording for app name: QR code was renamed to **z&#8209;control QR Code Generator** (brand).
 - CHANGELOG.md moved from root folder to assets/logs folder so that it can be read via http.
 
 ## [1.4] - 2025-07-17
@@ -399,7 +409,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 📦 Installations
 
-- **Hosted on Google Play**: z-control QR Code Generator App is now in **"Internal Test" status**.
+- **Hosted on Google Play**: z&#8209;control QR Code Generator App is now in **"Internal Test" status**.
 
 ## [1.1] - 2025-07-02
 
@@ -423,4 +433,4 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ---
 
-Thank you for using our z-control applications!
+Thank you for using our z&#8209;control applications!

@@ -1,16 +1,42 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
-import { IonContent } from '@ionic/angular';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { NgSwitch, NgIf, NgSwitchCase } from '@angular/common';
+import { IonContent, IonicModule } from '@ionic/angular';
 
 import { LocalStorageService } from '../services/local-storage.service';
 import { environment } from '@env/environment';
 import { UtilsService } from '../services/utils.service';
 import { LogoType, Tab } from '../enums';
+import { HeaderComponent } from '../ui/components/header/header.component';
+import { LanguageAccordionComponent } from '../ui/components/accordions/language-accordion.component';
+import { FeedbackAccordionComponent } from '../ui/components/accordions/feedback-accordion.component';
+import { ChangeLogAccordionComponent } from '../ui/components/accordions/change-log-accordion.component';
+import { GetSourceAccordionComponent } from '../ui/components/accordions/get-source-accordion.component';
+import { PrivacyPolicyAccordionComponent } from '../ui/components/accordions/privacy-policy-accordion.component';
+import { GetMobileAppAccordionComponent } from '../ui/components/accordions/get-mobile-app-accordion.component';
+import { PrintAccordionComponent } from '../ui/components/accordions/print-accordion.component';
+import { EmailMaintenanceAccordionComponent } from '../ui/components/accordions/email-maintenance-accordion.component';
 
 @Component({
   selector: 'app-tab-settings',
   templateUrl: './tab-settings.page.html',
+      imports: [
+    IonicModule,
+    TranslatePipe,
+    NgSwitch,
+    NgSwitchCase,
+    NgIf,
+    HeaderComponent,
+    LanguageAccordionComponent,
+    FeedbackAccordionComponent,
+    ChangeLogAccordionComponent,
+    GetSourceAccordionComponent,
+    PrivacyPolicyAccordionComponent,
+    GetMobileAppAccordionComponent,
+    PrintAccordionComponent,
+    EmailMaintenanceAccordionComponent
+    ]
 })
 export class TabSettingsPage implements OnInit, OnDestroy {
   openAccordion: string | null = null;

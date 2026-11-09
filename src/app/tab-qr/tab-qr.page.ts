@@ -1,14 +1,28 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import {
-  IonTextarea,
   ModalController,
   Platform,
   AlertController,
 } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  IonTextarea,
+  IonItem,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonButton,
+  IonSpinner,
+  IonContent,
+  IonLabel,
+} from '@ionic/angular/standalone';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { Keyboard } from '@capacitor/keyboard';
 import { Subscription } from 'rxjs';
+import { QRCodeComponent } from 'angularx-qrcode'
 
 import { EmailUtilsService } from '../services/email-utils.service';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
@@ -23,6 +37,7 @@ import { UtilsService } from '../services/utils.service';
 import { ToastService } from '../services/toast.service';
 import { LogoType, Tab, ToastAnchor } from '../enums';
 import { PrintUtilsService } from '../services/print-utils.service';
+import { HeaderComponent } from '../ui/components/header/header.component';
 
 export enum Workflow {
   StepEnterText = 'WORKFLOW_STEP_ENTER_TEXT',
@@ -35,6 +50,23 @@ export enum Workflow {
   selector: 'app-tab-qr',
   templateUrl: './tab-qr.page.html',
   styleUrls: ['./tab-qr.page.scss'],
+    imports: [
+    IonLabel,
+    IonContent,
+    IonSpinner,
+    IonButton,
+    IonItem,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
+    IonTextarea,
+    CommonModule,
+    FormsModule,
+    TranslatePipe,
+    HeaderComponent,
+    QRCodeComponent
+  ],
 })
 export class TabQrPage implements OnInit, OnDestroy {
   @ViewChild('qrDataInput') qrDataInput!: IonTextarea;
