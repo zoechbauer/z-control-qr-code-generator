@@ -11,18 +11,22 @@ export const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'tab-qr',
-        loadComponent: () => import('../tab-qr/tab-qr.page').then(m => m.TabQrPage),
+        path: 'qr',
+        loadComponent: () =>
+          import('../tab-qr/tab-qr.page').then((m) => m.TabQrPage),
       },
       {
-        path: 'tab-settings',
-        loadComponent: () => import('../tab-settings/tab-settings.page').then(m => m.TabSettingsPage)
+        path: 'settings',
+        loadComponent: () =>
+          import('../tab-settings/tab-settings.page').then(
+            (m) => m.TabSettingsPage,
+          ),
       },
       {
         path: '',
-        redirectTo: 'tab-qr',
-        pathMatch: 'full'
-      }
-    ]
-  }
+        redirectTo: 'qr',
+        pathMatch: 'full',
+      },
+    ],
+  },
 ];

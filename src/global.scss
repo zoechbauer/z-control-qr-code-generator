@@ -36,9 +36,21 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
 
+.web-app-width {
+  ion-router-outlet {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+.native-app-height-hide-tabs-bar {
+  ion-router-outlet {
+    height: calc(100vh - 44px);
+  }
+}
+
 ion-app {
   width: 100%;
-  max-width: 800px;
   margin: 0 auto;
   box-sizing: border-box;
   padding: 0 16px;
@@ -50,8 +62,8 @@ ion-app {
   padding: 0;
 }
 
-.web-app ion-header {
-  margin-top: -25px !important;
+.web-app ion-header ion-toolbar {
+  padding-top: 0 !important;
 }
 
 ion-header {
@@ -131,7 +143,7 @@ ion-header ion-toolbar:first-of-type {
 }
 
 .change-log-modal,
-.manual-instructions-modal {
+.manual-email-instructions {
   // Modal ends vertically above navigation bar in portrait mode
   max-height: calc(100vh - var(--safe-area-bottom-fix, 44px)) !important;
   overflow-y: auto !important;

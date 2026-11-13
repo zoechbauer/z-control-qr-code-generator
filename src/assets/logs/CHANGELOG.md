@@ -2,15 +2,30 @@
 
 All recent updates and improvements to our **z&#8209;control QR Code Generator** app.
 
-## [2.7] - YYYY-MM-DD
+## [3.0] - YYYY-MM-DD
+
+### 🚀 Improvements
+
+- Reduced the maximum page width on web to 500px to improve readability and align with the other z&#8209;control apps.
+- Split the input field placeholder across two lines for better readability.
+- Improved the app header and Release Notes accordion, and added the app name to pages for consistency with the other z&#8209;control apps.
+- Improved the ManualInstructionsModalComponent to display truncated QR text for better readability.
+- Registered missing icons across the app to ensure all required icons are available and displayed correctly.
 
 ### 🔧 Internal
 
 - **migrated to the Angular 20 / Capacitor 8 framework** to have the same framework as in all other z&#8209;control apps.
   - removed NgModules and migrated to standalone components throughout the app.
   - updated implementation of angularx-qrcode and routing to align with the standalone component approach.
+- improved the structure of the environment files to separate app-specific settings under the `app` key for better organization and maintainability (same approach as in other z&#8209;control apps).
+- added new environment settings under the `app` key for better organization and maintainability.
+- improved the code quality of the print-accordion component and added unit tests.
+- renamed HelpModalComponent to GetHelpComponent and moved it to the `ui/components/get-help` directory to be consistent with the other z&#8209;control apps.
+- renamed ManualInstructionsModalComponent to ManualEmailInstructionsComponent and moved from the tab-qr folder to the new `ui/components/manual-email-instructions` directory to improve consistency with the other z&#8209;control apps.
+- Simplified the CSS for the ManualEmailInstructionsComponent and splitted component into template, typescript and stylesheet files.
 - updated all references of "z&#8209;control" in this changelog for consistency with the brand name, which is never split across lines.
 - updated the README and documentation to reflect the new Angular 20 / Capacitor 8 setup and standalone component structure.
+- updated and expanded the unit tests, and resolved issues that arose during the Angular 20 and Capacitor 8 migration. The test suite now passes 411 specs with 99.1% statement coverage.
 
 ## [2.6] - 2026-11-08
 

@@ -1,10 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
-import {
-  ModalController,
-  Platform,
-  AlertController,
-} from '@ionic/angular';
+import { ModalController, Platform, AlertController } from '@ionic/angular';
 import {
   IonTextarea,
   IonItem,
@@ -22,15 +18,15 @@ import { FormsModule } from '@angular/forms';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { Keyboard } from '@capacitor/keyboard';
 import { Subscription } from 'rxjs';
-import { QRCodeComponent } from 'angularx-qrcode'
+import { QRCodeComponent } from 'angularx-qrcode';
 
 import { EmailUtilsService } from '../services/email-utils.service';
-import { HelpModalComponent } from '../help-modal/help-modal.component';
+import { GetHelpComponent } from '../ui/components/get-help/get-help.component';
 import { FileUtilsService } from '../services/file-utils.service';
 import { LocalStorageService } from '../services/local-storage.service';
 import { QrUtilsService } from '../services/qr-utils.service';
 import { ValidationService } from '../services/validation.service';
-import { ManualInstructionsModalComponent } from './manual-instructions-modal.component';
+import { ManualEmailInstructionsComponent } from '../ui/components/manual-email-instructions/manual-email-instructions.component';
 import { environment } from '@env/environment';
 import { AlertService } from '../services/alert.service';
 import { UtilsService } from '../services/utils.service';
@@ -50,7 +46,7 @@ export enum Workflow {
   selector: 'app-tab-qr',
   templateUrl: './tab-qr.page.html',
   styleUrls: ['./tab-qr.page.scss'],
-    imports: [
+  imports: [
     IonLabel,
     IonContent,
     IonSpinner,
@@ -65,7 +61,7 @@ export enum Workflow {
     FormsModule,
     TranslatePipe,
     HeaderComponent,
-    QRCodeComponent
+    QRCodeComponent,
   ],
 })
 export class TabQrPage implements OnInit, OnDestroy {
@@ -74,7 +70,7 @@ export class TabQrPage implements OnInit, OnDestroy {
   LogoType = LogoType;
   Tab = Tab;
   screenWidth: number = window.innerWidth;
-  nbrOfInitialRows: number = 1;
+  nbrOfInitialRows: number = 2;
   showSpinner: boolean = false;
   workflowStep: Workflow = Workflow.StepEnterText;
 
@@ -95,7 +91,7 @@ export class TabQrPage implements OnInit, OnDestroy {
     private readonly alertController: AlertController,
     private readonly alertService: AlertService,
     private readonly toastService: ToastService,
-    private readonly printUtilsService: PrintUtilsService
+    private readonly printUtilsService: PrintUtilsService,
   ) {
     this.setNumberOfRows();
     this.langSub = this.localStorage.selectedLanguage$.subscribe((lang) => {
@@ -105,13 +101,20 @@ export class TabQrPage implements OnInit, OnDestroy {
   }
 
   /**
+   * Returns the name of the application from the environment configuration.
+   */
+  get appName(): string {
+    return environment.app.name;
+  }
+
+  /**
    * Returns the maximum input length for the QR code data.
    */
   get maxInputLength(): number {
     // 2953 = Maximum capacity for QR code version 40 with error correction level L according to Perplexity AI,
     // but scanning no longer works, therefore we are using 1000 - results determined by testing
 
-    return environment.maxInputLength ?? 1000;
+    return environment.app.maxInputLength ?? 1000;
   }
 
   /**
@@ -169,7 +172,7 @@ export class TabQrPage implements OnInit, OnDestroy {
    * Sets the number of rows for the input field based on the device orientation.
    */
   private setNumberOfRows(): void {
-    this.nbrOfInitialRows = this.utilsService.isPortrait ? 6 : 1;
+    this.nbrOfInitialRows = this.utilsService.isPortrait ? 6 : 2;
   }
 
   /**
@@ -210,7 +213,7 @@ export class TabQrPage implements OnInit, OnDestroy {
   async clearInputField(): Promise<void> {
     const currentText = this.qrDataInput?.value?.trim() || '';
 
-    if (currentText.length > (environment.clearConfirmationLength ?? 100)) {
+    if (currentText.length > (environment.app.clearConfirmationLength ?? 100)) {
       await this.showClearConfirmation();
       return;
     }
@@ -307,7 +310,7 @@ export class TabQrPage implements OnInit, OnDestroy {
       await this.toastService
         .showDisabledToast(
           'TOOLTIP_GENERATION_ENTER_TEXT_FIRST',
-          ToastAnchor.QR_PAGE
+          ToastAnchor.QR_PAGE,
         )
         .catch((error) => {
           console.error('Error presenting toast:', error);
@@ -316,7 +319,7 @@ export class TabQrPage implements OnInit, OnDestroy {
       await this.toastService
         .showDisabledToast(
           'TOOLTIP_GENERATION_EMAIL_ALREADY_SENT',
-          ToastAnchor.QR_PAGE
+          ToastAnchor.QR_PAGE,
         )
         .catch((error) => {
           console.error('Error presenting toast:', error);
@@ -325,7 +328,7 @@ export class TabQrPage implements OnInit, OnDestroy {
       await this.toastService
         .showDisabledToast(
           'TOOLTIP_GENERATION_QR_ALREADY_GENERATED',
-          ToastAnchor.QR_PAGE
+          ToastAnchor.QR_PAGE,
         )
         .catch((error) => {
           console.error('Error presenting toast:', error);
@@ -391,7 +394,7 @@ export class TabQrPage implements OnInit, OnDestroy {
       this.qrDataInput.value = trimmedData;
       this.toastService.showToast(
         this.translate.instant('TOAST_TRAILING_BLANKS_REMOVED'),
-        ToastAnchor.QR_PAGE
+        ToastAnchor.QR_PAGE,
       );
     }
     return trimmedData;
@@ -422,7 +425,7 @@ export class TabQrPage implements OnInit, OnDestroy {
       this.qrService.clearQrFields();
       this.toastService.showToast(
         this.translate.instant('TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE'),
-        ToastAnchor.QR_PAGE
+        ToastAnchor.QR_PAGE,
       );
     }
   }
@@ -455,7 +458,7 @@ export class TabQrPage implements OnInit, OnDestroy {
 
       if (
         !(await this.fileService.downloadQRCode(
-          this.qrService.qrCodeDownloadLink
+          this.qrService.qrCodeDownloadLink,
         ))
       ) {
         this.showSpinner = false;
@@ -518,7 +521,7 @@ export class TabQrPage implements OnInit, OnDestroy {
         {
           text: this.translate.instant('MOBILE_WEB_INSTRUCTIONS'),
           handler: async () => {
-            await this.showManualInstructions();
+            await this.showManualEmailInstructions();
           },
         },
         {
@@ -562,14 +565,14 @@ export class TabQrPage implements OnInit, OnDestroy {
   }
 
   /**
-   * Shows the manual instructions modal.
+   * Shows the manual email instructions.
    */
-  private async showManualInstructions() {
+  private async showManualEmailInstructions() {
     const baseMessage = this.translate.instant('MOBILE_WEB_MANUAL_MESSAGE');
     const qrText = this.qrService.myAngularxQrCode;
 
     const modal = await this.modalController.create({
-      component: ManualInstructionsModalComponent,
+      component: ManualEmailInstructionsComponent,
       componentProps: {
         title: this.translate.instant('MOBILE_WEB_MANUAL_TITLE'),
         instructions: baseMessage,
@@ -578,7 +581,7 @@ export class TabQrPage implements OnInit, OnDestroy {
         copyButtonLabel: this.translate.instant('MOBILE_WEB_COPY_TEXT'),
         copyCallback: () => this.copyQRTextToClipboard(),
       },
-      cssClass: 'manual-instructions-modal',
+      cssClass: 'manual-email-instructions',
     });
 
     await modal.present();
@@ -589,7 +592,7 @@ export class TabQrPage implements OnInit, OnDestroy {
    * Displays a preview of the copied text.
    */
   private async showCopySuccessAlert(copiedText: string) {
-    const maxPreviewLength = environment.maxPreviewLengthOfCopiedText ?? 50;
+    const maxPreviewLength = environment.app.maxPreviewLengthOfCopiedText ?? 50;
     const textPreview =
       copiedText.length > maxPreviewLength
         ? copiedText.substring(0, maxPreviewLength) + '...'
@@ -662,14 +665,14 @@ export class TabQrPage implements OnInit, OnDestroy {
     const sectionId = currentLang === 'de' ? `${sectionType}-DE` : sectionType;
 
     const modal = await this.modalController.create({
-      component: HelpModalComponent,
+      component: GetHelpComponent,
       componentProps: {
         maxInputLength: this.maxInputLength,
         scrollToSection: sectionId,
       },
       cssClass: isDesktop
-        ? 'manual-instructions-modal desktop'
-        : 'manual-instructions-modal',
+        ? 'manual-email-instructions desktop'
+        : 'manual-email-instructions',
     });
 
     return await modal.present();
@@ -679,7 +682,7 @@ export class TabQrPage implements OnInit, OnDestroy {
    * Handles input events on the textarea.
    * Checks if the keyboard alert should be shown for small devices.
    */
-  onTextareaInput(): void {
+    onTextareaInput(): void {
     const currentText = this.qrDataInput?.value || '';
 
     this.deleteQRCodeIfInputChangedAfterGeneration();

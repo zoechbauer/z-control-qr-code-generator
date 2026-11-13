@@ -1,4 +1,7 @@
 {
+  "------ header page": "-------",
+  "HEADER_QR_CODE": "Create QR Code",
+  "HEADER_SETTINGS": "Settings",
   "------ enums": "-------",
   "QrCodesCountPerPage.FULL_PAGE": "As many as possible",
   "QrCodesCountPerPage.CUSTOM_NUMBER": "I want to enter the number",
@@ -24,6 +27,7 @@
   "PRIVACY_POLICY": "Privacy Policy",
   "GET_SOURCE_CODE": "Get Source Code",
   "INSTALL_MOBILE_APP": "Install Mobile App",
+  "RELEASE-NOTES": "App Version {{versionInfo}} - Release Notes",
 
   "------ print settings": "-------",
   "QR_CODE_SIZE": "Size of QR Code",
@@ -40,7 +44,7 @@
   "CLEAR_INPUT": "Clear Input",
   "CREATE_QR_CODE": "Create QR Code",
   "QR_CODE_TEXT": "Text",
-  "INPUT_FIELD_PLACEHOLDER": "Please enter text. Use Enter key to fill in blank lines.",
+  "INPUT_FIELD_PLACEHOLDER": "Please enter text.\nUse Enter key to fill in blank lines.",
   "TOAST_TRAILING_BLANKS_REMOVED": "Spaces have been removed at the end.",
   "TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE": "QR code deleted due to input change.",
   "KEYBOARD_ALERT_TITLE": "Text Input Limitation",
@@ -127,7 +131,7 @@
   "MOBILE_WEB_TRY_EMAIL": "Try Email App",
   "MOBILE_WEB_INSTRUCTIONS": "Manual Instructions",
   "MOBILE_WEB_MANUAL_TITLE": "Manual Email Instructions",
-  "MOBILE_WEB_MANUAL_MESSAGE": "1. Copy the QR code text below\n2. Open your email app manually\n3. Create a new email with your recipients\n4. Paste the text and attach the downloaded QR code images\n\nThe QR code files have been saved to your Downloads folder.",
+  "MOBILE_WEB_MANUAL_MESSAGE": "1. Copy the QR code text below.\n\n2. Open your email app manually.\n\n3. Create a new email with your recipients and paste the text.\n\n4. Attach the downloaded QR code images. The QR code files have been saved to your Downloads folder.",
   "MOBILE_WEB_QR_TEXT": "QR Code Text",
   "MOBILE_WEB_COPY_SUCCESS": "QR code text copied to clipboard!",
   "MOBILE_WEB_COPY_SUCCESS_TITLE": "Copied Successfully",

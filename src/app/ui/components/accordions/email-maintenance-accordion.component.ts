@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import {
   IonAccordion,
   IonItem,
@@ -25,7 +25,8 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
   ],
 })
 export class EmailMaintenanceAccordionComponent {
-  @Input() lang: string = 'en';
+  translate = inject(TranslateService);
+  localStorage = inject(LocalStorageService);
 
-  constructor(public translate: TranslateService, public localStorage: LocalStorageService) {}
+  @Input() lang: string = 'en';
 }

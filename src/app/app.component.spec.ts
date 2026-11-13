@@ -5,6 +5,7 @@ import { StatusBar, Style } from '@capacitor/status-bar';
 
 import { AppComponent } from './app.component';
 import { WindowMockUtil } from '@testing/window-mock.util';
+import { ActivatedRoute } from '@angular/router';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -41,7 +42,15 @@ describe('AppComponent', () => {
     showSpy = statusBarMock.show;
 
     await TestBed.configureTestingModule({
-      declarations: [AppComponent],
+      imports: [AppComponent],
+      providers: [
+        { provide: SplashScreen, useValue: splashScreenMock },
+        { provide: StatusBar, useValue: statusBarMock },
+        {
+          provide: ActivatedRoute,
+          useValue: jasmine.createSpyObj('ActivatedRoute', ['snapshot']),
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);
@@ -97,7 +106,7 @@ describe('AppComponent', () => {
       await component.initializeApp();
 
       expect(mockMatchMedia).toHaveBeenCalledWith(
-        '(prefers-color-scheme: dark)'
+        '(prefers-color-scheme: dark)',
       );
     });
 
@@ -110,7 +119,7 @@ describe('AppComponent', () => {
 
       // Assert
       expect(mockMatchMedia).toHaveBeenCalledWith(
-        '(prefers-color-scheme: dark)'
+        '(prefers-color-scheme: dark)',
       );
     });
 
@@ -123,7 +132,7 @@ describe('AppComponent', () => {
 
       // Assert
       expect(mockMatchMedia).toHaveBeenCalledWith(
-        '(prefers-color-scheme: dark)'
+        '(prefers-color-scheme: dark)',
       );
     });
 
@@ -132,7 +141,7 @@ describe('AppComponent', () => {
       mockMatchMedia.and.returnValue({ matches: false });
       await component.initializeApp();
       expect(mockMatchMedia).toHaveBeenCalledWith(
-        '(prefers-color-scheme: dark)'
+        '(prefers-color-scheme: dark)',
       );
 
       // Reset spy
@@ -142,7 +151,7 @@ describe('AppComponent', () => {
       mockMatchMedia.and.returnValue({ matches: true });
       await component.initializeApp();
       expect(mockMatchMedia).toHaveBeenCalledWith(
-        '(prefers-color-scheme: dark)'
+        '(prefers-color-scheme: dark)',
       );
     });
 

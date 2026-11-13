@@ -1,4 +1,7 @@
 {
+  "------ header page": "-------",
+  "HEADER_QR_CODE": "QR Code erstellen",
+  "HEADER_SETTINGS": "Einstellungen",
   "------ enums": "-------",
   "QrCodesCountPerPage.FULL_PAGE": "So viele wie möglich",
   "QrCodesCountPerPage.CUSTOM_NUMBER": "Ich möchte Anzahl erfassen",
@@ -24,6 +27,7 @@
   "PRIVACY_POLICY": "Datenschutz-Bestimmungen",
   "GET_SOURCE_CODE": "Quellcode abrufen",
   "INSTALL_MOBILE_APP": "Mobile App installieren",
+  "RELEASE-NOTES": "App Version {{versionInfo}} - Versionshinweise",
 
   "------ print settings": "-------",
   "QR_CODE_SIZE": "Größe des QR-Codes",
@@ -40,7 +44,7 @@
   "CLEAR_INPUT": "Eingabe löschen",
   "CREATE_QR_CODE": "QR Code erstellen",
   "QR_CODE_TEXT": "Text",
-  "INPUT_FIELD_PLACEHOLDER": "Bitte Text eingeben. Verwenden Sie die Eingabe-Taste für Leerzeilen.",
+  "INPUT_FIELD_PLACEHOLDER": "Bitte Text eingeben.\nVerwenden Sie die Eingabe-Taste für Leerzeilen.",
   "TOAST_TRAILING_BLANKS_REMOVED": "Leerzeichen wurden am Ende entfernt.",
   "TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE": "QR Code wurde gelöscht, da sich die Eingabe geändert hat.",
 
@@ -127,7 +131,7 @@
   "MOBILE_WEB_TRY_EMAIL": "E-Mail-App versuchen",
   "MOBILE_WEB_INSTRUCTIONS": "Manuelle Anleitung",
   "MOBILE_WEB_MANUAL_TITLE": "Manuelle E-Mail Anleitung",
-  "MOBILE_WEB_MANUAL_MESSAGE": "1. Kopieren Sie den unten angeführten QR-Code-Text\n2. Öffnen Sie Ihre E-Mail-App manuell\n3. Erstellen Sie eine neue E-Mail mit Ihren Empfängern\n4. Fügen Sie den Text ein und hängen Sie die heruntergeladenen QR-Code-Bilder an\n\nDie QR-Code-Dateien wurden in Ihrem Downloads-Ordner gespeichert.",
+  "MOBILE_WEB_MANUAL_MESSAGE": "1. Kopieren Sie den unten angeführten QR-Code-Text.\n\n2. Öffnen Sie Ihre E-Mail-App manuell.\n\n3. Erstellen Sie eine neue E-Mail mit Ihren Empfängern und fügen Sie den Text ein.\n\n4. Hängen Sie die heruntergeladenen QR-Code-Bilder an. Die QR-Code-Dateien wurden in Ihrem Downloads-Ordner gespeichert.",
   "MOBILE_WEB_QR_TEXT": "QR-Code-Text",
   "MOBILE_WEB_COPY_SUCCESS": "QR-Code-Text in die Zwischenablage kopiert!",
   "MOBILE_WEB_COPY_SUCCESS_TITLE": "Erfolgreich kopiert",

@@ -93,21 +93,16 @@ describe('LocalStorageService', () => {
       await service.saveSelectedLanguage(language);
 
       // Assert
-      expect(storageSpy.set).toHaveBeenCalledWith(
-        'selectedLanguage',
-        JSON.stringify(language)
-      ); // or LocalStorage.SelectedLanguage
+      expect(storageSpy.set).toHaveBeenCalledWith('selectedLanguage', language); // or LocalStorage.SelectedLanguage
       expect(service['selectedLanguageSubject'].next).toHaveBeenCalledWith(
-        language
+        language,
       );
     });
 
     it('should load selected language and update observable', async () => {
       // Arrange
       const expectedLanguage = 'de';
-      storageSpy.get.and.returnValue(
-        Promise.resolve(JSON.stringify(expectedLanguage))
-      );
+      storageSpy.get.and.returnValue(Promise.resolve(expectedLanguage));
       await service.init();
       // Spy on the observable to verify it gets updated
       spyOn(service['selectedLanguageSubject'], 'next');
@@ -116,9 +111,9 @@ describe('LocalStorageService', () => {
       await service.loadSelectedOrDefaultLanguage();
 
       // Assert
-      expect(storageSpy.get).toHaveBeenCalledWith('selectedLanguage'); // or LocalStorage.SelectedLanguage
+      expect(storageSpy.get).toHaveBeenCalledWith('selectedLanguage');
       expect(service['selectedLanguageSubject'].next).toHaveBeenCalledWith(
-        expectedLanguage
+        expectedLanguage,
       );
     });
 
@@ -126,9 +121,8 @@ describe('LocalStorageService', () => {
       // Arrange
       storageSpy.get.and.returnValue(Promise.resolve(null));
       await service.init();
-      // Mock the getMobileDefaultLanguage method
       spyOn(service, 'getMobileDefaultLanguage').and.returnValue('en');
-      spyOn(service, 'saveSelectedLanguage').and.returnValue(Promise.resolve());
+      const saveSpy = spyOn(service, 'saveSelectedLanguage').and.callThrough();
       spyOn(service['selectedLanguageSubject'], 'next');
 
       // Act
@@ -136,18 +130,16 @@ describe('LocalStorageService', () => {
 
       // Assert
       expect(service.getMobileDefaultLanguage).toHaveBeenCalled();
-      expect(service.saveSelectedLanguage).toHaveBeenCalledWith('en');
+      expect(saveSpy).toHaveBeenCalledWith('en');
       expect(service['selectedLanguageSubject'].next).toHaveBeenCalledWith(
-        'en'
+        'en',
       );
     });
 
     it('should expose selected language via observable', async () => {
       // Arrange
       const expectedLanguage = 'fr';
-      storageSpy.get.and.returnValue(
-        Promise.resolve(JSON.stringify(expectedLanguage))
-      );
+      storageSpy.get.and.returnValue(Promise.resolve(expectedLanguage));
       await service.init();
 
       // Act
@@ -174,7 +166,7 @@ describe('LocalStorageService', () => {
       // Assert
       expect(console.error).toHaveBeenCalledWith(
         'Error saving selected language:',
-        'Error'
+        'Error',
       );
     });
   });
@@ -191,7 +183,7 @@ describe('LocalStorageService', () => {
       // Assert
       expect(storageSpy.set).toHaveBeenCalledWith(
         'savedEmailAddresses',
-        JSON.stringify([email])
+        JSON.stringify([email]),
       );
       expect(result).toBe(EmailAddressStatus.Added);
     });
@@ -200,7 +192,7 @@ describe('LocalStorageService', () => {
       // Arrange
       const savedEmailAddresses = ['test1@example.com', 'test2@example.com'];
       storageSpy.get.and.returnValue(
-        Promise.resolve(JSON.stringify(savedEmailAddresses))
+        Promise.resolve(JSON.stringify(savedEmailAddresses)),
       );
       await service.init();
 
@@ -214,9 +206,7 @@ describe('LocalStorageService', () => {
 
     it('logs error if save email fails', async () => {
       // Arrange
-      storageSpy.set.and.returnValue(
-        Promise.reject('Error')
-      );
+      storageSpy.set.and.returnValue(Promise.reject('Error'));
       spyOn(console, 'error');
       await service.init();
 
@@ -227,7 +217,7 @@ describe('LocalStorageService', () => {
       expect(storageSpy.set).toHaveBeenCalled();
       expect(console.error).toHaveBeenCalledWith(
         'Error saving email:',
-        'Error'
+        'Error',
       );
       expect(result).toBe(EmailAddressStatus.Added);
     });
@@ -236,7 +226,7 @@ describe('LocalStorageService', () => {
       // Arrange
       const expectedEmails = ['user1@test.com', 'user2@test.com'];
       storageSpy.get.and.returnValue(
-        Promise.resolve(JSON.stringify(expectedEmails))
+        Promise.resolve(JSON.stringify(expectedEmails)),
       );
       await service.init();
 
@@ -268,7 +258,7 @@ describe('LocalStorageService', () => {
         'test3@example.com',
       ];
       storageSpy.get.and.returnValue(
-        Promise.resolve(JSON.stringify(savedEmailAddresses))
+        Promise.resolve(JSON.stringify(savedEmailAddresses)),
       );
       const savedEmailAddressesAfterDeletion = [
         'test1@example.com',
@@ -282,7 +272,7 @@ describe('LocalStorageService', () => {
       // Assert
       expect(storageSpy.set).toHaveBeenCalledWith(
         'savedEmailAddresses',
-        JSON.stringify(savedEmailAddressesAfterDeletion)
+        JSON.stringify(savedEmailAddressesAfterDeletion),
       );
       expect(result).toBe(EmailAddressStatus.Removed);
     });
@@ -291,7 +281,7 @@ describe('LocalStorageService', () => {
       // Arrange
       const savedEmailAddresses = ['test1@example.com', 'test2@example.com'];
       storageSpy.get.and.returnValue(
-        Promise.resolve(JSON.stringify(savedEmailAddresses))
+        Promise.resolve(JSON.stringify(savedEmailAddresses)),
       );
       await service.init();
 
@@ -321,7 +311,7 @@ describe('LocalStorageService', () => {
       // Assert
       expect(storageSpy.set).toHaveBeenCalledWith(
         'savedPrintSettings',
-        JSON.stringify(settings)
+        JSON.stringify(settings),
       );
     });
 
@@ -343,7 +333,7 @@ describe('LocalStorageService', () => {
       // Assert
       expect(console.error).toHaveBeenCalledWith(
         'Error saving print settings:',
-        'Error'
+        'Error',
       );
     });
 
@@ -356,16 +346,42 @@ describe('LocalStorageService', () => {
         numberOfQrCodesPerPage: -1,
       };
       storageSpy.get.and.returnValue(
-        Promise.resolve(JSON.stringify(expectedSettings))
+        Promise.resolve(JSON.stringify(expectedSettings)),
       );
       await service.init();
 
       // Act
       await service.loadPrintSettings();
-      
+
       // Assert
       expect(storageSpy.get).toHaveBeenCalledWith('savedPrintSettings');
       expect(service.savedPrintSettings).toEqual(expectedSettings);
+    });
+  });
+
+  describe('parseStoredValue', () => {
+    it('should parse valid JSON string', () => {
+      const validJsonString = JSON.stringify({ key: 'value' });
+      const result = (service as any).parseStoredValue(validJsonString);
+      expect(result).toEqual({ 'key': 'value' });
+    });
+
+    it('should return the original string for invalid JSON string', () => {
+      const invalidJsonString = '{ key: value }';
+      const result = (service as any).parseStoredValue(invalidJsonString);
+      expect(result).toEqual(invalidJsonString);
+    });
+
+    it('should return plain string for non-JSON string', () => {
+      const plainString = 'plain string';
+      const result = (service as any).parseStoredValue(plainString);
+      expect(result).toEqual(plainString);
+    });
+
+    it('should return non-string values', () => {
+      const nonStringValue = 123;
+      const result = (service as any).parseStoredValue(nonStringValue);
+      expect(result).toEqual(nonStringValue);
     });
   });
 });

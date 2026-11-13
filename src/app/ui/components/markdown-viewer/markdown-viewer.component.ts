@@ -1,6 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MarkdownComponent } from 'ngx-markdown';
+import {
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+  SecurityContext,
+  inject,
+} from '@angular/core';
+import { MarkdownComponent, MarkdownService, SANITIZE } from 'ngx-markdown';
 import {
   IonContent,
   IonHeader,
@@ -34,20 +41,22 @@ import { UtilsService } from 'src/app/services/utils.service';
     IonSpinner,
     NgIf,
   ],
-  providers: [ModalController],
+  providers: [
+    ModalController,
+    MarkdownService,
+    { provide: SANITIZE, useValue: SecurityContext.HTML },
+  ],
 })
 export class MarkdownViewerComponent implements OnInit {
+  private readonly http = inject(HttpClient);
+  private readonly modalController = inject(ModalController);
+  readonly utilsService = inject(UtilsService);
+
   @Input() fullChangeLogPath!: string;
   @ViewChild('content', { static: false }) content!: IonContent;
 
   markdown: string = '';
   showSpinner: boolean = true;
-
-  constructor(
-    private readonly http: HttpClient,
-    private readonly modalController: ModalController,
-    public readonly utilsService: UtilsService
-  ) {}
 
   /**
    * Returns true if the app is running in a native environment.

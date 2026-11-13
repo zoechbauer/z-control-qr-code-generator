@@ -8,13 +8,13 @@ import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { HelpModalComponent } from './help-modal.component';
-import { LocalStorageService } from '../services/local-storage.service';
-import { UtilsService } from '../services/utils.service';
+import { GetHelpComponent } from './get-help.component';
+import { LocalStorageService } from '@app/services/local-storage.service';
+import { UtilsService } from '@app/services/utils.service';
 
-describe('HelpModalComponent', () => {
-  let component: HelpModalComponent;
-  let fixture: ComponentFixture<HelpModalComponent>;
+describe('GetHelpComponent', () => {
+  let component: GetHelpComponent;
+  let fixture: ComponentFixture<GetHelpComponent>;
   let mockModalController: jasmine.SpyObj<ModalController>;
   let mockTranslateService: jasmine.SpyObj<TranslateService>;
   let mockLocalStorageService: jasmine.SpyObj<LocalStorageService>;
@@ -33,7 +33,7 @@ describe('HelpModalComponent', () => {
       [],
       {
         selectedLanguage$: of('de'),
-      }
+      },
     );
     const utilsServiceSpy = jasmine.createSpyObj(
       'UtilsService',
@@ -41,11 +41,11 @@ describe('HelpModalComponent', () => {
       {
         isPortrait: true,
         isNative: true,
-      }
+      },
     );
 
     await TestBed.configureTestingModule({
-      declarations: [HelpModalComponent],
+      imports: [GetHelpComponent],
       providers: [
         { provide: ModalController, useValue: modalControllerSpy },
         { provide: TranslateService, useValue: translateServiceSpy },
@@ -54,20 +54,20 @@ describe('HelpModalComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HelpModalComponent);
+    fixture = TestBed.createComponent(GetHelpComponent);
     component = fixture.componentInstance;
 
     mockModalController = TestBed.inject(
-      ModalController
+      ModalController,
     ) as jasmine.SpyObj<ModalController>;
     mockTranslateService = TestBed.inject(
-      TranslateService
+      TranslateService,
     ) as jasmine.SpyObj<TranslateService>;
     mockLocalStorageService = TestBed.inject(
-      LocalStorageService
+      LocalStorageService,
     ) as jasmine.SpyObj<LocalStorageService>;
     mockUtilsService = TestBed.inject(
-      UtilsService
+      UtilsService,
     ) as jasmine.SpyObj<UtilsService>;
 
     mockTranslateService.instant.and.returnValue('Translated Text');
@@ -86,11 +86,11 @@ describe('HelpModalComponent', () => {
 
       expect(window.addEventListener).toHaveBeenCalledWith(
         'resize',
-        jasmine.any(Function)
+        jasmine.any(Function),
       );
       expect(window.addEventListener).toHaveBeenCalledWith(
         'orientationchange',
-        jasmine.any(Function)
+        jasmine.any(Function),
       );
       expect((component as any).orientationListener).toHaveBeenCalled();
     });
@@ -111,7 +111,7 @@ describe('HelpModalComponent', () => {
       tick(600);
 
       expect(mockUtilsService.scrollToElement).toHaveBeenCalledWith(
-        'toc-section'
+        'toc-section',
       );
     }));
   });
@@ -125,11 +125,11 @@ describe('HelpModalComponent', () => {
 
       expect(window.removeEventListener).toHaveBeenCalledWith(
         'resize',
-        jasmine.any(Function)
+        jasmine.any(Function),
       );
       expect(window.removeEventListener).toHaveBeenCalledWith(
         'orientationchange',
-        jasmine.any(Function)
+        jasmine.any(Function),
       );
     });
   });
@@ -143,7 +143,7 @@ describe('HelpModalComponent', () => {
 
       expect(component.scrollToTopObj.id).toBe('toc-DE');
       expect(mockTranslateService.instant).toHaveBeenCalledWith(
-        'SCROLL_TO_TOP_DE'
+        'SCROLL_TO_TOP_DE',
       );
     });
 
@@ -155,7 +155,7 @@ describe('HelpModalComponent', () => {
 
       expect(component.scrollToTopObj.id).toBe('toc');
       expect(mockTranslateService.instant).toHaveBeenCalledWith(
-        'SCROLL_TO_TOP_EN'
+        'SCROLL_TO_TOP_EN',
       );
     });
   });
@@ -194,11 +194,11 @@ describe('HelpModalComponent', () => {
 
   describe('initialization', () => {
     it('should initialize isPortrait based on current orientation', () => {
-      const newComponent = new HelpModalComponent(
+      const newComponent = new GetHelpComponent(
         mockUtilsService,
         mockModalController,
         mockTranslateService,
-        mockLocalStorageService
+        mockLocalStorageService,
       );
 
       expect(newComponent.isPortrait).toBe(true);
@@ -216,7 +216,7 @@ describe('HelpModalComponent', () => {
       expect(component.isNative).toBe(true);
       expect(component.emailSubjectHelpText).toBe('Translated Text');
       expect(mockTranslateService.instant).toHaveBeenCalledWith(
-        'HELP_EMAIL_SUBJECT'
+        'HELP_EMAIL_SUBJECT',
       );
     });
 
@@ -226,7 +226,7 @@ describe('HelpModalComponent', () => {
       expect(component.isNative).toBe(false);
       expect(component.emailSubjectHelpText).toBe('Translated Text');
       expect(mockTranslateService.instant).toHaveBeenCalledWith(
-        'HELP_EMAIL_SUBJECT_WEB'
+        'HELP_EMAIL_SUBJECT_WEB',
       );
     });
 
@@ -236,7 +236,7 @@ describe('HelpModalComponent', () => {
       expect(component.isNative).toBe(true);
       expect(component.deviceText).toBe('Translated Text');
       expect(mockTranslateService.instant).toHaveBeenCalledWith(
-        'HELP_DEVICE_TEXT'
+        'HELP_DEVICE_TEXT',
       );
     });
 
@@ -246,7 +246,7 @@ describe('HelpModalComponent', () => {
       expect(component.isNative).toBe(false);
       expect(component.deviceText).toBe('Translated Text');
       expect(mockTranslateService.instant).toHaveBeenCalledWith(
-        'HELP_DEVICE_TEXT_WEB'
+        'HELP_DEVICE_TEXT_WEB',
       );
     });
 
@@ -256,7 +256,7 @@ describe('HelpModalComponent', () => {
       expect(component.isNative).toBe(true);
       expect(component.languageChangeButtonHelpText).toBe('Translated Text');
       expect(mockTranslateService.instant).toHaveBeenCalledWith(
-        'HELP_LANGUAGE_CHANGE_BUTTON'
+        'HELP_LANGUAGE_CHANGE_BUTTON',
       );
     });
 
@@ -266,7 +266,7 @@ describe('HelpModalComponent', () => {
       expect(component.isNative).toBe(false);
       expect(component.languageChangeButtonHelpText).toBe('Translated Text');
       expect(mockTranslateService.instant).toHaveBeenCalledWith(
-        'HELP_LANGUAGE_CHANGE_WEB_BUTTON'
+        'HELP_LANGUAGE_CHANGE_WEB_BUTTON',
       );
     });
   });

@@ -61,7 +61,7 @@ describe('PrintUtilsService', () => {
         // Assert
         expect(result).toBe(
           expected,
-          `Failed for size=${size}, gap=${gap}: expected ${expected}, got ${result}`
+          `Failed for size=${size}, gap=${gap}: expected ${expected}, got ${result}`,
         );
       });
     });
@@ -144,10 +144,10 @@ describe('PrintUtilsService', () => {
       expect(service['qrCodeSizes']).toHaveSize(4);
       testData.forEach((data) => {
         expect(
-          service['qrCodeSizes'].some((s) => s.label === data.label)
+          service['qrCodeSizes'].some((s) => s.label === data.label),
         ).toBeTrue();
         expect(
-          service['qrCodeSizes'].some((s) => s.value === data.value)
+          service['qrCodeSizes'].some((s) => s.value === data.value),
         ).toBeTrue();
       });
     });
@@ -165,10 +165,10 @@ describe('PrintUtilsService', () => {
       expect(service['qrCodeGapSizes']).toHaveSize(2);
       testData.forEach((data) => {
         expect(
-          service['qrCodeGapSizes'].some((s) => s.label === data.label)
+          service['qrCodeGapSizes'].some((s) => s.label === data.label),
         ).toBeTrue();
         expect(
-          service['qrCodeGapSizes'].some((s) => s.value === data.value)
+          service['qrCodeGapSizes'].some((s) => s.value === data.value),
         ).toBeTrue();
       });
     });
@@ -182,7 +182,7 @@ describe('PrintUtilsService', () => {
 
     beforeEach(() => {
       validPngDataUrl =
-        'data:image/png;base64,' + 
+        'data:image/png;base64,' +
         'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=';
 
       addImageSpy = jasmine.createSpy('addImage');
@@ -326,10 +326,18 @@ describe('PrintUtilsService', () => {
       });
     });
 
+    it('produces fallback value for null or undefinedvalues', () => {
+      let r = (service as any).interpolateQrSizeFor15cm(null);
+      expect(r).toBe(150);
+
+      r = (service as any).interpolateQrSizeFor15cm(undefined);
+      expect(r).toBe(150);
+    });
+
     it('should get scaling factor for 15cm size', () => {
       const interpolateQrSizeFor15cmSpy = spyOn<any>(
         service,
-        'interpolateQrSizeFor15cm'
+        'interpolateQrSizeFor15cm',
       );
       const testData = [
         { qrDataInputLength: 140, realSize: 150 / 140 },

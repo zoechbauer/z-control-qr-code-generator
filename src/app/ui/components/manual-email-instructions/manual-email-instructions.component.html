@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()" (keydown.enter)="dismiss()">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <div class="instructions-text">{{ instructions }}</div>
+
+  <div class="qr-section">
+    <h4>{{ qrTextLabel }}:</h4>
+    <div class="qr-text">{{ displayedQrText }}</div>
+  </div>
+
+  <div class="button-section">
+    <ion-button
+      expand="full"
+      color="primary"
+      (click)="copyAndDismiss()"
+      (keydown.enter)="copyAndDismiss()"
+    >
+      {{ copyButtonLabel }}
+    </ion-button>
+  </div>
+</ion-content>

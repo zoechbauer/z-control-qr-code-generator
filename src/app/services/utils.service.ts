@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
-import { HelpModalComponent } from '../help-modal/help-modal.component';
+import { GetHelpComponent } from '../ui/components/get-help/get-help.component';
 import { Tab } from '../enums';
 import { MarkdownViewerComponent } from '../ui/components/markdown-viewer/markdown-viewer.component';
 import { Subject } from 'rxjs';
@@ -12,14 +12,14 @@ import { Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class UtilsService {
+  private readonly modalController = inject(ModalController);
+  private readonly router = inject(Router);
+
   logoClickedSub = new Subject<boolean>();
   logoClicked$ = this.logoClickedSub.asObservable();
   private currentModal: HTMLIonModalElement | null = null;
 
-  constructor(
-    private readonly modalController: ModalController,
-    private readonly router: Router
-  ) {
+  constructor() {
     window.addEventListener('orientationchange', () => {
       if (this.currentModal) {
         this.setModalLandscapeClasses(this.currentModal);
@@ -82,7 +82,7 @@ export class UtilsService {
    * @param tab The tab to navigate to.
    */
   async navigateToTab(tab: Tab): Promise<void> {
-    await this.router.navigate([`/tabs/tab-${tab}`]);
+    await this.router.navigate([`/${tab}`]);
   }
 
   /**
@@ -91,7 +91,7 @@ export class UtilsService {
    * @param params The query parameters to include in the navigation.
    */
   async navigateToTabWithParams(tab: Tab, params: any): Promise<void> {
-    await this.router.navigate([`/tabs/tab-${tab}`], { queryParams: params });
+    await this.router.navigate([`/${tab}`], { queryParams: params });
   }
 
   /**
@@ -130,7 +130,7 @@ export class UtilsService {
    */
   async openHelpModal() {
     const modal = await this.modalController.create({
-      component: HelpModalComponent,
+      component: GetHelpComponent,
     });
     this.currentModal = modal;
     this.setModalLandscapeClasses(modal);
@@ -160,21 +160,21 @@ export class UtilsService {
     setTimeout(() => {
       if (modal.classList && typeof modal.classList.remove === 'function') {
         modal.classList.remove(
-          'manual-instructions-modal',
+          'manual-email-instructions',
           'change-log-modal',
           'desktop',
-          'landscape'
+          'landscape',
         );
         switch (modal.component) {
-          case HelpModalComponent:
-            modal.classList.add('manual-instructions-modal');
+          case GetHelpComponent:
+            modal.classList.add('manual-email-instructions');
             break;
           case MarkdownViewerComponent:
             modal.classList.add('change-log-modal');
             break;
           default:
             console.error(
-              'Unknown modal component for setting landscape class'
+              'Unknown modal component for setting landscape class',
             );
         }
         if (this.isDesktop) {

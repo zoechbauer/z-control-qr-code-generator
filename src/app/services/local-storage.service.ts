@@ -76,12 +76,30 @@ export class LocalStorageService {
       LocalStorage.SelectedLanguage,
     );
 
-    if (selectedLanguage) {
-      this.selectedLanguageSubject.next(selectedLanguage);
+    if (selectedLanguage !== null && selectedLanguage !== undefined) {
+      this.selectedLanguageSubject.next(String(selectedLanguage));
     } else {
       const lang = this.getMobileDefaultLanguage();
       await this.saveSelectedLanguage(lang);
-      this.selectedLanguageSubject.next(lang);
+    }
+  }
+
+  /**
+   * Parses JSON safely for stored values that may already be plain strings.
+   */
+  private parseStoredValue<T>(value: T, fallback: T): T {
+    if (value === null || value === undefined) {
+      return fallback;
+    }
+
+    if (typeof value !== 'string') {
+      return value;
+    }
+
+    try {
+      return JSON.parse(value) as T;
+    } catch {
+      return value;
     }
   }
 
@@ -105,11 +123,7 @@ export class LocalStorageService {
     const emailAddresses = await this.storage.get(
       LocalStorage.SavedEmailAddresses,
     );
-    if (emailAddresses) {
-      this.savedEmailAddresses = JSON.parse(emailAddresses);
-    } else {
-      this.savedEmailAddresses = [];
-    }
+    this.savedEmailAddresses = this.parseStoredValue<string[]>(emailAddresses, []);
     this.savedEmailAddressesSubject.next(this.savedEmailAddresses);
   }
 
@@ -173,8 +187,11 @@ export class LocalStorageService {
     const printSettings = await this.storage.get(
       LocalStorage.SavedPrintSettings,
     );
-    if (printSettings) {
-      this.savedPrintSettings = JSON.parse(printSettings);
+    if (printSettings !== null && printSettings !== undefined) {
+      this.savedPrintSettings = this.parseStoredValue<PrintSettings>(
+        printSettings,
+        this.defaultPrintSettings,
+      );
     } else {
       await this.savePrintSettings(this.defaultPrintSettings);
       this.savedPrintSettings = this.defaultPrintSettings;

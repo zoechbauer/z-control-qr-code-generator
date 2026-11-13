@@ -127,7 +127,7 @@ export class FileUtilsService {
           return;
         }
 
-        const storageDurationInHours = environment.storageDurationInHours ?? 3;
+        const storageDurationInHours = environment.app.storageDurationInHours ?? 3;
         const storageDurationInMilliseconds =
           storageDurationInHours * 60 * 60 * 1000;
         const now = Date.now();

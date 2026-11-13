@@ -7,9 +7,9 @@ import {
   listOutline,
   trashOutline,
   openOutline,
-  help,
-  informationCircle,
-  close,
+  helpOutline,
+  informationCircleOutline,
+  closeOutline,
   settingsOutline,
   callOutline,
   qrCodeOutline,
@@ -21,19 +21,25 @@ import {
   checkmarkOutline,
   lockClosedOutline,
   logoGooglePlaystore,
+  arrowBackOutline,
+  arrowUpOutline,
+  albumsOutline,
 } from 'ionicons/icons';
 
 import { AppComponent } from './app/app.component';
 import { appConfig } from './app/app.config';
 
 addIcons({
+  'albums-outline': albumsOutline,
+  'arrow-back-outline': arrowBackOutline,
+  'arrow-up-outline': arrowUpOutline,
   'calculator-outline': calculatorOutline,
   'call-outline': callOutline,
   'checkmark-outline': checkmarkOutline,
-  close: close,
+  'close-outline': closeOutline,
   'cloud-download': cloudDownload,
-  help: help,
-  'information-circle': informationCircle,
+  'help-outline': helpOutline,
+  'information-circle-outline': informationCircleOutline,
   'list-outline': listOutline,
   'location-outline': locationOutline,
   'lock-closed-outline': lockClosedOutline,

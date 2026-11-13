@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { UtilsService } from './utils.service';
 import { WindowMockUtil } from '@testing/window-mock.util';
-import { HelpModalComponent } from '../help-modal/help-modal.component';
+import { GetHelpComponent } from '../ui/components/get-help/get-help.component';
 import { MarkdownViewerComponent } from '../ui/components/markdown-viewer/markdown-viewer.component';
 import { Tab } from '../enums';
 
@@ -274,7 +274,7 @@ describe('UtilsService', () => {
         'classList',
       ]);
       modal.classList = jasmine.createSpyObj('classList', ['add', 'remove']);
-      modal.component = HelpModalComponent;
+      modal.component = GetHelpComponent;
       modalControllerSpy.create.and.returnValue(Promise.resolve(modal));
     });
 
@@ -286,7 +286,7 @@ describe('UtilsService', () => {
       tick(20);
 
       expect(modal.classList.add).toHaveBeenCalledWith(
-        'manual-instructions-modal'
+        'manual-email-instructions'
       );
       expect(modal.classList.add).toHaveBeenCalledWith('desktop');
     }));
@@ -299,7 +299,7 @@ describe('UtilsService', () => {
       tick(20);
 
       expect(modal.classList.add).toHaveBeenCalledWith(
-        'manual-instructions-modal'
+        'manual-email-instructions'
       );
       expect(modal.classList.add).not.toHaveBeenCalledWith('desktop');
       expect(modal.classList.add).toHaveBeenCalledWith('landscape');
@@ -307,14 +307,14 @@ describe('UtilsService', () => {
   });
 
   describe('check valid modal opening', () => {
-    it('should add manual-instructions-modal class if HelpModalComponent is called', fakeAsync(() => {
+    it('should add manual-email-instructions class if HelpModalComponent is called', fakeAsync(() => {
       // Arrange: minimal modal-like object that satisfies the guard
       const modal: any = {
         classList: {
           remove: jasmine.createSpy('remove'),
           add: jasmine.createSpy('add'),
         },
-        component: HelpModalComponent,
+        component: GetHelpComponent,
       };
 
       // Act
@@ -323,7 +323,7 @@ describe('UtilsService', () => {
 
       // Assert
       expect(modal.classList.remove).toHaveBeenCalled();
-      expect(modal.classList.add).toHaveBeenCalledWith('manual-instructions-modal');
+      expect(modal.classList.add).toHaveBeenCalledWith('manual-email-instructions');
     }));
 
     it('should add change-log-modal class if MarkdownViewerComponent is called', fakeAsync(() => {
@@ -375,7 +375,7 @@ describe('UtilsService', () => {
       tabs.forEach((tab) => {
         service.navigateToTab(tab);
 
-        expect(routerSpy.navigate).toHaveBeenCalledWith([`/tabs/tab-${tab}`]);
+        expect(routerSpy.navigate).toHaveBeenCalledWith([`/${tab}`]);
       });
     });
 
@@ -386,7 +386,7 @@ describe('UtilsService', () => {
       tabs.forEach((tab) => {
         service.navigateToTabWithParams(tab, params);
 
-        expect(routerSpy.navigate).toHaveBeenCalledWith([`/tabs/tab-${tab}`], {
+        expect(routerSpy.navigate).toHaveBeenCalledWith([`/${tab}`], {
           queryParams: params,
         });
       });

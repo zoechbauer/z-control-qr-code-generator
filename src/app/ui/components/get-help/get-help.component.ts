@@ -18,10 +18,10 @@ import { UtilsService } from '@app/services/utils.service';
 import { environment } from '@env/environment';
 
 @Component({
-  selector: 'app-help-modal',
-  templateUrl: './help-modal.component.html',
-  styleUrls: ['./help-modal.component.scss'],
-    imports: [
+  selector: 'app-get-help',
+  templateUrl: './get-help.component.html',
+  styleUrls: ['./get-help.component.scss'],
+  imports: [
     IonButtons,
     IonContent,
     IonButton,
@@ -32,8 +32,8 @@ import { environment } from '@env/environment';
     CommonModule,
   ],
 })
-export class HelpModalComponent implements OnInit, OnDestroy {
-  @Input() scrollToSection?: string; // Optional: ID of the section to scroll to when the modal opens 
+export class GetHelpComponent implements OnInit, OnDestroy {
+  @Input() scrollToSection?: string; // Optional: ID of the section to scroll to when the modal opens
   // (e.g., 'floating-keyboard' or 'web-version')
 
   readonly scrollToTopObj = {
@@ -42,7 +42,7 @@ export class HelpModalComponent implements OnInit, OnDestroy {
   };
   selectedLanguage: string = 'de';
   isPortrait = this.utilsService.isPortrait;
-  maxInputLength: number = environment.maxInputLength ?? 1000;
+  maxInputLength: number = environment.app.maxInputLength ?? 1000;
 
   private langSub?: Subscription;
 
@@ -50,7 +50,7 @@ export class HelpModalComponent implements OnInit, OnDestroy {
     public readonly utilsService: UtilsService,
     private readonly modalController: ModalController,
     private readonly translate: TranslateService,
-    private readonly localStorage: LocalStorageService
+    private readonly localStorage: LocalStorageService,
   ) {}
 
   /**
@@ -61,7 +61,7 @@ export class HelpModalComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Returns the help text for the email subject, 
+   * Returns the help text for the email subject,
    * depending on whether the app is running natively or on the web.
    */
   get emailSubjectHelpText(): string {
@@ -70,7 +70,7 @@ export class HelpModalComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Returns the help text for the language change button, 
+   * Returns the help text for the language change button,
    * depending on whether the app is running natively or on the web.
    */
   get languageChangeButtonHelpText(): string {
@@ -81,7 +81,7 @@ export class HelpModalComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Returns the help text for the device information, 
+   * Returns the help text for the device information,
    * depending on whether the app is running natively or on the web.
    */
   get deviceText(): string {

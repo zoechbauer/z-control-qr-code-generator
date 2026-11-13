@@ -14,6 +14,7 @@ import * as environmentImport from '@env/environment';
 import { TabSettingsPage } from './tab-settings.page';
 import { LocalStorageService } from '../services/local-storage.service';
 import { UtilsService } from '../services/utils.service';
+import { environment } from '@env/environment';
 
 describe('TabSettingsPage', () => {
   let component: TabSettingsPage;
@@ -26,7 +27,7 @@ describe('TabSettingsPage', () => {
       ['saveSelectedLanguage'],
       {
         selectedLanguage$: of('de'),
-      }
+      },
     );
     const modalControllerSpy = jasmine.createSpyObj('ModalController', [
       'dismiss',
@@ -42,12 +43,15 @@ describe('TabSettingsPage', () => {
         isNative: false,
         logoClickedSub,
         logoClicked$: logoClickedSub.asObservable(),
-      }
+      },
     );
 
     await TestBed.configureTestingModule({
-      declarations: [TabSettingsPage],
-      imports: [IonicModule.forRoot(), TranslateModule.forRoot()],
+      imports: [
+        IonicModule.forRoot(),
+        TranslateModule.forRoot(),
+        TabSettingsPage,
+      ],
       providers: [
         { provide: TranslateService, useValue: createTranslateServiceMock() },
         { provide: LocalStorageService, useValue: localStorageServiceSpy },
@@ -77,7 +81,7 @@ describe('TabSettingsPage', () => {
       fixture = TestBed.createComponent(TabSettingsPage);
       component = fixture.componentInstance;
 
-      expect(component.versionInfo).toBe('App Version 1.19 (2025-08-30)');
+      expect(component.versionInfo).toBe('1.19 (2025-08-30)');
     });
 
     it('should handle missing date gracefully', () => {
@@ -89,7 +93,7 @@ describe('TabSettingsPage', () => {
       fixture = TestBed.createComponent(TabSettingsPage);
       component = fixture.componentInstance;
 
-      expect(component.versionInfo).toBe('App Version 2.5 (YYYY-MM-DD)');
+      expect(component.versionInfo).toBe('2.5 (YYYY-MM-DD)');
     });
   });
 
@@ -225,7 +229,7 @@ describe('TabSettingsPage', () => {
 
       expect(window.addEventListener).toHaveBeenCalledWith(
         'resize',
-        jasmine.any(Function)
+        jasmine.any(Function),
       );
     });
 
@@ -234,5 +238,9 @@ describe('TabSettingsPage', () => {
       window.dispatchEvent(new Event('resize'));
       expect(utilsServiceSpy.showOrHideIonTabBar).toHaveBeenCalled();
     });
+  });
+
+  it('should return app name from environment', () => {
+    expect(component.appName).toBe(environment.app.name);
   });
 });

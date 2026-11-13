@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonAccordion,
@@ -26,16 +26,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   ],
 })
 export class LanguageAccordionComponent {
+  translate = inject(TranslateService);
+
   @Input() lang?: string;
-  @Output() ionChange = new EventEmitter<string>();
 
-  constructor(public translate: TranslateService) {}
-
-  /**
-   * Handles changes to the selected language.
-   * @param event The event containing the new language value.
-   */
-  onLanguageChange(event: any) {
-    this.ionChange.emit(this.lang);
-  }
 }

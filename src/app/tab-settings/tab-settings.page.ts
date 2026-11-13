@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { NgSwitch, NgIf, NgSwitchCase } from '@angular/common';
@@ -21,7 +21,7 @@ import { EmailMaintenanceAccordionComponent } from '../ui/components/accordions/
 @Component({
   selector: 'app-tab-settings',
   templateUrl: './tab-settings.page.html',
-      imports: [
+  imports: [
     IonicModule,
     TranslatePipe,
     NgSwitch,
@@ -35,10 +35,14 @@ import { EmailMaintenanceAccordionComponent } from '../ui/components/accordions/
     PrivacyPolicyAccordionComponent,
     GetMobileAppAccordionComponent,
     PrintAccordionComponent,
-    EmailMaintenanceAccordionComponent
-    ]
+    EmailMaintenanceAccordionComponent,
+  ],
 })
 export class TabSettingsPage implements OnInit, OnDestroy {
+  translate = inject(TranslateService);
+  readonly localStorage = inject(LocalStorageService);
+  readonly utilsService = inject(UtilsService);
+
   openAccordion: string | null = null;
   showAllAccordions = true;
   selectedLanguage?: string;
@@ -46,20 +50,33 @@ export class TabSettingsPage implements OnInit, OnDestroy {
   Tab = Tab;
   private readonly subscriptions: Subscription[] = [];
 
-  constructor(
-    public translate: TranslateService,
-    public readonly localStorage: LocalStorageService,
-    public readonly utilsService: UtilsService
-  ) {}
+  /**
+   * Returns the name of the application from the environment configuration.
+   */
+  get appName(): string {
+    return environment.app.name;
+  }
+
+  /**
+   * Returns the version information of the application in the format "major.minor (date)".
+   */
+  get versionInfo() {
+    const { major, minor, date } = {
+      major: environment.version.major,
+      minor: environment.version.minor,
+      date: environment.version.date,
+    };
+    return `${major}.${minor} (${date})`;
+  }
 
   /**
    * Initializes the component.
    */
   ngOnInit() {
     this.showAllAccordions = true;
+    this.setupSubscriptions();
     this.utilsService.showOrHideIonTabBar();
     this.setupEventListeners();
-    this.setupSubscriptions();
   }
 
   /**
@@ -74,7 +91,7 @@ export class TabSettingsPage implements OnInit, OnDestroy {
       }),
       this.utilsService.logoClicked$.subscribe(() => {
         this.openFeedbackAccordion();
-      })
+      }),
     );
   }
 
@@ -138,18 +155,6 @@ export class TabSettingsPage implements OnInit, OnDestroy {
    */
   async openChangelog() {
     await this.utilsService.openChangelog();
-  }
-
-  /**
-   * Returns the app version information in format "App Version major.minor (date)".
-   */
-  get versionInfo() {
-    const { major, minor, date } = {
-      major: environment.version.major,
-      minor: environment.version.minor,
-      date: environment.version.date,
-    };
-    return `App Version ${major}.${minor} (${date})`;
   }
 
   /**

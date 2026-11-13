@@ -70,7 +70,7 @@ describe('TabQrPage', () => {
           addListener: jasmine
             .createSpy('addListener')
             .and.returnValue(
-              Promise.resolve({ remove: jasmine.createSpy('remove') })
+              Promise.resolve({ remove: jasmine.createSpy('remove') }),
             ),
           removeAllListeners: jasmine
             .createSpy('removeAllListeners')
@@ -100,7 +100,7 @@ describe('TabQrPage', () => {
     spyOn(Capacitor, 'isPluginAvailable').and.returnValue(true);
     spyOn(Capacitor, 'isNativePlatform').and.returnValue(true);
     spyOn(Keyboard, 'addListener').and.returnValue(
-      Promise.resolve({ remove: jasmine.createSpy('remove') })
+      Promise.resolve({ remove: jasmine.createSpy('remove') }),
     );
     spyOn(Keyboard, 'removeAllListeners').and.returnValue(Promise.resolve());
     spyOn(Keyboard, 'hide').and.returnValue(Promise.resolve());
@@ -120,21 +120,21 @@ describe('TabQrPage', () => {
         isQrCodeGenerated: false,
         myAngularxQrCode: '',
         qrCodeDownloadLink: '',
-      }
+      },
     );
     const emailUtilsSpy = jasmine.createSpyObj<EmailUtilsService>(
       'EmailUtilsService',
       ['sendEmail', 'clearEmailSent', 'displayEmailAttachmentAlert'],
       {
         isEmailSent: false,
-      }
+      },
     );
     const localStorageSpy = jasmine.createSpyObj<LocalStorageService>(
       'LocalStorageService',
       ['loadSelectedOrDefaultLanguage', 'init', 'saveEmailAddress'],
       {
         selectedLanguage$: of('en'),
-      }
+      },
     );
     const fileUtilsSpy = jasmine.createSpyObj<Partial<FileUtilsService>>(
       'FileUtilsService',
@@ -144,14 +144,14 @@ describe('TabQrPage', () => {
         'setNowFormatted',
         'downloadQRCode',
         'deleteAllQrCodeFilesAfterSpecifiedTime',
-      ]
+      ],
     );
     const printUtilsSpy = jasmine.createSpyObj('PrintUtilsService', [
       'printQRCode',
       'getConvertedPrintSettings',
     ]);
     printUtilsSpy.getConvertedPrintSettings.and.returnValue(
-      '[ ~5 cm / small gap / 8 ]'
+      '[ ~5 cm / small gap / 8 ]',
     );
     const toastServiceSpy = jasmine.createSpyObj('ToastService', [
       'showToast',
@@ -166,12 +166,12 @@ describe('TabQrPage', () => {
 
     // 6. Configure TestBed
     await TestBed.configureTestingModule({
-      declarations: [TabQrPage],
       imports: [
         IonicModule.forRoot({ mode: 'md', animated: false }),
         TranslateModule.forRoot(),
         HttpClientTestingModule,
         HeaderComponent,
+        TabQrPage,
       ],
       providers: [
         { provide: Storage, useValue: storageSpy },
@@ -193,7 +193,7 @@ describe('TabQrPage', () => {
 
     // Make service properties writable
     const emailUtilsService = TestBed.inject(
-      EmailUtilsService
+      EmailUtilsService,
     ) as jasmine.SpyObj<EmailUtilsService>;
     Object.defineProperty(emailUtilsService, 'isEmailSent', {
       writable: true,
@@ -202,7 +202,7 @@ describe('TabQrPage', () => {
     });
 
     const qrUtilsService = TestBed.inject(
-      QrUtilsService
+      QrUtilsService,
     ) as jasmine.SpyObj<QrUtilsService>;
     Object.defineProperty(qrUtilsService, 'isQrCodeGenerated', {
       writable: true,
@@ -219,11 +219,11 @@ describe('TabQrPage', () => {
     (storageSpy.get as jasmine.Spy).and.returnValue(Promise.resolve(null));
     (storageSpy.set as jasmine.Spy).and.returnValue(Promise.resolve());
     (storageSpy.create as jasmine.Spy).and.returnValue(
-      Promise.resolve({} as Storage)
+      Promise.resolve({} as Storage),
     );
     localStorageSpy.init.and.returnValue(Promise.resolve());
     localStorageSpy.loadSelectedOrDefaultLanguage.and.returnValue(
-      Promise.resolve()
+      Promise.resolve(),
     );
     (qrUtilsSpy.clearQrFields as jasmine.Spy).and.returnValue(undefined);
   });
@@ -257,10 +257,10 @@ describe('TabQrPage', () => {
 
     beforeEach(() => {
       qrUtilsService = TestBed.inject(
-        QrUtilsService
+        QrUtilsService,
       ) as jasmine.SpyObj<QrUtilsService>;
       toastService = TestBed.inject(
-        ToastService
+        ToastService,
       ) as jasmine.SpyObj<ToastService>;
     });
 
@@ -271,7 +271,7 @@ describe('TabQrPage', () => {
 
       // Act
       component.sanitizeInputAndGenerateQRCode(
-        component.qrDataInput?.value || 'test'
+        component.qrDataInput?.value || 'test',
       );
 
       // Assert
@@ -313,11 +313,11 @@ describe('TabQrPage', () => {
 
       // Assert
       expect(qrUtilsService.generateQRCode).toHaveBeenCalledWith(
-        expectedTrimmed
+        expectedTrimmed,
       );
       expect(toastService.showToast).toHaveBeenCalledWith(
         'TOAST_TRAILING_BLANKS_REMOVED',
-        jasmine.anything()
+        jasmine.anything(),
       );
       expect(component.qrDataInput.value).toBe(expectedTrimmed);
     }));
@@ -328,7 +328,7 @@ describe('TabQrPage', () => {
 
     beforeEach(() => {
       qrUtilsService = TestBed.inject(
-        QrUtilsService
+        QrUtilsService,
       ) as jasmine.SpyObj<QrUtilsService>;
 
       // Mock qrDataInput for all tests
@@ -441,10 +441,10 @@ describe('TabQrPage', () => {
 
     beforeEach(() => {
       qrUtilsService = TestBed.inject(
-        QrUtilsService
+        QrUtilsService,
       ) as jasmine.SpyObj<QrUtilsService>;
       emailUtilsService = TestBed.inject(
-        EmailUtilsService
+        EmailUtilsService,
       ) as jasmine.SpyObj<EmailUtilsService>;
       component.qrDataInput = { value: '' } as any;
     });
@@ -523,10 +523,10 @@ describe('TabQrPage', () => {
       // Arrange
       component.qrDataInput = { value: 'test input' } as any;
       const qrUtilsService = TestBed.inject(
-        QrUtilsService
+        QrUtilsService,
       ) as jasmine.SpyObj<QrUtilsService>;
       const emailUtilsService = TestBed.inject(
-        EmailUtilsService
+        EmailUtilsService,
       ) as jasmine.SpyObj<EmailUtilsService>;
 
       // Act
@@ -542,7 +542,7 @@ describe('TabQrPage', () => {
       component.qrDataInput = { value: 'x'.repeat(101) } as any;
       const showClearConfirmationSpy = spyOn<any>(
         component,
-        'showClearConfirmation'
+        'showClearConfirmation',
       ).and.returnValue(Promise.resolve());
 
       // Act
@@ -554,13 +554,13 @@ describe('TabQrPage', () => {
 
     it('should use 100 chars for showClearConfirmation if environment setting is missing', () => {
       // Arrange - temporarily set environment value to undefined
-      const originalMaxLength = environment.maxInputLength;
+      const originalMaxLength = environment.app.maxInputLength;
       (environment as any).maxInputLength = undefined;
 
       component.qrDataInput = { value: 'x'.repeat(101) } as any;
       const showClearConfirmationSpy = spyOn<any>(
         component,
-        'showClearConfirmation'
+        'showClearConfirmation',
       ).and.returnValue(Promise.resolve());
 
       // Act
@@ -575,10 +575,10 @@ describe('TabQrPage', () => {
       // Arrange
       component.qrDataInput = { value: 'x'.repeat(101) } as any;
       const qrUtilsService = TestBed.inject(
-        QrUtilsService
+        QrUtilsService,
       ) as jasmine.SpyObj<QrUtilsService>;
       const emailUtilsService = TestBed.inject(
-        EmailUtilsService
+        EmailUtilsService,
       ) as jasmine.SpyObj<EmailUtilsService>;
 
       // Act
@@ -593,7 +593,7 @@ describe('TabQrPage', () => {
     it('should present an alert in showClearConfirmation', async () => {
       // Arrange
       const alertController = TestBed.inject(
-        AlertController
+        AlertController,
       ) as jasmine.SpyObj<AlertController>;
       const mockAlert = jasmine.createSpyObj('HTMLIonAlertElement', [
         'present',
@@ -611,7 +611,7 @@ describe('TabQrPage', () => {
     it('should call performClear when clear confirmation handler is triggered', async () => {
       // Arrange
       const alertController = TestBed.inject(
-        AlertController
+        AlertController,
       ) as jasmine.SpyObj<AlertController>;
       const mockAlert = jasmine.createSpyObj('HTMLIonAlertElement', [
         'present',
@@ -625,7 +625,7 @@ describe('TabQrPage', () => {
       // Extract the config passed to alertController.create and find the clear button
       const config = alertController.create.calls.mostRecent().args[0];
       const clearButton = config?.buttons?.find(
-        (btn: any) => !!btn.handler
+        (btn: any) => !!btn.handler,
       ) as AlertButton;
 
       // Call the handler safely with a mock argument
@@ -642,16 +642,16 @@ describe('TabQrPage', () => {
     it('should delete qr code and show toast if input changed after generation', () => {
       // Arrange
       const qrUtilsService = TestBed.inject(
-        QrUtilsService
+        QrUtilsService,
       ) as jasmine.SpyObj<QrUtilsService>;
       const toastService = TestBed.inject(
-        ToastService
+        ToastService,
       ) as jasmine.SpyObj<ToastService>;
       const emailUtilsService = TestBed.inject(
-        EmailUtilsService
+        EmailUtilsService,
       ) as jasmine.SpyObj<EmailUtilsService>;
       const translate = TestBed.inject(
-        TranslateService
+        TranslateService,
       ) as jasmine.SpyObj<TranslateService>;
 
       // Mock dependencies
@@ -668,17 +668,17 @@ describe('TabQrPage', () => {
       // Verify toast is shown
       expect(toastService.showToast).toHaveBeenCalledWith(
         'TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE',
-        jasmine.anything()
+        jasmine.anything(),
       );
     });
 
     it('should not delete qr code if input did not change after generation', () => {
       // Arrange
       const qrUtilsService = TestBed.inject(
-        QrUtilsService
+        QrUtilsService,
       ) as jasmine.SpyObj<QrUtilsService>;
       const emailUtilsService = TestBed.inject(
-        EmailUtilsService
+        EmailUtilsService,
       ) as jasmine.SpyObj<EmailUtilsService>;
 
       // Mock the condition to be false
@@ -699,10 +699,10 @@ describe('TabQrPage', () => {
 
     beforeEach(() => {
       toastService = TestBed.inject(
-        ToastService
+        ToastService,
       ) as jasmine.SpyObj<ToastService>;
       translate = TestBed.inject(
-        TranslateService
+        TranslateService,
       ) as jasmine.SpyObj<TranslateService>;
       toastService.showToast.calls.reset();
       toastService.showDisabledToast.calls.reset();
@@ -718,7 +718,7 @@ describe('TabQrPage', () => {
 
       expect(toastService.showToast).toHaveBeenCalledWith(
         'TOAST_QR_CODE_DELETED_AFTER_INPUT_CHANGE',
-        jasmine.anything()
+        jasmine.anything(),
       );
     });
 
@@ -731,7 +731,7 @@ describe('TabQrPage', () => {
 
       expect(toastService.showToast).toHaveBeenCalledWith(
         'TOAST_TRAILING_BLANKS_REMOVED',
-        jasmine.anything()
+        jasmine.anything(),
       );
     });
 
@@ -739,7 +739,7 @@ describe('TabQrPage', () => {
       spyOnProperty(
         component,
         'isGenerationButtonDisabled',
-        'get'
+        'get',
       ).and.returnValue(true);
 
       component.handleGenerateButtonClick();
@@ -754,14 +754,14 @@ describe('TabQrPage', () => {
       const maxLength = component.maxInputLength;
 
       // Assert
-      expect(maxLength).toBe(environment.maxInputLength); // Test actual value
+      expect(maxLength).toBe(environment.app.maxInputLength); // Test actual value
       expect(typeof maxLength).toBe('number');
     });
 
     it('should return 1000 chars if max length from environment is missing', () => {
       // Arrange - temporarily set environment value to undefined
-      const originalMaxLength = environment.maxInputLength;
-      (environment as any).maxInputLength = undefined;
+      const originalMaxLength = environment.app.maxInputLength;
+      (environment as any).app.maxInputLength = undefined;
 
       // Act
       const maxLength = component.maxInputLength;
@@ -771,11 +771,15 @@ describe('TabQrPage', () => {
       expect(typeof maxLength).toBe('number');
 
       // Restore original value
-      (environment as any).maxInputLength = originalMaxLength;
+      (environment as any).app.maxInputLength = originalMaxLength;
     });
 
     it('should return isNative from utilsService', () => {
       expect(component.isNative).toBe(true);
+    });
+
+    it('should return app name from environment', () => {
+      expect(component.appName).toBe(environment.app.name);
     });
   });
 
@@ -784,7 +788,7 @@ describe('TabQrPage', () => {
 
     beforeEach(() => {
       qrUtilsService = TestBed.inject(
-        QrUtilsService
+        QrUtilsService,
       ) as jasmine.SpyObj<QrUtilsService>;
     });
 
@@ -798,7 +802,7 @@ describe('TabQrPage', () => {
     });
 
     it('should handle maximum length input', () => {
-      const maxInput = 'a'.repeat(environment.maxInputLength);
+      const maxInput = 'a'.repeat(environment.app.maxInputLength);
       component.qrDataInput = { value: maxInput } as any;
 
       component.sanitizeInputAndGenerateQRCode(maxInput);
@@ -823,13 +827,13 @@ describe('TabQrPage', () => {
 
     beforeEach(() => {
       qrUtilsService = TestBed.inject(
-        QrUtilsService
+        QrUtilsService,
       ) as jasmine.SpyObj<QrUtilsService>;
       emailUtilsService = TestBed.inject(
-        EmailUtilsService
+        EmailUtilsService,
       ) as jasmine.SpyObj<EmailUtilsService>;
       fileUtilsService = TestBed.inject(
-        FileUtilsService
+        FileUtilsService,
       ) as jasmine.SpyObj<FileUtilsService>;
     });
 
@@ -865,7 +869,7 @@ describe('TabQrPage', () => {
       // Assert - verify all operations were called in correct order
       expect(fileUtilsService.setNowFormatted).toHaveBeenCalled();
       expect(fileUtilsService.downloadQRCode).toHaveBeenCalledWith(
-        'mock-download-link'
+        'mock-download-link',
       );
       expect(qrUtilsService.printQRCode).toHaveBeenCalled();
       expect(emailUtilsService.sendEmail).toHaveBeenCalled();
@@ -902,7 +906,7 @@ describe('TabQrPage', () => {
       // Assert
       expect(fileUtilsService.setNowFormatted).toHaveBeenCalled();
       expect(fileUtilsService.downloadQRCode).toHaveBeenCalledWith(
-        'mock-download-link'
+        'mock-download-link',
       );
       expect(qrUtilsService.printQRCode).not.toHaveBeenCalled();
       expect(emailUtilsService.sendEmail).not.toHaveBeenCalled();
@@ -917,16 +921,16 @@ describe('TabQrPage', () => {
 
     beforeEach(() => {
       qrUtilsService = TestBed.inject(
-        QrUtilsService
+        QrUtilsService,
       ) as jasmine.SpyObj<QrUtilsService>;
       emailUtilsService = TestBed.inject(
-        EmailUtilsService
+        EmailUtilsService,
       ) as jasmine.SpyObj<EmailUtilsService>;
       fileUtilsService = TestBed.inject(
-        FileUtilsService
+        FileUtilsService,
       ) as jasmine.SpyObj<FileUtilsService>;
       alertService = TestBed.inject(
-        AlertService
+        AlertService,
       ) as jasmine.SpyObj<AlertService>;
     });
 
@@ -991,17 +995,17 @@ describe('TabQrPage', () => {
       // Assert - Verify error was handled gracefully
       expect(console.error).toHaveBeenCalledWith(
         'Email workflow failed:',
-        jasmine.any(Error)
+        jasmine.any(Error),
       );
       expect(alertService.showErrorAlert).toHaveBeenCalledWith(
-        'ERROR_MESSAGE_EMAIL_WORKFLOW'
+        'ERROR_MESSAGE_EMAIL_WORKFLOW',
       );
       expect(fileUtilsService.clearNowFormatted).toHaveBeenCalled();
 
       // Verify workflow progression up to email failure
       expect(fileUtilsService.setNowFormatted).toHaveBeenCalled();
       expect(fileUtilsService.downloadQRCode).toHaveBeenCalledWith(
-        'mock-download-link'
+        'mock-download-link',
       );
       expect(qrUtilsService.printQRCode).toHaveBeenCalled();
       expect(emailUtilsService.sendEmail).toHaveBeenCalled();
@@ -1038,15 +1042,15 @@ describe('TabQrPage', () => {
       // Assert
       expect(console.error).toHaveBeenCalledWith(
         'Email workflow failed:',
-        jasmine.any(Error)
+        jasmine.any(Error),
       );
       expect(alertService.showErrorAlert).toHaveBeenCalledWith(
-        'ERROR_MESSAGE_EMAIL_WORKFLOW'
+        'ERROR_MESSAGE_EMAIL_WORKFLOW',
       );
       expect(fileUtilsService.clearNowFormatted).toHaveBeenCalled();
       expect(fileUtilsService.setNowFormatted).toHaveBeenCalled();
       expect(fileUtilsService.downloadQRCode).toHaveBeenCalledWith(
-        'mock-download-link'
+        'mock-download-link',
       );
     });
 
@@ -1084,17 +1088,17 @@ describe('TabQrPage', () => {
       // Assert
       expect(console.error).toHaveBeenCalledWith(
         'Email workflow failed:',
-        jasmine.any(Error)
+        jasmine.any(Error),
       );
       expect(alertService.showErrorAlert).toHaveBeenCalledWith(
-        'ERROR_MESSAGE_EMAIL_WORKFLOW'
+        'ERROR_MESSAGE_EMAIL_WORKFLOW',
       );
       expect(fileUtilsService.clearNowFormatted).toHaveBeenCalled();
 
       // Verify operations were called in order
       expect(fileUtilsService.setNowFormatted).toHaveBeenCalled();
       expect(fileUtilsService.downloadQRCode).toHaveBeenCalledWith(
-        'mock-download-link'
+        'mock-download-link',
       );
       expect(qrUtilsService.printQRCode).toHaveBeenCalled();
     });
@@ -1106,18 +1110,18 @@ describe('TabQrPage', () => {
 
     beforeEach(() => {
       localStorageService = TestBed.inject(
-        LocalStorageService
+        LocalStorageService,
       ) as jasmine.SpyObj<LocalStorageService>;
       fileUtilsService = TestBed.inject(
-        FileUtilsService
+        FileUtilsService,
       ) as jasmine.SpyObj<FileUtilsService>;
 
       localStorageService.init.and.returnValue(Promise.resolve());
       localStorageService.loadSelectedOrDefaultLanguage.and.returnValue(
-        Promise.resolve()
+        Promise.resolve(),
       );
       fileUtilsService.deleteAllQrCodeFilesAfterSpecifiedTime.and.returnValue(
-        Promise.resolve()
+        Promise.resolve(),
       );
     });
 
@@ -1170,7 +1174,7 @@ describe('TabQrPage', () => {
       freshComponent.ngOnInit();
 
       // Assert
-      expect(freshComponent.nbrOfInitialRows).toBe(1); // Landscape = 1 row
+      expect(freshComponent.nbrOfInitialRows).toBe(2); // Landscape = 2 rows
     });
 
     it('should not add keyboard listeners on web platforms', () => {
@@ -1195,14 +1199,14 @@ describe('TabQrPage', () => {
       expect(() => component.ngOnInit()).not.toThrow();
       expect(console.error).toHaveBeenCalledWith(
         'App initialization failed:',
-        'Init failed'
+        'Init failed',
       );
     });
 
     it('should log delete qr code file errors', async () => {
       // Arrange
       fileUtilsService.deleteAllQrCodeFilesAfterSpecifiedTime.and.returnValue(
-        Promise.reject('Delete failed')
+        Promise.reject('Delete failed'),
       );
       spyOn(console, 'warn');
 
@@ -1215,7 +1219,7 @@ describe('TabQrPage', () => {
       expect(() => component.ngOnInit()).not.toThrow();
       expect(console.warn).toHaveBeenCalledWith(
         'File cleanup failed:',
-        'Delete failed'
+        'Delete failed',
       );
     });
   });
@@ -1227,13 +1231,13 @@ describe('TabQrPage', () => {
 
     beforeEach(() => {
       qrUtilsService = TestBed.inject(
-        QrUtilsService
+        QrUtilsService,
       ) as jasmine.SpyObj<QrUtilsService>;
       emailUtilsService = TestBed.inject(
-        EmailUtilsService
+        EmailUtilsService,
       ) as jasmine.SpyObj<EmailUtilsService>;
       fileUtilsService = TestBed.inject(
-        FileUtilsService
+        FileUtilsService,
       ) as jasmine.SpyObj<FileUtilsService>;
     });
 
@@ -1314,7 +1318,7 @@ describe('TabQrPage', () => {
       // Verify error was logged
       expect(console.error).toHaveBeenCalledWith(
         'Cleanup failed:',
-        jasmine.any(Error)
+        jasmine.any(Error),
       );
     });
   });
@@ -1326,10 +1330,10 @@ describe('TabQrPage', () => {
 
     beforeEach(() => {
       utilsService = TestBed.inject(
-        UtilsService
+        UtilsService,
       ) as jasmine.SpyObj<UtilsService>;
       emailService = TestBed.inject(
-        EmailUtilsService
+        EmailUtilsService,
       ) as jasmine.SpyObj<EmailUtilsService>;
       platform = TestBed.inject(Platform) as jasmine.SpyObj<Platform>;
     });
@@ -1352,7 +1356,7 @@ describe('TabQrPage', () => {
         .createSpy()
         .and.callFake((type: string) => type === 'desktop');
       emailService.displayEmailAttachmentAlert.and.callFake((cb: Function) =>
-        cb()
+        cb(),
       );
 
       // Act
@@ -1369,7 +1373,7 @@ describe('TabQrPage', () => {
       platform.is = jasmine.createSpy().and.returnValue(false);
       const showMobileWebEmailOptionsSpy = spyOn<any>(
         component,
-        'showMobileWebEmailOptions'
+        'showMobileWebEmailOptions',
       ).and.returnValue(Promise.resolve());
 
       // Act
@@ -1513,7 +1517,7 @@ describe('TabQrPage', () => {
       spyOnProperty(
         (component as any).utilsService,
         'isSmallDevice',
-        'get'
+        'get',
       ).and.returnValue(true);
       (component as any).hasShownKeyboardAlert = false;
       spyOn(component as any, 'shouldShowKeyboardAlert').and.returnValue(true);
@@ -1529,10 +1533,10 @@ describe('TabQrPage', () => {
       component.onTextareaInput();
 
       expect(
-        (component as any).deleteQRCodeIfInputChangedAfterGeneration
+        (component as any).deleteQRCodeIfInputChangedAfterGeneration,
       ).toHaveBeenCalled();
       expect((component as any).showWorkflowStepGenerate).toHaveBeenCalledWith(
-        'test'
+        'test',
       );
     });
 
@@ -1558,7 +1562,7 @@ describe('TabQrPage', () => {
       component.qrDataInput.value = 'abc   ';
       component.onQrDataInputBlur();
       expect(
-        (component as any).printUtilsService.qrDataInputSub.next
+        (component as any).printUtilsService.qrDataInputSub.next,
       ).toHaveBeenCalledWith(3);
     });
 
@@ -1566,7 +1570,7 @@ describe('TabQrPage', () => {
       component.qrDataInput.value = '';
       component.onQrDataInputBlur();
       expect(
-        (component as any).printUtilsService.qrDataInputSub.next
+        (component as any).printUtilsService.qrDataInputSub.next,
       ).toHaveBeenCalledWith(1);
     });
   });
@@ -1574,7 +1578,7 @@ describe('TabQrPage', () => {
   it('onChangeURL event', () => {
     const url = 'some url';
     const qrUtilsService = TestBed.inject(
-      QrUtilsService
+      QrUtilsService,
     ) as jasmine.SpyObj<QrUtilsService>;
     qrUtilsService.setDownloadLink.and.stub();
 
@@ -1584,7 +1588,7 @@ describe('TabQrPage', () => {
   });
 
   function isButtonObj(
-    btn: any
+    btn: any,
   ): btn is { text?: string; handler?: any; role?: string } {
     return typeof btn === 'object' && btn !== null;
   }
@@ -1597,13 +1601,13 @@ describe('TabQrPage', () => {
 
     beforeEach(() => {
       alertController = TestBed.inject(
-        AlertController
+        AlertController,
       ) as jasmine.SpyObj<AlertController>;
       emailService = TestBed.inject(
-        EmailUtilsService
+        EmailUtilsService,
       ) as jasmine.SpyObj<EmailUtilsService>;
       translate = TestBed.inject(
-        TranslateService
+        TranslateService,
       ) as jasmine.SpyObj<TranslateService>;
 
       mockAlert = jasmine.createSpyObj('HTMLIonAlertElement', ['present']);
@@ -1630,7 +1634,7 @@ describe('TabQrPage', () => {
       await (component as any).showMobileWebEmailOptions();
       const config = alertController.create.calls.mostRecent().args[0] || {};
       const tryEmailBtn = config.buttons?.find?.(
-        (b: any) => isButtonObj(b) && b.text === 'MOBILE_WEB_TRY_EMAIL'
+        (b: any) => isButtonObj(b) && b.text === 'MOBILE_WEB_TRY_EMAIL',
       );
       expect(tryEmailBtn).toBeDefined();
 
@@ -1646,12 +1650,12 @@ describe('TabQrPage', () => {
     it('should call copyQRTextToClipboard when "copy text" button is pressed', async () => {
       const copySpy = spyOn<any>(
         component,
-        'copyQRTextToClipboard'
+        'copyQRTextToClipboard',
       ).and.returnValue(Promise.resolve());
       await (component as any).showMobileWebEmailOptions();
       const config = alertController.create.calls.mostRecent().args[0] || {};
       const copyBtn = config.buttons?.find?.(
-        (b: any) => isButtonObj(b) && b.text === 'MOBILE_WEB_COPY_TEXT'
+        (b: any) => isButtonObj(b) && b.text === 'MOBILE_WEB_COPY_TEXT',
       );
       expect(copyBtn).toBeDefined();
 
@@ -1661,15 +1665,15 @@ describe('TabQrPage', () => {
       expect(copySpy).toHaveBeenCalled();
     });
 
-    it('should call showManualInstructions when "instructions" button is pressed', async () => {
+    it('should call showManualEmailInstructions when "instructions" button is pressed', async () => {
       const instructionsSpy = spyOn<any>(
         component,
-        'showManualInstructions'
+        'showManualEmailInstructions',
       ).and.returnValue(Promise.resolve());
       await (component as any).showMobileWebEmailOptions();
       const config = alertController.create.calls.mostRecent().args[0] || {};
       const instructionsBtn = config.buttons?.find?.(
-        (b: any) => isButtonObj(b) && b.text === 'MOBILE_WEB_INSTRUCTIONS'
+        (b: any) => isButtonObj(b) && b.text === 'MOBILE_WEB_INSTRUCTIONS',
       );
       expect(instructionsBtn).toBeDefined();
 
@@ -1686,7 +1690,7 @@ describe('TabQrPage', () => {
       await (component as any).showMobileWebEmailOptions();
       const config = alertController.create.calls.mostRecent().args[0] || {};
       const cancelBtn = config.buttons?.find?.(
-        (b: any) => isButtonObj(b) && b.text === 'CANCEL'
+        (b: any) => isButtonObj(b) && b.text === 'CANCEL',
       );
       expect(cancelBtn).toBeDefined();
       expect(isButtonObj(cancelBtn) && cancelBtn.role).toBe('cancel');
@@ -1699,11 +1703,11 @@ describe('TabQrPage', () => {
 
     beforeEach(() => {
       toastService = TestBed.inject(
-        ToastService
+        ToastService,
       ) as jasmine.SpyObj<ToastService>;
       toastService.showDisabledToast.and.returnValue(Promise.resolve());
       emailUtilsService = TestBed.inject(
-        EmailUtilsService
+        EmailUtilsService,
       ) as jasmine.SpyObj<EmailUtilsService>;
       component.qrService.isQrCodeGenerated = false;
       emailUtilsService.isEmailSent = false;
@@ -1720,7 +1724,7 @@ describe('TabQrPage', () => {
       expect(component.sanitizeInputAndGenerateQRCode).toHaveBeenCalled();
       expect((component as any).showWorkflowStep).toHaveBeenCalled();
       expect(
-        (component as any).generateMarginForButtonsIfNeeded
+        (component as any).generateMarginForButtonsIfNeeded,
       ).toHaveBeenCalled();
     });
 
@@ -1731,7 +1735,7 @@ describe('TabQrPage', () => {
 
       expect(toastService.showDisabledToast).toHaveBeenCalledWith(
         'TOOLTIP_GENERATION_ENTER_TEXT_FIRST',
-        jasmine.anything()
+        jasmine.anything(),
       );
       expect(toastService.showToast).not.toHaveBeenCalled();
     });
@@ -1744,7 +1748,7 @@ describe('TabQrPage', () => {
 
       expect(toastService.showDisabledToast).toHaveBeenCalledWith(
         'TOOLTIP_GENERATION_QR_ALREADY_GENERATED',
-        jasmine.anything()
+        jasmine.anything(),
       );
       expect(toastService.showToast).not.toHaveBeenCalled();
     });
@@ -1756,7 +1760,7 @@ describe('TabQrPage', () => {
 
       expect(toastService.showDisabledToast).toHaveBeenCalledWith(
         'TOOLTIP_GENERATION_EMAIL_ALREADY_SENT',
-        jasmine.anything()
+        jasmine.anything(),
       );
       expect(toastService.showToast).not.toHaveBeenCalled();
     });
@@ -1771,7 +1775,7 @@ describe('TabQrPage', () => {
 
       expect(console.error).toHaveBeenCalledWith(
         'Error presenting toast:',
-        'fail'
+        'fail',
       );
     }));
 
@@ -1786,7 +1790,7 @@ describe('TabQrPage', () => {
 
       expect(console.error).toHaveBeenCalledWith(
         'Error presenting toast:',
-        'fail'
+        'fail',
       );
     }));
 
@@ -1801,7 +1805,7 @@ describe('TabQrPage', () => {
 
       expect(console.error).toHaveBeenCalledWith(
         'Error presenting toast:',
-        'fail'
+        'fail',
       );
     }));
   });
@@ -1811,14 +1815,14 @@ describe('TabQrPage', () => {
 
     beforeEach(() => {
       toastService = TestBed.inject(
-        ToastService
+        ToastService,
       ) as jasmine.SpyObj<ToastService>;
     });
 
     it('should send email if QR code is generated', async () => {
       const storeMailSpy = spyOn(
         component,
-        'storeMailAndDeleteQRCode'
+        'storeMailAndDeleteQRCode',
       ).and.resolveTo();
       const wfSpy = spyOn<any>(component, 'showWorkflowStep');
       component.qrService.isQrCodeGenerated = true;
@@ -1837,7 +1841,7 @@ describe('TabQrPage', () => {
 
       expect(toastService.showDisabledToast).toHaveBeenCalledWith(
         'TOOLTIP_EMAIL_NO_QR_GENERATED',
-        jasmine.anything()
+        jasmine.anything(),
       );
       expect(toastService.showToast).not.toHaveBeenCalled();
     });
@@ -1851,12 +1855,12 @@ describe('TabQrPage', () => {
 
       expect(console.error).toHaveBeenCalledWith(
         'Error presenting toast:',
-        'fail'
+        'fail',
       );
     });
   });
 
-  describe('showManualInstructions', () => {
+  describe('showManualEmailInstructions', () => {
     let modalController: jasmine.SpyObj<ModalController>;
     let translate: jasmine.SpyObj<TranslateService>;
     let qrService: jasmine.SpyObj<QrUtilsService>;
@@ -1864,13 +1868,13 @@ describe('TabQrPage', () => {
 
     beforeEach(() => {
       modalController = TestBed.inject(
-        ModalController
+        ModalController,
       ) as jasmine.SpyObj<ModalController>;
       translate = TestBed.inject(
-        TranslateService
+        TranslateService,
       ) as jasmine.SpyObj<TranslateService>;
       qrService = TestBed.inject(
-        QrUtilsService
+        QrUtilsService,
       ) as jasmine.SpyObj<QrUtilsService>;
       mockModal = jasmine.createSpyObj('HTMLIonModalElement', ['present']);
       modalController.create.and.returnValue(Promise.resolve(mockModal));
@@ -1878,8 +1882,8 @@ describe('TabQrPage', () => {
       qrService.myAngularxQrCode = 'test-qr-text';
     });
 
-    it('should create and present the manual instructions modal with correct props', async () => {
-      await (component as any).showManualInstructions();
+    it('should create and present the manual email instructions modal with correct props', async () => {
+      await (component as any).showManualEmailInstructions();
 
       expect(modalController.create).toHaveBeenCalled();
       const config = modalController.create.calls.mostRecent().args[0];
@@ -1902,7 +1906,7 @@ describe('TabQrPage', () => {
       expect(qrTextLabel).toBe('MOBILE_WEB_QR_TEXT');
       expect(copyButtonLabel).toBe('MOBILE_WEB_COPY_TEXT');
       expect(typeof copyCallback).toBe('function');
-      expect(config.cssClass).toBe('manual-instructions-modal');
+      expect(config.cssClass).toBe('manual-email-instructions');
       expect(mockModal.present).toHaveBeenCalled();
     });
 
@@ -1913,7 +1917,7 @@ describe('TabQrPage', () => {
         return Promise.resolve();
       };
 
-      await (component as any).showManualInstructions();
+      await (component as any).showManualEmailInstructions();
 
       const config = modalController.create.calls.mostRecent().args[0];
       const copyCallback =
@@ -1933,10 +1937,10 @@ describe('TabQrPage', () => {
 
     beforeEach(() => {
       modalController = TestBed.inject(
-        ModalController
+        ModalController,
       ) as jasmine.SpyObj<ModalController>;
       translate = TestBed.inject(
-        TranslateService
+        TranslateService,
       ) as jasmine.SpyObj<TranslateService>;
       Object.defineProperty(translate, 'currentLang', {
         configurable: true,
@@ -1946,7 +1950,7 @@ describe('TabQrPage', () => {
       modalController.create.and.returnValue(Promise.resolve(mockModal));
       translate.instant.and.callFake((key: string) => key);
       utilsService = TestBed.inject(
-        UtilsService
+        UtilsService,
       ) as jasmine.SpyObj<UtilsService>;
     });
 
@@ -1963,7 +1967,7 @@ describe('TabQrPage', () => {
 
       expect(maxInputLength).toBe(123);
       expect(scrollToSection).toBe('floating-keyboard');
-      expect(config.cssClass).toBe('manual-instructions-modal');
+      expect(config.cssClass).toBe('manual-email-instructions');
       expect(mockModal.present).toHaveBeenCalled();
     });
 
@@ -1982,7 +1986,7 @@ describe('TabQrPage', () => {
 
       expect(maxInputLength).toBe(123);
       expect(scrollToSection).toBe('web-version');
-      expect(config.cssClass).toBe('manual-instructions-modal desktop');
+      expect(config.cssClass).toBe('manual-email-instructions desktop');
       expect(mockModal.present).toHaveBeenCalled();
     });
 
@@ -1994,7 +1998,7 @@ describe('TabQrPage', () => {
       await (component as any).openHelpModalToSection('floating-keyboard');
       config = modalController.create.calls.mostRecent().args[0];
       expect(config.componentProps!['scrollToSection']).toBe(
-        'floating-keyboard'
+        'floating-keyboard',
       );
     });
 
@@ -2008,7 +2012,7 @@ describe('TabQrPage', () => {
       await (component as any).openHelpModalToSection('floating-keyboard');
       config = modalController.create.calls.mostRecent().args[0];
       expect(config.componentProps!['scrollToSection']).toBe(
-        'floating-keyboard-DE'
+        'floating-keyboard-DE',
       );
     });
 
@@ -2022,7 +2026,7 @@ describe('TabQrPage', () => {
       await (component as any).openHelpModalToSection('floating-keyboard');
       config = modalController.create.calls.mostRecent().args[0];
       expect(config.componentProps!['scrollToSection']).toBe(
-        'floating-keyboard'
+        'floating-keyboard',
       );
     });
 
@@ -2036,7 +2040,7 @@ describe('TabQrPage', () => {
       await (component as any).openHelpModalToSection('floating-keyboard');
       config = modalController.create.calls.mostRecent().args[0];
       expect(config.componentProps!['scrollToSection']).toBe(
-        'floating-keyboard'
+        'floating-keyboard',
       );
     });
   });
@@ -2048,10 +2052,10 @@ describe('TabQrPage', () => {
 
     beforeEach(async () => {
       alertController = TestBed.inject(
-        AlertController
+        AlertController,
       ) as jasmine.SpyObj<AlertController>;
       translate = TestBed.inject(
-        TranslateService
+        TranslateService,
       ) as jasmine.SpyObj<TranslateService>;
 
       mockAlert = jasmine.createSpyObj('HTMLIonAlertElement', [
@@ -2089,7 +2093,7 @@ describe('TabQrPage', () => {
 
       const config = alertController.create.calls.mostRecent().args[0] || {};
       const clearBtn = config.buttons?.find?.(
-        (b: any) => isButtonObj(b) && b.text === 'KEYBOARD_ALERT_SHORT_TEXT'
+        (b: any) => isButtonObj(b) && b.text === 'KEYBOARD_ALERT_SHORT_TEXT',
       );
       expect(clearBtn).toBeDefined();
 
@@ -2103,14 +2107,14 @@ describe('TabQrPage', () => {
     it('should call openModalToSection with web-version when "show help web version" button is pressed', async () => {
       const openHelpModalSpy = spyOn<any>(
         component,
-        'openHelpModalToSection'
+        'openHelpModalToSection',
       ).and.returnValue(Promise.resolve());
 
       await (component as any).showKeyboardAlert();
 
       const config = alertController.create.calls.mostRecent().args[0] || {};
       const openHelpBtn = config.buttons?.find?.(
-        (b: any) => isButtonObj(b) && b.text === 'KEYBOARD_ALERT_HELP_WEB'
+        (b: any) => isButtonObj(b) && b.text === 'KEYBOARD_ALERT_HELP_WEB',
       );
       expect(openHelpBtn).toBeDefined();
 
@@ -2130,14 +2134,14 @@ describe('TabQrPage', () => {
     it(TEST_NAME, async () => {
       const openHelpModalSpy = spyOn<any>(
         component,
-        'openHelpModalToSection'
+        'openHelpModalToSection',
       ).and.returnValue(Promise.resolve());
 
       await (component as any).showKeyboardAlert();
 
       const config = alertController.create.calls.mostRecent().args[0] || {};
       const openHelpBtn = config.buttons?.find?.(
-        (b: any) => isButtonObj(b) && b.text === 'KEYBOARD_ALERT_HELP_KEYBOARD'
+        (b: any) => isButtonObj(b) && b.text === 'KEYBOARD_ALERT_HELP_KEYBOARD',
       );
       expect(openHelpBtn).toBeDefined();
 
@@ -2165,10 +2169,10 @@ describe('TabQrPage', () => {
 
     beforeEach(() => {
       alertController = TestBed.inject(
-        AlertController
+        AlertController,
       ) as jasmine.SpyObj<AlertController>;
       translate = TestBed.inject(
-        TranslateService
+        TranslateService,
       ) as jasmine.SpyObj<TranslateService>;
       mockAlert = jasmine.createSpyObj('HTMLIonAlertElement', ['present']);
       alertController.create.and.returnValue(Promise.resolve(mockAlert));
@@ -2194,7 +2198,8 @@ describe('TabQrPage', () => {
     });
 
     it('should present an alert with truncated text if copiedText is long', async () => {
-      const maxPreviewLength = environment.maxPreviewLengthOfCopiedText ?? 50;
+      const maxPreviewLength =
+        environment.app.maxPreviewLengthOfCopiedText ?? 50;
       const longText = 'a'.repeat(maxPreviewLength + 10);
 
       await (component as any).showCopySuccessAlert(longText);
@@ -2218,8 +2223,8 @@ describe('TabQrPage', () => {
     });
 
     it('should use default maxPreviewLength if environment variable is invalid', async () => {
-      const originalValue = environment.maxPreviewLengthOfCopiedText;
-      (environment as any).maxPreviewLengthOfCopiedText = undefined;
+      const originalValue = environment.app.maxPreviewLengthOfCopiedText;
+      (environment as any).app.maxPreviewLengthOfCopiedText = undefined;
       const longText = 'a'.repeat(999);
       await (component as any).showCopySuccessAlert(longText);
 
@@ -2232,7 +2237,7 @@ describe('TabQrPage', () => {
       expect(config.message).toContain(truncated);
       expect(mockAlert.present).toHaveBeenCalled();
 
-      (environment as any).maxPreviewLengthOfCopiedText = originalValue;
+      (environment as any).app.maxPreviewLengthOfCopiedText = originalValue;
     });
   });
 
@@ -2242,14 +2247,14 @@ describe('TabQrPage', () => {
 
     beforeEach(() => {
       alertService = TestBed.inject(
-        AlertService
+        AlertService,
       ) as jasmine.SpyObj<AlertService>;
       qrUtilsService = TestBed.inject(
-        QrUtilsService
+        QrUtilsService,
       ) as jasmine.SpyObj<QrUtilsService>;
       qrUtilsService.myAngularxQrCode = 'copied QR text';
       spyOn(component as any, 'showCopySuccessAlert').and.returnValue(
-        Promise.resolve()
+        Promise.resolve(),
       );
     });
 
@@ -2269,25 +2274,25 @@ describe('TabQrPage', () => {
       // Assert
       expect(writeTextSpy).toHaveBeenCalledWith('copied QR text');
       expect((component as any).showCopySuccessAlert).toHaveBeenCalledWith(
-        'copied QR text'
+        'copied QR text',
       );
     });
 
     it('should use fallback method if navigator.clipboard is not available and show success alert', async () => {
       // Arrange
       spyOnProperty<any>(navigator, 'clipboard', 'get').and.returnValue(
-        undefined
+        undefined,
       );
       const appendChildSpy = spyOn(
         document.body,
-        'appendChild'
+        'appendChild',
       ).and.callThrough();
       const textAreaRemoveSpy = spyOn(
         HTMLElement.prototype,
-        'remove'
+        'remove',
       ).and.callThrough();
       const execCommandSpy = spyOn(document, 'execCommand').and.returnValue(
-        true
+        true,
       );
 
       // Act
@@ -2298,7 +2303,7 @@ describe('TabQrPage', () => {
       expect(execCommandSpy).toHaveBeenCalledWith('copy');
       expect(textAreaRemoveSpy).toHaveBeenCalled();
       expect((component as any).showCopySuccessAlert).toHaveBeenCalledWith(
-        'copied QR text'
+        'copied QR text',
       );
     });
 
@@ -2324,8 +2329,63 @@ describe('TabQrPage', () => {
       // Assert
       expect(console.error).toHaveBeenCalled();
       expect(alertService.showErrorAlert).toHaveBeenCalledWith(
-        'MOBILE_WEB_COPY_ERROR'
+        'MOBILE_WEB_COPY_ERROR',
       );
+    });
+  });
+
+  describe('generateMarginForButtonsIfNeeded', () => {
+    let utilsService: jasmine.SpyObj<UtilsService>;
+
+    beforeEach(() => {
+      utilsService = TestBed.inject(
+        UtilsService,
+      ) as jasmine.SpyObj<UtilsService>;
+    });
+
+    it('should adjust margin for buttons on native devices', () => {
+      // Arrange
+      const buttonContainer = document.createElement('div');
+      spyOn(document, 'querySelector').and.returnValue(buttonContainer);
+      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(true);
+
+      // Act
+      (component as any).generateMarginForButtonsIfNeeded();
+
+      // Assert
+      expect(buttonContainer.style.marginBottom).toBeDefined();
+    });
+
+    it('should adjust margin for buttons on non-native non-small devices', () => {
+      // Arrange
+      const buttonContainer = document.createElement('div');
+      spyOn(document, 'querySelector').and.returnValue(buttonContainer);
+      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
+      spyOnProperty(utilsService, 'isSmallDevice', 'get').and.returnValue(
+        false,
+      );
+
+      // Act
+      (component as any).generateMarginForButtonsIfNeeded();
+
+      // Assert
+      expect(buttonContainer.style.marginBottom).toBeDefined();
+    });
+
+    it('should not adjust margin for buttons on non-native small devices', () => {
+      // Arrange
+      const buttonContainer = document.createElement('div');
+      spyOn(document, 'querySelector').and.returnValue(buttonContainer);
+      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
+      spyOnProperty(utilsService, 'isSmallDevice', 'get').and.returnValue(
+        true,
+      );
+
+      // Act
+      (component as any).generateMarginForButtonsIfNeeded();
+
+      // Assert
+      expect(buttonContainer.style.marginBottom).toBe('');
     });
   });
 });

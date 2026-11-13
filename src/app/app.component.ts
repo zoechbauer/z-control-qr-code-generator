@@ -5,6 +5,7 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style } from '@capacitor/status-bar';
 
 import { SafeAreaInsets } from './services/safe-area-insets';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ import { SafeAreaInsets } from './services/safe-area-insets';
 })
 export class AppComponent implements OnInit {
   isNativeApp = Capacitor.isNativePlatform();
+  showTabsBar = environment.app.showTabsBar;
   readonly splashScreen = SplashScreen;
   readonly statusBar = StatusBar;
 

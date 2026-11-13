@@ -1,22 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ManualInstructionsModalComponent } from './manual-instructions-modal.component';
+import { ManualEmailInstructionsComponent } from 'src/app/ui/components/manual-email-instructions/manual-email-instructions.component';
 import { ModalController, IonicModule } from '@ionic/angular';
 
-describe('ManualInstructionsModalComponent', () => {
-  let component: ManualInstructionsModalComponent;
-  let fixture: ComponentFixture<ManualInstructionsModalComponent>;
+describe('ManualEmailInstructionsComponent', () => {
+  let component: ManualEmailInstructionsComponent;
+  let fixture: ComponentFixture<ManualEmailInstructionsComponent>;
   let modalControllerSpy: jasmine.SpyObj<ModalController>;
 
   beforeEach(async () => {
     modalControllerSpy = jasmine.createSpyObj('ModalController', ['dismiss']);
 
     await TestBed.configureTestingModule({
-      declarations: [ManualInstructionsModalComponent],
+      imports: [ManualEmailInstructionsComponent, IonicModule.forRoot()],
       providers: [{ provide: ModalController, useValue: modalControllerSpy }],
-      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ManualInstructionsModalComponent);
+    fixture = TestBed.createComponent(ManualEmailInstructionsComponent);
     component = fixture.componentInstance;
   });
 
@@ -48,7 +47,7 @@ describe('ManualInstructionsModalComponent', () => {
   it('should call dismiss even if copyCallback is not set', async () => {
     spyOn(component, 'dismiss');
     component.copyCallback = undefined as any;
-    
+
     await component.copyAndDismiss();
     expect(component.dismiss).toHaveBeenCalled();
   });

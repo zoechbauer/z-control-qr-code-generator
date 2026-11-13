@@ -1,6 +1,8 @@
 <div id="toast-anchor-qr">
   <app-header [currentTab]="Tab.Qr"></app-header>
 </div>
+
+<h6 class="ion-text-center">{{ appName }}</h6>
 <ion-content
   class="qr-code-content"
   [class.landscape]="!utilsService.isPortrait"
@@ -63,6 +65,7 @@
           [class.pseudo-disabled]="isGenerationButtonDisabled"
           [disabled]="isGenerationButtonDisabled"
           (click)="handleGenerateButtonClick(); $event.stopPropagation()"
+          (keydown.enter)="handleGenerateButtonClick(); $event.stopPropagation()"
           title="{{ isGenerationButtonDisabled ? '' : ('TOOLTIP_QR-CODE.GENERATE_QR_CODE' | translate) }}"
         >
           {{ 'GENERATE' | translate }}
