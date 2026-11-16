@@ -41,3 +41,10 @@ export enum ToastAnchor {
   QR_PAGE = 'toast-anchor-qr',
   SETTINGS_PAGE = 'toast-anchor-settings',
 }
+
+export enum MobileWebEmailOptions {
+  SEND_EMAIL = 'send_email',
+  COPY_QR_CODE_TEXT = 'copy_qr_code_text',
+  SHOW_MANUAL_INSTRUCTIONS = 'show_manual_instructions',
+  CANCEL = 'cancel'
+}

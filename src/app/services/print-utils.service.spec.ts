@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { QrCodeGapSize, QrCodeSize } from '../enums';
+import { QrCodeGapSize, QrCodeSize } from '../shared/enums';
 import { PrintUtilsService } from './print-utils.service';
 import { createTranslateServiceMock } from '@testing/translate-service.mock';
 import { LocalStorageService } from '@app/services/local-storage.service';

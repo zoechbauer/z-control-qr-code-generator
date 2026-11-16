@@ -6,7 +6,8 @@ import { UtilsService } from './utils.service';
 import { WindowMockUtil } from '@testing/window-mock.util';
 import { GetHelpComponent } from '../ui/components/get-help/get-help.component';
 import { MarkdownViewerComponent } from '../ui/components/markdown-viewer/markdown-viewer.component';
-import { Tab } from '../enums';
+import { Tab } from '../shared/enums';
+import { Capacitor } from '@capacitor/core';
 
 describe('UtilsService', () => {
   let service: UtilsService;
@@ -62,7 +63,7 @@ describe('UtilsService', () => {
 
       expect(mockEvent.preventDefault).toHaveBeenCalled();
       expect(console.warn).toHaveBeenCalledWith(
-        "Element with id 'non-existent-id' not found"
+        "Element with id 'non-existent-id' not found",
       );
     });
   });
@@ -127,18 +128,18 @@ describe('UtilsService', () => {
   describe('isPortrait getter', () => {
     it('should detect portrait orientation', () => {
       const mockMatchMedia = WindowMockUtil.setupMatchMediaSpy(true);
-      
+
       const isPortrait = service.isPortrait;
-      
+
       expect(mockMatchMedia).toHaveBeenCalledWith('(orientation: portrait)');
       expect(isPortrait).toBe(true);
     });
 
     it('should detect landscape orientation', () => {
       const mockMatchMedia = WindowMockUtil.setupMatchMediaSpy(false);
-      
+
       const isPortrait = service.isPortrait;
-      
+
       expect(mockMatchMedia).toHaveBeenCalledWith('(orientation: portrait)');
       expect(isPortrait).toBe(false);
     });
@@ -147,22 +148,22 @@ describe('UtilsService', () => {
   describe('isDarkMode getter', () => {
     it('should detect dark mode', () => {
       const mockMatchMedia = WindowMockUtil.setupMatchMediaSpy(true);
-      
+
       const isDarkMode = service.isDarkMode;
-      
+
       expect(mockMatchMedia).toHaveBeenCalledWith(
-        '(prefers-color-scheme: dark)'
+        '(prefers-color-scheme: dark)',
       );
       expect(isDarkMode).toBe(true);
     });
 
     it('should detect light mode', () => {
       const mockMatchMedia = WindowMockUtil.setupMatchMediaSpy(false);
-      
+
       const isDarkMode = service.isDarkMode;
-      
+
       expect(mockMatchMedia).toHaveBeenCalledWith(
-        '(prefers-color-scheme: dark)'
+        '(prefers-color-scheme: dark)',
       );
       expect(isDarkMode).toBe(false);
     });
@@ -213,6 +214,20 @@ describe('UtilsService', () => {
       // Assert
       expect(isSmallDevice).toBe(false);
       expect(service.isPortrait).toBe(true);
+    });
+  });
+
+  describe('isNative & isDesktop getters', () => {
+    it('should detect native platform', () => {
+      spyOn(Capacitor, 'isNativePlatform').and.returnValue(true);
+      expect(service.isNative).toBe(true);
+      expect(service.isDesktop).toBe(false);
+    });
+
+    it('should detect desktop platform', () => {
+      spyOn(Capacitor, 'isNativePlatform').and.returnValue(false);
+      expect(service.isDesktop).toBe(true);
+      expect(service.isNative).toBe(false);
     });
   });
 
@@ -286,7 +301,7 @@ describe('UtilsService', () => {
       tick(20);
 
       expect(modal.classList.add).toHaveBeenCalledWith(
-        'manual-email-instructions'
+        'manual-email-instructions',
       );
       expect(modal.classList.add).toHaveBeenCalledWith('desktop');
     }));
@@ -299,11 +314,36 @@ describe('UtilsService', () => {
       tick(20);
 
       expect(modal.classList.add).toHaveBeenCalledWith(
-        'manual-email-instructions'
+        'manual-email-instructions',
       );
       expect(modal.classList.add).not.toHaveBeenCalledWith('desktop');
       expect(modal.classList.add).toHaveBeenCalledWith('landscape');
     }));
+
+    it('should open help modal and present it', async () => {
+      const classSpy = spyOn(
+        service,
+        'setModalLandscapeClasses',
+      ).and.callThrough();
+      await service.openHelpModal();
+
+      expect(modalControllerSpy.create).toHaveBeenCalledWith({
+        component: GetHelpComponent,
+      });
+      expect(classSpy).toHaveBeenCalledWith(modal);
+      expect((modal as any).present).toHaveBeenCalled();
+    });
+
+    it('should react to orientation change when a modal is open', async () => {
+      const classSpy = spyOn(
+        service,
+        'setModalLandscapeClasses',
+      ).and.callThrough();
+      await service.openHelpModal();
+      globalThis.dispatchEvent(new Event('orientationchange'));
+
+      expect(classSpy).toHaveBeenCalledTimes(2);
+    });
   });
 
   describe('check valid modal opening', () => {
@@ -323,7 +363,9 @@ describe('UtilsService', () => {
 
       // Assert
       expect(modal.classList.remove).toHaveBeenCalled();
-      expect(modal.classList.add).toHaveBeenCalledWith('manual-email-instructions');
+      expect(modal.classList.add).toHaveBeenCalledWith(
+        'manual-email-instructions',
+      );
     }));
 
     it('should add change-log-modal class if MarkdownViewerComponent is called', fakeAsync(() => {
@@ -363,7 +405,7 @@ describe('UtilsService', () => {
       // Assert
       expect(modal.classList.remove).toHaveBeenCalled();
       expect(console.error).toHaveBeenCalledWith(
-        'Unknown modal component for setting landscape class'
+        'Unknown modal component for setting landscape class',
       );
     }));
   });
@@ -432,10 +474,10 @@ describe('UtilsService', () => {
       // Assert
       expect(document.querySelector).toHaveBeenCalledWith('ion-tab-bar');
       expect(mockElement.classList.contains).toHaveBeenCalledWith(
-        'hide-ion-tab-bar'
+        'hide-ion-tab-bar',
       );
       expect(mockElement.classList.remove).toHaveBeenCalledWith(
-        'hide-ion-tab-bar'
+        'hide-ion-tab-bar',
       );
     });
 
@@ -455,15 +497,63 @@ describe('UtilsService', () => {
       // Assert
       expect(document.querySelector).toHaveBeenCalledWith('ion-tab-bar');
       expect(mockElement.classList.contains).toHaveBeenCalledWith(
-        'hide-ion-tab-bar'
+        'hide-ion-tab-bar',
       );
       expect(mockElement.classList.remove).not.toHaveBeenCalled();
     });
 
-    it('should do nothing if ion-tab-bar element is not found', () => {
+    it('should do nothing when showing if ion-tab-bar element is not found', () => {
       spyOn(document, 'querySelector').and.returnValue(null);
 
       (service as any).showIonTabBar();
+
+      expect(document.querySelector).toHaveBeenCalledWith('ion-tab-bar');
+    });
+
+    it('should add the hide-ion-tab-bar class when hiding', () => {
+      // Arrange
+      const mockElement = jasmine.createSpyObj('HTMLElement', ['']);
+      mockElement.classList = jasmine.createSpyObj('classList', [
+        'contains',
+        'add',
+      ]);
+      (mockElement.classList.contains as jasmine.Spy).and.returnValue(false);
+      spyOn(document, 'querySelector').and.returnValue(mockElement);
+
+      // Act
+      (service as any).hideIonTabBar();
+
+      // Assert
+      expect(document.querySelector).toHaveBeenCalledWith('ion-tab-bar');
+      expect(mockElement.classList.contains).toHaveBeenCalledWith(
+        'hide-ion-tab-bar',
+      );
+      expect(mockElement.classList.add).toHaveBeenCalledWith(
+        'hide-ion-tab-bar',
+      );
+    });
+
+    it('should not add the class if it is already present', () => {
+      // Arrange
+      const mockElement = jasmine.createSpyObj('HTMLElement', ['']);
+      mockElement.classList = jasmine.createSpyObj('classList', [
+        'contains',
+        'add',
+      ]);
+      (mockElement.classList.contains as jasmine.Spy).and.returnValue(true);
+      spyOn(document, 'querySelector').and.returnValue(mockElement);
+
+      // Act
+      (service as any).hideIonTabBar();
+
+      // Assert
+      expect(mockElement.classList.add).not.toHaveBeenCalled();
+    });
+
+    it('should do nothing when hiding if ion-tab-bar element is not found', () => {
+      spyOn(document, 'querySelector').and.returnValue(null);
+
+      (service as any).hideIonTabBar();
 
       expect(document.querySelector).toHaveBeenCalledWith('ion-tab-bar');
     });

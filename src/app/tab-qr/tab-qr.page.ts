@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
-import { ModalController, Platform, AlertController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import {
   IonTextarea,
   IonItem,
@@ -21,17 +21,20 @@ import { Subscription } from 'rxjs';
 import { QRCodeComponent } from 'angularx-qrcode';
 
 import { EmailUtilsService } from '../services/email-utils.service';
-import { GetHelpComponent } from '../ui/components/get-help/get-help.component';
 import { FileUtilsService } from '../services/file-utils.service';
 import { LocalStorageService } from '../services/local-storage.service';
 import { QrUtilsService } from '../services/qr-utils.service';
 import { ValidationService } from '../services/validation.service';
-import { ManualEmailInstructionsComponent } from '../ui/components/manual-email-instructions/manual-email-instructions.component';
 import { environment } from '@env/environment';
 import { AlertService } from '../services/alert.service';
 import { UtilsService } from '../services/utils.service';
 import { ToastService } from '../services/toast.service';
-import { LogoType, Tab, ToastAnchor } from '../enums';
+import {
+  LogoType,
+  MobileWebEmailOptions,
+  Tab,
+  ToastAnchor,
+} from '../shared/enums';
 import { PrintUtilsService } from '../services/print-utils.service';
 import { HeaderComponent } from '../ui/components/header/header.component';
 
@@ -84,11 +87,9 @@ export class TabQrPage implements OnInit, OnDestroy {
     public emailService: EmailUtilsService,
     public readonly validationService: ValidationService,
     public translate: TranslateService,
-    private readonly modalController: ModalController,
     public readonly utilsService: UtilsService,
     private readonly fileService: FileUtilsService,
     private readonly platform: Platform,
-    private readonly alertController: AlertController,
     private readonly alertService: AlertService,
     private readonly toastService: ToastService,
     private readonly printUtilsService: PrintUtilsService,
@@ -96,7 +97,7 @@ export class TabQrPage implements OnInit, OnDestroy {
     this.setNumberOfRows();
     this.langSub = this.localStorage.selectedLanguage$.subscribe((lang) => {
       this.translate.use(lang);
-      this.translate.setDefaultLang(lang);
+      this.translate.setFallbackLang(lang);
     });
   }
 
@@ -200,7 +201,7 @@ export class TabQrPage implements OnInit, OnDestroy {
    */
   private initializeWithDefaults(): void {
     try {
-      this.translate.setDefaultLang('en');
+      this.translate.setFallbackLang('en');
       this.translate.use('en');
     } catch (fallbackError) {
       console.error('Critical: Even defaults failed:', fallbackError);
@@ -214,32 +215,12 @@ export class TabQrPage implements OnInit, OnDestroy {
     const currentText = this.qrDataInput?.value?.trim() || '';
 
     if (currentText.length > (environment.app.clearConfirmationLength ?? 100)) {
-      await this.showClearConfirmation();
-      return;
+      if (!(await this.alertService.showClearConfirmation())) {
+        return;
+      }
     }
 
     this.performClear();
-  }
-
-  /**
-   * Shows a confirmation alert before clearing the input field.
-   */
-  private async showClearConfirmation(): Promise<void> {
-    const alert = await this.alertController.create({
-      header: this.translate.instant('CLEAR_CONFIRMATION_HEADER'),
-      message: this.translate.instant('CLEAR_CONFIRMATION_MESSAGE'),
-      buttons: [
-        {
-          text: this.translate.instant('CANCEL'),
-          role: 'cancel',
-        },
-        {
-          text: this.translate.instant('CLEAR_CONFIRMATION_BUTTON'),
-          handler: () => this.performClear(),
-        },
-      ],
-    });
-    await alert.present();
   }
 
   /**
@@ -358,7 +339,7 @@ export class TabQrPage implements OnInit, OnDestroy {
   /**
    * Sanitizes the input data and generates a QR code.
    * Trims trailing whitespace from the input data before generating the QR code.
-   * After generating the QR code, scrolls to the container with no generation buttons.
+   * After generating the QR code, scrolls to the bottom of the page if running on a native device.
    */
   sanitizeInputAndGenerateQRCode(data: string | undefined | null) {
     if (typeof data === 'string' && data.trim() !== '') {
@@ -366,17 +347,19 @@ export class TabQrPage implements OnInit, OnDestroy {
       const sanitizedData = this.trimTrailingWhitespace(data);
       this.qrService.generateQRCode(sanitizedData);
 
-      this.scrollToNoGenerationButtons();
+      if (this.isNative) {
+        this.scrollToBottom();
+      }
       this.showSpinner = false;
     }
   }
 
   /**
-   * Scrolls to the container with no generation buttons.
+   * Scrolls to the container with the scroll-to-bottom class.
    */
-  private scrollToNoGenerationButtons(): void {
+  private scrollToBottom(): void {
     setTimeout(() => {
-      const element = document.querySelector('.no-generation-buttons');
+      const element = document.querySelector('.scroll-to-bottom');
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
@@ -494,45 +477,32 @@ export class TabQrPage implements OnInit, OnDestroy {
       });
     } else {
       // Mobile web browser - show alternative options
-      await this.showMobileWebEmailOptions();
+      await this.handleMobileWebEmailOptions();
     }
   }
 
   /**
-   * Shows alternative email options for mobile web browsers.
+   * Handles the mobile web email options.
+   * Shows an alert with options for sending email, copying QR code text, 
+   * or showing manual instructions.
    */
-  private async showMobileWebEmailOptions() {
-    const alert = await this.alertController.create({
-      header: this.translate.instant('MOBILE_WEB_EMAIL_TITLE'),
-      message: this.translate.instant('MOBILE_WEB_EMAIL_MESSAGE'),
-      buttons: [
-        {
-          text: this.translate.instant('MOBILE_WEB_TRY_EMAIL'),
-          handler: async () => {
-            await this.emailService.sendEmail();
-          },
-        },
-        {
-          text: this.translate.instant('MOBILE_WEB_COPY_TEXT'),
-          handler: async () => {
-            await this.copyQRTextToClipboard();
-          },
-        },
-        {
-          text: this.translate.instant('MOBILE_WEB_INSTRUCTIONS'),
-          handler: async () => {
-            await this.showManualEmailInstructions();
-          },
-        },
-        {
-          text: this.translate.instant('CANCEL'),
-          role: 'cancel',
-        },
-      ],
-      cssClass: 'show-mobile-web-email-options',
-    });
+  private async handleMobileWebEmailOptions(): Promise<void> {
+    const option: MobileWebEmailOptions =
+      await this.alertService.showMobileWebEmailOptions();
 
-    await alert.present();
+    switch (option) {
+      case MobileWebEmailOptions.SEND_EMAIL:
+        await this.emailService.sendEmail();
+        break;
+      case MobileWebEmailOptions.COPY_QR_CODE_TEXT:
+        await this.copyQRTextToClipboard();
+        break;
+      case MobileWebEmailOptions.SHOW_MANUAL_INSTRUCTIONS:
+        await this.shouldCopyTextAfterManualEmailInstructions();
+        break;
+      case MobileWebEmailOptions.CANCEL:
+        break;
+    }
   }
 
   /**
@@ -547,7 +517,7 @@ export class TabQrPage implements OnInit, OnDestroy {
       // Use navigator.clipboard for web
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(qrText);
-        await this.showCopySuccessAlert(qrText);
+        await this.alertService.showCopySuccessAlert(qrText);
       } else {
         // Fallback for older browsers
         const textArea = document.createElement('textarea');
@@ -556,7 +526,7 @@ export class TabQrPage implements OnInit, OnDestroy {
         textArea.select();
         document.execCommand('copy'); // Legacy fallback
         textArea.remove();
-        await this.showCopySuccessAlert(qrText);
+        await this.alertService.showCopySuccessAlert(qrText);
       }
     } catch (error) {
       console.error('Copy to clipboard failed:', error);
@@ -565,124 +535,22 @@ export class TabQrPage implements OnInit, OnDestroy {
   }
 
   /**
-   * Shows the manual email instructions.
+   * Handles the user's choice after viewing the manual email instructions.
+   * If the user chose to copy the QR text, it copies it to the clipboard.
    */
-  private async showManualEmailInstructions() {
-    const baseMessage = this.translate.instant('MOBILE_WEB_MANUAL_MESSAGE');
+  private async shouldCopyTextAfterManualEmailInstructions(): Promise<void> {
     const qrText = this.qrService.myAngularxQrCode;
-
-    const modal = await this.modalController.create({
-      component: ManualEmailInstructionsComponent,
-      componentProps: {
-        title: this.translate.instant('MOBILE_WEB_MANUAL_TITLE'),
-        instructions: baseMessage,
-        qrText: qrText,
-        qrTextLabel: this.translate.instant('MOBILE_WEB_QR_TEXT'),
-        copyButtonLabel: this.translate.instant('MOBILE_WEB_COPY_TEXT'),
-        copyCallback: () => this.copyQRTextToClipboard(),
-      },
-      cssClass: 'manual-email-instructions',
-    });
-
-    await modal.present();
-  }
-
-  /**
-   * Shows a success alert after copying text to the clipboard.
-   * Displays a preview of the copied text.
-   */
-  private async showCopySuccessAlert(copiedText: string) {
-    const maxPreviewLength = environment.app.maxPreviewLengthOfCopiedText ?? 50;
-    const textPreview =
-      copiedText.length > maxPreviewLength
-        ? copiedText.substring(0, maxPreviewLength) + '...'
-        : copiedText;
-
-    const message =
-      this.translate.instant('MOBILE_WEB_COPIED_TEXT_PREVIEW') +
-      '"' +
-      textPreview +
-      '"';
-
-    const alert = await this.alertController.create({
-      header: this.translate.instant('MOBILE_WEB_COPY_SUCCESS_TITLE'),
-      subHeader: this.translate.instant('MOBILE_WEB_COPY_SUCCESS'),
-      message: message,
-      buttons: [this.translate.instant('OK')],
-      cssClass: 'copy-success-alert',
-    });
-    await alert.present();
-  }
-
-  /**
-   * Shows an alert about the keyboard.
-   * Provides options to get help or dismiss the alert.
-   */
-  private async showKeyboardAlert(): Promise<void> {
-    this.hasShownKeyboardAlert = true;
-
-    const alert = await this.alertController.create({
-      header: this.translate.instant('KEYBOARD_ALERT_TITLE'),
-      message: this.translate.instant('KEYBOARD_ALERT_MESSAGE'),
-      cssClass: 'keyboard-alert',
-      buttons: [
-        {
-          text: this.translate.instant('KEYBOARD_ALERT_HELP_KEYBOARD'),
-          handler: async () => {
-            await alert.dismiss();
-            await this.openHelpModalToSection('floating-keyboard');
-          },
-        },
-        {
-          text: this.translate.instant('KEYBOARD_ALERT_HELP_WEB'),
-          handler: async () => {
-            await alert.dismiss();
-            await this.openHelpModalToSection('web-version');
-          },
-        },
-        {
-          text: this.translate.instant('KEYBOARD_ALERT_SHORT_TEXT'),
-          handler: async () => {
-            await alert.dismiss();
-            this.performClear();
-          },
-        },
-      ],
-    });
-
-    await alert.present();
-  }
-
-  /**
-   * Opens the help modal and scrolls to the specified section.
-   * @param sectionType The section to scroll to ('floating-keyboard' or 'web-version').
-   */
-  private async openHelpModalToSection(
-    sectionType: 'floating-keyboard' | 'web-version'
-  ): Promise<void> {
-    const isDesktop = !this.utilsService.isNative;
-    const currentLang = this.translate.currentLang || 'en';
-    const sectionId = currentLang === 'de' ? `${sectionType}-DE` : sectionType;
-
-    const modal = await this.modalController.create({
-      component: GetHelpComponent,
-      componentProps: {
-        maxInputLength: this.maxInputLength,
-        scrollToSection: sectionId,
-      },
-      cssClass: isDesktop
-        ? 'manual-email-instructions desktop'
-        : 'manual-email-instructions',
-    });
-
-    return await modal.present();
+    const shouldCopy = await this.alertService.shouldCopyTextAfterManualEmailInstructions(qrText);
+    if (shouldCopy) {
+      await this.copyQRTextToClipboard();
+    }
   }
 
   /**
    * Handles input events on the textarea.
    * Checks if the keyboard alert should be shown for small devices.
    */
-    onTextareaInput(): void {
+  onTextareaInput(): void {
     const currentText = this.qrDataInput?.value || '';
 
     this.deleteQRCodeIfInputChangedAfterGeneration();
@@ -692,7 +560,14 @@ export class TabQrPage implements OnInit, OnDestroy {
     if (this.utilsService.isSmallDevice && !this.hasShownKeyboardAlert) {
       if (this.shouldShowKeyboardAlert(currentText)) {
         setTimeout(async () => {
-          await this.showKeyboardAlert();
+          this.hasShownKeyboardAlert = true;
+          if (
+            await this.alertService.shouldClearInputAfterKeyboardAlert(
+              this.maxInputLength,
+            )
+          ) {
+            this.performClear();
+          }
         }, 500);
       }
     }

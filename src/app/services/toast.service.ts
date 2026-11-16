@@ -3,7 +3,7 @@ import { ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 
 import { UtilsService } from './utils.service';
-import { ToastAnchor } from '../enums';
+import { ToastAnchor } from '../shared/enums';
 
 @Injectable({
   providedIn: 'root',

@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { EmailMaintenanceComponent } from './email-maintenance.component';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { ToastService } from 'src/app/services/toast.service';
-import { EmailAddressStatus } from 'src/app/enums';
+import { EmailAddressStatus } from 'src/app/shared/enums';
 import { ValidationService } from 'src/app/services/validation.service';
 
 describe('EmailMaintenanceComponent', () => {

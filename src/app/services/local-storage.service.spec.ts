@@ -8,7 +8,7 @@ import {
   QrCodeGapSize,
   QrCodesCountPerPage,
   QrCodeSize,
-} from '../enums';
+} from '../shared/enums';
 
 describe('LocalStorageService', () => {
   let service: LocalStorageService;

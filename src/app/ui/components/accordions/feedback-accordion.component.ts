@@ -7,7 +7,7 @@ import {
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 
-import { LogoType } from 'src/app/enums';
+import { LogoType } from 'src/app/shared/enums';
 import { LogoComponent } from '../logo/logo.component';
 import { FooterComponent } from '../footer/footer.component';
 

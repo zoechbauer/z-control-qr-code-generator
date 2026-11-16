@@ -10,7 +10,7 @@ import {
   PrintSettings,
   PrintUtilsService,
 } from 'src/app/services/print-utils.service';
-import { QrCodeGapSize, QrCodesCountPerPage, QrCodeSize } from 'src/app/enums';
+import { QrCodeGapSize, QrCodesCountPerPage, QrCodeSize } from 'src/app/shared/enums';
 
 describe('PrintAccordionComponent', () => {
   let component: PrintAccordionComponent;

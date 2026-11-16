@@ -10,7 +10,7 @@ import {
 import { NgIf } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { LogoType, Tab } from '@app/enums';
+import { LogoType, Tab } from 'src/app/shared/enums';
 import { UtilsService } from 'src/app/services/utils.service';
 import { LogoComponent } from '../logo/logo.component';
 

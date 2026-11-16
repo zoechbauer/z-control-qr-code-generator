@@ -28,28 +28,9 @@ describe('ManualEmailInstructionsComponent', () => {
     expect(modalControllerSpy.dismiss).toHaveBeenCalled();
   });
 
-  it('should call copyCallback and then dismiss when copyAndDismiss is called', async () => {
-    // Arrange
-    const copyCallbackSpy = jasmine
-      .createSpy('copyCallback')
-      .and.returnValue(Promise.resolve());
-    component.copyCallback = copyCallbackSpy;
-    spyOn(component, 'dismiss');
-
-    // Act
-    await component.copyAndDismiss();
-
-    // Assert
-    expect(copyCallbackSpy).toHaveBeenCalled();
-    expect(component.dismiss).toHaveBeenCalled();
-  });
-
-  it('should call dismiss even if copyCallback is not set', async () => {
-    spyOn(component, 'dismiss');
-    component.copyCallback = undefined as any;
-
-    await component.copyAndDismiss();
-    expect(component.dismiss).toHaveBeenCalled();
+  it('should call modalController.dismiss with destructive role when shouldCopyTextAndDismiss is called', () => {
+    component.shouldCopyTextAndDismiss();
+    expect(modalControllerSpy.dismiss).toHaveBeenCalledWith(undefined, 'destructive');
   });
 
   it('should render all @Input properties in the template', () => {
@@ -66,5 +47,18 @@ describe('ManualEmailInstructionsComponent', () => {
     expect(compiled.textContent).toContain('QR123');
     expect(compiled.textContent).toContain('QR Label');
     expect(compiled.textContent).toContain('Copy');
+  });
+
+  describe('displayedQrText', () => {
+    it('should return the QR text', () => {
+      component.qrText = 'QR123';
+      expect(component.displayedQrText).toBe('QR123');
+    });
+
+    it('should return first 400 chars with ellipsis on long QR text', () => {
+      const longText = 'A'.repeat(500);
+      component.qrText = longText;
+      expect(component.displayedQrText).toBe('A'.repeat(400) + ' ...');
+    });
   });
 });

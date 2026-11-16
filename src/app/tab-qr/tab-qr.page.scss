@@ -5,11 +5,13 @@
   }
 
   .no-generation-buttons {
-    display: flex;
-
     &.extra-margin-bottom {
       margin-bottom: 104px;
     }
+  }
+
+  .scroll-to-bottom {
+    margin-top: 36px;
   }
 
   .button {

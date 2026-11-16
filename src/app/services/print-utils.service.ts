@@ -3,7 +3,7 @@ import jsPDF from 'jspdf';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
-import { QrCodeGapSize, QrCodesCountPerPage, QrCodeSize } from '../enums';
+import { QrCodeGapSize, QrCodesCountPerPage, QrCodeSize } from '../shared/enums';
 import { LocalStorageService } from './local-storage.service';
 import {
   QrCodeGapSizes,

@@ -20,7 +20,7 @@ import {
 } from '@ionic/angular/standalone';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { QrCodeSize, QrCodeGapSize, QrCodesCountPerPage } from '@app/enums';
+import { QrCodeSize, QrCodeGapSize, QrCodesCountPerPage } from 'src/app/shared/enums';
 import {
   PrintSettings,
   PrintUtilsService,

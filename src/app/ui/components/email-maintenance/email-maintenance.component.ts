@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { ValidationService } from 'src/app/services/validation.service';
-import { EmailAddressStatus } from 'src/app/enums';
+import { EmailAddressStatus } from 'src/app/shared/enums';
 
 @Component({
   selector: 'app-email-maintenance',

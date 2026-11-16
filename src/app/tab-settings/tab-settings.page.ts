@@ -7,7 +7,7 @@ import { IonContent, IonicModule } from '@ionic/angular';
 import { LocalStorageService } from '../services/local-storage.service';
 import { environment } from '@env/environment';
 import { UtilsService } from '../services/utils.service';
-import { LogoType, Tab } from '../enums';
+import { LogoType, Tab } from '../shared/enums';
 import { HeaderComponent } from '../ui/components/header/header.component';
 import { LanguageAccordionComponent } from '../ui/components/accordions/language-accordion.component';
 import { FeedbackAccordionComponent } from '../ui/components/accordions/feedback-accordion.component';
@@ -86,7 +86,7 @@ export class TabSettingsPage implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.localStorage.selectedLanguage$.subscribe((lang) => {
         this.translate.use(lang);
-        this.translate.setDefaultLang(lang);
+        this.translate.setFallbackLang(lang);
         this.selectedLanguage = lang;
       }),
       this.utilsService.logoClicked$.subscribe(() => {
@@ -138,7 +138,7 @@ export class TabSettingsPage implements OnInit, OnDestroy {
     if (lang) {
       await this.localStorage.saveSelectedLanguage(lang);
       this.translate.use(lang);
-      this.translate.setDefaultLang(lang);
+      this.translate.setFallbackLang(lang);
     }
   }
 

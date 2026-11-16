@@ -32,7 +32,6 @@ export class ManualEmailInstructionsComponent {
   @Input() qrText!: string;
   @Input() qrTextLabel!: string;
   @Input() copyButtonLabel!: string;
-  @Input() copyCallback!: () => Promise<void>;
 
   constructor(private readonly modalController: ModalController) {}
 
@@ -52,13 +51,11 @@ export class ManualEmailInstructionsComponent {
     await this.modalController.dismiss();
   }
 
+
   /**
-   * Copies the QR text and dismisses the modal.
+   * Indicates that the user chose to copy the QR text and dismisses the modal.
    */
-  async copyAndDismiss() {
-    if (this.copyCallback) {
-      await this.copyCallback();
-    }
-    await this.dismiss();
+  async shouldCopyTextAndDismiss() {
+    await this.modalController.dismiss(undefined, 'destructive');
   }
 }

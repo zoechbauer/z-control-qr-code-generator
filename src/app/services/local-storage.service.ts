@@ -9,7 +9,7 @@ import {
   QrCodeGapSize,
   QrCodesCountPerPage,
   QrCodeSize,
-} from '../enums';
+} from '../shared/enums';
 
 enum LocalStorage {
   SavedEmailAddresses = 'savedEmailAddresses',

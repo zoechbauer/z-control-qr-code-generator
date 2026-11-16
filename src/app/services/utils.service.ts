@@ -4,7 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 import { GetHelpComponent } from '../ui/components/get-help/get-help.component';
-import { Tab } from '../enums';
+import { Tab } from '../shared/enums';
 import { MarkdownViewerComponent } from '../ui/components/markdown-viewer/markdown-viewer.component';
 import { Subject } from 'rxjs';
 
@@ -20,7 +20,7 @@ export class UtilsService {
   private currentModal: HTMLIonModalElement | null = null;
 
   constructor() {
-    window.addEventListener('orientationchange', () => {
+    globalThis.addEventListener('orientationchange', () => {
       if (this.currentModal) {
         this.setModalLandscapeClasses(this.currentModal);
       }

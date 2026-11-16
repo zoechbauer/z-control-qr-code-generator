@@ -31,8 +31,8 @@
         ></ion-textarea>
       </ion-item>
 
-      <ion-item *ngIf="qrService.isQrCodeGenerated">
-        <div class="center-horizontal">
+      <ion-item *ngIf="qrService.isQrCodeGenerated" class="no-margin">
+        <div class="center-horizontal no-margin">
           <qrcode
             id="qrcode"
             [qrdata]="qrService.myAngularxQrCode"
@@ -73,7 +73,7 @@
       </div>
 
       <div
-        class="no-generation-buttons ion-justify-content-around"
+        class="ion-display-flex ion-justify-content-around no-generation-buttons"
         [class.small-screen-hidden]="utilsService.isSmallDevice && !qrService.isQrCodeGenerated"
       >
         <div
@@ -102,4 +102,5 @@
       </div>
     </div>
   </ion-card>
+  <div *ngIf="utilsService.isNative" class="scroll-to-bottom"></div>
 </ion-content>

@@ -6,7 +6,7 @@ import {
 } from '@ionic/angular/standalone';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { LogoType } from '@app/enums';
+import { LogoType } from 'src/app/shared/enums';
 import { PrivacyPolicyComponent } from '../privacy-policy/privacy-policy.component';
 
 @Component({

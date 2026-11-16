@@ -209,7 +209,7 @@ describe('TabSettingsPage', () => {
 
       expect(localStorage.saveSelectedLanguage).toHaveBeenCalledWith('en');
       expect(translate.use).toHaveBeenCalledWith('en');
-      expect(translate.setDefaultLang).toHaveBeenCalledWith('en');
+      expect(translate.setFallbackLang).toHaveBeenCalledWith('en');
     });
 
     it('should not call anything if language is missing in onLanguageChange', async () => {
@@ -217,7 +217,7 @@ describe('TabSettingsPage', () => {
 
       expect(localStorage.saveSelectedLanguage).not.toHaveBeenCalled();
       expect(translate.use).not.toHaveBeenCalled();
-      expect(translate.setDefaultLang).not.toHaveBeenCalled();
+      expect(translate.setFallbackLang).not.toHaveBeenCalled();
     });
   });
 
