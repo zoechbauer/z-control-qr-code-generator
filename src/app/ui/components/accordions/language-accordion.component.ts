@@ -26,7 +26,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   ],
 })
 export class LanguageAccordionComponent {
-  translate = inject(TranslateService);
+  readonly translate = inject(TranslateService);
 
   @Input() lang?: string;
 

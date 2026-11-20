@@ -18,11 +18,33 @@ export class UtilsService {
   logoClickedSub = new Subject<boolean>();
   logoClicked$ = this.logoClickedSub.asObservable();
   private currentModal: HTMLIonModalElement | null = null;
+  private keyboardVisible = false;
+  private deviceViewportHeight = 0;
+  private lastKnownPortrait: boolean | null = null;
 
   constructor() {
+    this.setupEventListeners();
+  }
+
+  /**
+   * Sets up global event listeners for orientation changes and keyboard visibility.
+   */
+  private setupEventListeners(): void {
     globalThis.addEventListener('orientationchange', () => {
       if (this.currentModal) {
         this.setModalLandscapeClasses(this.currentModal);
+      }
+    });
+
+    globalThis.addEventListener('keyboardWillShow', () => {
+      if (Capacitor.isNativePlatform()) {
+        this.keyboardVisible = true;
+      }
+    });
+
+    globalThis.addEventListener('keyboardWillHide', () => {
+      if (Capacitor.isNativePlatform()) {
+        this.keyboardVisible = false;
       }
     });
   }
@@ -40,7 +62,57 @@ export class UtilsService {
    * @returns True if the device is in portrait orientation, false otherwise.
    */
   get isPortrait(): boolean {
+    if (this.isKeyboardOpen && this.lastKnownPortrait !== null) {
+      return this.lastKnownPortrait;
+    }
+
+    const isPortrait = this.getStablePortrait();
+    this.lastKnownPortrait = isPortrait;
+    return isPortrait;
+  }
+
+  /**
+   * Determines if the keyboard is currently visible.
+   * @returns True if the keyboard is visible, false otherwise.
+   */
+  get isKeyboardVisible(): boolean {
+    return this.isKeyboardOpen;
+  }
+
+  /**
+   * Determines the stable portrait orientation based on screen and orientation data.
+   * @returns True if the device is in portrait orientation, false otherwise.
+   */
+  private getStablePortrait(): boolean {
+    if (!Capacitor.isNativePlatform()) {
+      return window.matchMedia('(orientation: portrait)').matches;
+    }
+
+    const orientationAngle = globalThis.screen?.orientation?.angle;
+    if (typeof orientationAngle === 'number') {
+      return orientationAngle === 0 || orientationAngle === 180;
+    }
+
+    const screenWidth = globalThis.screen?.width;
+    const screenHeight = globalThis.screen?.height;
+    if (screenWidth && screenHeight) {
+      return screenHeight >= screenWidth;
+    }
+
     return window.matchMedia('(orientation: portrait)').matches;
+  }
+
+  /**
+   * Determines if the keyboard is currently open.
+   * @returns True if the keyboard is open, false otherwise.
+   */
+  private get isKeyboardOpen(): boolean {
+    const layoutHeight = window.innerHeight;
+    const visualHeight = window.visualViewport?.height;
+    const keyboardShrunkViewport =
+      visualHeight !== undefined && layoutHeight - visualHeight > 150;
+
+    return this.keyboardVisible || keyboardShrunkViewport;
   }
 
   /**
@@ -53,12 +125,34 @@ export class UtilsService {
   }
 
   /**
-   * Determines if the device is a small device based on height.
-   * @returns True if the device has a small height and is in portrait orientation, false otherwise.
+   * Determines if the device is a small device based on viewport height and keyboard visibility..
+   * @returns True if the device has a small height and is in portrait orientation,
+   * and the keyboard is not visible, false otherwise.
    */
   get isSmallDevice(): boolean {
-    const isMobileHeight = window.innerHeight <= 640;
-    return isMobileHeight && this.isPortrait;
+    const layoutHeight = window.innerHeight;
+    const keyboardOpen = this.isKeyboardOpen;
+
+    if (keyboardOpen) {
+      if (this.deviceViewportHeight === 0) {
+        this.deviceViewportHeight = this.getStableViewportHeight(layoutHeight);
+      }
+    } else {
+      this.deviceViewportHeight = this.getStableViewportHeight(layoutHeight);
+    }
+
+    return this.deviceViewportHeight <= 640 && this.isPortrait;
+  }
+
+  private getStableViewportHeight(layoutHeight: number): number {
+    if (Capacitor.isNativePlatform()) {
+      const screenHeight = globalThis.screen?.height;
+      if (screenHeight && screenHeight > 0) {
+        return screenHeight;
+      }
+    }
+
+    return layoutHeight;
   }
 
   /**

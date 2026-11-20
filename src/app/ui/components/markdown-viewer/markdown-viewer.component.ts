@@ -21,7 +21,7 @@ import {
 } from '@ionic/angular/standalone';
 import { NgIf } from '@angular/common';
 
-import { UtilsService } from 'src/app/services/utils.service';
+import { UtilsService } from '@app/services/utils.service';
 
 @Component({
   selector: 'app-markdown-viewer',

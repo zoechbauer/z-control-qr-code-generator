@@ -1,9 +1,13 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { inject, Injectable, OnDestroy } from '@angular/core';
 import jsPDF from 'jspdf';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
-import { QrCodeGapSize, QrCodesCountPerPage, QrCodeSize } from '../shared/enums';
+import {
+  QrCodeGapSize,
+  QrCodesCountPerPage,
+  QrCodeSize,
+} from '../shared/enums';
 import { LocalStorageService } from './local-storage.service';
 import {
   QrCodeGapSizes,
@@ -20,6 +24,9 @@ export interface PrintSettings {
   providedIn: 'root',
 })
 export class PrintUtilsService implements OnDestroy {
+  public readonly translate = inject(TranslateService);
+  private readonly localStorageService = inject(LocalStorageService);
+
   qrDataInputSub = new BehaviorSubject<number>(1);
   qrDataInput$ = this.qrDataInputSub.asObservable();
 
@@ -35,21 +42,21 @@ export class PrintUtilsService implements OnDestroy {
   private qrDataInputLength: number = 1;
   private readonly subs = new Subscription();
 
+  constructor() {
+    this.initialize();
+  }
 
   /**
    * Initializes the PrintUtilsService.
    * Loads available QR code sizes and gap sizes, and subscribes to relevant observables.
    */
-  constructor(
-    public translate: TranslateService,
-    private readonly localStorageService: LocalStorageService
-  ) {
+  private initialize(): void {
     this.loadAvailableQrCodeSizesAndGapSizes();
 
     this.subs.add(
       this.translate.onLangChange.subscribe(() => {
         this.loadAvailableQrCodeSizesAndGapSizes();
-      })
+      }),
     );
 
     this.subs.add(
@@ -57,13 +64,13 @@ export class PrintUtilsService implements OnDestroy {
         this.size = settings.size;
         this.gap = settings.gap;
         this.numberOfQrCodes = settings.numberOfQrCodesPerPage;
-      })
+      }),
     );
 
     this.subs.add(
       this.qrDataInputSub.subscribe((textLength) => {
         this.qrDataInputLength = textLength;
-      })
+      }),
     );
   }
 
@@ -75,7 +82,7 @@ export class PrintUtilsService implements OnDestroy {
    */
   getCalculatedNumberOfQrCodesPerPage(
     size: QrCodeSize = this.size,
-    gap: QrCodeGapSize = this.gap
+    gap: QrCodeGapSize = this.gap,
   ): number {
     const qrSize = size * 10 * this.scalingFactor(); // convert cm to mm and apply scaling factor
     const gapMm = gap * 10; // convert cm to mm
@@ -83,11 +90,11 @@ export class PrintUtilsService implements OnDestroy {
     // Calculate number of columns and rows that fit
     this.cols = Math.max(
       Math.floor((this.pageA4Width + gapMm) / (qrSize + gapMm)),
-      1
+      1,
     );
     this.rows = Math.max(
       Math.floor((this.pageA4Height + gapMm) / (qrSize + gapMm)),
-      1
+      1,
     );
     return this.cols * this.rows;
   }
@@ -101,7 +108,7 @@ export class PrintUtilsService implements OnDestroy {
       return `[ ${this.getConvertedLabel(this.size)} / 1 ]`;
     } else {
       return `[ ${this.getConvertedLabel(this.size)} / ${this.getConvertedLabel(
-        this.gap
+        this.gap,
       )} / ${this.getEffectiveNumberOfQrCodesPerPage()} ]`;
     }
   }

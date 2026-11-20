@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -10,8 +10,8 @@ import {
 import { NgIf } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { LogoType, Tab } from 'src/app/shared/enums';
-import { UtilsService } from 'src/app/services/utils.service';
+import { LogoType, Tab } from '@app/shared/enums';
+import { UtilsService } from '@app/services/utils.service';
 import { LogoComponent } from '../logo/logo.component';
 
 @Component({
@@ -32,14 +32,14 @@ import { LogoComponent } from '../logo/logo.component';
   ],
 })
 export class HeaderComponent {
+  readonly utilsService = inject(UtilsService);
+  readonly translate = inject(TranslateService);
+
   @Input() currentTab!: Tab;
+
   LogoType = LogoType;
   Tab = Tab;
 
-  constructor(
-    public translate: TranslateService,
-    public readonly utilsService: UtilsService
-  ) {}
 
   /**
    * Returns true if the screen is large.

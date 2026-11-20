@@ -35,7 +35,7 @@ ion-content {
       }
 
       a {
-        line-height: 30px !important;
+        line-height: 30px;
         text-decoration: none;
 
         &:hover {
@@ -43,7 +43,7 @@ ion-content {
         }
 
         &.toc-link-normal-height {
-          line-height: normal !important;
+          line-height: normal;
         }
       }
     }
@@ -59,6 +59,11 @@ ion-content {
   ul {
     margin-left: 1em;
     padding-left: 1em;
+    margin-bottom: 16px;
+
+    li {
+      margin-bottom: 8px;
+    }
   }
 
   .quick-tip {
@@ -78,7 +83,7 @@ ion-content {
     }
   }
   .empty-last-item {
-    margin-bottom: 50px !important;
+    margin-bottom: 50px;
   }
 
   table {
@@ -102,6 +107,27 @@ ion-content {
       background: #fafafa;
     }
   }
+
+  ul.no-list-style {
+    list-style: none;
+    padding-left: 0;
+    margin-left: 0;
+  }
+
+  ul.no-list-style-inside {
+    list-style: none;
+    padding-left: 0;
+
+    li {
+      margin-top: 16px;
+      margin-bottom: 16px;
+
+      ol li {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    }
+  }
 }
 
 @media (max-width: 600px) {
@@ -121,10 +147,6 @@ ion-content {
       ion-buttons ion-button {
         --padding-start: 8px;
         --padding-end: 8px;
-      }
-
-      ion-title {
-        font-size: 1rem;
       }
     }
   }

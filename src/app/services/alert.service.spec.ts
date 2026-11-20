@@ -401,7 +401,7 @@ describe('AlertService', () => {
       mockAlert.onDidDismiss.and.resolveTo({
         role: 'cancel',
       });
-      await service.shouldClearInputAfterKeyboardAlert(1000);
+      await service.showKeyboardAlert();
 
       expect(alertControllerSpy.create).toHaveBeenCalled();
       const config = alertControllerSpy.create.calls.mostRecent().args[0] || {};
@@ -415,20 +415,25 @@ describe('AlertService', () => {
       expect(mockAlert.present).toHaveBeenCalled();
     });
 
-    it('should return true when "clear and use short text" button is pressed', async () => {
+    it('should close modal when go back button is pressed', async () => {
       mockAlert.onDidDismiss.and.resolveTo({
-        role: 'destructive',
+        role: 'cancel',
       });
-      const shouldClearText =
-        await service.shouldClearInputAfterKeyboardAlert(1000);
+      mockAlert.dismiss.and.resolveTo();
+      await service.showKeyboardAlert();
 
       const config = alertControllerSpy.create.calls.mostRecent().args[0] || {};
       const clearBtn = config.buttons?.find?.(
         (b: any) => isButtonObj(b) && b.text === 'KEYBOARD_ALERT_SHORT_TEXT',
       );
       expect(clearBtn).toBeDefined();
-      expect(mockAlert.onDidDismiss).toHaveBeenCalled();
-      expect(shouldClearText).toBeTrue();
+      if (
+        isButtonObj(clearBtn) &&
+        typeof clearBtn.handler === 'function'
+      ) {
+        await clearBtn.handler({});
+      }
+      expect(mockAlert.dismiss).toHaveBeenCalled();
     });
 
     it('should call openModalToSection with web-version when "show help web version" button is pressed', async () => {
@@ -436,7 +441,7 @@ describe('AlertService', () => {
         role: 'cancel',
       });
       mockAlert.dismiss.and.resolveTo();
-      await service.shouldClearInputAfterKeyboardAlert(1000);
+      await service.showKeyboardAlert();
 
       const config = alertControllerSpy.create.calls.mostRecent().args[0] || {};
       const openHelpBtn = config.buttons?.find?.(
@@ -454,31 +459,34 @@ describe('AlertService', () => {
       expect(openHelpModalSpy).toHaveBeenCalledWith('web-version');
     });
 
-    const TEST_NAME =
+    it(
       'should call openModalToSection with floating-keyboard when ' +
-      '"show help floating keyboard" button is pressed';
-    it(TEST_NAME, async () => {
-      mockAlert.onDidDismiss.and.resolveTo({
-        role: 'cancel',
-      });
-      mockAlert.dismiss.and.resolveTo();
-      await service.shouldClearInputAfterKeyboardAlert(1000);
+        '"show help floating keyboard" button is pressed',
+      async () => {
+        mockAlert.onDidDismiss.and.resolveTo({
+          role: 'cancel',
+        });
+        mockAlert.dismiss.and.resolveTo();
+        await service.showKeyboardAlert();
 
-      const config = alertControllerSpy.create.calls.mostRecent().args[0] || {};
-      const openHelpBtn = config.buttons?.find?.(
-        (b: any) => isButtonObj(b) && b.text === 'KEYBOARD_ALERT_HELP_KEYBOARD',
-      );
-      expect(openHelpBtn).toBeDefined();
+        const config =
+          alertControllerSpy.create.calls.mostRecent().args[0] || {};
+        const openHelpBtn = config.buttons?.find?.(
+          (b: any) =>
+            isButtonObj(b) && b.text === 'KEYBOARD_ALERT_HELP_KEYBOARD',
+        );
+        expect(openHelpBtn).toBeDefined();
 
-      if (
-        isButtonObj(openHelpBtn) &&
-        typeof openHelpBtn.handler === 'function'
-      ) {
-        await openHelpBtn.handler({});
-      }
-      expect(mockAlert.dismiss).toHaveBeenCalled();
-      expect(openHelpModalSpy).toHaveBeenCalledWith('floating-keyboard');
-    });
+        if (
+          isButtonObj(openHelpBtn) &&
+          typeof openHelpBtn.handler === 'function'
+        ) {
+          await openHelpBtn.handler({});
+        }
+        expect(mockAlert.dismiss).toHaveBeenCalled();
+        expect(openHelpModalSpy).toHaveBeenCalledWith('floating-keyboard');
+      },
+    );
   });
 
   describe('openHelpModalToSection', () => {

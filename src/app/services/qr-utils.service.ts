@@ -1,4 +1,4 @@
-import { Injectable, SecurityContext } from '@angular/core';
+import { inject, Injectable, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 import { FileUtilsService } from './file-utils.service';
@@ -9,16 +9,14 @@ import { PrintUtilsService } from './print-utils.service';
   providedIn: 'root',
 })
 export class QrUtilsService {
+  private readonly alertService = inject(AlertService);
+  private readonly fileUtilsService = inject(FileUtilsService);
+  private readonly printUtilsService = inject(PrintUtilsService);
+  private readonly sanitizer = inject(DomSanitizer);
+
   myAngularxQrCode: string = '';
   qrCodeDownloadLink: string = '';
   isQrCodeGenerated = false;
-
-  constructor(
-    private readonly sanitizer: DomSanitizer,
-    private readonly fileUtilsService: FileUtilsService,
-    private readonly alertService: AlertService,
-    private readonly printUtilsService: PrintUtilsService
-  ) {}
 
   /**
    * Generates a QR code for the given data.
@@ -87,11 +85,5 @@ export class QrUtilsService {
     this.isQrCodeGenerated = false;
     this.qrCodeDownloadLink = '';
     this.myAngularxQrCode = '';
-
-    // remove class
-    const element = document.querySelector('.no-generation-buttons');
-    if (element?.classList.contains('extra-margin-bottom')) {
-      element.classList.remove('extra-margin-bottom');
-    }
   }
 }

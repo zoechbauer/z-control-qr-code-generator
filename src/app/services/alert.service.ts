@@ -122,12 +122,9 @@ export class AlertService {
   /**
    * Shows an alert about the keyboard.
    * Provides options to get help or dismiss the alert.
-   * @param maxInputLength The maximum input length for the input field.
-   * @returns true if the user chose to clear the input, false otherwise.
+   * @returns A promise that resolves when the alert is presented.
    */
-  async shouldClearInputAfterKeyboardAlert(
-    maxInputLength: number,
-  ): Promise<boolean> {
+  async showKeyboardAlert(): Promise<void> {
     const alert = await this.alertController.create({
       header: this.translate.instant('KEYBOARD_ALERT_TITLE'),
       message: this.translate.instant('KEYBOARD_ALERT_MESSAGE'),
@@ -149,15 +146,15 @@ export class AlertService {
         },
         {
           text: this.translate.instant('KEYBOARD_ALERT_SHORT_TEXT'),
-          role: 'destructive',
+          role: 'cancel',
+          handler: async () => {
+            await alert.dismiss();
+          },
         },
       ],
     });
 
-    await alert.present();
-
-    const { role } = await alert.onDidDismiss();
-    return role === 'destructive';
+    return await alert.present();
   }
 
   /**

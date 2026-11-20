@@ -4,16 +4,6 @@
     margin-bottom: -20px;
   }
 
-  .no-generation-buttons {
-    &.extra-margin-bottom {
-      margin-bottom: 104px;
-    }
-  }
-
-  .scroll-to-bottom {
-    margin-top: 36px;
-  }
-
   .button {
     &.landscape {
       margin-bottom: 0px;
@@ -37,78 +27,78 @@
 
   ion-card {
     // Add enough padding to clear the navigation bar
-    padding-bottom: 100px !important;
+    padding-bottom: 100px;
   }
 }
-// style for smaller screens, e.g. Galaxy J5
-@media (max-height: 640px) and (orientation: portrait) {
+
+@media  (orientation: portrait) {
   .qr-code {
     // enable scrolling for the entire card
-    max-height: calc(100vh - 100px) !important;
-    overflow-y: auto !important;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
 
     // rearrange sections using flexbox order
-    display: flex !important;
-    flex-direction: column !important;
+    display: flex;
+    flex-direction: column;
 
     ion-card-header {
-      order: 1 !important; // Header first
-      padding: 0px 16px !important;
-      margin-bottom: 0 !important;
-      position: sticky !important; // keep header visible when scrolling
-      top: 0 !important;
-      background: var(--ion-background-color) !important;
-      z-index: 10 !important;
+      order: 1; // Header first
+      padding: 0px 16px;
+      margin-bottom: 0;
+      position: sticky; // keep header visible when scrolling
+      top: 0;
+      background: var(--ion-background-color);
+      z-index: 10;
 
       ion-card-title {
-        font-size: 0.9rem !important;
-        margin: 0 !important;
-        padding: 0 !important;
+        font-size: 0.9rem;
+        margin: 0;
+        padding: 0;
       }
     }
 
     // move generate button section to top (after header)
     .qr-code-buttons {
-      order: 2 !important; // Buttons second
-      padding: 0px 16px 8px 16px !important;
-      border-bottom: 1px solid var(--ion-color-light-shade) !important;
-      position: sticky !important; // Keep buttons visible when scrolling
-      top: 20px !important; // Below the header
-      z-index: 9 !important;
+      order: 2; // Buttons second
+      padding: 0px 16px 8px 16px;
+      border-bottom: 1px solid var(--ion-color-light-shade);
+      position: sticky; // Keep buttons visible when scrolling
+      top: 20px; // Below the header
+      z-index: 9;
 
       .next-step {
         font-size: 0.75rem;
       }
 
       .ion-text-center {
-        padding: 5px !important;
+        padding: 5px;
       }
 
       .button-wrapper {
-        margin: 0 !important;
+        margin: 0;
 
         ion-button {
-          font-size: 0.8rem !important;
-          height: 36px !important;
-          --padding-top: 8px !important;
-          --padding-bottom: 8px !important;
+          font-size: 0.8rem;
+          height: 36px;
+          --padding-top: 8px;
+          --padding-bottom: 8px;
         }
       }
 
       .no-generation-buttons {
         &.small-screen-hidden {
-          display: none !important;
+          display: none;
         }
 
         &:not(.small-screen-hidden) {
-          display: flex !important;
-          margin-top: 8px !important;
+          display: flex;
+          margin-top: 8px;
 
           ion-button {
-            font-size: 0.7rem !important;
-            height: 32px !important;
-            --padding-top: 6px !important;
-            --padding-bottom: 6px !important;
+            font-size: 0.7rem;
+            height: 32px;
+            --padding-top: 6px;
+            --padding-bottom: 6px;
           }
         }
       }
@@ -116,25 +106,25 @@
 
     // content comes last - scrollable area
     ion-card-content {
-      order: 3 !important;
-      padding: 8px 16px 60px 16px !important; // extra bottom padding for keyboard
-      flex: 1 !important;
+      overflow-y: auto;
+      order: 3;
+      padding: 8px 16px 60px 16px; // extra bottom padding for keyboard
+      flex: 1;
 
       ion-item {
-        margin-bottom: 20px !important;
+        margin-bottom: 20px;
 
         ion-textarea {
           // enable text scrolling within textarea
-          max-height: 200px !important;
-          overflow-y: auto !important;
+          overflow-y: auto;
         }
       }
     }
 
     // spinner
     .ion-text-center {
-      order: 4 !important;
-      padding-bottom: 20px !important;
+      order: 4;
+      padding-bottom: 20px;
     }
   }
 
@@ -142,22 +132,22 @@
   .alert-wrapper {
     &.keyboard-alert {
       .alert-message {
-        white-space: pre-line !important;
-        text-align: left !important;
-        line-height: 1.4 !important;
-        font-size: 0.9em !important;
+        white-space: pre-line;
+        text-align: left;
+        line-height: 1.4;
+        font-size: 0.9em;
       }
 
       .alert-button-group {
-        flex-direction: column !important;
+        flex-direction: column;
 
         .alert-button {
-          margin: 4px 0 !important;
-          min-height: 44px !important;
+          margin: 4px 0;
+          min-height: 44px;
 
           .alert-button-inner {
-            font-size: 0.85em !important;
-            text-align: center !important;
+            font-size: 0.85em;
+            text-align: center;
           }
         }
       }
@@ -168,12 +158,12 @@
 // style for QR text display
 .qr-text-alert {
   .alert-message {
-    font-family: monospace !important;
-    word-break: break-all !important;
-    white-space: pre-wrap !important;
-    text-align: left !important;
-    line-height: 1.3 !important;
-    font-size: 14px !important;
+    font-family: monospace;
+    word-break: break-all;
+    white-space: pre-wrap;
+    text-align: left;
+    line-height: 1.3;
+    font-size: 14px;
   }
 }
 

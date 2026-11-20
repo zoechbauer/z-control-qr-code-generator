@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { Platform } from '@ionic/angular';
 import {
@@ -16,7 +16,6 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
-import { Keyboard } from '@capacitor/keyboard';
 import { Subscription } from 'rxjs';
 import { QRCodeComponent } from 'angularx-qrcode';
 
@@ -68,38 +67,29 @@ export enum Workflow {
   ],
 })
 export class TabQrPage implements OnInit, OnDestroy {
+  public qrService = inject(QrUtilsService);
+  public localStorage = inject(LocalStorageService);
+  public emailService = inject(EmailUtilsService);
+  public readonly validationService = inject(ValidationService);
+  public translate = inject(TranslateService);
+  public readonly utilsService = inject(UtilsService);
+  private readonly fileService = inject(FileUtilsService);
+  private readonly platform = inject(Platform);
+  private readonly alertService = inject(AlertService);
+  private readonly toastService = inject(ToastService);
+  private readonly printUtilsService = inject(PrintUtilsService);
+
   @ViewChild('qrDataInput') qrDataInput!: IonTextarea;
 
   LogoType = LogoType;
   Tab = Tab;
   screenWidth: number = window.innerWidth;
-  nbrOfInitialRows: number = 2;
+  nbrOfUsedRows: number = 2;
   showSpinner: boolean = false;
   workflowStep: Workflow = Workflow.StepEnterText;
 
-  private readonly langSub?: Subscription;
-  private isKeyboardOpen = false;
+  private langSub?: Subscription;
   private hasShownKeyboardAlert = false;
-
-  constructor(
-    public qrService: QrUtilsService,
-    public localStorage: LocalStorageService,
-    public emailService: EmailUtilsService,
-    public readonly validationService: ValidationService,
-    public translate: TranslateService,
-    public readonly utilsService: UtilsService,
-    private readonly fileService: FileUtilsService,
-    private readonly platform: Platform,
-    private readonly alertService: AlertService,
-    private readonly toastService: ToastService,
-    private readonly printUtilsService: PrintUtilsService,
-  ) {
-    this.setNumberOfRows();
-    this.langSub = this.localStorage.selectedLanguage$.subscribe((lang) => {
-      this.translate.use(lang);
-      this.translate.setFallbackLang(lang);
-    });
-  }
 
   /**
    * Returns the name of the application from the environment configuration.
@@ -137,43 +127,61 @@ export class TabQrPage implements OnInit, OnDestroy {
     return this.utilsService.isNative;
   }
 
+  get cardTitle() {
+    return this.workflowStep === Workflow.StepEnterText
+      ? this.translate.instant('CREATE_QR_CODE')
+      : this.translate.instant('MAIL_QR_CODE');
+  }
+
   /**
    * Performs necessary setup tasks such as showing or hiding the tab bar,
    * setting up event listeners, and initializing services.
    */
   ngOnInit(): void {
+    this.createSubscription();
     this.utilsService.showOrHideIonTabBar();
-    void this.setupEventListeners();
+    this.setupEventListeners();
     void this.initializeServicesAsync();
+    this.setNumberOfRows();
+  }
+
+  /**
+   * Creates a subscription to the selected language observable from local storage.
+   * Updates the translation service with the selected language.
+   */
+  private createSubscription(): void {
+    this.langSub = this.localStorage.selectedLanguage$.subscribe((lang) => {
+      this.translate.use(lang);
+      this.translate.setFallbackLang(lang);
+    });
   }
 
   /**
    * Sets up event listeners for window resize and keyboard events.
    */
-  private async setupEventListeners(): Promise<void> {
+  private setupEventListeners(): void {
     // Single resize listener
     window.addEventListener('resize', () => {
       this.screenWidth = window.innerWidth;
       this.setNumberOfRows();
       this.utilsService.showOrHideIonTabBar();
     });
-
-    // Platform-specific keyboard listeners
-    if (this.utilsService.isNative) {
-      await Keyboard.addListener('keyboardWillShow', () => {
-        this.isKeyboardOpen = true;
-      });
-      await Keyboard.addListener('keyboardWillHide', () => {
-        this.isKeyboardOpen = false;
-      });
-    }
   }
 
   /**
-   * Sets the number of rows for the input field based on the device orientation.
+   * Sets the number of rows for the input field based on the device orientation and QR code content.
    */
   private setNumberOfRows(): void {
-    this.nbrOfInitialRows = this.utilsService.isPortrait ? 6 : 2;
+    if (this.workflowStep === Workflow.StepEnterText) {
+      // fix size for the input field on start
+      this.nbrOfUsedRows = this.utilsService.isPortrait ? 6 : 2;
+    } else {
+      // dynamic size of the input field based on QR code content
+      const CHARS_PER_ROW = 30;
+      this.nbrOfUsedRows = Math.ceil(
+        this.qrService.myAngularxQrCode.length / CHARS_PER_ROW,
+      );
+    }
   }
 
   /**
@@ -318,21 +326,7 @@ export class TabQrPage implements OnInit, OnDestroy {
       // Valid input, generate QR code
       this.sanitizeInputAndGenerateQRCode(this.qrDataInput.value);
       this.showWorkflowStep(Workflow.StepGenerate);
-      this.generateMarginForButtonsIfNeeded();
-    }
-  }
-
-  /**
-   * Adds extra bottom margin to the generation buttons container if needed,
-   * based on device size and platform.
-   */
-  private generateMarginForButtonsIfNeeded(): void {
-    const isSmallDevice = this.utilsService.isSmallDevice;
-    if (isSmallDevice || !this.isNative) return;
-
-    const element = document.querySelector('.no-generation-buttons');
-    if (!element?.classList.contains('extra-margin-bottom')) {
-      element?.classList.add('extra-margin-bottom');
+      this.setNumberOfRows();
     }
   }
 
@@ -346,24 +340,8 @@ export class TabQrPage implements OnInit, OnDestroy {
       this.showSpinner = true;
       const sanitizedData = this.trimTrailingWhitespace(data);
       this.qrService.generateQRCode(sanitizedData);
-
-      if (this.isNative) {
-        this.scrollToBottom();
-      }
       this.showSpinner = false;
     }
-  }
-
-  /**
-   * Scrolls to the container with the scroll-to-bottom class.
-   */
-  private scrollToBottom(): void {
-    setTimeout(() => {
-      const element = document.querySelector('.scroll-to-bottom');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }, 0);
   }
 
   /**
@@ -483,7 +461,7 @@ export class TabQrPage implements OnInit, OnDestroy {
 
   /**
    * Handles the mobile web email options.
-   * Shows an alert with options for sending email, copying QR code text, 
+   * Shows an alert with options for sending email, copying QR code text,
    * or showing manual instructions.
    */
   private async handleMobileWebEmailOptions(): Promise<void> {
@@ -540,7 +518,10 @@ export class TabQrPage implements OnInit, OnDestroy {
    */
   private async shouldCopyTextAfterManualEmailInstructions(): Promise<void> {
     const qrText = this.qrService.myAngularxQrCode;
-    const shouldCopy = await this.alertService.shouldCopyTextAfterManualEmailInstructions(qrText);
+    const shouldCopy =
+      await this.alertService.shouldCopyTextAfterManualEmailInstructions(
+        qrText,
+      );
     if (shouldCopy) {
       await this.copyQRTextToClipboard();
     }
@@ -561,13 +542,7 @@ export class TabQrPage implements OnInit, OnDestroy {
       if (this.shouldShowKeyboardAlert(currentText)) {
         setTimeout(async () => {
           this.hasShownKeyboardAlert = true;
-          if (
-            await this.alertService.shouldClearInputAfterKeyboardAlert(
-              this.maxInputLength,
-            )
-          ) {
-            this.performClear();
-          }
+          await this.alertService.showKeyboardAlert();
         }, 500);
       }
     }
@@ -633,11 +608,6 @@ export class TabQrPage implements OnInit, OnDestroy {
       this.qrService.clearQrFields();
       this.emailService.clearEmailSent();
       this.fileService.clearNowFormatted();
-
-      // Remove keyboard listeners if they exist
-      if (this.utilsService.isNative) {
-        void Keyboard.removeAllListeners();
-      }
     } catch (error) {
       console.error('Cleanup failed:', error);
     }

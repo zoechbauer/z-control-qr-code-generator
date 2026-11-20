@@ -1,7 +1,8 @@
 import { TranslateService } from '@ngx-translate/core';
-import { FeedbackAccordionComponent } from './feedback-accordion.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createTranslateServiceMock } from '@testing/translate-service.mock';
+
+import { FeedbackAccordionComponent } from './feedback-accordion.component';
 
 describe('FeedbackAccordionComponent', () => {
   let component: FeedbackAccordionComponent;

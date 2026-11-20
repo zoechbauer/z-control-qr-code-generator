@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { BehaviorSubject } from 'rxjs';
 
@@ -21,6 +21,9 @@ enum LocalStorage {
   providedIn: 'root',
 })
 export class LocalStorageService {
+  private readonly storage = inject(Storage);
+  private readonly validationService = inject(ValidationService);
+
   savedEmailAddresses: string[] = [];
   savedEmailAddressesSubject = new BehaviorSubject<string[]>([]);
   savedEmailAddresses$ = this.savedEmailAddressesSubject.asObservable();
@@ -35,11 +38,6 @@ export class LocalStorageService {
     this.getMobileDefaultLanguage(),
   );
   selectedLanguage$ = this.selectedLanguageSubject.asObservable();
-
-  constructor(
-    private readonly storage: Storage,
-    private readonly validationService: ValidationService,
-  ) {}
 
   /**
    * Initializes the local storage service.
@@ -123,7 +121,10 @@ export class LocalStorageService {
     const emailAddresses = await this.storage.get(
       LocalStorage.SavedEmailAddresses,
     );
-    this.savedEmailAddresses = this.parseStoredValue<string[]>(emailAddresses, []);
+    this.savedEmailAddresses = this.parseStoredValue<string[]>(
+      emailAddresses,
+      [],
+    );
     this.savedEmailAddressesSubject.next(this.savedEmailAddresses);
   }
 

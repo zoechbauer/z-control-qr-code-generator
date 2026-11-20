@@ -25,7 +25,7 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
   ],
 })
 export class EmailMaintenanceAccordionComponent {
-  translate = inject(TranslateService);
+  readonly translate = inject(TranslateService);
   localStorage = inject(LocalStorageService);
 
   @Input() lang: string = 'en';

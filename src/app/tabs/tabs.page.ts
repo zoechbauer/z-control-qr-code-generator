@@ -22,5 +22,5 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   ],
 })
 export class TabsPage {
-  translate = inject(TranslateService);
+  readonly translate = inject(TranslateService);
 }

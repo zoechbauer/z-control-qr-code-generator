@@ -30,7 +30,10 @@ describe('ManualEmailInstructionsComponent', () => {
 
   it('should call modalController.dismiss with destructive role when shouldCopyTextAndDismiss is called', () => {
     component.shouldCopyTextAndDismiss();
-    expect(modalControllerSpy.dismiss).toHaveBeenCalledWith(undefined, 'destructive');
+    expect(modalControllerSpy.dismiss).toHaveBeenCalledWith(
+      undefined,
+      'destructive',
+    );
   });
 
   it('should render all @Input properties in the template', () => {

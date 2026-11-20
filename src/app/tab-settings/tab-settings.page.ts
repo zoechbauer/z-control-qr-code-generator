@@ -39,7 +39,7 @@ import { EmailMaintenanceAccordionComponent } from '../ui/components/accordions/
   ],
 })
 export class TabSettingsPage implements OnInit, OnDestroy {
-  translate = inject(TranslateService);
+  readonly translate = inject(TranslateService);
   readonly localStorage = inject(LocalStorageService);
   readonly utilsService = inject(UtilsService);
 

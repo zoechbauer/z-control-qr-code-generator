@@ -2,35 +2,19 @@
   <app-header [currentTab]="Tab.Qr"></app-header>
 </div>
 
-<h6 class="ion-text-center">{{ appName }}</h6>
+<h6 *ngIf="!utilsService.isKeyboardVisible" class="ion-text-center">
+  {{ appName }}
+</h6>
 <ion-content
   class="qr-code-content"
   [class.landscape]="!utilsService.isPortrait"
 >
   <ion-card class="qr-code">
-    <ion-card-header>
-      <ion-card-title class="ion-text-center"
-        >{{'CREATE_QR_CODE' | translate}}</ion-card-title
-      >
+    <ion-card-header *ngIf="!utilsService.isSmallDevice">
+      <ion-card-title class="ion-text-center">{{ cardTitle }}</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
-      <ion-item>
-        <ion-label position="stacked"
-          >{{ 'QR_CODE_TEXT' | translate }}</ion-label
-        >
-        <ion-textarea
-          [autoGrow]="true"
-          [counter]="true"
-          #qrDataInput
-          placeholder="{{'INPUT_FIELD_PLACEHOLDER' | translate}}"
-          [rows]="nbrOfInitialRows"
-          maxlength="{{maxInputLength}}"
-          (ionInput)="onTextareaInput()"
-          (ionBlur)="onQrDataInputBlur()"
-        ></ion-textarea>
-      </ion-item>
-
       <ion-item *ngIf="qrService.isQrCodeGenerated" class="no-margin">
         <div class="center-horizontal no-margin">
           <qrcode
@@ -42,6 +26,24 @@
             [allowEmptyString]="true"
           ></qrcode>
         </div>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked"
+          >{{ 'QR_CODE_TEXT' | translate }}</ion-label
+        >
+        <ion-textarea
+          [style.maxHeight.em]="nbrOfUsedRows * 1.5 + 20"
+          [style.minHeight.px]="85"
+          [autoGrow]="true"
+          [counter]="true"
+          #qrDataInput
+          placeholder="{{'INPUT_FIELD_PLACEHOLDER' | translate}}"
+          [rows]="nbrOfUsedRows"
+          maxlength="{{maxInputLength}}"
+          (ionInput)="onTextareaInput()"
+          (ionBlur)="onQrDataInputBlur()"
+        ></ion-textarea>
       </ion-item>
     </ion-card-content>
 
@@ -102,5 +104,4 @@
       </div>
     </div>
   </ion-card>
-  <div *ngIf="utilsService.isNative" class="scroll-to-bottom"></div>
 </ion-content>

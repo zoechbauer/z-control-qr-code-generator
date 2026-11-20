@@ -9,8 +9,8 @@ import { LocalStorageService } from '@app/services/local-storage.service';
 import {
   PrintSettings,
   PrintUtilsService,
-} from 'src/app/services/print-utils.service';
-import { QrCodeGapSize, QrCodesCountPerPage, QrCodeSize } from 'src/app/shared/enums';
+} from '@app/services/print-utils.service';
+import { QrCodeGapSize, QrCodesCountPerPage, QrCodeSize } from '@app/shared/enums';
 
 describe('PrintAccordionComponent', () => {
   let component: PrintAccordionComponent;

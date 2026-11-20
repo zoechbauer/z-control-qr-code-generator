@@ -6,7 +6,13 @@ All recent updates and improvements to our **z&#8209;control QR Code Generator**
 
 ### 🚀 Improvements
 
+- Entered text remains available on small devices when an alert is displayed over the keyboard, allowing users with small screens to enter long text and create a QR code.
+- Improved Layout of QR Code page by changing the order of the displayed elements for better user experience, especially when entering long text.
+- Improved Layout of the help page for better readability and user experience.
 - Reduced the maximum page width on web to 500px to improve readability and align with the other z&#8209;control apps.
+- Changed the title from 'Create QR Code' to 'Mail QR Code' after creating a QR code.
+- Improved 'utilsService.isSmallDevice' and 'utilsService.isPortrait' to better handle native platform scenarios and keyboard visibility.
+- Enhanced scrolling on small devices, such as the Samsung Galaxy J5, for a smoother in-app experience.
 - Split the input field placeholder across two lines for better readability.
 - Improved the app header and Release Notes accordion, and added the app name to pages for consistency with the other z&#8209;control apps.
 - Improved scrolling to the bottom of the page after generating a QR code for better user experience.
@@ -15,21 +21,23 @@ All recent updates and improvements to our **z&#8209;control QR Code Generator**
 
 ### 🔧 Internal
 
-- **migrated to the Angular 20 / Capacitor 8 framework** to have the same framework as in all other z&#8209;control apps.
-  - removed NgModules and migrated to standalone components throughout the app.
-  - updated implementation of angularx-qrcode and routing to align with the standalone component approach.
-- improved the structure of the environment files to separate app-specific settings under the `app` key for better organization and maintainability (same approach as in other z&#8209;control apps).
-- added new environment settings under the `app` key for better organization and maintainability.
-- improved the code quality of the print-accordion component and added unit tests.
-- renamed HelpModalComponent to GetHelpComponent and moved it to the `ui/components/get-help` directory to be consistent with the other z&#8209;control apps.
-- renamed ManualInstructionsModalComponent to ManualEmailInstructionsComponent and moved from the tab-qr folder to the new `ui/components/manual-email-instructions` directory to improve consistency with the other z&#8209;control apps.
-- simplified the CSS for the ManualEmailInstructionsComponent and splitted component into template, typescript and stylesheet files.
-- updated all references of "z&#8209;control" in this changelog for consistency with the brand name, which is never split across lines.
-- refactored alert handling to improve consistency and maintainability across the app, moved from qr page to a centralized alert service.
-- moved enums.ts to the shared directory for better organization and maintainability.
-- updated the README and documentation to reflect the new Angular 20 / Capacitor 8 setup and standalone component structure.
-- improved the handling of the default language settings in the TranslateService mock for consistency with the app's language configuration.
-- updated and expanded the unit tests, and resolved issues that arose during the Angular 20 and Capacitor 8 migration. The test suite now passes 433 specs with 99.0% statement coverage.
+- **Migrated to the Angular 20 / Capacitor 8 framework** to have the same framework as in all other z&#8209;control apps.
+  - Removed NgModules and migrated to standalone components throughout the app.
+  - Updated implementation of angularx-qrcode and routing to align with the standalone component approach.
+- Improved the structure of the environment files to separate app-specific settings under the `app` key for better organization and maintainability (same approach as in other z&#8209;control apps).
+- Simplified the QR Code page layout by reordering the displayed elements, reducing code and styling complexity.
+- Added new environment settings under the `app` key for better organization and maintainability.
+- Improved the code quality of the print-accordion component and added unit tests.
+- Renamed HelpModalComponent to GetHelpComponent and moved it to the `ui/components/get-help` directory to be consistent with the other z&#8209;control apps.
+- Renamed ManualInstructionsModalComponent to ManualEmailInstructionsComponent and moved from the tab-qr folder to the new `ui/components/manual-email-instructions` directory to improve consistency with the other z&#8209;control apps.
+- Simplified the CSS for the ManualEmailInstructionsComponent and splitted component into template, typescript and stylesheet files.
+- Removed unnecessary `!important` declarations from all stylesheets for cleaner and more maintainable CSS.
+- Updated all references of "z&#8209;control" in this changelog for consistency with the brand name, which is never split across lines.
+- Refactored alert handling to improve consistency and maintainability across the app, moved from qr page to a centralized alert service.
+- Moved enums.ts to the shared directory for better organization and maintainability.
+- Updated the README and documentation to reflect the new Angular 20 / Capacitor 8 setup and standalone component structure.
+- Improved the handling of the default language settings in the TranslateService mock for consistency with the app's language configuration.
+- Updated and expanded the unit tests, and resolved issues that arose during the Angular 20 and Capacitor 8 migration. The test suite now passes 442 specs with 99.6% statement coverage.
 
 ## [2.6] - 2026-11-08
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2, inject } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { Capacitor } from '@capacitor/core';
 import { SplashScreen } from '@capacitor/splash-screen';
@@ -14,15 +14,13 @@ import { environment } from '../environments/environment';
   imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent implements OnInit {
+  private readonly renderer = inject(Renderer2);
+  private readonly safeAreaInsets = inject(SafeAreaInsets);
+
   isNativeApp = Capacitor.isNativePlatform();
   showTabsBar = environment.app.showTabsBar;
   readonly splashScreen = SplashScreen;
   readonly statusBar = StatusBar;
-
-  constructor(
-    private readonly renderer: Renderer2,
-    private readonly safeAreaInsets: SafeAreaInsets,
-  ) {}
 
   ngOnInit(): void {
     void this.initializeApp();

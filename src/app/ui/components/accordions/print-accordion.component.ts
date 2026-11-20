@@ -1,4 +1,3 @@
-import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { CommonModule } from '@angular/common';
 import {
   Component,
@@ -20,12 +19,13 @@ import {
 } from '@ionic/angular/standalone';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { QrCodeSize, QrCodeGapSize, QrCodesCountPerPage } from 'src/app/shared/enums';
+import { QrCodeSize, QrCodeGapSize, QrCodesCountPerPage } from '@app/shared/enums';
+import { LocalStorageService } from '@app/services/local-storage.service';
 import {
   PrintSettings,
   PrintUtilsService,
-} from 'src/app/services/print-utils.service';
-import { ToastService } from 'src/app/services/toast.service';
+} from '@app/services/print-utils.service';
+import { ToastService } from '@app/services/toast.service';
 
 export interface QrCodeSizes {
   label: string;
@@ -60,6 +60,11 @@ interface QrCodesCountPerPages {
   ],
 })
 export class PrintAccordionComponent implements OnInit {
+  translate = inject(TranslateService);
+  private readonly printUtilsService = inject(PrintUtilsService);
+  private readonly toastService = inject(ToastService);
+  private readonly localStorageService = inject(LocalStorageService);
+
   @Input() lang?: string;
 
   QrCodesCountPerPage = QrCodesCountPerPage;
@@ -73,19 +78,11 @@ export class PrintAccordionComponent implements OnInit {
   selectedNumberOfQrCodesPerPage = 1;
   private readonly destroyRef = inject(DestroyRef);
 
-  constructor(
-    public translate: TranslateService,
-    private readonly printUtilsService: PrintUtilsService,
-    private readonly toastService: ToastService,
-    private readonly localStorageService: LocalStorageService,
-  ) {
-    this.setupSubscriptions();
-  }
-
   /**
    * Initializes the component by loading available print settings.
    */
   ngOnInit() {
+    this.setupSubscriptions();
     this.loadAvailablePrintSettings();
   }
 

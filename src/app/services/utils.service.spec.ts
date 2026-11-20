@@ -126,6 +126,21 @@ describe('UtilsService', () => {
   });
 
   describe('isPortrait getter', () => {
+    let originalScreenDescriptor: PropertyDescriptor | undefined;
+
+    beforeEach(() => {
+      originalScreenDescriptor = Object.getOwnPropertyDescriptor(
+        window,
+        'screen',
+      );
+    });
+
+    afterEach(() => {
+      if (originalScreenDescriptor) {
+        Object.defineProperty(window, 'screen', originalScreenDescriptor);
+      }
+    });
+
     it('should detect portrait orientation', () => {
       const mockMatchMedia = WindowMockUtil.setupMatchMediaSpy(true);
 
@@ -143,6 +158,106 @@ describe('UtilsService', () => {
       expect(mockMatchMedia).toHaveBeenCalledWith('(orientation: portrait)');
       expect(isPortrait).toBe(false);
     });
+
+    it('should keep the last portrait result while the keyboard is open', () => {
+      WindowMockUtil.mockInnerHeight(800);
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        value: { height: 800 },
+      });
+      WindowMockUtil.setupMatchMediaSpy(true);
+      expect(service.isPortrait).toBe(true);
+
+      WindowMockUtil.setupMatchMediaSpy(false);
+      service['keyboardVisible'] = true;
+
+      expect(service.isPortrait).toBe(true);
+    });
+
+    it('should update portrait result after the keyboard closes', () => {
+      WindowMockUtil.mockInnerHeight(800);
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        value: { height: 800 },
+      });
+      WindowMockUtil.setupMatchMediaSpy(true);
+      expect(service.isPortrait).toBe(true);
+
+      service['keyboardVisible'] = true;
+      WindowMockUtil.setupMatchMediaSpy(false);
+      expect(service.isPortrait).toBe(true);
+
+      service['keyboardVisible'] = false;
+      expect(service.isPortrait).toBe(false);
+    });
+
+    it('should keep native portrait orientation stable when keyboard shrinks the viewport', () => {
+      spyOn(Capacitor, 'isNativePlatform').and.returnValue(true);
+      Object.defineProperty(window, 'screen', {
+        configurable: true,
+        value: {
+          width: 720,
+          height: 616,
+          orientation: { angle: 0 },
+        },
+      });
+      WindowMockUtil.setupMatchMediaSpy(false);
+
+      expect(service.isPortrait).toBe(true);
+
+      service['keyboardVisible'] = true;
+      WindowMockUtil.mockInnerHeight(307);
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        value: { height: 307 },
+      });
+
+      expect(service.isPortrait).toBe(true);
+    });
+
+    it('should keep native portrait orientation stable with globalThis.screen values', () => {
+      spyOn(Capacitor, 'isNativePlatform').and.returnValue(true);
+      Object.defineProperty(globalThis, 'screen', {
+        configurable: true,
+        value: {
+          width: 720,
+          height: 816,
+          orientation: { angle: undefined },
+        },
+      });
+      WindowMockUtil.setupMatchMediaSpy(false);
+
+      expect(service.isPortrait).toBe(true);
+
+      service['keyboardVisible'] = true;
+      WindowMockUtil.mockInnerHeight(307);
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        value: { height: 307 },
+      });
+
+      expect(service.isPortrait).toBe(true);
+    });
+
+    it(
+      'should use matchMedia as fallback to determine portrait orientation on native ' +
+        'if screen orientation is unavailable',
+      () => {
+        spyOn(Capacitor, 'isNativePlatform').and.returnValue(true);
+        Object.defineProperty(globalThis, 'screen', {
+          configurable: true,
+          value: {
+            width: undefined,
+            height: undefined,
+            orientation: { angle: undefined },
+          },
+        });
+        const mockMatchMedia = WindowMockUtil.setupMatchMediaSpy(true);
+
+        expect(service.isPortrait).toBe(true);
+        expect(mockMatchMedia).toHaveBeenCalledWith('(orientation: portrait)');
+      },
+    );
   });
 
   describe('isDarkMode getter', () => {
@@ -194,26 +309,174 @@ describe('UtilsService', () => {
   });
 
   describe('isSmallDevice getter', () => {
+    let originalVisualViewportDescriptor: PropertyDescriptor | undefined;
+    let originalScreenDescriptor: PropertyDescriptor | undefined;
+
+    beforeEach(() => {
+      originalVisualViewportDescriptor = Object.getOwnPropertyDescriptor(
+        window,
+        'visualViewport',
+      );
+      originalScreenDescriptor = Object.getOwnPropertyDescriptor(
+        window,
+        'screen',
+      );
+    });
+
+    afterEach(() => {
+      if (originalVisualViewportDescriptor) {
+        Object.defineProperty(
+          window,
+          'visualViewport',
+          originalVisualViewportDescriptor,
+        );
+      } else {
+        Reflect.deleteProperty(window, 'visualViewport');
+      }
+      if (originalScreenDescriptor) {
+        Object.defineProperty(window, 'screen', originalScreenDescriptor);
+      }
+    });
+
     it('should detect small device', () => {
       // Arrange
       spyOnProperty(service, 'isPortrait').and.returnValue(true);
       WindowMockUtil.mockInnerHeight(640);
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        value: { height: 640 },
+      });
       // Act
       const isSmallDevice = service.isSmallDevice;
       // Assert
-      expect(isSmallDevice).toBe(true);
-      expect(service.isPortrait).toBe(true);
+      expect(isSmallDevice).withContext('isSmallDevice').toBe(true);
+      expect(service.isPortrait).withContext('isPortrait').toBe(true);
     });
 
     it('should detect large device', () => {
       // Arrange
       spyOnProperty(service, 'isPortrait').and.returnValue(true);
       WindowMockUtil.mockInnerHeight(650);
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        value: { height: 650 },
+      });
       // Act
       const isSmallDevice = service.isSmallDevice;
       // Assert
-      expect(isSmallDevice).toBe(false);
-      expect(service.isPortrait).toBe(true);
+      expect(isSmallDevice).withContext('isSmallDevice').toBe(false);
+      expect(service.isPortrait).withContext('isPortrait').toBe(true);
+    });
+
+    it('should keep the device-size result when the keyboard shrinks the visual viewport', () => {
+      // Arrange
+      spyOnProperty(service, 'isPortrait').and.returnValue(true);
+      WindowMockUtil.mockInnerHeight(853);
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        value: { height: 853 },
+      });
+
+      expect(service.isSmallDevice)
+        .withContext('isSmallDevice with height 853')
+        .toBe(false);
+
+      // Act: the keyboard reduces only the visual viewport
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        value: { height: 482 },
+      });
+
+      // Assert
+      expect(service.isSmallDevice)
+        .withContext('isSmallDevice with visual viewport reduced')
+        .toBe(false);
+    });
+
+    it('should cache a small device result while the keyboard is open', () => {
+      // Arrange
+      spyOnProperty(service, 'isPortrait').and.returnValue(true);
+      WindowMockUtil.mockInnerHeight(640);
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        value: { height: 640 },
+      });
+
+      expect(service.isSmallDevice)
+        .withContext('isSmallDevice with height 640')
+        .toBe(true);
+
+      // Act: the keyboard reduces only the visual viewport
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        value: { height: 482 },
+      });
+
+      // Assert
+      expect(service.isSmallDevice)
+        .withContext('isSmallDevice with visual viewport reduced')
+        .toBe(true);
+    });
+
+    it('should initialize device viewport height correctly if it is not already set and keyboard is opened', () => {
+      // Arrange
+      service['deviceViewportHeight'] = 0;
+      service['keyboardVisible'] = true;
+
+      WindowMockUtil.mockInnerHeight(700);
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        value: { height: 700 },
+      });
+
+      // Act
+      const isSmallDevice = service.isSmallDevice;
+
+      // Assert
+      expect(isSmallDevice)
+        .withContext('isSmallDevice with height 700')
+        .toBe(false);
+    });
+
+    it('should keep native small-device classification when keyboard shrinks the viewport', () => {
+      spyOn(Capacitor, 'isNativePlatform').and.returnValue(true);
+      spyOnProperty(service, 'isPortrait').and.returnValue(true);
+      Object.defineProperty(window, 'screen', {
+        configurable: true,
+        value: {
+          width: 720,
+          height: 616,
+          orientation: { angle: 0 },
+        },
+      });
+      WindowMockUtil.mockInnerHeight(616);
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        value: { height: 616 },
+      });
+
+      expect(service.isSmallDevice).toBe(true);
+
+      service['keyboardVisible'] = true;
+      WindowMockUtil.mockInnerHeight(307);
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        value: { height: 307 },
+      });
+
+      expect(service.isSmallDevice).toBe(true);
+    });
+  });
+
+  describe('isKeyboardVisible getter', () => {
+    it('should return true when keyboard is visible', () => {
+      service['keyboardVisible'] = true;
+      expect(service.isKeyboardVisible).toBe(true);
+    });
+
+    it('should return false when keyboard is not visible', () => {
+      service['keyboardVisible'] = false;
+      expect(service.isKeyboardVisible).toBe(false);
     });
   });
 
@@ -274,7 +537,9 @@ describe('UtilsService', () => {
       await service.openChangelog();
       tick(20);
 
-      expect(modal.classList.add).toHaveBeenCalledWith('change-log-modal');
+      expect(modal.classList.add)
+        .withContext('change-log-modal class added')
+        .toHaveBeenCalledWith('change-log-modal');
       expect(modal.classList.add).not.toHaveBeenCalledWith('desktop');
       expect(modal.classList.add).toHaveBeenCalledWith('landscape');
     }));
@@ -556,6 +821,36 @@ describe('UtilsService', () => {
       (service as any).hideIonTabBar();
 
       expect(document.querySelector).toHaveBeenCalledWith('ion-tab-bar');
+    });
+  });
+
+  describe('set service.keyboardVisible on keyboardWillShow and keyboardWillHide events for native platforms', () => {
+    it('should set keyboardVisible to true on keyboardWillShow event on mobile', () => {
+      spyOn(Capacitor, 'isNativePlatform').and.returnValue(true);
+      service['keyboardVisible'] = false;
+      window.dispatchEvent(new Event('keyboardWillShow'));
+      expect(service['keyboardVisible']).toBe(true);
+    });
+
+    it('should set keyboardVisible to false on keyboardWillHide event on mobile', () => {
+      spyOn(Capacitor, 'isNativePlatform').and.returnValue(true);
+      service['keyboardVisible'] = true;
+      window.dispatchEvent(new Event('keyboardWillHide'));
+      expect(service['keyboardVisible']).toBe(false);
+    });
+
+    it('should not set keyboardVisible to true on keyboardWillShow event on web', () => {
+      spyOn(Capacitor, 'isNativePlatform').and.returnValue(false);
+      service['keyboardVisible'] = false;
+      window.dispatchEvent(new Event('keyboardWillShow'));
+      expect(service['keyboardVisible']).toBe(false);
+    });
+
+    it('should not set keyboardVisible to false on keyboardWillHide event on web', () => {
+      spyOn(Capacitor, 'isNativePlatform').and.returnValue(false);
+      service['keyboardVisible'] = true;
+      window.dispatchEvent(new Event('keyboardWillHide'));
+      expect(service['keyboardVisible']).toBe(true);
     });
   });
 });

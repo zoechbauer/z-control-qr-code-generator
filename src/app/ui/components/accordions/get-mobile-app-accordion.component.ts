@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import {
   IonAccordion,
   IonItem,
@@ -21,7 +21,7 @@ import { GetMobileAppComponent } from '../get-mobile-app/get-mobile-app.componen
   ],
 })
 export class GetMobileAppAccordionComponent {
-  @Input() selectedLanguage: string = 'en';
+  readonly translate = inject(TranslateService);
 
-  constructor(public translate: TranslateService) {}
+  @Input() selectedLanguage: string = 'en';
 }

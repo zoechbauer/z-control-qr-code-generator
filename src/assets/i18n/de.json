@@ -1,6 +1,6 @@
 {
   "------ header page": "-------",
-  "HEADER_QR_CODE": "QR Code erstellen",
+  "HEADER_QR_CODE": "QR Code",
   "HEADER_SETTINGS": "Einstellungen",
   "------ enums": "-------",
   "QrCodesCountPerPage.FULL_PAGE": "So viele wie möglich",
@@ -40,7 +40,7 @@
 
   "------ QR code page": "-------",
   "GENERATE": "Generieren",
-  "MAIL_QR_CODE": "QR-Code mailen",
+  "MAIL_QR_CODE": "QR Code mailen",
   "CLEAR_INPUT": "Eingabe löschen",
   "CREATE_QR_CODE": "QR Code erstellen",
   "QR_CODE_TEXT": "Text",
@@ -61,11 +61,11 @@
   "TOOLTIP_EMAIL_NO_QR_GENERATED": "Bitte generieren Sie zuerst den QR-Code",
   "TOOLTIP_EMAIL_INVALID_ADDRESS": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
   "TOOLTIP_NAVIGATION_CLEAR_TEXT_TO_SWITCH": "Bitte leeren Sie das Textfeld, bevor Sie zur E-Mail-Verwaltung wechseln",
-  "KEYBOARD_ALERT_TITLE": "Texteingabe-Einschränkung",
-  "KEYBOARD_ALERT_MESSAGE": "Auf diesem Gerät sind längere Texte schwer zu bearbeiten, da die Tastatur das Eingabefeld verdeckt.\n\nEmpfehlungen:\n• Diese mobile App nur für KURZE Texte verwenden\n• Für LÄNGERE Texte: Web-Version auf Tablet oder PC nutzen\n• Schwebende Tastatur aktivieren (siehe Hilfebereich)",
+  "KEYBOARD_ALERT_TITLE": "Workaround für kleine Bildschirme",
+  "KEYBOARD_ALERT_MESSAGE": "Auf diesem Handy sind längere Texte schwer zu bearbeiten, da die Tastatur das Eingabefeld verdeckt. Scrollen Sie nach oben, damit die Schaltfläche zum QR Code generieren angezeigt wird.\nAlternativen wären Schwebende Tastatur zu aktivieren oder die Web-Version auf Tablet oder PC zu nutzen. Klicken Sie auf 'Schließen', um fortzufahren.\nWählen Sie aus:",
   "KEYBOARD_ALERT_HELP_KEYBOARD": "Hilfe anzeigen (Schwebende Tastatur)",
   "KEYBOARD_ALERT_HELP_WEB": "Hilfe anzeigen (Web-Version)",
-  "KEYBOARD_ALERT_SHORT_TEXT": "Löschen & kurzen Text verwenden",
+  "KEYBOARD_ALERT_SHORT_TEXT": "Schließen",
 
   "------ Tooltips": "-------",
   "TOOLTIP_HEADER.OPEN_FEEDBACK": "Feedback-Seite öffnen",

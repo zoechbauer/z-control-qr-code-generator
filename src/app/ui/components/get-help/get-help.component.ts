@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, inject, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -33,6 +33,11 @@ import { environment } from '@env/environment';
   ],
 })
 export class GetHelpComponent implements OnInit, OnDestroy {
+  readonly utilsService = inject(UtilsService);
+  private readonly modalController = inject(ModalController);
+  private readonly translate = inject(TranslateService);
+  private readonly localStorage = inject(LocalStorageService);
+
   @Input() scrollToSection?: string; // Optional: ID of the section to scroll to when the modal opens
   // (e.g., 'floating-keyboard' or 'web-version')
 
@@ -45,13 +50,6 @@ export class GetHelpComponent implements OnInit, OnDestroy {
   maxInputLength: number = environment.app.maxInputLength ?? 1000;
 
   private langSub?: Subscription;
-
-  constructor(
-    public readonly utilsService: UtilsService,
-    private readonly modalController: ModalController,
-    private readonly translate: TranslateService,
-    private readonly localStorage: LocalStorageService,
-  ) {}
 
   /**
    * Returns true if the app is running in a native environment, false otherwise.

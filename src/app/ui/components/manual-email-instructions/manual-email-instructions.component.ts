@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import {
   IonToolbar,
@@ -27,13 +27,13 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class ManualEmailInstructionsComponent {
+  readonly modalController = inject(ModalController);
+
   @Input() title!: string;
   @Input() instructions!: string;
   @Input() qrText!: string;
   @Input() qrTextLabel!: string;
   @Input() copyButtonLabel!: string;
-
-  constructor(private readonly modalController: ModalController) {}
 
   /**
    * Returns a truncated version of the QR text if it exceeds 400 characters, appending an ellipsis.

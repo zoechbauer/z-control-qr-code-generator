@@ -42,7 +42,7 @@ describe('EmailUtilsService', () => {
       ['loadSavedEmailAddresses', 'init', 'saveEmailAddress'],
       {
         selectedLanguage$: of('en'),
-      }
+      },
     );
     localStorageSpy.savedEmailAddresses = ['test@example.com'];
     localStorageSpy.loadSavedEmailAddresses.and.resolveTo();
@@ -62,7 +62,7 @@ describe('EmailUtilsService', () => {
       'requestPermissions',
     ]);
     filesystemSpy.getUri.and.callFake(({ path }) =>
-      Promise.resolve({ uri: `/documents/${path}` })
+      Promise.resolve({ uri: `/documents/${path}` }),
     );
 
     // Capacitor
@@ -80,7 +80,7 @@ describe('EmailUtilsService', () => {
       {
         fileNamePng: fileNamePng,
         fileNamePdf: fileNamePdf,
-      }
+      },
     );
     Object.defineProperty(fileServiceSpy, 'fileNamePng', {
       get: () => fileNamePng,
@@ -90,8 +90,8 @@ describe('EmailUtilsService', () => {
     });
     fileServiceSpy.getDocumentsPath.and.callFake((isPdf: boolean) =>
       Promise.resolve(
-        isPdf ? `/documents/${fileNamePdf}` : `/documents/${fileNamePng}`
-      )
+        isPdf ? `/documents/${fileNamePdf}` : `/documents/${fileNamePng}`,
+      ),
     );
 
     // PrintUtilsService
@@ -100,7 +100,7 @@ describe('EmailUtilsService', () => {
       'getConvertedPrintSettings',
     ]);
     printUtilsSpy.getConvertedPrintSettings.and.returnValue(
-      '[ ~5 cm / small gap / 8 ]'
+      '[ ~5 cm / small gap / 8 ]',
     );
 
     // QrUtilsService
@@ -145,29 +145,31 @@ describe('EmailUtilsService', () => {
   });
 
   describe('send Email on native platform', () => {
-    const TEST_NAME = 'should load saved email addresses and include them in the "to" field ' + 
-    'when sending email on native platform';
-    it(TEST_NAME, async () => {
-      // Arrange
-      localStorageSpy.savedEmailAddresses = [
-        'test1@example.com',
-        'test2@example.com',
-      ];
+    it(
+      'should load saved email addresses and include them in the "to" field ' +
+        'when sending email on native platform',
+      async () => {
+        // Arrange
+        localStorageSpy.savedEmailAddresses = [
+          'test1@example.com',
+          'test2@example.com',
+        ];
 
-      // Act
-      await service.sendEmail();
+        // Act
+        await service.sendEmail();
 
-      // Assert
-      expect(localStorageSpy.loadSavedEmailAddresses).toHaveBeenCalled();
-      expect(emailComposerMock.hasAccount).toHaveBeenCalled();
-      expect(emailComposerMock.open).toHaveBeenCalled();
+        // Assert
+        expect(localStorageSpy.loadSavedEmailAddresses).toHaveBeenCalled();
+        expect(emailComposerMock.hasAccount).toHaveBeenCalled();
+        expect(emailComposerMock.open).toHaveBeenCalled();
 
-      // Verify that the saved email addresses are set in the "to" field
-      const openArgs = emailComposerMock.open.calls.mostRecent().args[0];
-      expect(openArgs.to).toEqual(['test1@example.com,test2@example.com']);
+        // Verify that the saved email addresses are set in the "to" field
+        const openArgs = emailComposerMock.open.calls.mostRecent().args[0];
+        expect(openArgs.to).toEqual(['test1@example.com,test2@example.com']);
 
-      expect(service.isEmailSent).toBeTrue();
-    });
+        expect(service.isEmailSent).toBeTrue();
+      },
+    );
 
     it('should not send email if no email account is available', async () => {
       spyOn(console, 'error');
@@ -178,7 +180,7 @@ describe('EmailUtilsService', () => {
       expect(emailComposerMock.open).not.toHaveBeenCalled();
       expect(service.isEmailSent).toBeFalse();
       expect(console.error).toHaveBeenCalledWith(
-        'Email account is not available'
+        'Email account is not available',
       );
     });
 
@@ -289,7 +291,7 @@ describe('EmailUtilsService', () => {
       const mailToUrl = (service as any).navigateTo.calls.mostRecent().args[0];
       const decodedMailToUrl = decodeURIComponent(mailToUrl);
       expect(decodedMailToUrl).toContain(
-        'mailto:test1@example.com,test2@example.com'
+        'mailto:test1@example.com,test2@example.com',
       );
       expect(service.isEmailSent).toBeTrue();
     });
@@ -320,13 +322,13 @@ describe('EmailUtilsService', () => {
       const subject = 'My Subject';
       const body = 'Line1\nLine2';
       const expected = `mailto:${encodeURIComponent(
-        sendTo
+        sendTo,
       )}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-        body
+        body,
       )}`;
-      
+
       const navigateSpy = spyOn<any>(service, 'navigateTo').and.callFake(
-        () => {}
+        () => {},
       );
 
       // Act: call the private helper directly

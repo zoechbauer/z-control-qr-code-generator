@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import {
   IonAccordion,
   IonItem,
@@ -21,8 +21,7 @@ import { GetSourceCodeComponent } from '../get-source-code/get-source-code.compo
   ],
 })
 export class GetSourceAccordionComponent {
+  translate = inject(TranslateService);
+
   @Input() selectedLanguage!: string;
-
-  constructor(public translate: TranslateService) {}
-
 }

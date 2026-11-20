@@ -194,12 +194,9 @@ describe('GetHelpComponent', () => {
 
   describe('initialization', () => {
     it('should initialize isPortrait based on current orientation', () => {
-      const newComponent = new GetHelpComponent(
-        mockUtilsService,
-        mockModalController,
-        mockTranslateService,
-        mockLocalStorageService,
-      );
+      const newComponent = TestBed.createComponent(GetHelpComponent)
+        .componentInstance;
+      newComponent.ngOnInit();
 
       expect(newComponent.isPortrait).toBe(true);
     });

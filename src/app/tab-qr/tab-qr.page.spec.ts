@@ -166,7 +166,7 @@ describe('TabQrPage', () => {
       'showStoragePermissionError',
       'showClearConfirmation',
       'showCopySuccessAlert',
-      'shouldClearInputAfterKeyboardAlert',
+      'showKeyboardAlert',
       'openHelpModalToSection',
       'showMobileWebEmailOptions',
       'shouldCopyTextAfterManualEmailInstructions',
@@ -260,10 +260,6 @@ describe('TabQrPage', () => {
   });
 
   describe('sanitizeInputAndGenerateQRCode method', () => {
-    beforeEach(() => {
-      spyOn(component as any, 'scrollToBottom').and.stub();
-    });
-
     it('should generate QR code for valid string input', () => {
       // Arrange
       const validInput = 'test';
@@ -320,65 +316,6 @@ describe('TabQrPage', () => {
         jasmine.anything(),
       );
       expect(component.qrDataInput.value).toBe(expectedTrimmed);
-    }));
-
-    it('should call scrollToBottom when running on native device', () => {
-      // Arrange
-      spyOnProperty(component, 'isNative', 'get').and.returnValue(true);
-      const validInput = 'test';
-      component.qrDataInput = { value: validInput } as any;
-
-      // Act
-      component.sanitizeInputAndGenerateQRCode(validInput);
-
-      // Assert
-      expect((component as any).scrollToBottom).toHaveBeenCalled();
-    });
-
-    it('should not call scrollToBottom when running on web', () => {
-      // Arrange
-      spyOnProperty(component, 'isNative', 'get').and.returnValue(false);
-      const validInput = 'test';
-      component.qrDataInput = { value: validInput } as any;
-
-      // Act
-      component.sanitizeInputAndGenerateQRCode(validInput);
-
-      // Assert
-      expect((component as any).scrollToBottom).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('scrollToBottom', () => {
-    it('should scroll to the element if it exists', fakeAsync(() => {
-      // Arrange
-      const mockElement = jasmine.createSpyObj('HTMLElement', [
-        'scrollIntoView',
-      ]);
-      spyOn(document, 'querySelector').and.returnValue(mockElement);
-
-      // Act
-      (component as any).scrollToBottom();
-      tick(0); // simulate setTimeout
-
-      // Assert
-      expect(document.querySelector).toHaveBeenCalledWith('.scroll-to-bottom');
-      expect(mockElement.scrollIntoView).toHaveBeenCalledWith({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    }));
-
-    it('should do nothing if the element is not found', fakeAsync(() => {
-      // Arrange
-      spyOn(document, 'querySelector').and.returnValue(null);
-
-      // Act
-      (component as any).scrollToBottom();
-      tick(0);
-
-      // Assert
-      expect(document.querySelector).toHaveBeenCalledWith('.scroll-to-bottom');
     }));
   });
 
@@ -728,6 +665,18 @@ describe('TabQrPage', () => {
     it('should return app name from environment', () => {
       expect(component.appName).toBe(environment.app.name);
     });
+
+    it('should return the correct title based on workflow step', () => {
+      component.workflowStep = Workflow.StepEnterText;
+      expect(component.cardTitle)
+        .withContext('Create QR Code')
+        .toBe('CREATE_QR_CODE');
+
+      component.workflowStep = Workflow.StepMail;
+      expect(component.cardTitle)
+        .withContext('Mail QR Code')
+        .toBe('MAIL_QR_CODE');
+    });
   });
 
   describe('input validation', () => {
@@ -1056,7 +1005,7 @@ describe('TabQrPage', () => {
       freshComponent.ngOnInit();
 
       // Assert
-      expect(freshComponent.nbrOfInitialRows).toBe(6); // Portrait = 6 rows
+      expect(freshComponent.nbrOfUsedRows).toBe(6); // Portrait = 6 rows
     });
 
     it('should set initial number of rows for landscape orientation', () => {
@@ -1070,7 +1019,7 @@ describe('TabQrPage', () => {
       component.ngOnInit();
 
       // Assert
-      expect(component.nbrOfInitialRows).toBe(2); // Landscape = 2 rows
+      expect(component.nbrOfUsedRows).toBe(2); // Landscape = 2 rows
     });
 
     it('should not add keyboard listeners on web platforms', async () => {
@@ -1456,30 +1405,6 @@ describe('TabQrPage', () => {
       expect((component as any).shouldShowKeyboardAlert).not.toHaveBeenCalled();
     });
 
-    it('should call performClear if shouldShowKeyboardAlert returns true', fakeAsync(() => {
-      alertServiceSpy.shouldClearInputAfterKeyboardAlert.and.returnValue(
-        Promise.resolve(true),
-      );
-      component.qrDataInput.value = 'trigger';
-
-      component.onTextareaInput();
-      tick(600);
-
-      expect((component as any).performClear).toHaveBeenCalled();
-    }));
-
-    it('should not call performClear if shouldShowKeyboardAlert returns false', fakeAsync(() => {
-      alertServiceSpy.shouldClearInputAfterKeyboardAlert.and.returnValue(
-        Promise.resolve(false),
-      );
-      component.qrDataInput.value = 'trigger';
-
-      component.onTextareaInput();
-      tick(600);
-
-      expect((component as any).performClear).not.toHaveBeenCalled();
-    }));
-
     it('should use default value if qrDataInput is not set', () => {
       component.qrDataInput.value = undefined;
       component.onTextareaInput();
@@ -1534,23 +1459,22 @@ describe('TabQrPage', () => {
       Object.defineProperty(emailUtilsServiceSpy, 'isEmailSent', {
         get: () => false,
       });
+      (component as any).setNumberOfRows = jasmine.createSpy('setNumberOfRows');
       toastServiceSpy.showToast.calls.reset();
       toastServiceSpy.showDisabledToast.calls.reset();
+      (component as any).setNumberOfRows.calls.reset();
     });
 
     it('should generate QR Code if valid input', async () => {
       component.qrDataInput = { value: 'some value' } as any;
       spyOn(component, 'sanitizeInputAndGenerateQRCode');
       spyOn(component as any, 'showWorkflowStep');
-      spyOn(component as any, 'generateMarginForButtonsIfNeeded');
 
       await component.handleGenerateButtonClick();
 
       expect(component.sanitizeInputAndGenerateQRCode).toHaveBeenCalled();
       expect((component as any).showWorkflowStep).toHaveBeenCalled();
-      expect(
-        (component as any).generateMarginForButtonsIfNeeded,
-      ).toHaveBeenCalled();
+      expect((component as any).setNumberOfRows).toHaveBeenCalled();
     });
 
     it('should show toast if qrDataInput is empty', async () => {
@@ -1760,53 +1684,6 @@ describe('TabQrPage', () => {
     });
   });
 
-  describe('generateMarginForButtonsIfNeeded', () => {
-    it('should adjust margin for buttons on native devices', () => {
-      // Arrange
-      const buttonContainer = document.createElement('div');
-      spyOn(document, 'querySelector').and.returnValue(buttonContainer);
-      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(true);
-
-      // Act
-      (component as any).generateMarginForButtonsIfNeeded();
-
-      // Assert
-      expect(buttonContainer.style.marginBottom).toBeDefined();
-    });
-
-    it('should adjust margin for buttons on non-native non-small devices', () => {
-      // Arrange
-      const buttonContainer = document.createElement('div');
-      spyOn(document, 'querySelector').and.returnValue(buttonContainer);
-      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
-      Object.defineProperty(utilsServiceSpy, 'isSmallDevice', {
-        get: () => false,
-      });
-
-      // Act
-      (component as any).generateMarginForButtonsIfNeeded();
-
-      // Assert
-      expect(buttonContainer.style.marginBottom).toBeDefined();
-    });
-
-    it('should not adjust margin for buttons on non-native small devices', () => {
-      // Arrange
-      const buttonContainer = document.createElement('div');
-      spyOn(document, 'querySelector').and.returnValue(buttonContainer);
-      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
-      Object.defineProperty(utilsServiceSpy, 'isSmallDevice', {
-        get: () => true,
-      });
-
-      // Act
-      (component as any).generateMarginForButtonsIfNeeded();
-
-      // Assert
-      expect(buttonContainer.style.marginBottom).toBe('');
-    });
-  });
-
   describe('handleMobileWebEmailOptions', () => {
     beforeEach(() => {
       spyOn(component as any, 'copyQRTextToClipboard');
@@ -1898,6 +1775,50 @@ describe('TabQrPage', () => {
         alertServiceSpy.shouldCopyTextAfterManualEmailInstructions,
       ).toHaveBeenCalledWith('some text');
       expect((component as any).copyQRTextToClipboard).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('setNumberOfRows', () => {
+    it('should set nbrOfUsedRows based on orientation if wfStep is StepEnterText', () => {
+      component.workflowStep = Workflow.StepEnterText;
+
+      (component as any).utilsService.isPortrait = true;
+      (component as any).setNumberOfRows();
+      expect((component as any).nbrOfUsedRows).toBe(6);
+
+      (component as any).utilsService.isPortrait = false;
+      (component as any).setNumberOfRows();
+      expect((component as any).nbrOfUsedRows).toBe(2);
+    });
+
+    it('should set nbrOfUsedRows based on entered text length if qr code is generated', () => {
+      component.workflowStep = Workflow.StepMail;
+      const CHARS_PER_ROW = 30;
+      const testData = [
+        {
+          enteredText: '1',
+          expectedRows: 1,
+        },
+        {
+          enteredText: '1'.repeat(40),
+          expectedRows: 2,
+        },
+        {
+          enteredText: '1'.repeat(400),
+          expectedRows: Math.ceil(400 / CHARS_PER_ROW),
+        },
+        {
+          enteredText: '1'.repeat(999),
+          expectedRows: Math.ceil(999 / CHARS_PER_ROW),
+        },
+      ];
+
+      for (const test of testData) {
+        qrUtilsServiceSpy.myAngularxQrCode = test.enteredText;
+        (component as any).setNumberOfRows();
+
+        expect((component as any).nbrOfUsedRows).toBe(test.expectedRows);
+      }
     });
   });
 });
