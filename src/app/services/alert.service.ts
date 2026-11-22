@@ -122,39 +122,58 @@ export class AlertService {
   /**
    * Shows an alert about the keyboard.
    * Provides options to get help or dismiss the alert.
+   * The alert will only allow button interactions after a short delay 
+   * to prevent accidental dismissals.
    * @returns A promise that resolves when the alert is presented.
    */
   async showKeyboardAlert(): Promise<void> {
+    let acceptsButtonSelection = false;
+
+    const buttons = [
+      {
+        text: this.translate.instant('KEYBOARD_ALERT_HELP_KEYBOARD'),
+        handler: async () => {
+          if (!acceptsButtonSelection) return false;
+
+          await alert.dismiss();
+          await this.openHelpModalToSection('floating-keyboard');
+          return true;
+        },
+      },
+      {
+        text: this.translate.instant('KEYBOARD_ALERT_HELP_WEB'),
+        handler: async () => {
+          if (!acceptsButtonSelection) return false;
+
+          await alert.dismiss();
+          await this.openHelpModalToSection('web-version');
+          return true;
+        },
+      },
+      {
+        text: this.translate.instant('KEYBOARD_ALERT_CLOSE'),
+        role: 'cancel',
+        handler: async () => {
+          if (!acceptsButtonSelection) return false;
+
+          await alert.dismiss();
+          return true;
+        },
+      },
+    ];
+
     const alert = await this.alertController.create({
       header: this.translate.instant('KEYBOARD_ALERT_TITLE'),
       message: this.translate.instant('KEYBOARD_ALERT_MESSAGE'),
       cssClass: 'keyboard-alert',
-      buttons: [
-        {
-          text: this.translate.instant('KEYBOARD_ALERT_HELP_KEYBOARD'),
-          handler: async () => {
-            await alert.dismiss();
-            await this.openHelpModalToSection('floating-keyboard');
-          },
-        },
-        {
-          text: this.translate.instant('KEYBOARD_ALERT_HELP_WEB'),
-          handler: async () => {
-            await alert.dismiss();
-            await this.openHelpModalToSection('web-version');
-          },
-        },
-        {
-          text: this.translate.instant('KEYBOARD_ALERT_SHORT_TEXT'),
-          role: 'cancel',
-          handler: async () => {
-            await alert.dismiss();
-          },
-        },
-      ],
+      buttons,
     });
 
-    return await alert.present();
+    await alert.present();
+
+    setTimeout(() => {
+      acceptsButtonSelection = true;
+    }, 1000);
   }
 
   /**

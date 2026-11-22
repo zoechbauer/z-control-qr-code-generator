@@ -379,11 +379,12 @@ describe('AlertService', () => {
     });
   });
 
-  describe('shouldClearInputAfterKeyboardAlert', () => {
+  describe('shouldshowKeyboardAlert', () => {
     let mockAlert: jasmine.SpyObj<HTMLIonAlertElement>;
     let openHelpModalSpy: jasmine.Spy;
 
     beforeEach(() => {
+      jasmine.clock().install();
       mockAlert = jasmine.createSpyObj('HTMLIonAlertElement', [
         'present',
         'onDidDismiss',
@@ -395,6 +396,10 @@ describe('AlertService', () => {
         service,
         'openHelpModalToSection',
       ).and.returnValue(Promise.resolve());
+    });
+
+    afterEach(() => {
+      jasmine.clock().uninstall();
     });
 
     it('should present an alert with correct options', async () => {
@@ -415,16 +420,85 @@ describe('AlertService', () => {
       expect(mockAlert.present).toHaveBeenCalled();
     });
 
-    it('should close modal when go back button is pressed', async () => {
+    it('should ignore the close selection during the guard delay', async () => {
+      mockAlert.dismiss.and.resolveTo();
+      await service.showKeyboardAlert();
+
+      const config = alertControllerSpy.create.calls.mostRecent().args[0] || {};
+      const closeBtn = config.buttons?.find?.(
+        (button: any) =>
+          isButtonObj(button) && button.text === 'KEYBOARD_ALERT_CLOSE',
+      );
+
+      if (
+        isButtonObj(closeBtn) &&
+        typeof closeBtn.handler === 'function'
+      ) {
+        const result = await closeBtn.handler({});
+        expect(result).toBeFalse();
+      }
+
+      expect(mockAlert.dismiss).not.toHaveBeenCalled();
+    });
+
+    it('should ignore the web help selection during the guard delay', async () => {
+      mockAlert.dismiss.and.resolveTo();
+      await service.showKeyboardAlert();
+
+      const config = alertControllerSpy.create.calls.mostRecent().args[0] || {};
+      const webHelpBtn = config.buttons?.find?.(
+        (button: any) =>
+          isButtonObj(button) && button.text === 'KEYBOARD_ALERT_HELP_WEB',
+      );
+      expect(webHelpBtn).toBeDefined();
+
+      if (
+        isButtonObj(webHelpBtn) &&
+        typeof webHelpBtn.handler === 'function'
+      ) {
+        const result = await webHelpBtn.handler({});
+        expect(result).toBeFalse();
+      }
+
+      expect(mockAlert.dismiss).not.toHaveBeenCalled();
+      expect(openHelpModalSpy).not.toHaveBeenCalled();
+    });
+
+    it('should ignore the floating keyboard help selection during the guard delay', async () => {
+      mockAlert.dismiss.and.resolveTo();
+      await service.showKeyboardAlert();
+
+      const config = alertControllerSpy.create.calls.mostRecent().args[0] || {};
+      const keyboardHelpBtn = config.buttons?.find?.(
+        (button: any) =>
+          isButtonObj(button) &&
+          button.text === 'KEYBOARD_ALERT_HELP_KEYBOARD',
+      );
+      expect(keyboardHelpBtn).toBeDefined();
+
+      if (
+        isButtonObj(keyboardHelpBtn) &&
+        typeof keyboardHelpBtn.handler === 'function'
+      ) {
+        const result = await keyboardHelpBtn.handler({});
+        expect(result).toBeFalse();
+      }
+
+      expect(mockAlert.dismiss).not.toHaveBeenCalled();
+      expect(openHelpModalSpy).not.toHaveBeenCalled();
+    });
+
+    it('should close modal when "close" button is pressed', async () => {
       mockAlert.onDidDismiss.and.resolveTo({
         role: 'cancel',
       });
       mockAlert.dismiss.and.resolveTo();
       await service.showKeyboardAlert();
+      jasmine.clock().tick(1000);
 
       const config = alertControllerSpy.create.calls.mostRecent().args[0] || {};
       const clearBtn = config.buttons?.find?.(
-        (b: any) => isButtonObj(b) && b.text === 'KEYBOARD_ALERT_SHORT_TEXT',
+        (b: any) => isButtonObj(b) && b.text === 'KEYBOARD_ALERT_CLOSE',
       );
       expect(clearBtn).toBeDefined();
       if (
@@ -442,6 +516,7 @@ describe('AlertService', () => {
       });
       mockAlert.dismiss.and.resolveTo();
       await service.showKeyboardAlert();
+      jasmine.clock().tick(1000);
 
       const config = alertControllerSpy.create.calls.mostRecent().args[0] || {};
       const openHelpBtn = config.buttons?.find?.(
@@ -468,6 +543,7 @@ describe('AlertService', () => {
         });
         mockAlert.dismiss.and.resolveTo();
         await service.showKeyboardAlert();
+        jasmine.clock().tick(1000);
 
         const config =
           alertControllerSpy.create.calls.mostRecent().args[0] || {};

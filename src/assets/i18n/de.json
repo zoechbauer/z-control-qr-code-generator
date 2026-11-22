@@ -42,7 +42,6 @@
   "GENERATE": "Generieren",
   "MAIL_QR_CODE": "QR Code mailen",
   "CLEAR_INPUT": "Eingabe löschen",
-  "CREATE_QR_CODE": "QR Code erstellen",
   "QR_CODE_TEXT": "Text",
   "INPUT_FIELD_PLACEHOLDER": "Bitte Text eingeben.\nVerwenden Sie die Eingabe-Taste für Leerzeilen.",
   "TOAST_TRAILING_BLANKS_REMOVED": "Leerzeichen wurden am Ende entfernt.",
@@ -65,7 +64,7 @@
   "KEYBOARD_ALERT_MESSAGE": "Auf diesem Handy sind längere Texte schwer zu bearbeiten, da die Tastatur das Eingabefeld verdeckt. Scrollen Sie nach oben, damit die Schaltfläche zum QR Code generieren angezeigt wird.\nAlternativen wären Schwebende Tastatur zu aktivieren oder die Web-Version auf Tablet oder PC zu nutzen. Klicken Sie auf 'Schließen', um fortzufahren.\nWählen Sie aus:",
   "KEYBOARD_ALERT_HELP_KEYBOARD": "Hilfe anzeigen (Schwebende Tastatur)",
   "KEYBOARD_ALERT_HELP_WEB": "Hilfe anzeigen (Web-Version)",
-  "KEYBOARD_ALERT_SHORT_TEXT": "Schließen",
+  "KEYBOARD_ALERT_CLOSE": "Schließen",
 
   "------ Tooltips": "-------",
   "TOOLTIP_HEADER.OPEN_FEEDBACK": "Feedback-Seite öffnen",

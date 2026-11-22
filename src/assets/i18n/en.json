@@ -42,7 +42,6 @@
   "GENERATE": "Generate",
   "MAIL_QR_CODE": "Mail QR Code",
   "CLEAR_INPUT": "Clear Input",
-  "CREATE_QR_CODE": "Create QR Code",
   "QR_CODE_TEXT": "Text",
   "INPUT_FIELD_PLACEHOLDER": "Please enter text.\nUse Enter key to fill in blank lines.",
   "TOAST_TRAILING_BLANKS_REMOVED": "Spaces have been removed at the end.",
@@ -51,7 +50,7 @@
   "KEYBOARD_ALERT_MESSAGE": "On this device, longer texts are difficult to edit because the keyboard covers the input field.\nScroll up to see the QR code generation button. \nAlternatively, you can activate the floating keyboard or use the web version on a tablet or PC. Click 'Close' to continue. Select from:",
   "KEYBOARD_ALERT_HELP_KEYBOARD": "Show Help (Floating Keyboard)",
   "KEYBOARD_ALERT_HELP_WEB": "Show Help (Open Web Version)",
-  "KEYBOARD_ALERT_SHORT_TEXT": "Close",
+  "KEYBOARD_ALERT_CLOSE": "Close",
 
   "------ Workflow steps": "-------",
   "WORKFLOW_STEP_ENTER_TEXT": "Next step: Enter text or email address",

@@ -6,7 +6,6 @@ import {
   IonItem,
   IonCard,
   IonCardHeader,
-  IonCardTitle,
   IonCardContent,
   IonButton,
   IonSpinner,
@@ -56,7 +55,6 @@ export enum Workflow {
     IonItem,
     IonCard,
     IonCardHeader,
-    IonCardTitle,
     IonCardContent,
     IonTextarea,
     CommonModule,
@@ -127,12 +125,6 @@ export class TabQrPage implements OnInit, OnDestroy {
     return this.utilsService.isNative;
   }
 
-  get cardTitle() {
-    return this.workflowStep === Workflow.StepEnterText
-      ? this.translate.instant('CREATE_QR_CODE')
-      : this.translate.instant('MAIL_QR_CODE');
-  }
-
   /**
    * Performs necessary setup tasks such as showing or hiding the tab bar,
    * setting up event listeners, and initializing services.
@@ -177,7 +169,7 @@ export class TabQrPage implements OnInit, OnDestroy {
       this.nbrOfUsedRows = this.utilsService.isPortrait ? 6 : 2;
     } else {
       // dynamic size of the input field based on QR code content
-      const CHARS_PER_ROW = 30;
+      const CHARS_PER_ROW = this.utilsService.isPortrait ? 30 : 45;
       this.nbrOfUsedRows = Math.ceil(
         this.qrService.myAngularxQrCode.length / CHARS_PER_ROW,
       );
@@ -341,6 +333,10 @@ export class TabQrPage implements OnInit, OnDestroy {
       const sanitizedData = this.trimTrailingWhitespace(data);
       this.qrService.generateQRCode(sanitizedData);
       this.showSpinner = false;
+
+      if (this.isNative) {
+        this.scrollToQrCode();
+      }
     }
   }
 
@@ -594,6 +590,18 @@ export class TabQrPage implements OnInit, OnDestroy {
     if (Object.values(criteria).some(Boolean)) {
       this.workflowStep = Workflow.StepGenerate;
     }
+  }
+
+  /**
+   * Scrolls to the container with the QR code.
+   */
+  private scrollToQrCode(): void {
+    setTimeout(() => {
+      const element = document.querySelector('.qr-code');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 0);
   }
 
   /**

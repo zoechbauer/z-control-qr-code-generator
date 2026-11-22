@@ -176,6 +176,7 @@ describe('TabQrPage', () => {
       ['showOrHideIonTabBar'],
       {
         isNative: true,
+        isPortrait: true,
       },
     );
 
@@ -260,6 +261,10 @@ describe('TabQrPage', () => {
   });
 
   describe('sanitizeInputAndGenerateQRCode method', () => {
+    beforeEach(() => {
+      spyOn(component as any, 'scrollToQrCode').and.stub();
+    });
+
     it('should generate QR code for valid string input', () => {
       // Arrange
       const validInput = 'test';
@@ -316,6 +321,65 @@ describe('TabQrPage', () => {
         jasmine.anything(),
       );
       expect(component.qrDataInput.value).toBe(expectedTrimmed);
+    }));
+
+    it('should call scrollToQRCode when running on native device', () => {
+      // Arrange
+      Object.defineProperty(component, 'isNative', { get: () => true });
+      const validInput = 'test';
+      component.qrDataInput = { value: validInput } as any;
+
+      // Act
+      component.sanitizeInputAndGenerateQRCode(validInput);
+
+      // Assert
+      expect((component as any).scrollToQrCode).toHaveBeenCalled();
+    });
+
+    it('should not call scrollToQrCode when running on web', () => {
+      // Arrange
+      Object.defineProperty(component, 'isNative', { get: () => false });
+      const validInput = 'test';
+      component.qrDataInput = { value: validInput } as any;
+
+      // Act
+      component.sanitizeInputAndGenerateQRCode(validInput);
+
+      // Assert
+      expect((component as any).scrollToQrCode).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('scrollToQrCode', () => {
+    it('should scroll to the element if it exists', fakeAsync(() => {
+      // Arrange
+      const mockElement = jasmine.createSpyObj('HTMLElement', [
+        'scrollIntoView',
+      ]);
+      spyOn(document, 'querySelector').and.returnValue(mockElement);
+
+      // Act
+      (component as any).scrollToQrCode();
+      tick(0); // simulate setTimeout
+
+      // Assert
+      expect(document.querySelector).toHaveBeenCalledWith('.qr-code');
+      expect(mockElement.scrollIntoView).toHaveBeenCalledWith({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }));
+
+    it('should do nothing if the element is not found', fakeAsync(() => {
+      // Arrange
+      spyOn(document, 'querySelector').and.returnValue(null);
+
+      // Act
+      (component as any).scrollToQrCode();
+      tick(0);
+
+      // Assert
+      expect(document.querySelector).toHaveBeenCalledWith('.qr-code');
     }));
   });
 
@@ -664,18 +728,6 @@ describe('TabQrPage', () => {
 
     it('should return app name from environment', () => {
       expect(component.appName).toBe(environment.app.name);
-    });
-
-    it('should return the correct title based on workflow step', () => {
-      component.workflowStep = Workflow.StepEnterText;
-      expect(component.cardTitle)
-        .withContext('Create QR Code')
-        .toBe('CREATE_QR_CODE');
-
-      component.workflowStep = Workflow.StepMail;
-      expect(component.cardTitle)
-        .withContext('Mail QR Code')
-        .toBe('MAIL_QR_CODE');
     });
   });
 
@@ -1782,32 +1834,37 @@ describe('TabQrPage', () => {
     it('should set nbrOfUsedRows based on orientation if wfStep is StepEnterText', () => {
       component.workflowStep = Workflow.StepEnterText;
 
-      (component as any).utilsService.isPortrait = true;
+      Object.defineProperty(utilsServiceSpy, 'isPortrait', { get: () => true });
       (component as any).setNumberOfRows();
       expect((component as any).nbrOfUsedRows).toBe(6);
 
-      (component as any).utilsService.isPortrait = false;
+      Object.defineProperty(utilsServiceSpy, 'isPortrait', { get: () => false });
       (component as any).setNumberOfRows();
       expect((component as any).nbrOfUsedRows).toBe(2);
     });
 
-    it('should set nbrOfUsedRows based on entered text length if qr code is generated', () => {
+    it('should set nbrOfUsedRows on portrait mode based on entered text length if qr code is generated', () => {
       component.workflowStep = Workflow.StepMail;
+      Object.defineProperty(utilsServiceSpy, 'isPortrait', { get: () => true });
       const CHARS_PER_ROW = 30;
       const testData = [
         {
+          testCase: 'Single character',
           enteredText: '1',
           expectedRows: 1,
         },
         {
+          testCase: '40 characters',
           enteredText: '1'.repeat(40),
           expectedRows: 2,
         },
         {
+          testCase: '400 characters',
           enteredText: '1'.repeat(400),
           expectedRows: Math.ceil(400 / CHARS_PER_ROW),
         },
         {
+          testCase: '999 characters',
           enteredText: '1'.repeat(999),
           expectedRows: Math.ceil(999 / CHARS_PER_ROW),
         },
@@ -1817,7 +1874,48 @@ describe('TabQrPage', () => {
         qrUtilsServiceSpy.myAngularxQrCode = test.enteredText;
         (component as any).setNumberOfRows();
 
-        expect((component as any).nbrOfUsedRows).toBe(test.expectedRows);
+        expect((component as any).nbrOfUsedRows)
+          .withContext(test.testCase)
+          .toBe(test.expectedRows);
+      }
+    });
+
+    it('should set nbrOfUsedRows on landscape mode based on entered text length if qr code is generated', () => {
+      component.workflowStep = Workflow.StepMail;
+      Object.defineProperty(utilsServiceSpy, 'isPortrait', {
+        get: () => false,
+      });
+      const CHARS_PER_ROW = 45;
+      const testData = [
+        {
+          testCase: 'Single character',
+          enteredText: '1',
+          expectedRows: 1,
+        },
+        {
+          testCase: '40 characters',
+          enteredText: '1'.repeat(40),
+          expectedRows: Math.ceil(40 / CHARS_PER_ROW),
+        },
+        {
+          testCase: '400 characters',
+          enteredText: '1'.repeat(400),
+          expectedRows: Math.ceil(400 / CHARS_PER_ROW),
+        },
+        {
+          testCase: '999 characters',
+          enteredText: '1'.repeat(999),
+          expectedRows: Math.ceil(999 / CHARS_PER_ROW),
+        },
+      ];
+
+      for (const test of testData) {
+        qrUtilsServiceSpy.myAngularxQrCode = test.enteredText;
+        (component as any).setNumberOfRows();
+
+        expect((component as any).nbrOfUsedRows)
+          .withContext(test.testCase)
+          .toBe(test.expectedRows);
       }
     });
   });

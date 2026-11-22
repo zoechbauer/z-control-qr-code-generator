@@ -10,7 +10,7 @@ All recent updates and improvements to our **z&#8209;control QR Code Generator**
 - Improved Layout of QR Code page by changing the order of the displayed elements for better user experience, especially when entering long text.
 - Improved Layout of the help page for better readability and user experience.
 - Reduced the maximum page width on web to 500px to improve readability and align with the other z&#8209;control apps.
-- Changed the title from 'Create QR Code' to 'Mail QR Code' after creating a QR code.
+- Replaced the title from 'Create QR Code' to the app name.
 - Improved 'utilsService.isSmallDevice' and 'utilsService.isPortrait' to better handle native platform scenarios and keyboard visibility.
 - Enhanced scrolling on small devices, such as the Samsung Galaxy J5, for a smoother in-app experience.
 - Split the input field placeholder across two lines for better readability.
@@ -37,7 +37,7 @@ All recent updates and improvements to our **z&#8209;control QR Code Generator**
 - Moved enums.ts to the shared directory for better organization and maintainability.
 - Updated the README and documentation to reflect the new Angular 20 / Capacitor 8 setup and standalone component structure.
 - Improved the handling of the default language settings in the TranslateService mock for consistency with the app's language configuration.
-- Updated and expanded the unit tests, and resolved issues that arose during the Angular 20 and Capacitor 8 migration. The test suite now passes 442 specs with 99.6% statement coverage.
+- Updated and expanded the unit tests, and resolved issues that arose during the Angular 20 and Capacitor 8 migration. The test suite now passes 449 specs with 99.6% statement coverage.
 
 ## [2.6] - 2026-11-08
 
