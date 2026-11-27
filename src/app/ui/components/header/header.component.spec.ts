@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule, ModalController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
 
 import { HeaderComponent } from './header.component';
-import { TranslateService } from '@ngx-translate/core';
 import { UtilsService } from '@app/services/utils.service';
-import { Tab } from '@app/enums';
-import { Subject } from 'rxjs';
+import { Tab } from '@app/shared/enums';
 import { createTranslateServiceMock } from '@testing/translate-service.mock';
 
 describe('HeaderComponent', () => {

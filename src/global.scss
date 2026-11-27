@@ -36,12 +36,29 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
 
+.web-app-width {
+  ion-router-outlet {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+.native-app-height-hide-tabs-bar {
+  ion-router-outlet {
+    height: calc(100vh - 44px);
+  }
+}
+
 ion-app {
   width: 100%;
-  max-width: 800px;
   margin: 0 auto;
   box-sizing: border-box;
   padding: 0 16px;
+}
+
+body.native-app {
+  --ion-safe-area-top: env(safe-area-inset-top);
+  --ion-safe-area-bottom: env(safe-area-inset-bottom);
 }
 
 #toast-anchor-qr,
@@ -50,8 +67,8 @@ ion-app {
   padding: 0;
 }
 
-.web-app ion-header {
-  margin-top: -25px !important;
+.web-app ion-header ion-toolbar {
+  padding-top: 0;
 }
 
 ion-header {
@@ -59,14 +76,14 @@ ion-header {
   padding-right: 0;
 
   ion-toolbar {
-    --background: var(--ion-color-primary) !important;
-    --color: #fff !important;
+    --background: var(--ion-color-primary);
+    --color: #fff;
     padding-right: 0;
 
     ion-title,
     ion-button,
     ion-icon {
-      color: #fff !important;
+      color: #fff;
     }
   }
 }
@@ -81,25 +98,25 @@ ion-tab-bar {
 }
 
 // Compatibility styles for legacy Android versions (e.g., Android 11)
-ion-header ion-toolbar:first-of-type {
-  padding-top: var(--safe-area-top, 24px);
+body.native-app ion-header ion-toolbar:first-of-type {
+  padding-top: var(--safe-area-top-fix, 24px);
 }
 
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #000000 !important; /* dark splash color for mobile */
+    background-color: #000000; /* dark splash color for mobile */
   }
 }
 
 @media (prefers-color-scheme: light) {
   body {
-    background-color: #ffffff !important; /* light splash color for mobile */
+    background-color: #ffffff; /* light splash color for mobile */
   }
 }
 
 @media (prefers-color-scheme: light) {
   ion-toolbar {
-    --background: #ffffff !important;
+    --background: #ffffff;
   }
 }
 
@@ -126,21 +143,21 @@ ion-header ion-toolbar:first-of-type {
 
     // content ends horizontally before navigation bar in landscape mode
     max-width: calc(100vw - var(--safe-area-right-fix, 65px));
-    overflow-x: auto !important;
+    overflow-x: auto;
   }
 }
 
 .change-log-modal,
-.manual-instructions-modal {
+.manual-email-instructions {
   // Modal ends vertically above navigation bar in portrait mode
-  max-height: calc(100vh - var(--safe-area-bottom-fix, 44px)) !important;
-  overflow-y: auto !important;
+  max-height: calc(100vh - var(--safe-area-bottom-fix, 44px));
+  overflow-y: auto;
 
   &.landscape {
     // Modal ends horizontally before navigation bar in landscape mode
     max-width: calc(100vw - var(--safe-area-right-fix, 65px));
-    overflow-x: auto !important;
-    max-height: 100vh !important;
+    overflow-x: auto;
+    max-height: 100vh;
     margin-right: 24px;
   }
 

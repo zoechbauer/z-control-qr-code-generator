@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   IonLabel,
@@ -12,10 +12,10 @@ import {
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { LocalStorageService } from 'src/app/services/local-storage.service';
-import { ToastService } from 'src/app/services/toast.service';
-import { ValidationService } from 'src/app/services/validation.service';
-import { EmailAddressStatus } from 'src/app/enums';
+import { LocalStorageService } from '@app/services/local-storage.service';
+import { ToastService } from '@app/services/toast.service';
+import { ValidationService } from '@app/services/validation.service';
+import { EmailAddressStatus } from '@app/shared/enums';
 
 @Component({
   selector: 'app-email-maintenance',
@@ -37,22 +37,13 @@ import { EmailAddressStatus } from 'src/app/enums';
     IonList,
   ],
 })
-export class EmailMaintenanceComponent implements OnInit {
+export class EmailMaintenanceComponent {
+  readonly validationService = inject(ValidationService);
+  localStorage = inject(LocalStorageService);
+  toastService = inject(ToastService);
+  private readonly translate = inject(TranslateService);
+
   newEmailAddressValue: string = '';
-
-  constructor(
-    public translate: TranslateService,
-    public readonly validationService: ValidationService,
-    public localStorage: LocalStorageService,
-    public toastService: ToastService
-  ) {}
-
-  /**
-   * Initializes the component and local storage.
-   */
-  ngOnInit() {
-    void this.localStorage.init();
-  }
 
   /**
    * Handles the click event for adding a new email address.
@@ -84,11 +75,11 @@ export class EmailMaintenanceComponent implements OnInit {
         await this.localStorage.saveEmailAddress(newEmailAddress);
       if (result === EmailAddressStatus.Added) {
         this.toastService.showToast(
-          this.translate.instant('TOAST_EMAIL_ADDRESS_ADDED')
+          this.translate.instant('TOAST_EMAIL_ADDRESS_ADDED'),
         );
       } else {
         this.toastService.showToast(
-          this.translate.instant('TOAST_EMAIL_ADDRESS_EXIST')
+          this.translate.instant('TOAST_EMAIL_ADDRESS_EXIST'),
         );
       }
     }
@@ -103,7 +94,7 @@ export class EmailMaintenanceComponent implements OnInit {
         await this.localStorage.deleteEmailAddress(index);
       if (result === EmailAddressStatus.Removed) {
         this.toastService.showToast(
-          this.translate.instant('TOAST_EMAIL_ADDRESS_REMOVED')
+          this.translate.instant('TOAST_EMAIL_ADDRESS_REMOVED'),
         );
       } else {
         console.error('Error removing email address: Not found');

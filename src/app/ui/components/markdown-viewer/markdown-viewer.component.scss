@@ -1,12 +1,12 @@
 ion-header {
   ion-toolbar {
-    --background: var(--ion-color-primary) !important;
-    --color: #fff !important;
+    --background: var(--ion-color-primary);
+    --color: #fff;
 
     ion-title,
     ion-button,
     ion-icon {
-      color: #fff !important;
+      color: #fff;
     }
 
     // scroll-to-top button
@@ -24,7 +24,7 @@ ion-header {
   ::ng-deep {
     // stylelint-disable-next-line selector-type-no-unknown
     markdown {
-      line-height: 1.5 !important;
+      line-height: 1.5;
       display: block;
 
       // Main title (h1) - blue color

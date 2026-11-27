@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import {
   IonAccordion,
   IonItem,
@@ -6,7 +6,7 @@ import {
 } from '@ionic/angular/standalone';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { LogoType } from '@app/enums';
+import { LogoType } from '@app/shared/enums';
 import { PrivacyPolicyComponent } from '../privacy-policy/privacy-policy.component';
 
 @Component({
@@ -22,8 +22,9 @@ import { PrivacyPolicyComponent } from '../privacy-policy/privacy-policy.compone
   ],
 })
 export class PrivacyPolicyAccordionComponent {
+  readonly translate = inject(TranslateService);
+  
   @Input() selectedLanguage: string | undefined = 'en';
-  LogoType = LogoType;
 
-  constructor(public translate: TranslateService) {}
+  LogoType = LogoType;
 }

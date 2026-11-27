@@ -6,93 +6,92 @@
   class="qr-settings-content"
   [class.landscape]="!utilsService.isPortrait"
 >
+  <h6 class="ion-text-center">{{ appName }}</h6>
   <ion-accordion-group
     [value]="openAccordion"
     (ionValueChange)="onAccordionGroupChange($event, content)"
     title="{{this.showAllAccordions ? ('TOOLTIP_SETTINGS.OPEN_ACCORDION' | translate) : ('TOOLTIP_SETTINGS.CLOSE_ACCORDION' | translate) }}"
   >
+    <app-spinner *ngIf="isLoading"></app-spinner>
     <!-- Show all accordions and section title  -->
-    <ng-container *ngIf="showAllAccordions && !openAccordion">
-      <h5 class="ion-text-center settings-section-title" title="">
-        {{'SETTINGS' | translate}}
-      </h5>
-      <app-language-accordion></app-language-accordion>
-      <app-print-accordion></app-print-accordion>
-      <app-email-maintenance-accordion></app-email-maintenance-accordion>
+    @if (showAllAccordions && !openAccordion) {
+    <h5 class="ion-text-center settings-section-title" title="">
+      {{'SETTINGS' | translate}}
+    </h5>
+    <app-language-accordion></app-language-accordion>
+    <app-print-accordion></app-print-accordion>
+    <app-email-maintenance-accordion></app-email-maintenance-accordion>
 
-      <h5 class="ion-text-center settings-section-title" title="">
-        {{ "FEEDBACK" | translate }}
-      </h5>
-      <app-feedback-accordion></app-feedback-accordion>
+    <h5 class="ion-text-center settings-section-title" title="">
+      {{ "FEEDBACK" | translate }}
+    </h5>
+    <app-feedback-accordion></app-feedback-accordion>
 
-      <h5 class="ion-text-center settings-section-title" title="">
-        z-control QR Code Generator App<br />{{ "INFORMATIONS" | translate }}
-      </h5>
-      <app-privacy-policy-accordion></app-privacy-policy-accordion>
-      <app-change-log-accordion
-        [versionInfo]="versionInfo"
-      ></app-change-log-accordion>
-      <app-get-mobile-app-accordion
-        *ngIf="!isNative"
-      ></app-get-mobile-app-accordion>
-      <app-get-source-accordion></app-get-source-accordion>
-    </ng-container>
+    <h5 class="ion-text-center settings-section-title" title="">
+      z-control QR Code Generator App<br />{{ "INFORMATIONS" | translate }}
+    </h5>
+    <app-privacy-policy-accordion></app-privacy-policy-accordion>
+    <app-change-log-accordion
+      [versionInfo]="versionInfo"
+    ></app-change-log-accordion>
+    @if(!isNative) {
+    <app-get-mobile-app-accordion></app-get-mobile-app-accordion>
+    }
+    <app-get-source-accordion></app-get-source-accordion>
+    }
 
     <!-- Show only the opened accordion  -->
-    <ng-container *ngIf="!showAllAccordions && openAccordion">
-      <ng-container [ngSwitch]="openAccordion">
-        <ng-container *ngSwitchCase="'language'">
-          <app-language-accordion
-            [lang]="selectedLanguage || 'en'"
-            (ionChange)="onLanguageChange($event)"
-          ></app-language-accordion>
-        </ng-container>
-        <ng-container *ngSwitchCase="'print'">
-          <app-print-accordion
-            [lang]="selectedLanguage || 'en'"
-          ></app-print-accordion>
-        </ng-container>
-        <ng-container *ngSwitchCase="'emails'">
-          <app-email-maintenance-accordion
-            [lang]="selectedLanguage || 'en'"
-          ></app-email-maintenance-accordion>
-        </ng-container>
-        <ng-container *ngSwitchCase="'z-control'">
-          <app-feedback-accordion
-            [lang]="selectedLanguage || 'en'"
-          ></app-feedback-accordion>
-        </ng-container>
-        <ng-container *ngSwitchCase="'privacy-policy'">
-          <app-privacy-policy-accordion
-            [selectedLanguage]="selectedLanguage || 'en'"
-          ></app-privacy-policy-accordion>
-        </ng-container>
-        <ng-container *ngSwitchCase="'change-log'">
-          <app-change-log-accordion
-            [lang]="selectedLanguage || 'en'"
-            [versionInfo]="versionInfo"
-            (ionChange)="openChangelog()"
-          ></app-change-log-accordion>
-        </ng-container>
-        <ng-container *ngSwitchCase="'get-mobile-app'">
-          <app-get-mobile-app-accordion
-            *ngIf="!isNative"
-            [selectedLanguage]="selectedLanguage || 'en'"
-          ></app-get-mobile-app-accordion>
-        </ng-container>
-        <ng-container *ngSwitchCase="'get-source-code'">
-          <app-get-source-accordion
-            [selectedLanguage]="selectedLanguage || 'en'"
-          ></app-get-source-accordion>
-        </ng-container>
-        <!-- Button to show all accordions -->
-        <div class="ion-padding ion-text-center accordion-close-button">
-          <ion-button (click)="showAll()" expand="block">
-            <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
-            {{ 'CLOSE' | translate }}
-          </ion-button>
-        </div>
-      </ng-container>
-    </ng-container>
+    @if (!showAllAccordions && openAccordion) { @switch (openAccordion) {
+    @case('language') {
+    <app-language-accordion
+      [lang]="selectedLanguage || 'en'"
+      (ionChange)="onLanguageChange($event)"
+    ></app-language-accordion>
+    } @case ('print') {
+    <app-print-accordion
+      [lang]="selectedLanguage || 'en'"
+    ></app-print-accordion>
+    } @case ('emails') {
+    <app-email-maintenance-accordion
+      [lang]="selectedLanguage || 'en'"
+    ></app-email-maintenance-accordion>
+    } @case ('z-control') {
+    <app-feedback-accordion
+      [lang]="selectedLanguage || 'en'"
+    ></app-feedback-accordion>
+    } @case ('privacy-policy') {
+    <app-privacy-policy-accordion
+      [selectedLanguage]="selectedLanguage || 'en'"
+    ></app-privacy-policy-accordion>
+    } @case ('change-log') {
+    <app-change-log-accordion
+      [lang]="selectedLanguage || 'en'"
+      [versionInfo]="versionInfo"
+      [appName]="appName"
+      (ionChange)="openChangelog()"
+    ></app-change-log-accordion>
+    } @case ('get-mobile-app') {
+    <app-get-mobile-app-accordion
+      *ngIf="!isNative"
+      [selectedLanguage]="selectedLanguage || 'en'"
+    ></app-get-mobile-app-accordion>
+    } @case ('get-source') {
+    <app-get-source-accordion
+      [selectedLanguage]="selectedLanguage || 'en'"
+    ></app-get-source-accordion>
+    } }
+
+    <!-- Button to show all accordions -->
+    <div class="ion-padding ion-text-center accordion-close-button">
+      <ion-button
+        (click)="showAll()"
+        (keydown.enter)="showAll()"
+        expand="block"
+      >
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+        {{ 'CLOSE' | translate }}
+      </ion-button>
+    </div>
+    }
   </ion-accordion-group>
 </ion-content>

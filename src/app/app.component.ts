@@ -1,71 +1,59 @@
-import { SplashScreen } from '@capacitor/splash-screen';
+import { Component, inject, OnInit, Renderer2 } from '@angular/core';
+import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { TranslateService } from '@ngx-translate/core';
 import { Capacitor } from '@capacitor/core';
-import { Component, OnInit, Renderer2 } from '@angular/core';
-import { StatusBar, Style } from '@capacitor/status-bar';
 
-import { SafeAreaInsets } from './services/safe-area-insets';
+import { environment } from '../environments/environment';
+import { LocalStorageService } from './services/local-storage.service';
+import { SystemBarsService } from './services/system-bars.service';
+import { SafeAreaInsetsService } from './services/safe-area-insets.service';
+import { CapacitorPlatformService } from './services/capacitor-platform.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
+  imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent implements OnInit {
+  private readonly translate = inject(TranslateService);
+  private readonly renderer = inject(Renderer2);
+  private readonly localStorageService = inject(LocalStorageService);
+  private readonly safeAreaInsets = inject(SafeAreaInsetsService);
+  private readonly systemBars = inject(SystemBarsService);
+  private readonly capacitorPlatformService = inject(CapacitorPlatformService);
+
   isNativeApp = Capacitor.isNativePlatform();
-  readonly splashScreen = SplashScreen;
-  readonly statusBar = StatusBar;
+  showTabsBar = environment.app.showTabsBar;
 
-  constructor(
-    private readonly renderer: Renderer2,
-    private readonly safeAreaInsets: SafeAreaInsets
-  ) {}
-
-  ngOnInit(): void {
+  /**
+   * Initializes the application and sets up platform-specific configurations.
+   */
+  ngOnInit() {
     void this.initializeApp();
   }
 
   /**
-   * Initializes the app and sets up native-specific configurations.
+   * Initialize the application by setting up platform-specific configurations,
+   * initializing services, starting network monitoring, and managing the splash screen and status bar.
+   * This method is called during the component's initialization phase (ngOnInit).
    */
   async initializeApp() {
-    this.isNativeApp = Capacitor.isNativePlatform();
-
     if (this.isNativeApp) {
       this.renderer.addClass(document.body, 'native-app');
 
-      try {
-        await this.splashScreen.hide();
-      } catch {
-        // SplashScreen is unavailable on web test environments.
-      }
-
+      await this.capacitorPlatformService.hideSplashScreen();
+      await this.capacitorPlatformService.setStatusBarOverlay(false);
       this.safeAreaInsets.setSafeAreaInsetsFix();
 
-      // don't use utilsService.isDarkMode here to avoid broken layout
-      const isDarkMode = window.matchMedia(
-        '(prefers-color-scheme: dark)'
-      ).matches;
+      const isDarkMode = this.systemBars.getCurrentIsDarkMode();
+      await this.systemBars.setBars(isDarkMode);
 
-      const primaryColor = '#3880ff';
-
-      try {
-        await this.statusBar.setOverlaysWebView({ overlay: false });
-
-        if (isDarkMode) {
-          await this.statusBar.setBackgroundColor({ color: primaryColor });
-          await this.statusBar.setStyle({ style: Style.Light });
-        } else {
-          await this.statusBar.setBackgroundColor({ color: primaryColor });
-          await this.statusBar.setStyle({ style: Style.Dark });
-        }
-
-        await this.statusBar.show();
-      } catch {
-        // StatusBar is not implemented on the web platform and can still be
-        // simulated in unit tests without failing the app initialization.
-      }
+      await this.capacitorPlatformService.showStatusBar();
     } else {
       this.renderer.addClass(document.body, 'web-app');
     }
+
+    await this.localStorageService.initializeServicesAsync(this.translate);
   }
 }

@@ -1,7 +1,4 @@
-<ion-header
-  class="app-header"
-  [class.landscape]="!utilsService.isPortrait"
->
+<ion-header class="app-header" [class.landscape]="!utilsService.isPortrait">
   <ion-toolbar color="primary" [class.landscape]="!utilsService.isPortrait">
     <ion-buttons slot="start">
       <app-logo
@@ -13,10 +10,10 @@
       ></app-logo>
     </ion-buttons>
     <ion-title *ngIf="onQrTab">
-      <b>{{ !isLargeScreen ? "QR Code" : "z-control QR Code Generator" }}</b>
+      {{ "HEADER_QR_CODE" | translate }}
     </ion-title>
     <ion-title *ngIf="onSettingsTab">
-      <ion-title>{{ "SETTINGS" | translate }}</ion-title>
+      {{ "HEADER_SETTINGS" | translate }}
     </ion-title>
     <ion-buttons slot="end">
       <ion-button
@@ -24,7 +21,7 @@
         (click)="goToSettings()"
         (keydown.enter)="goToSettings()"
         (keydown.space)="goToSettings()"
-        title = "{{ 'TOOLTIP_HEADER.GOTO_SETTINGS' | translate }}"
+        title="{{ 'TOOLTIP_HEADER.GOTO_SETTINGS' | translate }}"
         fill="clear"
       >
         <ion-icon name="settings-outline"></ion-icon>
@@ -34,7 +31,7 @@
         (click)="goToQr()"
         (keydown.enter)="goToQr()"
         (keydown.space)="goToQr()"
-        title = "{{ 'TOOLTIP_HEADER.GOTO_QR_CODE' | translate }}"
+        title="{{ 'TOOLTIP_HEADER.GOTO_QR_CODE' | translate }}"
         fill="clear"
       >
         <ion-icon name="qr-code-outline"></ion-icon>
@@ -45,9 +42,9 @@
         (click)="openHelpModal()"
         (keydown.enter)="openHelpModal()"
         (keydown.space)="openHelpModal()"
-        title = "{{ 'TOOLTIP_HEADER.OPEN_HELP' | translate }}"
+        title="{{ 'TOOLTIP_HEADER.OPEN_HELP' | translate }}"
       >
-        <ion-icon slot="icon-only" name="help"></ion-icon>
+        <ion-icon slot="icon-only" name="help-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

@@ -3,5 +3,9 @@
     "@ionic/angular/common",
     "@ionic/angular/standalone"
   ],
-  "files.eol": "\n"
+  "files.eol": "\n",
+  "sonarlint.connectedMode.project": {
+    "connectionId": "z-control apps",
+    "projectKey": "zoechbauer_z-control-qr-code-generator"
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import {
   IonAccordion,
   IonItem,
@@ -7,7 +7,7 @@ import {
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 
-import { LogoType } from 'src/app/enums';
+import { LogoType } from 'src/app/shared/enums';
 import { LogoComponent } from '../logo/logo.component';
 import { FooterComponent } from '../footer/footer.component';
 
@@ -26,8 +26,9 @@ import { FooterComponent } from '../footer/footer.component';
   ],
 })
 export class FeedbackAccordionComponent {
-  @Input() lang: string = 'en';
-  LogoType = LogoType;
+  readonly translate = inject(TranslateService);
 
-  constructor(public translate: TranslateService) {}
+  @Input() lang: string = 'en';
+
+  LogoType = LogoType;
 }

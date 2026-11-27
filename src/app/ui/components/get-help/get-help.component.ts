@@ -1,19 +1,44 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, inject, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import {
+  IonToolbar,
+  IonTitle,
+  IonHeader,
+  IonIcon,
+  IonButton,
+  IonContent,
+  IonButtons,
+} from '@ionic/angular/standalone';
+import { CommonModule } from '@angular/common';
 
 import { LocalStorageService } from '@app/services/local-storage.service';
 import { UtilsService } from '@app/services/utils.service';
 import { environment } from '@env/environment';
 
 @Component({
-  selector: 'app-help-modal',
-  templateUrl: './help-modal.component.html',
-  styleUrls: ['./help-modal.component.scss'],
+  selector: 'app-get-help',
+  templateUrl: './get-help.component.html',
+  styleUrls: ['./get-help.component.scss'],
+  imports: [
+    IonButtons,
+    IonContent,
+    IonButton,
+    IonIcon,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    CommonModule,
+  ],
 })
-export class HelpModalComponent implements OnInit, OnDestroy {
-  @Input() scrollToSection?: string; // Optional: ID of the section to scroll to when the modal opens 
+export class GetHelpComponent implements OnInit, OnDestroy {
+  readonly utilsService = inject(UtilsService);
+  private readonly modalController = inject(ModalController);
+  private readonly translate = inject(TranslateService);
+  private readonly localStorage = inject(LocalStorageService);
+
+  @Input() scrollToSection?: string; // Optional: ID of the section to scroll to when the modal opens
   // (e.g., 'floating-keyboard' or 'web-version')
 
   readonly scrollToTopObj = {
@@ -22,16 +47,9 @@ export class HelpModalComponent implements OnInit, OnDestroy {
   };
   selectedLanguage: string = 'de';
   isPortrait = this.utilsService.isPortrait;
-  maxInputLength: number = environment.maxInputLength ?? 1000;
+  maxInputLength: number = environment.app.maxInputLength ?? 1000;
 
   private langSub?: Subscription;
-
-  constructor(
-    public readonly utilsService: UtilsService,
-    private readonly modalController: ModalController,
-    private readonly translate: TranslateService,
-    private readonly localStorage: LocalStorageService
-  ) {}
 
   /**
    * Returns true if the app is running in a native environment, false otherwise.
@@ -41,7 +59,7 @@ export class HelpModalComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Returns the help text for the email subject, 
+   * Returns the help text for the email subject,
    * depending on whether the app is running natively or on the web.
    */
   get emailSubjectHelpText(): string {
@@ -50,7 +68,7 @@ export class HelpModalComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Returns the help text for the language change button, 
+   * Returns the help text for the language change button,
    * depending on whether the app is running natively or on the web.
    */
   get languageChangeButtonHelpText(): string {
@@ -61,7 +79,7 @@ export class HelpModalComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Returns the help text for the device information, 
+   * Returns the help text for the device information,
    * depending on whether the app is running natively or on the web.
    */
   get deviceText(): string {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import {
   IonAccordion,
   IonItem,
@@ -24,14 +24,15 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   ],
 })
 export class ChangeLogAccordionComponent {
+  translate = inject(TranslateService);
+
   @Input() versionInfo!: string;
-  @Input() lang: string = 'en';
+  @Input() lang!: string;
+  @Input() appName!: string;
   @Output() ionChange = new EventEmitter<void>();
 
-  constructor(public translate: TranslateService) {}
-
   /**
-   * Emits an event to open the changelog.
+   * Opens the changelog modal or page by emitting the ionChange event.
    */
   openChangelog() {
     this.ionChange.emit();

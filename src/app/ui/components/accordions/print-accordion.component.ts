@@ -1,6 +1,12 @@
-import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  Input,
+  OnInit,
+  inject,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import {
   IonAccordion,
@@ -13,17 +19,13 @@ import {
 } from '@ionic/angular/standalone';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import {
-  QrCodeSize,
-  QrCodeGapSize,
-  QrCodesCountPerPage,
-} from '@app/enums';
+import { QrCodeSize, QrCodeGapSize, QrCodesCountPerPage } from '@app/shared/enums';
+import { LocalStorageService } from '@app/services/local-storage.service';
 import {
   PrintSettings,
   PrintUtilsService,
-} from 'src/app/services/print-utils.service';
-import { ToastService } from 'src/app/services/toast.service';
-import { Subscription } from 'rxjs';
+} from '@app/services/print-utils.service';
+import { ToastService } from '@app/services/toast.service';
 
 export interface QrCodeSizes {
   label: string;
@@ -57,7 +59,12 @@ interface QrCodesCountPerPages {
     FormsModule,
   ],
 })
-export class PrintAccordionComponent implements OnInit, OnDestroy {
+export class PrintAccordionComponent implements OnInit {
+  translate = inject(TranslateService);
+  private readonly printUtilsService = inject(PrintUtilsService);
+  private readonly toastService = inject(ToastService);
+  private readonly localStorageService = inject(LocalStorageService);
+
   @Input() lang?: string;
 
   QrCodesCountPerPage = QrCodesCountPerPage;
@@ -68,41 +75,34 @@ export class PrintAccordionComponent implements OnInit, OnDestroy {
   selectedQrCodeGapSize: QrCodeGapSize = QrCodeGapSize.SMALL;
   selectedTypeOfQrCodesPerPage: QrCodesCountPerPage =
     QrCodesCountPerPage.FULL_PAGE;
-  selectedNumberOfQrCodesPerPage: number = 1;
-  private saveddNumberOfQrCodesPerPage!: number;
-  private readonly subs = new Subscription();
-
-  constructor(
-    public translate: TranslateService,
-    private readonly printUtilsService: PrintUtilsService,
-    private readonly toastService: ToastService,
-    private readonly localStorageService: LocalStorageService
-  ) {}
+  selectedNumberOfQrCodesPerPage = 1;
+  private readonly destroyRef = inject(DestroyRef);
 
   /**
-   * Initializes the component by loading available print settings and setting up subscriptions.
+   * Initializes the component by loading available print settings.
    */
   ngOnInit() {
-    this.loadAvailablePrintSettings();
     this.setupSubscriptions();
+    this.loadAvailablePrintSettings();
   }
 
   /**
-   * Sets up subscriptions to listen for changes in saved print settings.
-   * Updates the component state accordingly.
+   * Subscribes to print settings changes and cleans them up automatically.
    */
-  private setupSubscriptions() {
-    this.subs.add(
-      this.localStorageService.savedPrintSettings$.subscribe((settings) => {
-        this.selectedQrCodeSize = settings.size;
-        this.selectedQrCodeGapSize = settings.gap;
-        this.selectedTypeOfQrCodesPerPage = settings.typeOfQrCodesPerPage;
-        this.selectedNumberOfQrCodesPerPage = settings.numberOfQrCodesPerPage;
+  private setupSubscriptions(): void {
+    this.localStorageService.savedPrintSettings$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((settings) => this.applyPrintSettings(settings));
+  }
 
-        this.saveddNumberOfQrCodesPerPage =
-          this.printUtilsService.getEffectiveNumberOfQrCodesPerPage();
-      })
-    );
+  /**
+   * Applies the saved print settings to the UI.
+   */
+  private applyPrintSettings(settings: PrintSettings): void {
+    this.selectedQrCodeSize = settings.size;
+    this.selectedQrCodeGapSize = settings.gap;
+    this.selectedTypeOfQrCodesPerPage = settings.typeOfQrCodesPerPage;
+    this.selectedNumberOfQrCodesPerPage = settings.numberOfQrCodesPerPage;
   }
 
   /**
@@ -123,7 +123,7 @@ export class PrintAccordionComponent implements OnInit, OnDestroy {
     }
     return this.printUtilsService.getCalculatedNumberOfQrCodesPerPage(
       this.selectedQrCodeSize,
-      this.selectedQrCodeGapSize
+      this.selectedQrCodeGapSize,
     );
   }
 
@@ -133,7 +133,7 @@ export class PrintAccordionComponent implements OnInit, OnDestroy {
   get maxCalculatedNumberOfQrCodesPerPage(): number {
     return this.printUtilsService.getCalculatedNumberOfQrCodesPerPage(
       this.selectedQrCodeSize,
-      this.selectedQrCodeGapSize
+      this.selectedQrCodeGapSize,
     );
   }
 
@@ -219,10 +219,4 @@ export class PrintAccordionComponent implements OnInit, OnDestroy {
     ];
   }
 
-  /**
-   * Cleans up any subscriptions when the component is destroyed.
-   */
-  ngOnDestroy(): void {
-    this.subs.unsubscribe();
-  }
 }

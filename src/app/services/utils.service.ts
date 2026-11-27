@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
-import { HelpModalComponent } from '../help-modal/help-modal.component';
-import { Tab } from '../enums';
+import { GetHelpComponent } from '../ui/components/get-help/get-help.component';
+import { Tab } from '../shared/enums';
 import { MarkdownViewerComponent } from '../ui/components/markdown-viewer/markdown-viewer.component';
 import { Subject } from 'rxjs';
 
@@ -12,17 +12,39 @@ import { Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class UtilsService {
+  private readonly modalController = inject(ModalController);
+  private readonly router = inject(Router);
+
   logoClickedSub = new Subject<boolean>();
   logoClicked$ = this.logoClickedSub.asObservable();
   private currentModal: HTMLIonModalElement | null = null;
+  private keyboardVisible = false;
+  private deviceViewportHeight = 0;
+  private lastKnownPortrait: boolean | null = null;
 
-  constructor(
-    private readonly modalController: ModalController,
-    private readonly router: Router
-  ) {
-    window.addEventListener('orientationchange', () => {
+  constructor() {
+    this.setupEventListeners();
+  }
+
+  /**
+   * Sets up global event listeners for orientation changes and keyboard visibility.
+   */
+  private setupEventListeners(): void {
+    globalThis.addEventListener('orientationchange', () => {
       if (this.currentModal) {
         this.setModalLandscapeClasses(this.currentModal);
+      }
+    });
+
+    globalThis.addEventListener('keyboardWillShow', () => {
+      if (Capacitor.isNativePlatform()) {
+        this.keyboardVisible = true;
+      }
+    });
+
+    globalThis.addEventListener('keyboardWillHide', () => {
+      if (Capacitor.isNativePlatform()) {
+        this.keyboardVisible = false;
       }
     });
   }
@@ -40,7 +62,57 @@ export class UtilsService {
    * @returns True if the device is in portrait orientation, false otherwise.
    */
   get isPortrait(): boolean {
+    if (this.isKeyboardOpen && this.lastKnownPortrait !== null) {
+      return this.lastKnownPortrait;
+    }
+
+    const isPortrait = this.getStablePortrait();
+    this.lastKnownPortrait = isPortrait;
+    return isPortrait;
+  }
+
+  /**
+   * Determines if the keyboard is currently visible.
+   * @returns True if the keyboard is visible, false otherwise.
+   */
+  get isKeyboardVisible(): boolean {
+    return this.isKeyboardOpen;
+  }
+
+  /**
+   * Determines the stable portrait orientation based on screen and orientation data.
+   * @returns True if the device is in portrait orientation, false otherwise.
+   */
+  private getStablePortrait(): boolean {
+    if (!Capacitor.isNativePlatform()) {
+      return window.matchMedia('(orientation: portrait)').matches;
+    }
+
+    const orientationAngle = globalThis.screen?.orientation?.angle;
+    if (typeof orientationAngle === 'number') {
+      return orientationAngle === 0 || orientationAngle === 180;
+    }
+
+    const screenWidth = globalThis.screen?.width;
+    const screenHeight = globalThis.screen?.height;
+    if (screenWidth && screenHeight) {
+      return screenHeight >= screenWidth;
+    }
+
     return window.matchMedia('(orientation: portrait)').matches;
+  }
+
+  /**
+   * Determines if the keyboard is currently open.
+   * @returns True if the keyboard is open, false otherwise.
+   */
+  private get isKeyboardOpen(): boolean {
+    const layoutHeight = window.innerHeight;
+    const visualHeight = window.visualViewport?.height;
+    const keyboardShrunkViewport =
+      visualHeight !== undefined && layoutHeight - visualHeight > 150;
+
+    return this.keyboardVisible || keyboardShrunkViewport;
   }
 
   /**
@@ -53,12 +125,34 @@ export class UtilsService {
   }
 
   /**
-   * Determines if the device is a small device based on height.
-   * @returns True if the device has a small height and is in portrait orientation, false otherwise.
+   * Determines if the device is a small device based on viewport height and keyboard visibility..
+   * @returns True if the device has a small height and is in portrait orientation,
+   * and the keyboard is not visible, false otherwise.
    */
   get isSmallDevice(): boolean {
-    const isMobileHeight = window.innerHeight <= 640;
-    return isMobileHeight && this.isPortrait;
+    const layoutHeight = window.innerHeight;
+    const keyboardOpen = this.isKeyboardOpen;
+
+    if (keyboardOpen) {
+      if (this.deviceViewportHeight === 0) {
+        this.deviceViewportHeight = this.getStableViewportHeight(layoutHeight);
+      }
+    } else {
+      this.deviceViewportHeight = this.getStableViewportHeight(layoutHeight);
+    }
+
+    return this.deviceViewportHeight <= 640 && this.isPortrait;
+  }
+
+  private getStableViewportHeight(layoutHeight: number): number {
+    if (Capacitor.isNativePlatform()) {
+      const screenHeight = globalThis.screen?.height;
+      if (screenHeight && screenHeight > 0) {
+        return screenHeight;
+      }
+    }
+
+    return layoutHeight;
   }
 
   /**
@@ -82,7 +176,7 @@ export class UtilsService {
    * @param tab The tab to navigate to.
    */
   async navigateToTab(tab: Tab): Promise<void> {
-    await this.router.navigate([`/tabs/tab-${tab}`]);
+    await this.router.navigate([`/${tab}`]);
   }
 
   /**
@@ -91,7 +185,7 @@ export class UtilsService {
    * @param params The query parameters to include in the navigation.
    */
   async navigateToTabWithParams(tab: Tab, params: any): Promise<void> {
-    await this.router.navigate([`/tabs/tab-${tab}`], { queryParams: params });
+    await this.router.navigate([`/${tab}`], { queryParams: params });
   }
 
   /**
@@ -130,7 +224,7 @@ export class UtilsService {
    */
   async openHelpModal() {
     const modal = await this.modalController.create({
-      component: HelpModalComponent,
+      component: GetHelpComponent,
     });
     this.currentModal = modal;
     this.setModalLandscapeClasses(modal);
@@ -160,21 +254,21 @@ export class UtilsService {
     setTimeout(() => {
       if (modal.classList && typeof modal.classList.remove === 'function') {
         modal.classList.remove(
-          'manual-instructions-modal',
+          'manual-email-instructions',
           'change-log-modal',
           'desktop',
-          'landscape'
+          'landscape',
         );
         switch (modal.component) {
-          case HelpModalComponent:
-            modal.classList.add('manual-instructions-modal');
+          case GetHelpComponent:
+            modal.classList.add('manual-email-instructions');
             break;
           case MarkdownViewerComponent:
             modal.classList.add('change-log-modal');
             break;
           default:
             console.error(
-              'Unknown modal component for setting landscape class'
+              'Unknown modal component for setting landscape class',
             );
         }
         if (this.isDesktop) {

@@ -1,0 +1,165 @@
+cmd: tree /F /A > src-folder-structure-ng20.txt
+
+Auflistung der Ordnerpfade für Volume Windows 
+Volumeseriennummer : 0E84-E8F6
+C:.
+|   android-config.txt
+|   declarations.d.ts
+|   global.scss
+|   index.html
+|   main.ts
+|   polyfills.ts
+|   src-folder-structure-ng20.txt
+|   test.ts
+|   zone-flags.ts
+|   
++---app
+|   |   app-routes.ts
+|   |   app.component.html
+|   |   app.component.scss
+|   |   app.component.spec.ts
+|   |   app.component.ts
+|   |   app.config.ts
+|   |   enums.ts
+|   |   services.module.ts
+|   |   
+|   +---help-modal
+|   |       help-modal.component.html
+|   |       help-modal.component.scss
+|   |       help-modal.component.spec.ts
+|   |       help-modal.component.ts
+|   |       
+|   +---services
+|   |       alert.service.spec.ts
+|   |       alert.service.ts
+|   |       email-utils.service.spec.ts
+|   |       email-utils.service.ts
+|   |       file-utils.service.spec.ts
+|   |       file-utils.service.ts
+|   |       filesystem.token.spec.ts
+|   |       filesystem.token.ts
+|   |       local-storage.service.spec.ts
+|   |       local-storage.service.ts
+|   |       print-utils.service.spec.ts
+|   |       print-utils.service.ts
+|   |       qr-utils.service.spec.ts
+|   |       qr-utils.service.ts
+|   |       safe-area-insets.spec.ts
+|   |       safe-area-insets.ts
+|   |       toast.service.spec.ts
+|   |       toast.service.ts
+|   |       utils.service.spec.ts
+|   |       utils.service.ts
+|   |       validation.service.spec.ts
+|   |       validation.service.ts
+|   |       
+|   +---tab-qr
+|   |       manual-instructions-modal.component.spec.ts
+|   |       manual-instructions-modal.component.ts
+|   |       tab-qr.page.html
+|   |       tab-qr.page.scss
+|   |       tab-qr.page.spec.ts
+|   |       tab-qr.page.ts
+|   |       
+|   +---tab-settings
+|   |       tab-settings.page.html
+|   |       tab-settings.page.spec.ts
+|   |       tab-settings.page.ts
+|   |       
+|   +---tabs
+|   |       tabs-routes.ts
+|   |       tabs.page.html
+|   |       tabs.page.scss
+|   |       tabs.page.spec.ts
+|   |       tabs.page.ts
+|   |       
+|   +---testing
+|   |       translate-service.mock.ts
+|   |       window-mock.util.spec.ts
+|   |       window-mock.util.ts
+|   |       
+|   \---ui
+|       \---components
+|           +---accordions
+|           |       change-log-accordion.component.html
+|           |       change-log-accordion.component.ts
+|           |       email-maintenance-accordion.component.html
+|           |       email-maintenance-accordion.component.ts
+|           |       feedback-accordion.component.html
+|           |       feedback-accordion.component.ts
+|           |       get-mobile-app-accordion.component.html
+|           |       get-mobile-app-accordion.component.ts
+|           |       get-source-accordion.component.html
+|           |       get-source-accordion.component.ts
+|           |       language-accordion.component.html
+|           |       language-accordion.component.ts
+|           |       print-accordion.component.html
+|           |       print-accordion.component.ts
+|           |       privacy-policy-accordion.component.html
+|           |       privacy-policy-accordion.component.ts
+|           |       
+|           +---email-maintenance
+|           |       email-maintenance.component.html
+|           |       email-maintenance.component.scss
+|           |       email-maintenance.component.spec.ts
+|           |       email-maintenance.component.ts
+|           |       
+|           +---footer
+|           |       footer.component.html
+|           |       footer.component.scss
+|           |       footer.component.ts
+|           |       
+|           +---get-mobile-app
+|           |       get-mobile-app.component.html
+|           |       get-mobile-app.component.scss
+|           |       get-mobile-app.component.spec.ts
+|           |       get-mobile-app.component.ts
+|           |       
+|           +---get-source-code
+|           |       get-source-code.component.html
+|           |       get-source-code.component.scss
+|           |       get-source-code.component.spec.ts
+|           |       get-source-code.component.ts
+|           |       
+|           +---header
+|           |       header.component.html
+|           |       header.component.scss
+|           |       header.component.spec.ts
+|           |       header.component.ts
+|           |       
+|           +---logo
+|           |       logo.component.html
+|           |       logo.component.scss
+|           |       logo.component.spec.ts
+|           |       logo.component.ts
+|           |       
+|           +---markdown-viewer
+|           |       markdown-viewer.component.html
+|           |       markdown-viewer.component.scss
+|           |       markdown-viewer.component.spec.ts
+|           |       markdown-viewer.component.ts
+|           |       
+|           \---privacy-policy
+|                   privacy-policy.component.html
+|                   privacy-policy.component.scss
+|                   privacy-policy.component.spec.ts
+|                   privacy-policy.component.ts
+|                   
++---assets
+|   +---i18n
+|   |       de.json
+|   |       en.json
+|   |       
+|   +---icon
+|   |       z-control-qrcode-generator-logo-32px.png
+|   |       
+|   \---logs
+|           CHANGELOG.md
+|           
++---environments
+|       environment.prod.ts
+|       environment.ts
+|       
+\---theme
+        variables.scss
+        

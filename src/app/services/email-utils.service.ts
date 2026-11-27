@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { inject, Injectable, InjectionToken } from '@angular/core';
 import { Attachment } from 'capacitor-email-composer';
 import { Capacitor } from '@capacitor/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,24 +10,21 @@ import { LocalStorageService } from './local-storage.service';
 import { QrUtilsService } from './qr-utils.service';
 import { PrintUtilsService } from './print-utils.service';
 
-export const EMAIL_COMPOSER = 'EMAIL_COMPOSER';
+export const EMAIL_COMPOSER = new InjectionToken<any>('EMAIL_COMPOSER');
 
 @Injectable({
   providedIn: 'root',
 })
 export class EmailUtilsService {
+  private readonly translate = inject(TranslateService);
+  private readonly alertController = inject(AlertController);
+  private readonly qrService = inject(QrUtilsService);
+  private readonly fileService = inject(FileUtilsService);
+  private readonly localStorage = inject(LocalStorageService);
+  private readonly printUtilsService = inject(PrintUtilsService);
+  private readonly emailComposer = inject(EMAIL_COMPOSER);
+
   private emailSent = false;
-
-  constructor(
-    private readonly translate: TranslateService,
-    private readonly alertController: AlertController,
-    private readonly qrService: QrUtilsService,
-    private readonly fileService: FileUtilsService,
-    private readonly localStorage: LocalStorageService,
-    private readonly printUtilsService: PrintUtilsService,
-    @Inject(EMAIL_COMPOSER) private readonly emailComposer: any
-  ) {}
-
   /**
    * Returns whether an email has been sent.
    */
@@ -96,16 +93,16 @@ export class EmailUtilsService {
     const qrCodeValue = this.qrService.myAngularxQrCode;
 
     const mailBodyPrefixText = this.translate.instant(
-      'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT'
+      'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT',
     );
     const printingInfo1 = this.translate.instant(
-      'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_1'
+      'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_1',
     );
     const printingInfo2 = this.translate.instant(
-      'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_2'
+      'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_2',
     );
     const printingInfo3 = this.translate.instant(
-      'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_3'
+      'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_3',
     );
 
     const qrCodeText = qrCodeValue;
@@ -127,16 +124,16 @@ export class EmailUtilsService {
     const maxWebLength = 400;
 
     const mailBodyPrefixAttachmentsWeb = this.translate.instant(
-      'EMAIL_SERVICE_MAIL_BODY_PREFIX_ATTACHEMENT_WEB'
+      'EMAIL_SERVICE_MAIL_BODY_PREFIX_ATTACHEMENT_WEB',
     );
     const mailBodyPrefixText = this.translate.instant(
-      'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT'
+      'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT',
     );
     const mailBodyPrefixTextWeb = this.translate.instant(
-      'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT_WEB'
+      'EMAIL_SERVICE_MAIL_BODY_PREFIX_TEXT_WEB',
     );
     const printingInfoWebMail = this.translate.instant(
-      'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_WEBMAIL'
+      'EMAIL_SERVICE_MAIL_BODY_PRINTING_INFO_WEBMAIL',
     );
 
     let qrCodeText: string;
@@ -176,7 +173,7 @@ export class EmailUtilsService {
     sendTo: string,
     subject: string,
     body: string,
-    attachments: Attachment[]
+    attachments: Attachment[],
   ) {
     const available = await this.emailComposer.hasAccount();
     if (available.hasAccount) {
@@ -205,9 +202,9 @@ export class EmailUtilsService {
   private sendWebEmail(sendTo: string, subject: string, body: string) {
     try {
       const mailto = `mailto:${encodeURIComponent(
-        sendTo
+        sendTo,
       )}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-        body
+        body,
       )}`;
 
       this.navigateTo(mailto);
@@ -234,14 +231,14 @@ export class EmailUtilsService {
     const fileNamePdf = this.fileService.fileNamePdf;
 
     const header = await lastValueFrom(
-      this.translate.get('INFO_ALERT_TITLE_MAIL_ATTACHMENT')
+      this.translate.get('INFO_ALERT_TITLE_MAIL_ATTACHMENT'),
     );
     const subHeader = fileNamePng + ', ' + fileNamePdf;
     const message = await lastValueFrom(
-      this.translate.get('INFO_ALERT_MESSAGE_MAIL_ATTACHMENT')
+      this.translate.get('INFO_ALERT_MESSAGE_MAIL_ATTACHMENT'),
     );
     const okButton = await lastValueFrom(
-      this.translate.get('ERROR_ALERT_OPEN_EMAIL_BUTTON')
+      this.translate.get('ERROR_ALERT_OPEN_EMAIL_BUTTON'),
     );
 
     const alert = await this.alertController.create({

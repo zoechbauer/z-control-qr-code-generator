@@ -1,22 +1,19 @@
-import { Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { Directory } from '@capacitor/filesystem';
 
 import { AlertService } from './alert.service';
 import { environment } from '@env/environment';
-import { FILESYSTEM, FilesystemLike } from './filesystem.token';
+import { FILESYSTEM } from './filesystem.token';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FileUtilsService {
+  private readonly alertService = inject(AlertService);
+  private readonly filesystem = inject(FILESYSTEM);
+  
   private nowFormatted: string = '';
-
-  constructor(
-    private readonly alertService: AlertService,
-    @Inject(FILESYSTEM) private readonly filesystem: FilesystemLike
-  ) {}
-
   /**
    * Returns the current formatted timestamp used in file names.
    */
@@ -127,7 +124,7 @@ export class FileUtilsService {
           return;
         }
 
-        const storageDurationInHours = environment.storageDurationInHours ?? 3;
+        const storageDurationInHours = environment.app.storageDurationInHours ?? 3;
         const storageDurationInMilliseconds =
           storageDurationInHours * 60 * 60 * 1000;
         const now = Date.now();

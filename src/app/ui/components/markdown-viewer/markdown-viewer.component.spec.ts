@@ -1,14 +1,13 @@
-import { addIcons } from 'ionicons';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { MarkdownModule } from 'ngx-markdown';
 import { IonicModule, ModalController } from '@ionic/angular';
+import { MarkdownModule } from 'ngx-markdown';
 
 import { MarkdownViewerComponent } from './markdown-viewer.component';
-import { UtilsService } from 'src/app/services/utils.service';
+import { UtilsService } from '@app/services/utils.service';
 
 describe('MarkdownViewerComponent', () => {
   let component: MarkdownViewerComponent;

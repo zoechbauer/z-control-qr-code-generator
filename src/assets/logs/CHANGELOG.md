@@ -1,6 +1,58 @@
 # What's New?
 
-All recent updates and improvements to our **z-control QR Code Generator** app.
+All recent updates and improvements to our **z&#8209;control QR Code Generator** app.
+
+## [3.0] - 2026-11-27
+
+### 🚀 Improvements
+
+- **Better keyboard and text-entry experience on small devices**
+  - Entered text remains available when an alert is displayed over the keyboard.
+  - Scrolling and keyboard handling are smoother on small screens.
+  - Small devices now support entering long text, with clearer instructions in the keyboard dialog.
+- **Clearer QR code and help pages**
+  - Improved the page layout for entering longer text.
+  - Improved the help page layout and readability.
+- **More consistent app design**
+  - The app name is now shown consistently in page headers.
+  - Updated the header and Release Notes accordion.
+  - Limited the web page width to 500px for improved readability.
+- **Smoother QR code creation**
+  - The page scrolls to the QR code result after creation.
+  - Added missing icons so controls and actions are displayed correctly.
+
+### 🐛 Fixes
+
+- **Settings Page**
+  - Fixed missing margin on the print accordion header for better spacing on small devices.
+- **Privacy Policy**
+  - Updated the privacy policy links to point to the QR Code Generator specific pages for both English and German.
+
+### 🔧 Internal
+
+- **Migrated to Angular 20 and Capacitor 8**
+  - Removed NgModules and migrated to standalone components throughout the app.
+  - Updated the android build gradle from 8.10 to 8.13.
+  - Updated implementation of angularx-qrcode and routing to align with the standalone component approach.
+- **Standardized the app structure**
+  - Refactored the app structure to use the same services as other z&#8209;control apps for better maintainability and consistency.
+  - Renamed and reorganized the help and manual email instruction components.
+- **Improved code quality and maintainability**
+  - Simplified layouts and component styles.
+  - Centralized alert handling in a shared service.
+  - Removed unnecessary `!important` declarations from stylesheets.
+  - Replaced ion-spinner with a custom SpinnerComponent for better control and consistency with the other z&#8209;control apps.
+- **Expanded testing and documentation**
+  - Updated and expanded unit tests, including the print accordion and language settings.
+  - Added the document Android Build Update to reflect the changes in the build process and Gradle version.
+  - Updated the README and documentation for Angular 20 and Capacitor 8.
+  - Connected the project to SonarLint and SonarCloud.
+  - Test suite: **484 specs passing with 99.6% statement coverage**.
+
+### 📦 Installations
+
+- **Web (Firebase)**: The latest web version has been published and is available via the hosting URL.
+- **Mobile (Google Play)**: A new mobile APK/AAB has been published.
 
 ## [2.6] - 2026-11-08
 
@@ -134,7 +186,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 - Created a reusable ToastService for displaying toast notifications in both the QR code and Settings pages.
 - Moved the email maintenance template and logic from the QR code page to the Settings page for better organization.
 - Removed the button logic for switching between QR code creation and email maintenance, simplifying the workflow.
-- Replaced the email button with the z-control logo on the QR code page for a cleaner and more consistent UI.
+- Replaced the email button with the z&#8209;control logo on the QR code page for a cleaner and more consistent UI.
 - The accordion header now displays the current count of stored email addresses for easier overview.
 - Updated help page to reflect the new tab-based layout, providing clearer instructions for using the QR Code and Settings
 - Various UI and UX enhancements, including interface refactoring for improved usability and visual consistency.
@@ -154,7 +206,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### ✨ New Features
 
-- Added a persistent z-control footer to the **web app**, displaying the current version number, release notes link, support email, and a direct download link for the mobile app. This provides users with quick access to important information and support resources.
+- Added a persistent z&#8209;control footer to the **web app**, displaying the current version number, release notes link, support email, and a direct download link for the mobile app. This provides users with quick access to important information and support resources.
 
 ### 🚀 Improvements
 
@@ -162,7 +214,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 - Enhanced header design: All headers now have a blue background with white text and icons for improved visibility and a modern look. In the **web app**, header height is reduced since there is no status bar, providing a more streamlined appearance.
 - Minor wording improvements for greater clarity in the user help page.
 - Revised the "QR Codes Explained" section: removed generic examples and added app-specific examples to better illustrate usage within this application.
-- Relocated the displayed version information and release notes link from the user help page to the new z-control footer for easier access.
+- Relocated the displayed version information and release notes link from the user help page to the new z&#8209;control footer for easier access.
 - Updated the Google Play link for this app from the Internal Test group to the public release link.
 - Updated the alert message explaining why QR codes are not automatically attached to emails in the web version for greater clarity.
 
@@ -224,7 +276,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 🐛 Fixes
 
-- Fixed app name display in Android Settings/Apps to show "z-control QR Code Generator"
+- Fixed app name display in Android Settings/Apps to show "z&#8209;control QR Code Generator"
 - Fixed extra space at the bottom to prevent overlap with the navigation bar when present
 - Fixed logic for detecting small mobile devices to avoid false positives in landscape mode on modern phones
 
@@ -292,7 +344,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 🚀 Improvements
 
-- Updated the z-control support email address.
+- Updated the z&#8209;control support email address.
 - Improved the height of the user help dialog when accessed from desktop devices.
 - Enhanced the initial layout for landscape mode.
 
@@ -361,7 +413,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 🐛 Fixes
 
-- Green background on desktop is now replaced with light gray for a cleaner look (global.scss updated). Note: you can run z-control QR Code Generator App on mobile and desktop via Browser.
+- Green background on desktop is now replaced with light gray for a cleaner look (global.scss updated). Note: you can run z&#8209;control QR Code Generator App on mobile and desktop via Browser.
 
 ### 📦 Installations
 
@@ -373,7 +425,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 - Added changelog display in user help page.
 - Changed order of categories in change log.
-- New wording for app name: QR code was renamed to **z-control QR Code Generator** (brand).
+- New wording for app name: QR code was renamed to **z&#8209;control QR Code Generator** (brand).
 - CHANGELOG.md moved from root folder to assets/logs folder so that it can be read via http.
 
 ## [1.4] - 2025-07-17
@@ -399,7 +451,7 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ### 📦 Installations
 
-- **Hosted on Google Play**: z-control QR Code Generator App is now in **"Internal Test" status**.
+- **Hosted on Google Play**: z&#8209;control QR Code Generator App is now in **"Internal Test" status**.
 
 ## [1.1] - 2025-07-02
 
@@ -423,4 +475,4 @@ All recent updates and improvements to our **z-control QR Code Generator** app.
 
 ---
 
-Thank you for using our z-control applications!
+Thank you for using our z&#8209;control applications!

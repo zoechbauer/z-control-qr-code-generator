@@ -44,7 +44,12 @@
         ],
         "max-len": [
           "error",
-          { "code": 120, "ignoreComments": false, "ignoreUrls": true }
+          {
+            "code": 120,
+            "ignoreComments": false,
+            "ignoreUrls": true,
+            "ignorePattern": "^(?:import|export)\\s.*;$"
+          }
         ]
       }
     },

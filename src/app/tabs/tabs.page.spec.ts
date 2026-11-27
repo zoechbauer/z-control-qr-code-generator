@@ -7,15 +7,13 @@ import { of } from 'rxjs';
 import { TabsPage } from './tabs.page';
 import { createTranslateServiceMock } from '@testing/translate-service.mock';
 
-
 describe('TabsPage', () => {
   let component: TabsPage;
   let fixture: ComponentFixture<TabsPage>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TabsPage],
-      imports: [TranslateModule.forRoot(), IonicModule.forRoot()],
+      imports: [TranslateModule.forRoot(), IonicModule.forRoot(), TabsPage],
       providers: [
         { provide: ActivatedRoute, useValue: { snapshot: {}, params: of({}) } },
         { provide: TranslateService, useValue: createTranslateServiceMock() },

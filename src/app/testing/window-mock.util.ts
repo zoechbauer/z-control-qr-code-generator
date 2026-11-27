@@ -8,12 +8,14 @@ export class WindowMockUtil {
    * Mock a window property with a specific value
    */
   static mockWindowProperty(property: string, value: any): void {
-    // Store original property descriptor (not just value)
-    const originalDescriptor = Object.getOwnPropertyDescriptor(
-      window,
-      property
-    );
-    this.originalDescriptors.set(property, originalDescriptor);
+    // Store the original descriptor once so repeated mocks can restore it.
+    if (!this.originalDescriptors.has(property)) {
+      const originalDescriptor = Object.getOwnPropertyDescriptor(
+        window,
+        property
+      );
+      this.originalDescriptors.set(property, originalDescriptor);
+    }
 
     // Mock the property
     Object.defineProperty(window, property, {
@@ -27,11 +29,13 @@ export class WindowMockUtil {
    * Setup matchMedia spy for testing responsive behavior
    */
   static setupMatchMediaSpy(defaultMatches: boolean = true): jasmine.Spy {
-    const originalDescriptor = Object.getOwnPropertyDescriptor(
-      window,
-      'matchMedia'
-    );
-    this.originalDescriptors.set('matchMedia', originalDescriptor);
+    if (!this.originalDescriptors.has('matchMedia')) {
+      const originalDescriptor = Object.getOwnPropertyDescriptor(
+        window,
+        'matchMedia'
+      );
+      this.originalDescriptors.set('matchMedia', originalDescriptor);
+    }
 
     // Create and setup the spy
     const mockMatchMedia = jasmine.createSpy('matchMedia').and.returnValue({

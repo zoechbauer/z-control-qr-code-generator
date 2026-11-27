@@ -3,8 +3,8 @@
   "compileOnSave": false,
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
+    "composite": true,
     "declaration": true,
-    "downlevelIteration": true,
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "strict": true,
@@ -16,7 +16,7 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "module": "es2022",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "target": "es2022",
     "lib": ["es2022", "dom"],
     "skipLibCheck": true,

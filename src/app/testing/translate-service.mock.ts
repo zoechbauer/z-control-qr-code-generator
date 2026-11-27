@@ -8,7 +8,7 @@ export function createTranslateServiceMock() {
   return {
     instant: jasmine.createSpy('instant').and.callFake((key: any) => key),
     use: jasmine.createSpy('use'),
-    setDefaultLang: jasmine.createSpy('setDefaultLang'),
+    setFallbackLang: jasmine.createSpy('setFallbackLang'),
     get: jasmine.createSpy('get').and.callFake((key: any) => of(key)),
     stream: jasmine.createSpy('stream').and.callFake((key: any) => of(key)),
     getParsedResult: jasmine
@@ -20,5 +20,5 @@ export function createTranslateServiceMock() {
     onTranslationChange: of({ lang: 'de', translations: {} }),
     onDefaultLangChange: of({ lang: 'de', translations: {} }),
     onFallbackLangChange: of({ lang: 'de', translations: {} }),
-  } as any;
+  };
 }

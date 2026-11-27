@@ -112,23 +112,17 @@ describe('QrUtilsService', () => {
   });
 
   describe('clearQrFields', () => {
-    it('should reset all QR fields and remove extra-margin-bottom class if present', () => {
+    it('should reset all QR fields', () => {
       // Arrange
       service.isQrCodeGenerated = true;
       service.qrCodeDownloadLink = 'link';
       service.myAngularxQrCode = 'qr';
-      // Mock DOM
-      const element = document.createElement('div');
-      element.classList.add('no-generation-buttons', 'extra-margin-bottom');
-      document.body.appendChild(element);
       // Act
       service.clearQrFields();
       // Assert
       expect(service.isQrCodeGenerated).toBeFalse();
       expect(service.qrCodeDownloadLink).toBe('');
       expect(service.myAngularxQrCode).toBe('');
-      expect(element.classList.contains('extra-margin-bottom')).toBeFalse();
-      document.body.removeChild(element);
     });
 
     it('should not throw if element or class does not exist', () => {

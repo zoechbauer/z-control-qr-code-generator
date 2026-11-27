@@ -1,56 +1,27 @@
 <div id="toast-anchor-qr">
   <app-header [currentTab]="Tab.Qr"></app-header>
 </div>
-<ion-content
-  class="qr-code-content"
-  [class.landscape]="!utilsService.isPortrait"
->
-  <ion-card class="qr-code">
-    <ion-card-header>
-      <ion-card-title class="ion-text-center"
-        >{{'CREATE_QR_CODE' | translate}}</ion-card-title
-      >
-    </ion-card-header>
 
-    <ion-card-content>
-      <ion-item>
-        <ion-label position="stacked"
-          >{{ 'QR_CODE_TEXT' | translate }}</ion-label
-        >
-        <ion-textarea
-          [autoGrow]="true"
-          [counter]="true"
-          #qrDataInput
-          placeholder="{{'INPUT_FIELD_PLACEHOLDER' | translate}}"
-          [rows]="nbrOfInitialRows"
-          maxlength="{{maxInputLength}}"
-          (ionInput)="onTextareaInput()"
-          (ionBlur)="onQrDataInputBlur()"
-        ></ion-textarea>
-      </ion-item>
+<div class="header-and-buttons">
+  <h6
+    *ngIf="(!utilsService.isSmallDevice  && utilsService.isPortrait) || !utilsService.isNative"
+    class="ion-text-center"
+  >
+    {{ appName }}
+  </h6>
 
-      <ion-item *ngIf="qrService.isQrCodeGenerated">
-        <div class="center-horizontal">
-          <qrcode
-            id="qrcode"
-            [qrdata]="qrService.myAngularxQrCode"
-            [width]="256"
-            [errorCorrectionLevel]="'M'"
-            (qrCodeURL)="onChangeURL($event)"
-            [allowEmptyString]="true"
-          ></qrcode>
-        </div>
-      </ion-item>
-    </ion-card-content>
+  <app-spinner *ngIf="showSpinner"></app-spinner>
 
-    <div class="ion-text-center">
-      <ion-spinner color="primary" *ngIf="showSpinner"></ion-spinner>
-    </div>
-
-    <div class="qr-code-buttons">
+  <ion-card class="qr-buttons-card">
+    <ion-card-header
+      *ngIf="(!utilsService.isSmallDevice  && utilsService.isPortrait) || !utilsService.isNative"
+    >
       <div class="next-step ion-text-center">
         {{ workflowStep | translate }}
       </div>
+    </ion-card-header>
+
+    <div class="qr-buttons">
       <div
         class="button-wrapper"
         (click)="handleGenerateButtonClick()"
@@ -63,6 +34,7 @@
           [class.pseudo-disabled]="isGenerationButtonDisabled"
           [disabled]="isGenerationButtonDisabled"
           (click)="handleGenerateButtonClick(); $event.stopPropagation()"
+          (keydown.enter)="handleGenerateButtonClick(); $event.stopPropagation()"
           title="{{ isGenerationButtonDisabled ? '' : ('TOOLTIP_QR-CODE.GENERATE_QR_CODE' | translate) }}"
         >
           {{ 'GENERATE' | translate }}
@@ -70,7 +42,7 @@
       </div>
 
       <div
-        class="no-generation-buttons ion-justify-content-around"
+        class="ion-display-flex ion-justify-content-around no-generation-buttons"
         [class.small-screen-hidden]="utilsService.isSmallDevice && !qrService.isQrCodeGenerated"
       >
         <div
@@ -98,5 +70,45 @@
         >
       </div>
     </div>
+  </ion-card>
+</div>
+
+<ion-content
+  class="qr-code-content"
+  [class.landscape]="!utilsService.isPortrait"
+>
+  <ion-card class="qr-card">
+    <ion-card-content>
+      <ion-item *ngIf="qrService.isQrCodeGenerated" class="no-margin">
+        <div class="qr-code no-margin">
+          <qrcode
+            id="qrcode"
+            [qrdata]="qrService.myAngularxQrCode"
+            [width]="256"
+            [errorCorrectionLevel]="'M'"
+            (qrCodeURL)="onChangeURL($event)"
+            [allowEmptyString]="true"
+          ></qrcode>
+        </div>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked"
+          >{{ 'QR_CODE_TEXT' | translate }}</ion-label
+        >
+        <ion-textarea
+          [style.maxHeight.em]="nbrOfUsedRows * 1.5 + 20"
+          [style.minHeight.px]="85"
+          [autoGrow]="true"
+          [counter]="true"
+          #qrDataInput
+          placeholder="{{'INPUT_FIELD_PLACEHOLDER' | translate}}"
+          [rows]="nbrOfUsedRows"
+          maxlength="{{maxInputLength}}"
+          (ionInput)="onTextareaInput()"
+          (ionBlur)="onQrDataInputBlur()"
+        ></ion-textarea>
+      </ion-item>
+    </ion-card-content>
   </ion-card>
 </ion-content>
