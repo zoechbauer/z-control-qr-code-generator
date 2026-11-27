@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   IonLabel,
@@ -37,20 +37,13 @@ import { EmailAddressStatus } from '@app/shared/enums';
     IonList,
   ],
 })
-export class EmailMaintenanceComponent implements OnInit {
+export class EmailMaintenanceComponent {
   readonly validationService = inject(ValidationService);
   localStorage = inject(LocalStorageService);
   toastService = inject(ToastService);
   private readonly translate = inject(TranslateService);
 
   newEmailAddressValue: string = '';
-
-  /**
-   * Initializes the component and local storage.
-   */
-  ngOnInit() {
-    void this.localStorage.init();
-  }
 
   /**
    * Handles the click event for adding a new email address.

@@ -1,225 +1,171 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Capacitor } from '@capacitor/core';
-import { SplashScreen } from '@capacitor/splash-screen';
-import { StatusBar, Style } from '@capacitor/status-bar';
+import { provideRouter } from '@angular/router';
+import { of } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 import { AppComponent } from './app.component';
-import { WindowMockUtil } from '@testing/window-mock.util';
-import { ActivatedRoute } from '@angular/router';
+import { SafeAreaInsetsService } from './services/safe-area-insets.service';
+import { SystemBarsService } from './services/system-bars.service';
+import { LocalStorageService } from './services/local-storage.service';
+import { createTranslateServiceMock } from './testing/translate-service.mock';
+import { CapacitorPlatformService } from './services/capacitor-platform.service';
 
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: any;
-  let mockMatchMedia: jasmine.Spy;
-  let splashHideSpy: jasmine.Spy;
-  let setOverlaysSpy: jasmine.Spy;
-  let setBackgroundColorSpy: jasmine.Spy;
-  let setStyleSpy: jasmine.Spy;
-  let showSpy: jasmine.Spy;
 
   beforeEach(async () => {
-    mockMatchMedia = WindowMockUtil.setupMatchMediaSpy(false);
-    spyOn(Capacitor, 'isNativePlatform').and.returnValue(true);
-
-    const splashScreenMock = jasmine.createSpyObj('SplashScreen', ['hide']);
-    splashScreenMock.hide.and.resolveTo();
-    splashHideSpy = splashScreenMock.hide;
-
-    const statusBarMock = jasmine.createSpyObj('StatusBar', [
-      'setOverlaysWebView',
-      'setBackgroundColor',
-      'setStyle',
-      'show',
-    ]);
-    statusBarMock.setOverlaysWebView.and.resolveTo();
-    statusBarMock.setBackgroundColor.and.resolveTo();
-    statusBarMock.setStyle.and.resolveTo();
-    statusBarMock.show.and.resolveTo();
-
-    setOverlaysSpy = statusBarMock.setOverlaysWebView;
-    setBackgroundColorSpy = statusBarMock.setBackgroundColor;
-    setStyleSpy = statusBarMock.setStyle;
-    showSpy = statusBarMock.show;
-
     await TestBed.configureTestingModule({
       imports: [AppComponent],
       providers: [
-        { provide: SplashScreen, useValue: splashScreenMock },
-        { provide: StatusBar, useValue: statusBarMock },
+        provideRouter([]),
         {
-          provide: ActivatedRoute,
-          useValue: jasmine.createSpyObj('ActivatedRoute', ['snapshot']),
+          provide: TranslateService,
+          useValue: createTranslateServiceMock(),
+        },
+        {
+          provide: SafeAreaInsetsService,
+          useValue: jasmine.createSpyObj('SafeAreaInsetsService', [
+            'setSafeAreaInsetsFix',
+          ]),
+        },
+        {
+          provide: SystemBarsService,
+          useValue: jasmine.createSpyObj('SystemBarsService', [
+            'getCurrentIsDarkMode',
+            'setBars',
+          ]),
+        },
+        {
+          provide: LocalStorageService,
+          useValue: {
+            initializeServicesAsync: jasmine
+              .createSpy('initializeServicesAsync')
+              .and.resolveTo(undefined),
+            selectedLanguage$: of('de'),
+            loadTargetLanguages: jasmine.createSpy('loadTargetLanguages'),
+          },
+        },
+        {
+          provide: CapacitorPlatformService,
+          useValue: {
+            hideSplashScreen: jasmine
+              .createSpy('hideSplashScreen')
+              .and.resolveTo(undefined),
+            setStatusBarOverlay: jasmine
+              .createSpy('setStatusBarOverlay')
+              .and.resolveTo(undefined),
+            showStatusBar: jasmine
+              .createSpy('showStatusBar')
+              .and.resolveTo(undefined),
+          },
         },
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
-
-    Object.defineProperty(component, 'splashScreen', {
-      value: splashScreenMock,
-      configurable: true,
-      writable: true,
-    });
-    Object.defineProperty(component, 'statusBar', {
-      value: statusBarMock,
-      configurable: true,
-      writable: true,
-    });
   });
 
-  afterEach(() => {
-    WindowMockUtil.restore();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should have isNativeApp property', () => {
-    expect(component.isNativeApp).toBeDefined();
-    expect(typeof component.isNativeApp).toBe('boolean');
-  });
-
-  it('should have initializeApp method', () => {
-    expect(component.initializeApp).toBeDefined();
-    expect(typeof component.initializeApp).toBe('function');
-  });
-
-  it('should not throw error when initializeApp is called on web platform', async () => {
-    (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
-    await expectAsync(component.initializeApp()).toBeResolved();
-  });
-
-  it('should call initializeApp on NgOnInit', async () => {
-    spyOn(component, 'initializeApp').and.returnValue(Promise.resolve());
-    component.ngOnInit();
-    expect(component.initializeApp).toHaveBeenCalled();
-  });
-
-  describe('native platform behavior', () => {
-    beforeEach(() => {
-      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(true);
+  describe('class logic', () => {
+    it('should create the app', () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
+      expect(app).toBeTruthy();
     });
 
-    it('should call window.matchMedia with dark mode query', async () => {
-      await component.initializeApp();
-
-      expect(mockMatchMedia).toHaveBeenCalledWith(
-        '(prefers-color-scheme: dark)',
-      );
-    });
-
-    it('should handle light mode preference', async () => {
-      // Arrange
-      mockMatchMedia.and.returnValue({ matches: false }); // Light mode
-
-      // Act
-      await component.initializeApp();
-
-      // Assert
-      expect(mockMatchMedia).toHaveBeenCalledWith(
-        '(prefers-color-scheme: dark)',
-      );
-    });
-
-    it('should handle dark mode preference', async () => {
-      // Arrange
-      mockMatchMedia.and.returnValue({ matches: true }); // Dark mode
-
-      // Act
-      await component.initializeApp();
-
-      // Assert
-      expect(mockMatchMedia).toHaveBeenCalledWith(
-        '(prefers-color-scheme: dark)',
-      );
-    });
-
-    it('should detect system dark mode preference correctly', async () => {
-      // Test light mode
-      mockMatchMedia.and.returnValue({ matches: false });
-      await component.initializeApp();
-      expect(mockMatchMedia).toHaveBeenCalledWith(
-        '(prefers-color-scheme: dark)',
-      );
-
-      // Reset spy
-      mockMatchMedia.calls.reset();
-
-      // Test dark mode
-      mockMatchMedia.and.returnValue({ matches: true });
-      await component.initializeApp();
-      expect(mockMatchMedia).toHaveBeenCalledWith(
-        '(prefers-color-scheme: dark)',
-      );
-    });
-
-    describe('StatusBar and SplashScreen behavior', () => {
-      beforeEach(() => {
-        splashHideSpy.calls.reset();
-        setOverlaysSpy.calls.reset();
-        setBackgroundColorSpy.calls.reset();
-        setStyleSpy.calls.reset();
-        showSpy.calls.reset();
+    describe('ngOnInit', () => {
+      it('should call initializeApp', () => {
+        spyOn(component, 'initializeApp');
+        component.ngOnInit();
+        expect(component.initializeApp).toHaveBeenCalled();
       });
+    });
 
-      it('should apply light style when system prefers dark mode', async () => {
-        mockMatchMedia.and.returnValue({ matches: true });
+    describe('initializeApp', () => {
+      it('should initialize services and set system bars for native app', async () => {
+        component.isNativeApp = true;
+
+        const safeAreaInsetsService = TestBed.inject(
+          SafeAreaInsetsService,
+        ) as jasmine.SpyObj<SafeAreaInsetsService>;
+        const systemBarsService = TestBed.inject(
+          SystemBarsService,
+        ) as jasmine.SpyObj<SystemBarsService>;
+        const localStorageService = TestBed.inject(LocalStorageService) as any;
 
         await component.initializeApp();
 
-        expect(setBackgroundColorSpy).toHaveBeenCalledWith({
-          color: '#3880ff',
-        });
-        expect(setStyleSpy).toHaveBeenCalledWith({
-          style: Style.Light,
-        });
-      });
-
-      it('should apply dark style when system prefers light mode', async () => {
-        mockMatchMedia.and.returnValue({ matches: false });
-
-        await component.initializeApp();
-
-        expect(setBackgroundColorSpy).toHaveBeenCalledWith({
-          color: '#3880ff',
-        });
-        expect(setStyleSpy).toHaveBeenCalledWith({
-          style: Style.Dark,
-        });
-      });
-
-      it('should not fail when the plugin is unavailable on web', async () => {
-        setOverlaysSpy.and.rejectWith({ code: 'UNIMPLEMENTED' });
-        setBackgroundColorSpy.and.rejectWith({ code: 'UNIMPLEMENTED' });
-        setStyleSpy.and.rejectWith({ code: 'UNIMPLEMENTED' });
-        showSpy.and.rejectWith({ code: 'UNIMPLEMENTED' });
-
-        await expectAsync(component.initializeApp()).toBeResolved();
+        expect(safeAreaInsetsService.setSafeAreaInsetsFix).toHaveBeenCalled();
+        expect(systemBarsService.getCurrentIsDarkMode).toHaveBeenCalled();
+        expect(systemBarsService.setBars).toHaveBeenCalled();
+        expect(localStorageService.initializeServicesAsync).toHaveBeenCalled();
       });
     });
   });
 
-  describe('renderer - addClass', () => {
-    let addClassSpy: jasmine.Spy;
-    beforeEach(() => {
-      addClassSpy = spyOn(component['renderer'], 'addClass');
-      addClassSpy.calls.reset();
+  describe('template rendering', () => {
+    it('should render ion-app element', () => {
+      const compiled = fixture.nativeElement as HTMLElement;
+      expect(compiled.querySelector('ion-app')).toBeTruthy();
     });
 
-    it('should add native-app class when running on native platform', async () => {
-      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(true);
-      await component.initializeApp();
-
-      expect(addClassSpy).toHaveBeenCalledWith(document.body, 'native-app');
+    it('should render ion-router-outlet element', () => {
+      const compiled = fixture.nativeElement as HTMLElement;
+      expect(compiled.querySelector('ion-router-outlet')).toBeTruthy();
     });
 
-    it('should add web-app class when running on web platform', async () => {
-      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
-      await component.initializeApp();
+    describe('should add or remove classes on body element based on platform', () => {
+      it('should add native-app class to body for native platform', async () => {
+        component.isNativeApp = true;
+        await component.initializeApp();
+        expect(document.body.classList.contains('native-app')).toBeTrue();
+      });
 
-      expect(addClassSpy).toHaveBeenCalledWith(document.body, 'web-app');
+      it('should add web-app class for web platform', async () => {
+        component.isNativeApp = false;
+        await component.initializeApp();
+        expect(document.body.classList.contains('web-app'))
+          .withContext('web-app class')
+          .toBeTrue();
+      });
+    });
+
+    describe('should add or remove classes on body.div element based on platform and tabs bar visibility', () => {
+      it('should add web-app-width to body for web platform', async () => {
+        component.isNativeApp = false;
+        fixture.detectChanges();
+
+        const bodyDiv = fixture.nativeElement.querySelector('div');
+        expect(bodyDiv?.classList.contains('web-app-width')).toBeTrue();
+      });
+
+      it('should add native-app-height-show-tabs-bar for native platform with tabs bar', async () => {
+        component.isNativeApp = true;
+        component.showTabsBar = true;
+        fixture.detectChanges();
+
+        const bodyDiv = fixture.nativeElement.querySelector('div');
+        expect(
+          bodyDiv?.classList.contains('native-app-height-show-tabs-bar'),
+        ).toBeTrue();
+      });
+
+      it('should not add native-app-height-show-tabs-bar for native platform without tabs bar', async () => {
+        component.isNativeApp = true;
+        component.showTabsBar = false;
+        fixture.detectChanges();
+
+        const bodyDiv = fixture.nativeElement.querySelector('div');
+        expect(bodyDiv.classList.contains('native-app-height-show-tabs-bar'))
+          .withContext('native-app-height-show-tabs-bar class')
+          .toBeFalse();
+        expect(bodyDiv.classList.contains('native-app-height-hide-tabs-bar'))
+          .withContext('native-app-height-hide-tabs-bar class')
+          .toBeTrue();
+      });
     });
   });
 });

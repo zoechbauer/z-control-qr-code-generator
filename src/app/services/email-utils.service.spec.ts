@@ -39,7 +39,7 @@ describe('EmailUtilsService', () => {
     ]);
     localStorageSpy = jasmine.createSpyObj<LocalStorageService>(
       'LocalStorageService',
-      ['loadSavedEmailAddresses', 'init', 'saveEmailAddress'],
+      ['loadSavedEmailAddresses', 'initializeServicesAsync', 'saveEmailAddress'],
       {
         selectedLanguage$: of('en'),
       },

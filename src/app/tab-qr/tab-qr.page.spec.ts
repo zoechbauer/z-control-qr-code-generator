@@ -135,7 +135,11 @@ describe('TabQrPage', () => {
     );
     localStorageServiceSpy = jasmine.createSpyObj<LocalStorageService>(
       'LocalStorageService',
-      ['loadSelectedOrDefaultLanguage', 'init', 'saveEmailAddress'],
+      [
+        'loadSelectedOrDefaultLanguage',
+        'initializeServicesAsync',
+        'saveEmailAddress',
+      ],
       {
         selectedLanguage$: of('en'),
       },
@@ -230,9 +234,11 @@ describe('TabQrPage', () => {
     (storageSpy.create as jasmine.Spy).and.returnValue(
       Promise.resolve({} as Storage),
     );
-    localStorageServiceSpy.init.and.returnValue(Promise.resolve());
-    localStorageServiceSpy.loadSelectedOrDefaultLanguage.and.returnValue(
+    localStorageServiceSpy.initializeServicesAsync.and.returnValue(
       Promise.resolve(),
+    );
+    localStorageServiceSpy.loadSelectedOrDefaultLanguage.and.returnValue(
+      Promise.resolve('en'),
     );
     (qrUtilsServiceSpy.clearQrFields as jasmine.Spy).and.returnValue(undefined);
   });
@@ -1012,9 +1018,9 @@ describe('TabQrPage', () => {
 
   describe('ngOnInit method', () => {
     beforeEach(() => {
-      localStorageServiceSpy.init.and.returnValue(Promise.resolve());
+      localStorageServiceSpy.initializeServicesAsync.and.stub();
       localStorageServiceSpy.loadSelectedOrDefaultLanguage.and.returnValue(
-        Promise.resolve(),
+        Promise.resolve('en'),
       );
       fileUtilsServiceSpy.deleteAllQrCodeFilesAfterSpecifiedTime.and.returnValue(
         Promise.resolve(),
@@ -1023,12 +1029,6 @@ describe('TabQrPage', () => {
 
     it('should initialize component without errors', () => {
       expect(() => component.ngOnInit()).not.toThrow();
-    });
-
-    it('should call localStorage initialization', () => {
-      component.ngOnInit();
-
-      expect(localStorageServiceSpy.init).toHaveBeenCalled();
     });
 
     it('should set initial screen width', () => {
@@ -1086,64 +1086,6 @@ describe('TabQrPage', () => {
       await fixture.whenStable();
 
       expect(keyboardSpy).not.toHaveBeenCalled();
-    });
-
-    // This test does not work!!!
-    // it('should add keyboard listeners on native platforms', async () => {
-    //   Object.defineProperty(utilsServiceSpy, 'isNative', {
-    //     value: true,
-    //     writable: true,
-    //     configurable: true,
-    //   });
-    //   Object.defineProperty(utilsServiceSpy, 'isPortrait', {
-    //     get: () => true,
-    //     configurable: true,
-    //   });
-    //   keyboardSpy.calls.reset();
-
-    //   component.ngOnInit();
-    //   await fixture.whenStable();
-
-    //   expect(keyboardSpy).toHaveBeenCalled();
-    // });
-
-    it('should log initialization errors', async () => {
-      // Arrange
-      localStorageServiceSpy.init.and.returnValue(
-        Promise.reject('Init failed'),
-      );
-      spyOn(console, 'error');
-
-      // Act
-      component.ngOnInit();
-      await Promise.resolve();
-
-      //Assert
-      expect(() => component.ngOnInit()).not.toThrow();
-      expect(console.error).toHaveBeenCalledWith(
-        'App initialization failed:',
-        'Init failed',
-      );
-    });
-
-    it('should log delete qr code file errors', async () => {
-      // Arrange
-      fileUtilsServiceSpy.deleteAllQrCodeFilesAfterSpecifiedTime.and.returnValue(
-        Promise.reject('Delete failed'),
-      );
-      spyOn(console, 'warn');
-
-      // Act
-      component.ngOnInit();
-      // wait for all pending microtasks/macrotasks created by ngOnInit
-      await fixture.whenStable();
-
-      // Assert
-      expect(() => component.ngOnInit()).not.toThrow();
-      expect(console.warn).toHaveBeenCalledWith(
-        'File cleanup failed:',
-        'Delete failed',
-      );
     });
   });
 
@@ -1838,7 +1780,9 @@ describe('TabQrPage', () => {
       (component as any).setNumberOfRows();
       expect((component as any).nbrOfUsedRows).toBe(6);
 
-      Object.defineProperty(utilsServiceSpy, 'isPortrait', { get: () => false });
+      Object.defineProperty(utilsServiceSpy, 'isPortrait', {
+        get: () => false,
+      });
       (component as any).setNumberOfRows();
       expect((component as any).nbrOfUsedRows).toBe(2);
     });

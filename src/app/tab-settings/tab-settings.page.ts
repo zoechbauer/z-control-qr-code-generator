@@ -1,8 +1,18 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  inject,
+} from '@angular/core';
+import { NgIf } from '@angular/common';
+import {
+  IonAccordionGroup,
+  IonButton,
+  IonContent,
+  IonIcon,
+} from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
-import { NgSwitch, NgIf, NgSwitchCase } from '@angular/common';
-import { IonContent, IonicModule } from '@ionic/angular';
 
 import { LocalStorageService } from '../services/local-storage.service';
 import { environment } from '@env/environment';
@@ -17,15 +27,32 @@ import { PrivacyPolicyAccordionComponent } from '../ui/components/accordions/pri
 import { GetMobileAppAccordionComponent } from '../ui/components/accordions/get-mobile-app-accordion.component';
 import { PrintAccordionComponent } from '../ui/components/accordions/print-accordion.component';
 import { EmailMaintenanceAccordionComponent } from '../ui/components/accordions/email-maintenance-accordion.component';
+import { SpinnerComponent } from '../ui/components/spinner/spinner.component';
+
+// Single source of truth for settings accordion IDs.
+// Add new accordion IDs here when extending the settings page.
+const ACCORDION_VALUES = [
+  'language',
+  'print',
+  'emails',
+  'z-control',
+  'privacy-policy',
+  'change-log',
+  'get-mobile-app',
+  'get-source',
+] as const;
+
+type AccordionValue = (typeof ACCORDION_VALUES)[number];
 
 @Component({
   selector: 'app-tab-settings',
   templateUrl: './tab-settings.page.html',
   imports: [
-    IonicModule,
+    IonAccordionGroup,
+    IonButton,
+    IonContent,
+    IonIcon,
     TranslatePipe,
-    NgSwitch,
-    NgSwitchCase,
     NgIf,
     HeaderComponent,
     LanguageAccordionComponent,
@@ -36,6 +63,7 @@ import { EmailMaintenanceAccordionComponent } from '../ui/components/accordions/
     GetMobileAppAccordionComponent,
     PrintAccordionComponent,
     EmailMaintenanceAccordionComponent,
+    SpinnerComponent,
   ],
 })
 export class TabSettingsPage implements OnInit, OnDestroy {
@@ -43,11 +71,15 @@ export class TabSettingsPage implements OnInit, OnDestroy {
   readonly localStorage = inject(LocalStorageService);
   readonly utilsService = inject(UtilsService);
 
+  private readonly validAccordionValues = new Set<AccordionValue>(
+    ACCORDION_VALUES,
+  );
   openAccordion: string | null = null;
   showAllAccordions = true;
   selectedLanguage?: string;
   LogoType = LogoType;
   Tab = Tab;
+  isLoading = true;
   private readonly subscriptions: Subscription[] = [];
 
   /**
@@ -70,7 +102,14 @@ export class TabSettingsPage implements OnInit, OnDestroy {
   }
 
   /**
-   * Initializes the component.
+   * Returns whether the app is running in a native environment.
+   */
+  get isNative(): boolean {
+    return this.utilsService.isNative;
+  }
+
+  /**
+   * Sets up necessary subscriptions and event listeners for the settings page.
    */
   ngOnInit() {
     this.showAllAccordions = true;
@@ -88,6 +127,7 @@ export class TabSettingsPage implements OnInit, OnDestroy {
         this.translate.use(lang);
         this.translate.setFallbackLang(lang);
         this.selectedLanguage = lang;
+        this.isLoading = false;
       }),
       this.utilsService.logoClicked$.subscribe(() => {
         this.openFeedbackAccordion();
@@ -99,7 +139,7 @@ export class TabSettingsPage implements OnInit, OnDestroy {
    * Opens the feedback accordion.
    */
   private openFeedbackAccordion() {
-    this.openAccordion = '';
+    this.openAccordion = null;
     this.openAccordion = 'z-control';
   }
 
@@ -113,20 +153,43 @@ export class TabSettingsPage implements OnInit, OnDestroy {
   }
 
   /**
-   * Returns whether the app is running in a native environment.
-   */
-  get isNative(): boolean {
-    return this.utilsService.isNative;
-  }
-
-  /**
    * Handles changes to the accordion group.
    * @param event The custom event containing the new accordion value.
    * @param content The IonContent instance for scrolling.
    */
   onAccordionGroupChange(event: CustomEvent, content: IonContent) {
-    this.openAccordion = event.detail.value;
+    const value = this.normalizeAccordionValue(event?.detail?.value);
+
+    // Ignore bubbled value-change events from nested controls (e.g. radio groups).
+    if (value === undefined) {
+      return;
+    }
+
+    this.openAccordion = value;
     this.showAllAccordions = this.openAccordion == null;
+  }
+
+  /**
+   * Normalizes the raw value emitted by an accordion group.
+   * @param rawValue The raw value from the accordion event
+   * @returns The normalized accordion value, null if closed, or undefined if invalid
+   */
+  private normalizeAccordionValue(
+    rawValue: unknown,
+  ): AccordionValue | null | undefined {
+    // Header toggle close can emit undefined, null, or empty string.
+    if (rawValue === undefined || rawValue === null || rawValue === '') {
+      return null;
+    }
+
+    if (
+      typeof rawValue === 'string' &&
+      this.validAccordionValues.has(rawValue as AccordionValue)
+    ) {
+      return rawValue as AccordionValue;
+    }
+
+    return undefined;
   }
 
   /**
@@ -155,13 +218,6 @@ export class TabSettingsPage implements OnInit, OnDestroy {
    */
   async openChangelog() {
     await this.utilsService.openChangelog();
-  }
-
-  /**
-   * Opens the help modal.
-   */
-  async openHelpModal() {
-    await this.utilsService.openHelpModal();
   }
 
   /**

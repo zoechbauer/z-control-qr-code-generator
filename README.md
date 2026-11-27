@@ -26,7 +26,7 @@ Download now for free and create, share & print QR codes with ease!
 
 - **Google Play:**  
   [![Get it on Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=at.zcontrol.zoe.qrcodeapp)
-  <br>
+
   [Download from Google Play](https://play.google.com/store/apps/details?id=at.zcontrol.zoe.qrcodeapp)
 
 - **Web App:**  
@@ -42,11 +42,11 @@ Download now for free and create, share & print QR codes with ease!
 - **Hosting**: Firebase Hosting
 - **Build Tool**: Angular CLI
 - **Icons**: Ionicons
-- **QR Code Generator**: for generating the QR Code we used this library https://github.com/Cordobo/angularx-qrcode
+- **QR Code Generator**: for generating the QR Code we used this library: https://github.com/Cordobo/angularx-qrcode
 
 ## 📁 Project Structure
 
-```
+```text
 
 qr-code/
 ├── docs/                        # All documentation and deployment guides
@@ -72,32 +72,36 @@ qr-code/
 │   │   ├── enums.ts
 │   │   ├── services.modules.ts
 │   │   │
-│   │   ├── help-modal/
-│   │   │   └── help-modal.component.*
+│   │   ├── shared/
+│   │   │   └── enum.ts.*
 │   │   │
 │   │   ├── services/
 │   │   │   ├── alert.service.*
+│   │   │   ├── capacitor-platform.service.*
+│   │   │   ├── capacitor-tokens.service.*
 │   │   │   ├── email-utils.service.*
 │   │   │   ├── file-utils.service.*
 │   │   │   ├── filesystem.token.ts
 │   │   │   ├── local-storage.service.*
 │   │   │   ├── print-utils.service.*
-│   │   │   ├── qr-utils.service.ts
-│   │   │   ├── safe-area-insets.ts
+│   │   │   ├── qr-utils.service.*
+│   │   │   ├── safe-area-insets.service.*
+│   │   │   ├── system-bars.service.*
 │   │   │   ├── toast.service.*
 │   │   │   ├── utils.service.*
-│   │   │   ├── validation.service.*
+│   │   │   └─── validation.service.*
+│   │   │
+│   │   ├── testing/
+│   │   │   ├── translate-service.mock.*
+│   │   │   └─── window-mock.util.*
 │   │   │
 │   │   ├── tab-qr/
-│   │   │   ├── manual-instructions-modal.component.ts
-│   │   │   ├── tab-qr.page.*
 │   │   │
 │   │   ├── tab-settings/
-│   │   │   ├── tab-settings.page.*
 │   │   │
 │   │   ├── tabs/
 │   │   │   ├── tabs-routes.ts
-│   │   │   ├── tabs.page.*
+│   │   │   └── tabs.page.*
 │   │   │
 │   │   └── ui/
 │   │       └── components/
@@ -110,22 +114,17 @@ qr-code/
 │   │           │   ├── language-accordion.component.*
 │   │           │   ├── print-accordion.component.*
 │   │           │   └── privacy-policy-accordion.component.*
+│   │           │
 │   │           ├── email-maintenance/
-│   │           │   └── email-maintenance.component.*
 │   │           ├── footer/
-│   │           │   └── footer.component.*
+│   │           ├── get-help/
 │   │           ├── get-mobile-app/
-│   │           │   └── get-mobile-app.component.*
 │   │           ├── get-source-code/
-│   │           │   └── get-source-code.component.*
 │   │           ├── header/
-│   │           │   └── header.component.*
 │   │           ├── logo/
-│   │           │   └── logo.component.*
 │   │           ├── markdown-viewer/
-│   │           │   └── markdown-viewer.component.*
-│   │           └── privacy-policy/
-│   │               └── privacy-policy.component.*
+│   │           ├── privacy-policy/
+│   │           └── spinner/
 │   │
 │   ├── assets/
 │   │   ├── i18n/
@@ -139,10 +138,6 @@ qr-code/
 │   ├── environments/
 │   │   ├── environment.prod.ts
 │   │   └── environment.ts
-│   │
-│   ├── testing/
-│   │   ├── translate-service.mock.ts
-│   │   └── window-mock.util.*
 │   │
 │   └── theme/
 │       └── variables.scss
@@ -189,7 +184,7 @@ npm run test:coverage
 ionic build --prod
 npx cap sync android
 cd android
-./gradlew assembleRelease
+./gradlew bundleRelease
 ```
 
 ## Documentation
@@ -198,7 +193,9 @@ All documentation, deployment guides, and helper tools are located in the [`docs
 
 ## Privacy Policy
 
-See [Privacy Policy](https://z-control-4070.web.app/privacy/basic/en).
+See [Privacy Policy in German (DE)](https://z-control-4070.web.app/privacy/qr-code-generator/de).
+
+See [Privacy Policy in English (EN)](https://z-control-4070.web.app/privacy/qr-code-generator/en).
 
 ## License
 

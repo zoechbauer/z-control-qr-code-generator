@@ -30,6 +30,10 @@ describe('UtilsService', () => {
     service = TestBed.inject(UtilsService);
   });
 
+  afterEach(() => {
+    WindowMockUtil.restore();
+  });
+
   it('should be created', () => {
     expect(service).toBeTruthy();
   });

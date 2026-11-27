@@ -10,9 +10,7 @@
     {{ appName }}
   </h6>
 
-  <div class="spinner" *ngIf="showSpinner">
-    <ion-spinner color="primary"></ion-spinner>
-  </div>
+  <app-spinner *ngIf="showSpinner"></app-spinner>
 
   <ion-card class="qr-buttons-card">
     <ion-card-header

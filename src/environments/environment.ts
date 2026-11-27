@@ -2,9 +2,9 @@ export const environment = {
   production: false,
   // version info
   version: {
-    major: 2,
-    minor: 6,
-    date: '2026-11-08',
+    major: 3,
+    minor: 0,
+    date: '2026-11-27',
   },
   app: {
     name: 'z-control QR Code Generator',

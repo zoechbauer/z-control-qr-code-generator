@@ -8,7 +8,6 @@ import {
   IonCardHeader,
   IonCardContent,
   IonButton,
-  IonSpinner,
   IonContent,
   IonLabel,
 } from '@ionic/angular/standalone';
@@ -35,6 +34,7 @@ import {
 } from '../shared/enums';
 import { PrintUtilsService } from '../services/print-utils.service';
 import { HeaderComponent } from '../ui/components/header/header.component';
+import { SpinnerComponent } from '../ui/components/spinner/spinner.component';
 
 export enum Workflow {
   StepEnterText = 'WORKFLOW_STEP_ENTER_TEXT',
@@ -50,7 +50,6 @@ export enum Workflow {
   imports: [
     IonLabel,
     IonContent,
-    IonSpinner,
     IonButton,
     IonItem,
     IonCard,
@@ -62,6 +61,7 @@ export enum Workflow {
     TranslatePipe,
     HeaderComponent,
     QRCodeComponent,
+    SpinnerComponent
   ],
 })
 export class TabQrPage implements OnInit, OnDestroy {
@@ -133,7 +133,6 @@ export class TabQrPage implements OnInit, OnDestroy {
     this.createSubscription();
     this.utilsService.showOrHideIonTabBar();
     this.setupEventListeners();
-    void this.initializeServicesAsync();
     this.setNumberOfRows();
   }
 
@@ -173,38 +172,6 @@ export class TabQrPage implements OnInit, OnDestroy {
       this.nbrOfUsedRows = Math.ceil(
         this.qrService.myAngularxQrCode.length / CHARS_PER_ROW,
       );
-    }
-  }
-
-  /**
-   * Initializes services such as local storage and file service.
-   */
-  private async initializeServicesAsync(): Promise<void> {
-    try {
-      await this.localStorage.init();
-      await this.localStorage.loadSelectedOrDefaultLanguage();
-
-      // Non-critical operation - can fail silently
-      try {
-        await this.fileService.deleteAllQrCodeFilesAfterSpecifiedTime();
-      } catch (cleanupError) {
-        console.warn('File cleanup failed:', cleanupError);
-      }
-    } catch (error) {
-      console.error('App initialization failed:', error);
-      this.initializeWithDefaults();
-    }
-  }
-
-  /**
-   * Initializes the app with default settings, such as the default language.
-   */
-  private initializeWithDefaults(): void {
-    try {
-      this.translate.setFallbackLang('en');
-      this.translate.use('en');
-    } catch (fallbackError) {
-      console.error('Critical: Even defaults failed:', fallbackError);
     }
   }
 

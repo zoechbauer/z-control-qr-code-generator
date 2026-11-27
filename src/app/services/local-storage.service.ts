@@ -10,6 +10,7 @@ import {
   QrCodesCountPerPage,
   QrCodeSize,
 } from '../shared/enums';
+import { FileUtilsService } from './file-utils.service';
 
 enum LocalStorage {
   SavedEmailAddresses = 'savedEmailAddresses',
@@ -23,6 +24,7 @@ enum LocalStorage {
 export class LocalStorageService {
   private readonly storage = inject(Storage);
   private readonly validationService = inject(ValidationService);
+  private readonly fileService = inject(FileUtilsService);
 
   savedEmailAddresses: string[] = [];
   savedEmailAddressesSubject = new BehaviorSubject<string[]>([]);
@@ -40,21 +42,49 @@ export class LocalStorageService {
   selectedLanguage$ = this.selectedLanguageSubject.asObservable();
 
   /**
-   * Initializes the local storage service.
-   * Must be called before using other methods.
-   */
-  async init() {
-    await this.initStorage();
-  }
-
-  /**
-   * Initializes the storage by creating it and loading saved data.
+   * Initializes the storage by creating it if it doesn't exist.
    */
   private async initStorage() {
     await this.storage.create();
-    await this.loadSavedEmailAddresses();
-    await this.loadPrintSettings();
-    await this.loadSelectedOrDefaultLanguage();
+  }
+
+  /**
+   * Initializes the storage service and loads necessary data.
+   * @param translate The TranslateService instance
+   */
+  async initializeServicesAsync(
+    translate: import('@ngx-translate/core').TranslateService,
+  ): Promise<void> {
+    try {
+      await this.initStorage();
+      await this.loadSelectedOrDefaultLanguage();
+      await this.loadSavedEmailAddresses();
+      await this.loadPrintSettings();
+
+      // Non-critical operation - can fail silently
+      try {
+        await this.fileService.deleteAllQrCodeFilesAfterSpecifiedTime();
+      } catch (cleanupError) {
+        console.warn('File cleanup failed:', cleanupError);
+      }
+    } catch (error) {
+      console.error('App initialization failed:', error);
+      this.initializeWithDefaults(translate);
+    }
+  }
+
+  /**
+   * Fallback: sets default language to 'en' in TranslateService
+   */
+  private initializeWithDefaults(
+    translate: import('@ngx-translate/core').TranslateService,
+  ): void {
+    try {
+      translate.setFallbackLang('en');
+      translate.use('en');
+    } catch (fallbackError) {
+      console.error('Critical: Even defaults failed:', fallbackError);
+    }
   }
 
   /**
@@ -67,18 +97,23 @@ export class LocalStorageService {
   }
 
   /**
-   * Loads the selected language from storage or defaults to the mobile device's language.
+   * Loads the selected language from storage, or sets and returns the default language if not found.
+   * Updates the selectedLanguageSubject accordingly.
+   * @returns The selected or default language code
    */
-  async loadSelectedOrDefaultLanguage() {
+  async loadSelectedOrDefaultLanguage(): Promise<string> {
     const selectedLanguage = await this.storage.get(
       LocalStorage.SelectedLanguage,
     );
 
-    if (selectedLanguage !== null && selectedLanguage !== undefined) {
-      this.selectedLanguageSubject.next(String(selectedLanguage));
+    if (selectedLanguage) {
+      this.selectedLanguageSubject.next(selectedLanguage);
+      return selectedLanguage;
     } else {
       const lang = this.getMobileDefaultLanguage();
       await this.saveSelectedLanguage(lang);
+      this.selectedLanguageSubject.next(lang);
+      return lang;
     }
   }
 
@@ -106,6 +141,9 @@ export class LocalStorageService {
    * @param language The language code to save.
    */
   async saveSelectedLanguage(language: string) {
+    if (!language) {
+      throw new Error('Language must be provided');
+    }
     try {
       await this.storage.set(LocalStorage.SelectedLanguage, language);
       this.selectedLanguageSubject.next(language);
